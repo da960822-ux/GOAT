@@ -7,6 +7,7 @@ import { PlaceCard } from '@/src/components/PlaceCard';
 import { EmptyState } from '@/src/components/EmptyState';
 import { useApp } from '@/src/context/AppContext';
 import { useColors } from '@/hooks/useColors';
+import { RecommendationCard } from '@/src/types/place';
 
 export default function ResultsScreen() {
   const router = useRouter();
@@ -27,8 +28,11 @@ export default function ResultsScreen() {
     );
   }
 
-  function handleCardPress(placeId: string) {
-    router.push({ pathname: '/detail/[id]', params: { id: placeId } });
+  function handleCardPress(card: RecommendationCard) {
+    router.push({
+      pathname: '/detail/[id]',
+      params: { id: card.place.place_id, role: card.role, reason: card.reason },
+    });
   }
 
   return (
@@ -55,18 +59,23 @@ export default function ResultsScreen() {
           </View>
         </View>
 
-        <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
-          추천 장소 3곳
-        </Text>
-        <Text style={[styles.sectionSub, { color: colors.mutedForeground }]}>
-          장소 카드를 누르면 상세 정보를 볼 수 있어요
-        </Text>
+        <View style={styles.sectionHeader}>
+          <View style={styles.countRow}>
+            <View style={[styles.countBadge, { backgroundColor: colors.primary }]}>
+              <Text style={styles.countText}>3</Text>
+            </View>
+            <Text style={[styles.sectionTitle, { color: colors.foreground }]}>추천 장소</Text>
+          </View>
+          <Text style={[styles.sectionSub, { color: colors.mutedForeground }]}>
+            장면 최적 · 같은 장면 대안 · 날씨 맞춤으로 비교해보세요.
+          </Text>
+        </View>
 
         {recommendations.map((card) => (
           <PlaceCard
             key={card.place.place_id}
             card={card}
-            onPress={() => handleCardPress(card.place.place_id)}
+            onPress={() => handleCardPress(card)}
           />
         ))}
 
@@ -98,8 +107,12 @@ const styles = StyleSheet.create({
   moodKeywords: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   kwChip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
   kwText: { fontSize: 12, fontFamily: 'Inter_500Medium' },
-  sectionTitle: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 4 },
-  sectionSub: { fontSize: 13, fontFamily: 'Inter_400Regular', marginBottom: 16 },
+  sectionHeader: { marginBottom: 16 },
+  countRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 5 },
+  countBadge: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
+  countText: { color: '#FFFFFF', fontSize: 13, fontWeight: '700', fontFamily: 'Inter_700Bold' },
+  sectionTitle: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold' },
+  sectionSub: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
   retryBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -111,6 +124,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   retryText: { fontSize: 14, fontFamily: 'Inter_500Medium' },
-  refreshBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center' as const, justifyContent: 'center' as const },
+  refreshBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
   spacer: { height: 20 },
 });

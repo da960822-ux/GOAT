@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { RecommendationCard } from '@/src/types/place';
 import { RecommendationRoleBadge } from './RecommendationRoleBadge';
 import { TagBadge } from './TagBadge';
-import { CautionBox } from './CautionBox';
+import { DataEvidenceSection } from './DataEvidenceSection';
 import { MapButtonGroup } from './MapButtonGroup';
 import { useColors } from '@/hooks/useColors';
 
@@ -16,7 +16,6 @@ interface PlaceCardProps {
 export function PlaceCard({ card, onPress }: PlaceCardProps) {
   const { place, role, reason } = card;
   const colors = useColors();
-  const [expanded, setExpanded] = useState(false);
 
   return (
     <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
@@ -52,17 +51,14 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
         ))}
       </View>
 
-      {expanded && <CautionBox note={place.note} />}
+      <DataEvidenceSection place={place} compact />
 
-      <TouchableOpacity
-        onPress={() => setExpanded((v) => !v)}
-        style={[styles.expandBtn, { borderTopColor: colors.border }]}
-      >
-        <Text style={[styles.expandText, { color: colors.mutedForeground }]}>
-          {expanded ? '유의사항 접기' : '유의사항 보기'}
-        </Text>
-        <Feather name={expanded ? 'chevron-up' : 'chevron-down'} size={14} color={colors.mutedForeground} />
-      </TouchableOpacity>
+      {place.note ? (
+        <View style={[styles.cautionRow, { backgroundColor: '#FFFBEB', borderColor: '#FDE68A' }]}>
+          <Feather name="alert-triangle" size={13} color="#D97706" style={{ marginTop: 1 }} />
+          <Text style={[styles.cautionText, { color: '#92400E' }]}>{place.note}</Text>
+        </View>
+      ) : null}
 
       <MapButtonGroup place={place} />
     </View>
@@ -105,7 +101,15 @@ const styles = StyleSheet.create({
   infoLabel: { fontSize: 12, fontFamily: 'Inter_500Medium', width: 76, marginRight: 4 },
   infoValue: { flex: 1, fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 18 },
   multiline: { lineHeight: 19 },
-  tags: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 2 },
-  expandBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingTop: 12, marginTop: 4, borderTopWidth: 1, gap: 4 },
-  expandText: { fontSize: 12, fontFamily: 'Inter_400Regular' },
+  tags: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 },
+  cautionRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 7,
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 14,
+  },
+  cautionText: { flex: 1, fontSize: 12, fontFamily: 'Inter_400Regular', lineHeight: 18 },
 });

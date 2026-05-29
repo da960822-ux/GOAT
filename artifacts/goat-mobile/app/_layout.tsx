@@ -27,6 +27,10 @@ function RootLayoutNav() {
       <Stack.Screen name="mood-selection" />
       <Stack.Screen name="results" />
       <Stack.Screen name="detail/[id]" />
+      <Stack.Screen name="about" />
+      <Stack.Screen name="guide" />
+      <Stack.Screen name="data-source" />
+      <Stack.Screen name="privacy" />
     </Stack>
   );
 }

@@ -6,14 +6,16 @@ import { Header } from '@/src/components/Header';
 import { TagBadge } from '@/src/components/TagBadge';
 import { CautionBox } from '@/src/components/CautionBox';
 import { MapButtonGroup } from '@/src/components/MapButtonGroup';
+import { DataEvidenceSection } from '@/src/components/DataEvidenceSection';
+import { RecommendationRoleBadge } from '@/src/components/RecommendationRoleBadge';
 import { EmptyState } from '@/src/components/EmptyState';
 import { getPlaceById, getAlternatives } from '@/src/services/recommendationService';
 import { useColors } from '@/hooks/useColors';
-import { Place } from '@/src/types/place';
+import { Place, RecommendationRole } from '@/src/types/place';
 
 export default function DetailScreen() {
   const router = useRouter();
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, role, reason } = useLocalSearchParams<{ id: string; role?: string; reason?: string }>();
   const colors = useColors();
 
   const place = getPlaceById(id ?? '');
@@ -28,6 +30,8 @@ export default function DetailScreen() {
     );
   }
 
+  const typedRole = role as RecommendationRole | undefined;
+
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title={place.place_name} onBack={() => router.back()} />
@@ -40,7 +44,24 @@ export default function DetailScreen() {
           <Text style={[styles.meta, { color: colors.mutedForeground }]}>
             {place.city} · {place.region_group} · {place.place_type}
           </Text>
+          {typedRole && (
+            <View style={styles.roleWrap}>
+              <RecommendationRoleBadge role={typedRole} />
+            </View>
+          )}
         </View>
+
+        {reason ? (
+          <View style={[styles.reasonSection, { borderBottomColor: colors.border }]}>
+            <View style={styles.sectionHeader}>
+              <Feather name="zap" size={14} color={colors.primary} />
+              <Text style={[styles.sectionTitle, { color: colors.foreground }]}>추천 이유</Text>
+            </View>
+            <View style={[styles.reasonBox, { backgroundColor: colors.overlay }]}>
+              <Text style={[styles.reasonText, { color: colors.primary }]}>{reason}</Text>
+            </View>
+          </View>
+        ) : null}
 
         <Section title="주요 무드" icon="sun" colors={colors}>
           <Text style={[styles.bodyText, { color: colors.foreground }]}>{place.primary_mood}</Text>
@@ -66,6 +87,10 @@ export default function DetailScreen() {
           <Text style={[styles.bodyText, { color: colors.foreground }]}>{place.recommendation_use}</Text>
         </Section>
 
+        <Section title="데이터 근거" icon="bar-chart-2" colors={colors}>
+          <DataEvidenceSection place={place} />
+        </Section>
+
         <Section title="유의사항" icon="alert-circle" colors={colors}>
           <CautionBox note={place.note} />
         </Section>
@@ -75,12 +100,19 @@ export default function DetailScreen() {
         </Section>
 
         {alternatives.length > 0 && (
-          <Section title="비슷한 감성 장소" icon="compass" colors={colors}>
-            <Text style={[styles.altHint, { color: colors.mutedForeground }]}>같은 분위기의 다른 장소들</Text>
+          <Section title="같은 감성 대안" icon="compass" colors={colors}>
+            <Text style={[styles.altHint, { color: colors.mutedForeground }]}>
+              같은 분위기의 다른 장소들
+            </Text>
             {alternatives.map((alt) => (
-              <AlternativeCard key={alt.place_id} place={alt} colors={colors} onPress={() =>
-                router.replace({ pathname: '/detail/[id]', params: { id: alt.place_id } })
-              } />
+              <AlternativeCard
+                key={alt.place_id}
+                place={alt}
+                colors={colors}
+                onPress={() =>
+                  router.replace({ pathname: '/detail/[id]', params: { id: alt.place_id } })
+                }
+              />
             ))}
           </Section>
         )}
@@ -146,7 +178,11 @@ const styles = StyleSheet.create({
   },
   heroIcon: { width: 72, height: 72, borderRadius: 36, alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
   placeName: { fontSize: 24, fontWeight: '800', fontFamily: 'Inter_700Bold', textAlign: 'center', marginBottom: 6 },
-  meta: { fontSize: 14, fontFamily: 'Inter_400Regular', textAlign: 'center' },
+  meta: { fontSize: 14, fontFamily: 'Inter_400Regular', textAlign: 'center', marginBottom: 12 },
+  roleWrap: { marginTop: 4 },
+  reasonSection: { paddingHorizontal: 20, paddingVertical: 18, borderBottomWidth: 1 },
+  reasonBox: { borderRadius: 10, padding: 12 },
+  reasonText: { fontSize: 14, fontFamily: 'Inter_500Medium', lineHeight: 21 },
   section: {
     paddingHorizontal: 20,
     paddingVertical: 18,

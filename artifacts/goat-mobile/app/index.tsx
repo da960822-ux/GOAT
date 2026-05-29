@@ -65,8 +65,21 @@ export default function LandingScreen() {
         </TouchableOpacity>
 
         <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
-          강원도 43개 명소 · 로그인 불필요 · 무료
+          강원 감성 명소 43곳 · 로그인 없이 바로 시작
         </Text>
+
+        <View style={styles.footerLinks}>
+          {[
+            { label: 'GOAT 소개', path: '/about' },
+            { label: '이용 안내', path: '/guide' },
+            { label: '데이터 출처', path: '/data-source' },
+            { label: '개인정보처리방침', path: '/privacy' },
+          ].map((item) => (
+            <TouchableOpacity key={item.path} onPress={() => router.push(item.path as any)}>
+              <Text style={[styles.footerLink, { color: colors.mutedForeground }]}>{item.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       </View>
     </View>
   );
@@ -126,5 +139,7 @@ const styles = StyleSheet.create({
   },
   ctaText: { fontSize: 17, fontWeight: '700', fontFamily: 'Inter_700Bold' },
   ctaArrow: { fontSize: 18, color: '#FFFFFF' },
-  disclaimer: { fontSize: 12, fontFamily: 'Inter_400Regular', textAlign: 'center' },
+  disclaimer: { fontSize: 12, fontFamily: 'Inter_400Regular', textAlign: 'center', marginBottom: 20 },
+  footerLinks: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4 },
+  footerLink: { fontSize: 11, fontFamily: 'Inter_400Regular', paddingHorizontal: 6, paddingVertical: 2, textDecorationLine: 'underline' },
 });
