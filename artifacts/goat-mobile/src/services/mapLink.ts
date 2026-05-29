@@ -43,7 +43,7 @@ export async function openKakaoMap(place: Place): Promise<void> {
   await Linking.openURL(canOpen ? appUrl : webUrl);
 }
 
-// ─── Naver Map (not used in UI — retained for future use) ──────────────────
+// ─── Naver Map ─────────────────────────────────────────────────────────────
 
 export function createNaverMapLink(place: Place): string {
   const query = buildSearchQuery(place);
@@ -62,7 +62,7 @@ export async function openNaverMap(place: Place): Promise<void> {
   await Linking.openURL(canOpen ? appUrl : webUrl);
 }
 
-// ─── Tmap (not used in UI — retained for future use) ──────────────────────
+// ─── Tmap ──────────────────────────────────────────────────────────────────
 
 export function createTmapLink(place: Place): string {
   const query = buildSearchQuery(place);

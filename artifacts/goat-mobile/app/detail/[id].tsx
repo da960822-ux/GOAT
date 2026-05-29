@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import { Header } from '@/src/components/Header';
 import { TagBadge } from '@/src/components/TagBadge';
 import { CautionBox } from '@/src/components/CautionBox';
-import { KakaoMapButton } from '@/src/components/KakaoMapButton';
+import { MapButtonGroup } from '@/src/components/MapButtonGroup';
 import { DataEvidenceSection } from '@/src/components/DataEvidenceSection';
 import { RecommendationRoleBadge } from '@/src/components/RecommendationRoleBadge';
 import { EmptyState } from '@/src/components/EmptyState';
@@ -96,7 +96,7 @@ export default function DetailScreen() {
         </Section>
 
         <Section title="길찾기" icon="navigation" colors={colors}>
-          <KakaoMapButton place={place} />
+          <MapButtonGroup place={place} />
         </Section>
 
         {alternatives.length > 0 && (
