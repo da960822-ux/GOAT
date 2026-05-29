@@ -1,8 +1,10 @@
 /**
  * MAP LINK SERVICE
  *
- * Since the current dataset has no lat/lng or Kakao place IDs,
- * all links use city + place_name as a text search query.
+ * KakaoMap deep link strategy:
+ *   - If lat/lng coordinates are available (from KTO 국문 관광정보 서비스_GW),
+ *     use coordinate-based look link for pinpoint accuracy.
+ *   - Otherwise fall back to city + place_name text search.
  *
  * UI uses KakaoMap only (app deeplink → web fallback).
  * Naver/Tmap functions are retained here for future use
@@ -13,11 +15,8 @@
 import { Place } from '../types/place';
 import { Linking } from 'react-native';
 
-// TODO: Replace with actual android.package / ios.bundleIdentifier before production build
 const ANDROID_PACKAGE_NAME = 'com.goattravel.app';
 const IOS_BUNDLE_IDENTIFIER = 'com.goattravel.app';
-
-// Naver Map requires the requesting app's bundle ID for deep link authorization
 const NAVER_APP_NAME = ANDROID_PACKAGE_NAME;
 
 function buildSearchQuery(place: Place): string {
@@ -26,20 +25,26 @@ function buildSearchQuery(place: Place): string {
 
 // ─── KakaoMap ──────────────────────────────────────────────────────────────
 
-export function createKakaoMapLink(place: Place): string {
-  const query = buildSearchQuery(place);
-  return `kakaomap://search?q=${query}`;
+export function createKakaoMapLink(place: Place, coords?: { lat: number; lng: number }): string {
+  if (coords) {
+    return `kakaomap://look?p=${coords.lat},${coords.lng}`;
+  }
+  return `kakaomap://search?q=${buildSearchQuery(place)}`;
 }
 
-export function createKakaoMapWebLink(place: Place): string {
-  const query = buildSearchQuery(place);
-  return `https://map.kakao.com/?q=${query}`;
+export function createKakaoMapWebLink(place: Place, coords?: { lat: number; lng: number }): string {
+  if (coords) {
+    return `https://map.kakao.com/link/map/${encodeURIComponent(place.place_name)},${coords.lat},${coords.lng}`;
+  }
+  return `https://map.kakao.com/?q=${buildSearchQuery(place)}`;
 }
 
-export async function openKakaoMap(place: Place): Promise<void> {
-  const query = encodeURIComponent(`${place.city} ${place.place_name}`);
-  const appUrl = `kakaomap://search?q=${query}`;
-  const webUrl = `https://map.kakao.com/?q=${query}`;
+export async function openKakaoMap(
+  place: Place,
+  coords?: { lat: number; lng: number }
+): Promise<void> {
+  const appUrl = createKakaoMapLink(place, coords);
+  const webUrl = createKakaoMapWebLink(place, coords);
 
   try {
     const canOpen = await Linking.canOpenURL(appUrl);
@@ -61,13 +66,11 @@ export async function openKakaoMap(place: Place): Promise<void> {
 // ─── Naver Map ─────────────────────────────────────────────────────────────
 
 export function createNaverMapLink(place: Place): string {
-  const query = buildSearchQuery(place);
-  return `nmap://search?query=${query}&appname=${NAVER_APP_NAME}`;
+  return `nmap://search?query=${buildSearchQuery(place)}&appname=${NAVER_APP_NAME}`;
 }
 
 export function createNaverMapWebLink(place: Place): string {
-  const query = buildSearchQuery(place);
-  return `https://map.naver.com/v5/search/${query}`;
+  return `https://map.naver.com/v5/search/${buildSearchQuery(place)}`;
 }
 
 export async function openNaverMap(place: Place): Promise<void> {
@@ -80,13 +83,11 @@ export async function openNaverMap(place: Place): Promise<void> {
 // ─── Tmap ──────────────────────────────────────────────────────────────────
 
 export function createTmapLink(place: Place): string {
-  const query = buildSearchQuery(place);
-  return `tmap://search?name=${query}`;
+  return `tmap://search?name=${buildSearchQuery(place)}`;
 }
 
 export function createTmapWebLink(place: Place): string {
-  const query = buildSearchQuery(place);
-  return `https://www.tmap.co.kr/tmap2/mobile/route.do?searchKeyword=${query}`;
+  return `https://www.tmap.co.kr/tmap2/mobile/route.do?searchKeyword=${buildSearchQuery(place)}`;
 }
 
 export async function openTmap(place: Place): Promise<void> {
@@ -96,5 +97,4 @@ export async function openTmap(place: Place): Promise<void> {
   await Linking.openURL(canOpen ? appUrl : webUrl);
 }
 
-// Suppress unused-variable warnings for constants used only in non-UI functions
 void IOS_BUNDLE_IDENTIFIER;
