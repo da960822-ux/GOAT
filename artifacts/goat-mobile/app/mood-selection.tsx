@@ -37,10 +37,10 @@ export default function MoodSelectionScreen() {
       <StepIndicator currentStep={1} />
       <View style={[styles.hint, { borderBottomColor: colors.border }]}>
         <Text style={[styles.hintText, { color: colors.foreground }]}>
-          이런 장면을 찾고 있나요?
+          오늘 어떤 장면이 끌리나요?
         </Text>
         <Text style={[styles.hintSub, { color: colors.mutedForeground }]}>
-          가장 끌리는 감성 하나를 골라주세요
+          마음에 드는 감성 하나를 골라주세요
         </Text>
       </View>
       <ScrollView
@@ -72,11 +72,12 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   hint: {
     paddingHorizontal: 24,
-    paddingBottom: 14,
+    paddingTop: 16,
+    paddingBottom: 16,
     borderBottomWidth: 1,
   },
-  hintText: { fontSize: 17, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 2 },
-  hintSub: { fontSize: 13, fontFamily: 'Inter_400Regular' },
-  list: { paddingHorizontal: 20, paddingTop: 14 },
+  hintText: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 3 },
+  hintSub: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
+  list: { paddingHorizontal: 20, paddingTop: 16 },
   spacer: { height: 12 },
 });

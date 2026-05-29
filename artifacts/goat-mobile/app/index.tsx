@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Feather } from '@expo/vector-icons';
 import { useColors } from '@/hooks/useColors';
 import { GoatLogo } from '@/src/components/GoatLogo';
 
@@ -31,16 +30,21 @@ export default function LandingScreen() {
           <View style={styles.logoRow}>
             <GoatLogo variant="badge" size="md" theme="dark" />
           </View>
-          <Text style={styles.heroTagline}>
-            강원에서 찾는{'\n'}나만의 해외여행 컷
-          </Text>
+          <View style={styles.heroTextBlock}>
+            <Text style={styles.heroTagline}>
+              해외여행 같은 장면을{'\n'}강원에서 찾아보세요
+            </Text>
+            <Text style={styles.heroSub}>
+              오늘 끌리는 감성 하나면 충분해요
+            </Text>
+          </View>
         </View>
       </ImageBackground>
 
       {/* Bottom content */}
       <View style={[styles.bottom, { paddingBottom: bottomPad + 28 }]}>
         <Text style={[styles.subcopy, { color: colors.mutedForeground }]}>
-          보고 싶은 분위기만 고르면 어울리는 장소 3곳을 추천해드려요.
+          감성을 고르면 그 장면을 가장 닮은{'\n'}강원 명소 3곳을 조용히 골라드려요.
         </Text>
 
         <TouchableOpacity
@@ -49,17 +53,17 @@ export default function LandingScreen() {
           activeOpacity={0.88}
           testID="landing-cta"
         >
-          <Feather name="compass" size={18} color="#FFFFFF" />
-          <Text style={styles.ctaText}>감성으로 장소 찾기</Text>
+          <Text style={styles.ctaText}>오늘의 감성 찾기</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.ctaSecondary, { borderColor: colors.border, backgroundColor: colors.secondary }]}
+          style={[styles.ctaSecondary, { borderColor: colors.border }]}
           onPress={() => router.push('/photo-mood')}
           activeOpacity={0.8}
         >
-          <Feather name="camera" size={15} color={colors.primary} />
-          <Text style={[styles.ctaSecondaryText, { color: colors.primary }]}>사진으로 찾기</Text>
+          <Text style={[styles.ctaSecondaryText, { color: colors.mutedForeground }]}>
+            사진으로 감성 찾기
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -75,62 +79,66 @@ export default function LandingScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: '#FFFFFF' },
-  hero: { height: 320 },
-  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(30, 8, 80, 0.58)' },
+  root: { flex: 1, backgroundColor: '#FAFAF9' },
+  hero: { height: 340 },
+  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(20, 6, 58, 0.52)' },
   heroContent: {
     flex: 1,
     paddingHorizontal: 28,
-    paddingBottom: 32,
+    paddingBottom: 36,
     justifyContent: 'space-between',
   },
   logoRow: { flexDirection: 'row' },
+  heroTextBlock: { gap: 10 },
   heroTagline: {
-    fontSize: 32,
+    fontSize: 30,
     fontWeight: '700',
     color: '#FFFFFF',
     fontFamily: 'Inter_700Bold',
-    lineHeight: 44,
-    letterSpacing: 0.3,
+    lineHeight: 42,
+    letterSpacing: 0.2,
+  },
+  heroSub: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.72)',
+    fontFamily: 'Inter_400Regular',
+    lineHeight: 21,
   },
   bottom: {
     flex: 1,
     paddingHorizontal: 28,
-    paddingTop: 28,
+    paddingTop: 32,
     justifyContent: 'flex-start',
   },
   subcopy: {
     fontSize: 15,
     fontFamily: 'Inter_400Regular',
-    lineHeight: 23,
-    marginBottom: 28,
+    lineHeight: 24,
+    marginBottom: 32,
   },
   cta: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 18,
     borderRadius: 16,
-    marginBottom: 10,
-    gap: 8,
+    marginBottom: 12,
   },
   ctaText: {
     fontSize: 17,
     fontWeight: '700',
     fontFamily: 'Inter_700Bold',
     color: '#FFFFFF',
+    letterSpacing: 0.3,
   },
   ctaSecondary: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 14,
     borderRadius: 14,
     borderWidth: 1,
-    marginBottom: 24,
-    gap: 8,
+    marginBottom: 28,
   },
-  ctaSecondaryText: { fontSize: 15, fontFamily: 'Inter_600SemiBold' },
+  ctaSecondaryText: { fontSize: 14, fontFamily: 'Inter_400Regular' },
   serviceLink: {
     alignItems: 'center',
     paddingVertical: 6,

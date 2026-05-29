@@ -93,7 +93,7 @@ export default function TravelPreferenceScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <QuestionBlock label="누구와 가나요?" done={!!companion} required colors={colors}>
+        <QuestionBlock label="누구와 떠나나요?" done={!!companion} required colors={colors}>
           <View style={styles.pillRow}>
             {COMPANIONS.map(({ value, icon }) => (
               <PillButton
@@ -124,7 +124,7 @@ export default function TravelPreferenceScreen() {
           </View>
         </QuestionBlock>
 
-        <QuestionBlock label="언제 가나요?" done={!!visitTime} optional colors={colors}>
+        <QuestionBlock label="시간대도 정했다면 알려주세요" done={!!visitTime} optional colors={colors}>
           <View style={styles.pillRow}>
             {VISIT_TIMES.map(({ value, icon }) => (
               <PillButton
@@ -139,7 +139,7 @@ export default function TravelPreferenceScreen() {
           </View>
         </QuestionBlock>
 
-        <QuestionBlock label="오늘 원하는 여행은?" done={!!purpose} required colors={colors}>
+        <QuestionBlock label="오늘 여행의 목적은?" done={!!purpose} required colors={colors}>
           <View style={styles.pillRow}>
             {PURPOSES.map(({ value, icon }) => (
               <PillButton

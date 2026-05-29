@@ -107,10 +107,10 @@ export default function ResultsScreen() {
 
         <View style={styles.sectionHeader}>
           <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
-            오늘 조건에 맞춰 3곳을 골랐어요
+            오늘을 위한 장소를 세 곳 골랐어요
           </Text>
           <Text style={[styles.sectionSub, { color: colors.mutedForeground }]}>
-            장면 최적 · 내 상황 맞춤 · 안전한 대안 순서예요
+            가장 닮은 장면 · 비슷한 대안 · 오늘 가기 편한 곳
           </Text>
         </View>
 
@@ -135,7 +135,6 @@ export default function ResultsScreen() {
           style={[styles.retryBtn, { borderColor: colors.border }]}
           onPress={() => router.replace('/mood-selection')}
         >
-          <Feather name="rotate-ccw" size={14} color={colors.mutedForeground} />
           <Text style={[styles.retryText, { color: colors.mutedForeground }]}>다른 감성으로 다시 찾기</Text>
         </TouchableOpacity>
 
