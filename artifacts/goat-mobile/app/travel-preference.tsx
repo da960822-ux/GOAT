@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { Header } from '@/src/components/Header';
 import { BottomCTA } from '@/src/components/BottomCTA';
+import { StepIndicator } from '@/src/components/StepIndicator';
 import { useApp } from '@/src/context/AppContext';
 import { getRecommendations } from '@/src/services/recommendationService';
 import { useColors } from '@/hooks/useColors';
@@ -15,32 +16,32 @@ import {
   TravelPreferences,
 } from '@/src/types/preferences';
 
-const COMPANIONS: Companion[] = ['혼자', '연인', '친구', '가족'];
-const TRANSPORTS: Transport[] = ['자차', '대중교통'];
-const VISIT_TIMES: VisitTime[] = ['오전', '오후', '일몰', '저녁', '밤/새벽'];
-const PURPOSES: TravelPurpose[] = ['가볍게 산책', '사진 위주', '액티비티', '조용한 휴식'];
+const COMPANIONS: { value: Companion; icon: string }[] = [
+  { value: '혼자', icon: '🧍' },
+  { value: '연인', icon: '💑' },
+  { value: '친구', icon: '👥' },
+  { value: '가족', icon: '👨‍👩‍👧' },
+];
 
-const COMPANION_ICONS: Record<Companion, string> = {
-  '혼자': '🧍',
-  '연인': '💑',
-  '친구': '👥',
-  '가족': '👨‍👩‍👧',
-};
+const TRANSPORTS: { value: Transport; icon: string }[] = [
+  { value: '자차', icon: '🚗' },
+  { value: '대중교통', icon: '🚌' },
+];
 
-const TIME_ICONS: Record<VisitTime, string> = {
-  '오전': '🌅',
-  '오후': '☀️',
-  '일몰': '🌇',
-  '저녁': '🌆',
-  '밤/새벽': '🌙',
-};
+const VISIT_TIMES: { value: VisitTime; icon: string }[] = [
+  { value: '오전', icon: '🌅' },
+  { value: '오후', icon: '☀️' },
+  { value: '일몰', icon: '🌇' },
+  { value: '저녁', icon: '🌆' },
+  { value: '밤/새벽', icon: '🌙' },
+];
 
-const PURPOSE_ICONS: Record<TravelPurpose, string> = {
-  '가볍게 산책': '🚶',
-  '사진 위주': '📷',
-  '액티비티': '🏄',
-  '조용한 휴식': '🍃',
-};
+const PURPOSES: { value: TravelPurpose; icon: string }[] = [
+  { value: '가볍게 산책', icon: '🚶' },
+  { value: '사진 위주', icon: '📷' },
+  { value: '액티비티', icon: '🏄' },
+  { value: '조용한 휴식', icon: '🍃' },
+];
 
 export default function TravelPreferenceScreen() {
   const router = useRouter();
@@ -53,6 +54,7 @@ export default function TravelPreferenceScreen() {
   const [purpose, setPurpose] = useState<TravelPurpose | null>(null);
 
   const allSelected = companion && transport && visitTime && purpose;
+  const count = [companion, transport, visitTime, purpose].filter(Boolean).length;
 
   function pick() {
     if (Platform.OS !== 'web') Haptics.selectionAsync();
@@ -72,19 +74,15 @@ export default function TravelPreferenceScreen() {
     router.push('/results');
   }
 
-  const subtitle = allSelected
-    ? `${companion} · ${transport} · ${visitTime} · ${purpose}`
-    : `${[companion, transport, visitTime, purpose].filter(Boolean).length}/4 선택됨`;
-
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
-      <Header title="여행 조건 선택" onBack={() => router.back()} />
+      <Header title="여행 조건" onBack={() => router.back()} />
+      <StepIndicator currentStep={2} />
 
       {selectedMood && (
-        <View style={[styles.moodPill, { backgroundColor: colors.secondary }]}>
-          <Text style={[styles.moodPillText, { color: colors.primary }]}>
-            선택 감성: {selectedMood.name}
-          </Text>
+        <View style={[styles.moodBanner, { backgroundColor: colors.secondary, borderBottomColor: colors.border }]}>
+          <Text style={[styles.moodBannerText, { color: colors.mutedForeground }]}>선택 감성</Text>
+          <Text style={[styles.moodBannerName, { color: colors.primary }]}>{selectedMood.name}</Text>
         </View>
       )}
 
@@ -93,34 +91,30 @@ export default function TravelPreferenceScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <QuestionBlock
-          step={1}
-          label="누구와 가나요?"
-          colors={colors}
-        >
-          <View style={styles.chipRow}>
-            {COMPANIONS.map((c) => (
-              <ChipButton
-                key={c}
-                label={c}
-                icon={COMPANION_ICONS[c]}
-                selected={companion === c}
-                onPress={() => { setCompanion(c); pick(); }}
+        <QuestionBlock label="누구와 가나요?" done={!!companion} colors={colors}>
+          <View style={styles.pillRow}>
+            {COMPANIONS.map(({ value, icon }) => (
+              <PillButton
+                key={value}
+                label={value}
+                icon={icon}
+                selected={companion === value}
+                onPress={() => { setCompanion(value); pick(); }}
                 colors={colors}
               />
             ))}
           </View>
         </QuestionBlock>
 
-        <QuestionBlock step={2} label="어떻게 이동하나요?" colors={colors}>
-          <View style={styles.chipRow}>
-            {TRANSPORTS.map((t) => (
-              <ChipButton
-                key={t}
-                label={t}
-                icon={t === '자차' ? '🚗' : '🚌'}
-                selected={transport === t}
-                onPress={() => { setTransport(t); pick(); }}
+        <QuestionBlock label="어떻게 이동하나요?" done={!!transport} colors={colors}>
+          <View style={styles.pillRow}>
+            {TRANSPORTS.map(({ value, icon }) => (
+              <PillButton
+                key={value}
+                label={value}
+                icon={icon}
+                selected={transport === value}
+                onPress={() => { setTransport(value); pick(); }}
                 colors={colors}
                 wide
               />
@@ -128,30 +122,30 @@ export default function TravelPreferenceScreen() {
           </View>
         </QuestionBlock>
 
-        <QuestionBlock step={3} label="언제 가나요?" colors={colors}>
-          <View style={styles.chipRow}>
-            {VISIT_TIMES.map((vt) => (
-              <ChipButton
-                key={vt}
-                label={vt}
-                icon={TIME_ICONS[vt]}
-                selected={visitTime === vt}
-                onPress={() => { setVisitTime(vt); pick(); }}
+        <QuestionBlock label="언제 가나요?" done={!!visitTime} colors={colors}>
+          <View style={styles.pillRow}>
+            {VISIT_TIMES.map(({ value, icon }) => (
+              <PillButton
+                key={value}
+                label={value}
+                icon={icon}
+                selected={visitTime === value}
+                onPress={() => { setVisitTime(value); pick(); }}
                 colors={colors}
               />
             ))}
           </View>
         </QuestionBlock>
 
-        <QuestionBlock step={4} label="오늘 원하는 여행은?" colors={colors}>
-          <View style={styles.chipRow}>
-            {PURPOSES.map((p) => (
-              <ChipButton
-                key={p}
-                label={p}
-                icon={PURPOSE_ICONS[p]}
-                selected={purpose === p}
-                onPress={() => { setPurpose(p); pick(); }}
+        <QuestionBlock label="오늘 원하는 여행은?" done={!!purpose} colors={colors}>
+          <View style={styles.pillRow}>
+            {PURPOSES.map(({ value, icon }) => (
+              <PillButton
+                key={value}
+                label={value}
+                icon={icon}
+                selected={purpose === value}
+                onPress={() => { setPurpose(value); pick(); }}
                 colors={colors}
               />
             ))}
@@ -162,40 +156,42 @@ export default function TravelPreferenceScreen() {
       </ScrollView>
 
       <BottomCTA
-        label="맞춤 추천 보기"
+        label={allSelected ? '추천 카드 보기' : `${count}/4 선택 중`}
         onPress={handleConfirm}
         disabled={!allSelected}
-        subtitle={subtitle}
+        subtitle={allSelected ? `${companion} · ${transport} · ${visitTime} · ${purpose}` : undefined}
       />
     </View>
   );
 }
 
 function QuestionBlock({
-  step,
   label,
+  done,
   colors,
   children,
 }: {
-  step: number;
   label: string;
+  done: boolean;
   colors: any;
   children: React.ReactNode;
 }) {
   return (
     <View style={[styles.block, { borderBottomColor: colors.border }]}>
       <View style={styles.blockHeader}>
-        <View style={[styles.stepBadge, { backgroundColor: colors.primary }]}>
-          <Text style={styles.stepNum}>{step}</Text>
-        </View>
         <Text style={[styles.blockLabel, { color: colors.foreground }]}>{label}</Text>
+        {done && (
+          <View style={[styles.donePill, { backgroundColor: '#D1FAE5' }]}>
+            <Text style={styles.donePillText}>선택됨</Text>
+          </View>
+        )}
       </View>
       {children}
     </View>
   );
 }
 
-function ChipButton({
+function PillButton({
   label,
   icon,
   selected,
@@ -215,21 +211,21 @@ function ChipButton({
       onPress={onPress}
       activeOpacity={0.75}
       style={[
-        styles.chip,
-        wide && styles.chipWide,
+        styles.pill,
+        wide && styles.pillWide,
         {
-          backgroundColor: selected ? colors.primary : colors.secondary,
+          backgroundColor: selected ? colors.primary : colors.background,
           borderColor: selected ? colors.primary : colors.border,
+          shadowColor: selected ? colors.primary : 'transparent',
+          shadowOpacity: selected ? 0.25 : 0,
+          shadowRadius: 8,
+          shadowOffset: { width: 0, height: 3 },
+          elevation: selected ? 3 : 0,
         },
       ]}
     >
-      <Text style={styles.chipIcon}>{icon}</Text>
-      <Text
-        style={[
-          styles.chipLabel,
-          { color: selected ? '#FFFFFF' : colors.foreground },
-        ]}
-      >
+      <Text style={styles.pillIcon}>{icon}</Text>
+      <Text style={[styles.pillLabel, { color: selected ? '#FFFFFF' : colors.foreground }]}>
         {label}
       </Text>
     </TouchableOpacity>
@@ -238,44 +234,39 @@ function ChipButton({
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  moodPill: {
-    marginHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 2,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 10,
+  moodBanner: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
   },
-  moodPillText: { fontSize: 13, fontFamily: 'Inter_600SemiBold' },
+  moodBannerText: { fontSize: 12, fontFamily: 'Inter_400Regular' },
+  moodBannerName: { fontSize: 13, fontFamily: 'Inter_600SemiBold' },
   scroll: { paddingBottom: 16 },
   block: {
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingTop: 22,
+    paddingBottom: 20,
     borderBottomWidth: 1,
   },
-  blockHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 14 },
-  stepBadge: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepNum: { color: '#FFFFFF', fontSize: 12, fontWeight: '700', fontFamily: 'Inter_700Bold' },
-  blockLabel: { fontSize: 16, fontWeight: '700', fontFamily: 'Inter_700Bold' },
-  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: {
+  blockHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 },
+  blockLabel: { fontSize: 17, fontWeight: '700', fontFamily: 'Inter_700Bold' },
+  donePill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
+  donePillText: { fontSize: 11, fontFamily: 'Inter_600SemiBold', color: '#065F46' },
+  pillRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  pill: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 12,
+    gap: 7,
+    paddingHorizontal: 16,
+    paddingVertical: 13,
+    borderRadius: 14,
     borderWidth: 1.5,
   },
-  chipWide: { flex: 1, justifyContent: 'center' },
-  chipIcon: { fontSize: 16 },
-  chipLabel: { fontSize: 14, fontFamily: 'Inter_500Medium' },
+  pillWide: { flex: 1, justifyContent: 'center' },
+  pillIcon: { fontSize: 18 },
+  pillLabel: { fontSize: 15, fontFamily: 'Inter_600SemiBold' },
   spacer: { height: 12 },
 });

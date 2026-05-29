@@ -54,12 +54,15 @@ export function MoodCategoryCard({ mood, selected, onPress }: MoodCategoryCardPr
       </View>
 
       <Text style={[styles.name, { color: selected ? '#FFFFFF' : colors.foreground }]}>{mood.name}</Text>
-      <Text style={[styles.desc, { color: selected ? 'rgba(255,255,255,0.8)' : colors.mutedForeground }]} numberOfLines={2}>
+      <Text
+        style={[styles.desc, { color: selected ? 'rgba(255,255,255,0.8)' : colors.mutedForeground }]}
+        numberOfLines={1}
+      >
         {mood.description}
       </Text>
 
       <View style={styles.keywords}>
-        {mood.keywords.slice(0, 4).map((kw) => (
+        {mood.keywords.slice(0, 3).map((kw) => (
           <View key={kw} style={[styles.kwBadge, { backgroundColor: selected ? 'rgba(255,255,255,0.18)' : colors.muted }]}>
             <Text style={[styles.kwText, { color: selected ? '#FFFFFF' : colors.secondaryForeground }]}>{kw}</Text>
           </View>
@@ -67,7 +70,7 @@ export function MoodCategoryCard({ mood, selected, onPress }: MoodCategoryCardPr
       </View>
 
       <Text style={[styles.places, { color: selected ? 'rgba(255,255,255,0.65)' : colors.mutedForeground }]} numberOfLines={1}>
-        {mood.placeNames.slice(0, 3).join(' · ')}
+        예: {mood.placeNames.slice(0, 2).join(', ')}
       </Text>
     </TouchableOpacity>
   );
@@ -78,19 +81,19 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1.5,
     padding: 18,
-    marginBottom: 12,
+    marginBottom: 10,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 3,
   },
-  top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
   iconCircle: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
   checkCircle: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
-  name: { fontSize: 17, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 4 },
-  desc: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19, marginBottom: 12 },
-  keywords: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 },
-  kwBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, marginRight: 5, marginBottom: 4 },
-  kwText: { fontSize: 11, fontWeight: '500', fontFamily: 'Inter_500Medium' },
-  places: { fontSize: 11, fontFamily: 'Inter_400Regular' },
+  name: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 3 },
+  desc: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19, marginBottom: 10 },
+  keywords: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginBottom: 8 },
+  kwBadge: { paddingHorizontal: 9, paddingVertical: 4, borderRadius: 6 },
+  kwText: { fontSize: 12, fontWeight: '500', fontFamily: 'Inter_500Medium' },
+  places: { fontSize: 12, fontFamily: 'Inter_400Regular' },
 });

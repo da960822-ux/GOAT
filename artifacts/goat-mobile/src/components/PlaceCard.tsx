@@ -1,11 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { RecommendationCard } from '@/src/types/place';
 import { RecommendationRoleBadge } from './RecommendationRoleBadge';
-import { TagBadge } from './TagBadge';
-import { DataEvidenceSection } from './DataEvidenceSection';
-import { MapButtonGroup } from './MapButtonGroup';
+import { openKakaoMap } from '@/src/services/mapLink';
 import { useColors } from '@/hooks/useColors';
 
 interface PlaceCardProps {
@@ -17,62 +15,88 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
   const { place, role, reason } = card;
   const colors = useColors();
 
+  async function handleKakaoMap() {
+    try {
+      await openKakaoMap(place);
+    } catch {
+      Alert.alert(
+        '지도 앱 열기',
+        '카카오맵을 열 수 없어 웹 지도로 연결할게요.',
+        [{ text: '확인' }]
+      );
+    }
+  }
+
+  const accessShort = place.accessibility.length > 20
+    ? place.accessibility.slice(0, 20) + '…'
+    : place.accessibility;
+
+  const timeShort = place.best_time.length > 14
+    ? place.best_time.slice(0, 14) + '…'
+    : place.best_time;
+
   return (
     <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <RecommendationRoleBadge role={role} />
 
-      <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.nameRow}>
+      <View style={styles.nameRow}>
         <View style={styles.nameBlock}>
           <Text style={[styles.placeName, { color: colors.foreground }]}>{place.place_name}</Text>
           <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-            {place.city} · {place.region_group} · {place.place_type}
+            {place.city} · {place.place_type}
           </Text>
         </View>
-        <Feather name="chevron-right" size={18} color={colors.mutedForeground} />
-      </TouchableOpacity>
-
-      <View style={[styles.reasonBox, { backgroundColor: colors.overlay }]}>
-        <Text style={[styles.reasonText, { color: colors.primary }]}>{reason}</Text>
       </View>
 
-      <View style={styles.infoGrid}>
-        <InfoRow icon="sun" label="주요 무드" value={place.primary_mood} colors={colors} />
-        <InfoRow icon="clock" label="방문 시간" value={place.best_time} colors={colors} />
-        <InfoRow icon="calendar" label="베스트 계절" value={place.best_season} colors={colors} />
-        <InfoRow icon="navigation" label="접근성" value={place.accessibility} colors={colors} />
-        {place.photo_point && (
-          <InfoRow icon="camera" label="포토 포인트" value={place.photo_point} colors={colors} multiline />
-        )}
+      <View style={[styles.reasonBox, { backgroundColor: colors.overlay }]}>
+        <Text style={[styles.reasonText, { color: colors.primary }]} numberOfLines={2}>{reason}</Text>
+      </View>
+
+      <View style={styles.infoChips}>
+        <InfoChip icon="clock" label={timeShort} colors={colors} />
+        <InfoChip icon="calendar" label={place.best_season} colors={colors} />
+        <InfoChip icon="navigation" label={accessShort} colors={colors} />
       </View>
 
       <View style={styles.tags}>
-        {place.mood_tags.slice(0, 5).map((tag) => (
-          <TagBadge key={tag} label={`#${tag}`} />
+        {place.mood_tags.slice(0, 3).map((tag) => (
+          <View key={tag} style={[styles.tag, { backgroundColor: colors.muted }]}>
+            <Text style={[styles.tagText, { color: colors.secondaryForeground }]}>#{tag}</Text>
+          </View>
         ))}
       </View>
 
-      <DataEvidenceSection place={place} compact />
-
-      {place.note ? (
+      {!!place.note && (
         <View style={[styles.cautionRow, { backgroundColor: '#FFFBEB', borderColor: '#FDE68A' }]}>
-          <Feather name="alert-triangle" size={13} color="#D97706" style={{ marginTop: 1 }} />
-          <Text style={[styles.cautionText, { color: '#92400E' }]}>{place.note}</Text>
+          <Feather name="alert-triangle" size={12} color="#D97706" style={{ marginTop: 1 }} />
+          <Text style={styles.cautionText} numberOfLines={2}>{place.note}</Text>
         </View>
-      ) : null}
+      )}
 
-      <MapButtonGroup place={place} />
+      <View style={styles.actions}>
+        <TouchableOpacity
+          style={styles.kakaoBtn}
+          onPress={handleKakaoMap}
+          activeOpacity={0.82}
+        >
+          <Feather name="navigation" size={13} color="#3A1D00" />
+          <Text style={styles.kakaoBtnText}>카카오맵에서 보기</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.detailLink} onPress={onPress} activeOpacity={0.7}>
+          <Text style={[styles.detailLinkText, { color: colors.primary }]}>자세히 보기</Text>
+          <Feather name="chevron-right" size={13} color={colors.primary} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
-function InfoRow({ icon, label, value, colors, multiline }: { icon: string; label: string; value: string; colors: any; multiline?: boolean }) {
+function InfoChip({ icon, label, colors }: { icon: string; label: string; colors: any }) {
   return (
-    <View style={styles.infoRow}>
-      <Feather name={icon as any} size={13} color={colors.primary} style={styles.infoIcon} />
-      <Text style={[styles.infoLabel, { color: colors.mutedForeground }]}>{label}</Text>
-      <Text style={[styles.infoValue, { color: colors.foreground }, multiline && styles.multiline]} numberOfLines={multiline ? 3 : 1}>
-        {value}
-      </Text>
+    <View style={[styles.chip, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
+      <Feather name={icon as any} size={11} color={colors.primary} />
+      <Text style={[styles.chipText, { color: colors.foreground }]}>{label}</Text>
     </View>
   );
 }
@@ -93,23 +117,55 @@ const styles = StyleSheet.create({
   nameBlock: { flex: 1 },
   placeName: { fontSize: 20, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 3 },
   meta: { fontSize: 13, fontFamily: 'Inter_400Regular' },
-  reasonBox: { borderRadius: 10, padding: 12, marginBottom: 14 },
-  reasonText: { fontSize: 14, fontFamily: 'Inter_500Medium', lineHeight: 20 },
-  infoGrid: { gap: 8, marginBottom: 12 },
-  infoRow: { flexDirection: 'row', alignItems: 'flex-start' },
-  infoIcon: { marginTop: 2, marginRight: 6, width: 16 },
-  infoLabel: { fontSize: 12, fontFamily: 'Inter_500Medium', width: 76, marginRight: 4 },
-  infoValue: { flex: 1, fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 18 },
-  multiline: { lineHeight: 19 },
-  tags: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 10 },
+  reasonBox: { borderRadius: 10, padding: 12, marginBottom: 12 },
+  reasonText: { fontSize: 13, fontFamily: 'Inter_500Medium', lineHeight: 19 },
+  infoChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 10 },
+  chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  chipText: { fontSize: 12, fontFamily: 'Inter_500Medium' },
+  tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginBottom: 10 },
+  tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
+  tagText: { fontSize: 11, fontFamily: 'Inter_400Regular' },
   cautionRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 7,
     borderWidth: 1,
     borderRadius: 10,
-    padding: 10,
-    marginBottom: 14,
+    padding: 9,
+    marginBottom: 12,
   },
-  cautionText: { flex: 1, fontSize: 12, fontFamily: 'Inter_400Regular', lineHeight: 18 },
+  cautionText: { flex: 1, fontSize: 11, fontFamily: 'Inter_400Regular', lineHeight: 17, color: '#92400E' },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 2,
+  },
+  kakaoBtn: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    backgroundColor: '#F7E600',
+    paddingVertical: 12,
+    borderRadius: 12,
+  },
+  kakaoBtnText: { fontSize: 13, fontWeight: '700', fontFamily: 'Inter_700Bold', color: '#3A1D00' },
+  detailLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+  },
+  detailLinkText: { fontSize: 13, fontFamily: 'Inter_600SemiBold' },
 });

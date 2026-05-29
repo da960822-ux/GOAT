@@ -31,6 +31,9 @@ export default function LandingScreen() {
             </View>
             <Text style={styles.logoSubtitle}>강원도 감성 여행</Text>
           </View>
+          <Text style={styles.heroTagline}>
+            해외여행 감성,{'\n'}강원에서 찾기
+          </Text>
         </View>
       </ImageBackground>
 
@@ -41,24 +44,11 @@ export default function LandingScreen() {
         bounces={false}
       >
         <Text style={[styles.headline, { color: colors.foreground }]}>
-          해외여행 감성,{'\n'}강원에서 30초 만에 찾기
+          보고 싶은 분위기만 골라주세요
         </Text>
         <Text style={[styles.subcopy, { color: colors.mutedForeground }]}>
-          원하는 장면을 고르면 GOAT가{'\n'}강원도 안의 비슷한 분위기 장소 3곳을 추천해드려요.
+          장소명을 몰라도 괜찮아요. 보고 싶은 분위기만 고르면 GOAT가 3곳으로 압축해드려요.
         </Text>
-
-        <View style={styles.features}>
-          {[
-            { icon: '✦', text: '30초 안에 결정' },
-            { icon: '◎', text: '9가지 해외 감성' },
-            { icon: '◈', text: '검증된 강원도 명소' },
-          ].map((f) => (
-            <View key={f.text} style={[styles.featureChip, { backgroundColor: colors.secondary }]}>
-              <Text style={[styles.featureIcon, { color: colors.primary }]}>{f.icon}</Text>
-              <Text style={[styles.featureText, { color: colors.secondaryForeground }]}>{f.text}</Text>
-            </View>
-          ))}
-        </View>
 
         <TouchableOpacity
           style={[styles.cta, { backgroundColor: colors.primary }]}
@@ -66,7 +56,8 @@ export default function LandingScreen() {
           activeOpacity={0.88}
           testID="landing-cta"
         >
-          <Text style={[styles.ctaText, { color: colors.primaryForeground }]}>내 감성으로 장소 찾기</Text>
+          <Feather name="compass" size={18} color="#FFFFFF" />
+          <Text style={[styles.ctaText, { color: colors.primaryForeground }]}>감성으로 장소 찾기</Text>
           <Text style={styles.ctaArrow}>→</Text>
         </TouchableOpacity>
 
@@ -106,9 +97,9 @@ export default function LandingScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#FFFFFF' },
-  hero: { height: 280 },
-  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(60, 20, 120, 0.55)' },
-  heroContent: { padding: 24 },
+  hero: { height: 300 },
+  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(50, 10, 110, 0.60)' },
+  heroContent: { padding: 24, flex: 1, justifyContent: 'space-between', paddingBottom: 28 },
   logoRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   logoBadge: {
     backgroundColor: '#84CC16',
@@ -118,40 +109,36 @@ const styles = StyleSheet.create({
   },
   logoText: { fontSize: 22, fontWeight: '900', color: '#1A2E05', fontFamily: 'Inter_700Bold', letterSpacing: 1.5 },
   logoSubtitle: { fontSize: 15, color: 'rgba(255,255,255,0.9)', fontFamily: 'Inter_500Medium' },
+  heroTagline: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    fontFamily: 'Inter_700Bold',
+    lineHeight: 38,
+  },
   bottomScroll: { flex: 1 },
   bottom: {
     paddingHorizontal: 24,
-    paddingTop: 24,
+    paddingTop: 28,
   },
   headline: {
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: '800',
     fontFamily: 'Inter_700Bold',
-    lineHeight: 36,
-    marginBottom: 10,
+    lineHeight: 30,
+    marginBottom: 8,
   },
   subcopy: {
     fontSize: 14,
     fontFamily: 'Inter_400Regular',
-    lineHeight: 21,
-    marginBottom: 20,
+    lineHeight: 22,
+    marginBottom: 24,
   },
-  features: { flexDirection: 'row', gap: 8, marginBottom: 22, flexWrap: 'wrap' },
-  featureChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-    borderRadius: 20,
-  },
-  featureIcon: { fontSize: 13, fontWeight: '700' },
-  featureText: { fontSize: 12, fontFamily: 'Inter_500Medium' },
   cta: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 17,
+    paddingVertical: 18,
     borderRadius: 16,
     marginBottom: 10,
     gap: 8,
@@ -162,10 +149,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 13,
+    paddingVertical: 14,
     borderRadius: 14,
     borderWidth: 1,
-    marginBottom: 16,
+    marginBottom: 20,
     gap: 8,
   },
   ctaSecondaryText: { fontSize: 15, fontFamily: 'Inter_600SemiBold' },
