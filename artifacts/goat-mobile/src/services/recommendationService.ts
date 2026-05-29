@@ -7,7 +7,7 @@
  * Do NOT confuse this file with the original 58-place seed (not included in this app).
  */
 import { Place, MoodCategory, RecommendationCard, RecommendationRole } from '../types/place';
-import { TravelPreferences } from '../types/preferences';
+import { TravelPreferences, TravelOrigin } from '../types/preferences';
 import places from '../data/goat_places_clean_db_ready.json';
 import { moodCategories } from '../data/moodCategories';
 
@@ -28,6 +28,55 @@ function isLodging(place: Place): boolean {
 
 function hasRiskNote(place: Place): boolean {
   return RISK_KEYWORDS.some((k) => place.note.includes(k));
+}
+
+/** Haversine formula — returns distance in km */
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+/**
+ * Soft distance boost — closer places earn a small bonus.
+ * Max +1.5 pts, so it never overrides mood matching (max ~10 pts).
+ */
+function distanceBoostScore(place: Place, origin: TravelOrigin): number {
+  if (
+    origin.type === 'skip' ||
+    origin.latitude == null ||
+    origin.longitude == null ||
+    place.lat == null ||
+    place.lng == null
+  ) {
+    return 0;
+  }
+  const km = haversineKm(origin.latitude, origin.longitude, place.lat, place.lng);
+  if (km <= 30)  return 1.5;
+  if (km <= 80)  return 1.0;
+  if (km <= 150) return 0.5;
+  return 0;
+}
+
+/** Returns distance in km if both origin and place have coordinates, else undefined */
+function calcDistanceKm(place: Place, origin?: TravelOrigin): number | undefined {
+  if (
+    !origin ||
+    origin.type === 'skip' ||
+    origin.latitude == null ||
+    origin.longitude == null ||
+    place.lat == null ||
+    place.lng == null
+  ) {
+    return undefined;
+  }
+  return Math.round(haversineKm(origin.latitude, origin.longitude, place.lat, place.lng));
 }
 
 function scoreMood(place: Place, mood: MoodCategory): number {
@@ -106,11 +155,6 @@ function scorePreferences(place: Place, prefs: TravelPreferences): number {
 
 /**
  * safetyScore — used for Card 3 ("안전한 대안") ranking.
- * Accessibility is parsed by exact transport mode tokens:
- *   '자차 상' / '자차 중' / '자차 하'
- *   '대중 상' / '대중 중' / '대중 하'
- * When prefs are provided, only the matching transport mode is scored.
- * When prefs are absent, either mode at '상'/'중' counts.
  */
 function safetyScore(place: Place, prefs?: TravelPreferences): number {
   let score = 0;
@@ -204,12 +248,18 @@ function generateReason(
 export function getRecommendations(
   moodId: string,
   prefs?: TravelPreferences,
-  excludeIds?: string[]
+  excludeIds?: string[],
+  origin?: TravelOrigin
 ): RecommendationCard[] {
   const mood = moodCategories.find((m) => m.id === moodId);
   if (!mood) return [];
 
   const excluded = new Set(excludeIds ?? []);
+  const hasOriginCoords =
+    origin &&
+    origin.type !== 'skip' &&
+    origin.latitude != null &&
+    origin.longitude != null;
 
   const eligible: Place[] = (places as Place[]).filter(
     (p) => p.data_status === 'confirmed' && !isLodging(p) && !excluded.has(p.place_id)
@@ -220,34 +270,39 @@ export function getRecommendations(
     moodScore: scoreMood(p, mood),
     prefScore: prefs ? scorePreferences(p, prefs) : 0,
     safetyVal: safetyScore(p, prefs),
+    distBoost: hasOriginCoords ? distanceBoostScore(p, origin!) : 0,
   }));
 
   const usedIds = new Set<string>();
 
-  // Card 1 — highest mood score
-  const sorted1 = [...withScores].sort((a, b) => b.moodScore - a.moodScore);
+  // Card 1 — highest mood score (+ soft distance nudge)
+  const sorted1 = [...withScores].sort((a, b) => {
+    const sA = a.moodScore + a.distBoost * 0.3;
+    const sB = b.moodScore + b.distBoost * 0.3;
+    return sB - sA;
+  });
   const card1 = sorted1[0];
   if (card1) usedIds.add(card1.place.place_id);
 
-  // Card 2 — highest combined pref+mood from remaining
+  // Card 2 — highest combined pref+mood from remaining (+ soft distance nudge)
   const pool2 = withScores.filter((s) => !usedIds.has(s.place.place_id));
   if (prefs) {
     pool2.sort((a, b) => {
-      const sA = a.moodScore * 0.6 + a.prefScore * 1.4;
-      const sB = b.moodScore * 0.6 + b.prefScore * 1.4;
+      const sA = a.moodScore * 0.6 + a.prefScore * 1.4 + a.distBoost * 0.3;
+      const sB = b.moodScore * 0.6 + b.prefScore * 1.4 + b.distBoost * 0.3;
       return sB - sA;
     });
   } else {
-    pool2.sort((a, b) => b.moodScore - a.moodScore);
+    pool2.sort((a, b) => b.moodScore + b.distBoost * 0.3 - (a.moodScore + a.distBoost * 0.3));
   }
   const card2 = pool2[0];
   if (card2) usedIds.add(card2.place.place_id);
 
-  // Card 3 — highest safety score from remaining
+  // Card 3 — highest safety score from remaining (+ soft distance nudge)
   const pool3 = withScores.filter((s) => !usedIds.has(s.place.place_id));
   pool3.sort((a, b) => {
-    const sA = a.moodScore * 0.5 + a.safetyVal * 1.5;
-    const sB = b.moodScore * 0.5 + b.safetyVal * 1.5;
+    const sA = a.moodScore * 0.5 + a.safetyVal * 1.5 + a.distBoost * 0.3;
+    const sB = b.moodScore * 0.5 + b.safetyVal * 1.5 + b.distBoost * 0.3;
     return sB - sA;
   });
   const card3 = pool3[0];
@@ -272,6 +327,7 @@ export function getRecommendations(
       role: '장면 최적',
       score: slots[0].moodScore,
       reason: generateReason(slots[0].place, mood, '장면 최적', prefs),
+      distanceKm: calcDistanceKm(slots[0].place, origin),
     });
   }
   if (slots[1]) {
@@ -280,6 +336,7 @@ export function getRecommendations(
       role: role2,
       score: slots[1].moodScore + slots[1].prefScore,
       reason: generateReason(slots[1].place, mood, role2, prefs),
+      distanceKm: calcDistanceKm(slots[1].place, origin),
     });
   }
   if (slots[2]) {
@@ -288,6 +345,7 @@ export function getRecommendations(
       role: role3,
       score: slots[2].moodScore + slots[2].safetyVal,
       reason: generateReason(slots[2].place, mood, role3, prefs),
+      distanceKm: calcDistanceKm(slots[2].place, origin),
     });
   }
 

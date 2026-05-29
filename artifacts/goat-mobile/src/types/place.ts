@@ -47,4 +47,5 @@ export interface RecommendationCard {
   role: RecommendationRole;
   score: number;
   reason: string;
+  distanceKm?: number;
 }

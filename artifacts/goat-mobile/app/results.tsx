@@ -16,7 +16,7 @@ import { RecommendationCard } from '@/src/types/place';
 export default function ResultsScreen() {
   const router = useRouter();
   const colors = useColors();
-  const { selectedMood, travelPreferences, recommendations, setRecommendations } = useApp();
+  const { selectedMood, travelPreferences, recommendations, setRecommendations, origin } = useApp();
 
   if (!selectedMood || recommendations.length === 0) {
     return (
@@ -60,11 +60,21 @@ export default function ResultsScreen() {
   function handleReRecommend() {
     if (!selectedMood) return;
     const currentIds = recommendations.map((c) => c.place.place_id);
-    const newCards = getRecommendations(selectedMood.id, travelPreferences ?? undefined, currentIds);
+    const newCards = getRecommendations(
+      selectedMood.id,
+      travelPreferences ?? undefined,
+      currentIds,
+      origin ?? undefined
+    );
     if (newCards.length >= 3) {
       setRecommendations(newCards);
     } else {
-      const fallback = getRecommendations(selectedMood.id, travelPreferences ?? undefined);
+      const fallback = getRecommendations(
+        selectedMood.id,
+        travelPreferences ?? undefined,
+        undefined,
+        origin ?? undefined
+      );
       setRecommendations(fallback);
     }
   }
@@ -76,6 +86,14 @@ export default function ResultsScreen() {
     travelPreferences?.visitTime ?? null,
     travelPreferences?.purpose,
   ].filter(Boolean) as string[];
+
+  const showLocationChip = origin?.type === 'current' || origin?.type === 'region';
+  const locationChipLabel =
+    origin?.type === 'current'
+      ? '현재 위치 기준'
+      : origin?.regionName
+      ? `${origin.regionName} 기준`
+      : null;
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
@@ -103,6 +121,14 @@ export default function ResultsScreen() {
           <Text style={[styles.conditionText, { color: colors.foreground }]} numberOfLines={2}>
             {conditionParts.join(' · ')}
           </Text>
+          {showLocationChip && locationChipLabel && (
+            <View style={styles.locationChipRow}>
+              <View style={[styles.locationChip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
+                <Feather name="navigation" size={11} color="#5B21B6" />
+                <Text style={styles.locationChipText}>{locationChipLabel}</Text>
+              </View>
+            </View>
+          )}
         </View>
 
         <View style={styles.sectionHeader}>
@@ -180,6 +206,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Inter_600SemiBold',
     lineHeight: 20,
+  },
+  locationChipRow: { flexDirection: 'row', marginTop: 6 },
+  locationChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 9,
+    paddingVertical: 4,
+    borderRadius: 7,
+    borderWidth: 1,
+  },
+  locationChipText: {
+    fontSize: 11,
+    fontFamily: 'Inter_600SemiBold',
+    color: '#5B21B6',
   },
 
   sectionHeader: { marginBottom: 16 },

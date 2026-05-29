@@ -13,7 +13,7 @@ interface PlaceCardProps {
 }
 
 export function PlaceCard({ card, onPress }: PlaceCardProps) {
-  const { place, role, reason } = card;
+  const { place, role, reason, distanceKm } = card;
   const colors = useColors();
   const region = getRegionPalette(place.region_group);
 
@@ -34,14 +34,20 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
       styles.card,
       { backgroundColor: '#FAFAF9', borderColor: colors.border },
     ]}>
-      {/* Top: role badge + region */}
+      {/* Top: role badge + region + optional distance */}
       <View style={styles.topRow}>
         <RecommendationRoleBadge role={role} />
-        <View style={[styles.regionBadge, { backgroundColor: region.bg, borderColor: region.border }]}>
-          <View style={[styles.regionDot, { backgroundColor: region.accent }]} />
-          <Text style={[styles.regionLabel, { color: region.accent }]}>
-            {place.city}
-          </Text>
+        <View style={styles.topRight}>
+          {distanceKm != null && (
+            <View style={[styles.distChip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
+              <Feather name="navigation" size={10} color="#5B21B6" />
+              <Text style={styles.distChipText}>약 {distanceKm}km</Text>
+            </View>
+          )}
+          <View style={[styles.regionBadge, { backgroundColor: region.bg, borderColor: region.border }]}>
+            <View style={[styles.regionDot, { backgroundColor: region.accent }]} />
+            <Text style={[styles.regionLabel, { color: region.accent }]}>{place.city}</Text>
+          </View>
         </View>
       </View>
 
@@ -129,6 +135,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 14,
   },
+  topRight: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  distChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 6,
+    borderWidth: 1,
+  },
+  distChipText: { fontSize: 11, fontFamily: 'Inter_600SemiBold', color: '#5B21B6' },
   regionBadge: {
     flexDirection: 'row',
     alignItems: 'center',
