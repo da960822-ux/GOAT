@@ -30,6 +30,20 @@ export default function ResultsScreen() {
     );
   }
 
+  if (recommendations.length < 3) {
+    return (
+      <View style={[styles.root, { backgroundColor: colors.background }]}>
+        <Header title="추천 결과" onBack={() => router.back()} />
+        <EmptyState
+          title="추천 장소를 찾지 못했습니다"
+          description="선택한 감성에 맞는 장소가 부족합니다.\n다른 감성으로 다시 시도해주세요."
+          actionLabel="감성 다시 선택하기"
+          onAction={() => router.replace('/mood-selection')}
+        />
+      </View>
+    );
+  }
+
   function handleCardPress(card: RecommendationCard) {
     router.push({
       pathname: '/detail/[id]',

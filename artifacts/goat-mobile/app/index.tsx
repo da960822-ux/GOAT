@@ -1,10 +1,11 @@
 import React from 'react';
 import {
   View, Text, StyleSheet, ImageBackground, TouchableOpacity,
-  Platform, StatusBar
+  Platform, StatusBar, ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 import { useColors } from '@/hooks/useColors';
 
 export default function LandingScreen() {
@@ -33,7 +34,12 @@ export default function LandingScreen() {
         </View>
       </ImageBackground>
 
-      <View style={[styles.bottom, { paddingBottom: bottomPad + 24 }]}>
+      <ScrollView
+        style={styles.bottomScroll}
+        contentContainerStyle={[styles.bottom, { paddingBottom: bottomPad + 24 }]}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
         <Text style={[styles.headline, { color: colors.foreground }]}>
           해외여행 감성,{'\n'}강원에서 30초 만에 찾기
         </Text>
@@ -64,6 +70,18 @@ export default function LandingScreen() {
           <Text style={styles.ctaArrow}>→</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={[styles.ctaSecondary, { borderColor: colors.border, backgroundColor: colors.secondary }]}
+          onPress={() => router.push('/photo-mood')}
+          activeOpacity={0.8}
+        >
+          <Feather name="camera" size={16} color={colors.primary} />
+          <Text style={[styles.ctaSecondaryText, { color: colors.primary }]}>사진으로 감성 찾기</Text>
+          <View style={[styles.betaPill, { backgroundColor: colors.muted }]}>
+            <Text style={[styles.betaPillText, { color: colors.mutedForeground }]}>BETA</Text>
+          </View>
+        </TouchableOpacity>
+
         <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
           강원 감성 명소 43곳 · 로그인 없이 바로 시작
         </Text>
@@ -74,20 +92,21 @@ export default function LandingScreen() {
             { label: '이용 안내', path: '/guide' },
             { label: '데이터 출처', path: '/data-source' },
             { label: '개인정보처리방침', path: '/privacy' },
+            { label: '문의하기', path: '/contact' },
           ].map((item) => (
             <TouchableOpacity key={item.path} onPress={() => router.push(item.path as any)}>
               <Text style={[styles.footerLink, { color: colors.mutedForeground }]}>{item.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#FFFFFF' },
-  hero: { height: 320 },
+  hero: { height: 280 },
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(60, 20, 120, 0.55)' },
   heroContent: { padding: 24 },
   logoRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
@@ -99,25 +118,25 @@ const styles = StyleSheet.create({
   },
   logoText: { fontSize: 22, fontWeight: '900', color: '#1A2E05', fontFamily: 'Inter_700Bold', letterSpacing: 1.5 },
   logoSubtitle: { fontSize: 15, color: 'rgba(255,255,255,0.9)', fontFamily: 'Inter_500Medium' },
+  bottomScroll: { flex: 1 },
   bottom: {
-    flex: 1,
     paddingHorizontal: 24,
-    paddingTop: 28,
+    paddingTop: 24,
   },
   headline: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: '800',
     fontFamily: 'Inter_700Bold',
-    lineHeight: 38,
-    marginBottom: 12,
+    lineHeight: 36,
+    marginBottom: 10,
   },
   subcopy: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'Inter_400Regular',
-    lineHeight: 22,
-    marginBottom: 24,
+    lineHeight: 21,
+    marginBottom: 20,
   },
-  features: { flexDirection: 'row', gap: 8, marginBottom: 28, flexWrap: 'wrap' },
+  features: { flexDirection: 'row', gap: 8, marginBottom: 22, flexWrap: 'wrap' },
   featureChip: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -132,14 +151,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 18,
+    paddingVertical: 17,
     borderRadius: 16,
-    marginBottom: 16,
+    marginBottom: 10,
     gap: 8,
   },
   ctaText: { fontSize: 17, fontWeight: '700', fontFamily: 'Inter_700Bold' },
   ctaArrow: { fontSize: 18, color: '#FFFFFF' },
-  disclaimer: { fontSize: 12, fontFamily: 'Inter_400Regular', textAlign: 'center', marginBottom: 20 },
-  footerLinks: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4 },
+  ctaSecondary: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 13,
+    borderRadius: 14,
+    borderWidth: 1,
+    marginBottom: 16,
+    gap: 8,
+  },
+  ctaSecondaryText: { fontSize: 15, fontFamily: 'Inter_600SemiBold' },
+  betaPill: { paddingHorizontal: 7, paddingVertical: 2, borderRadius: 5 },
+  betaPillText: { fontSize: 10, fontFamily: 'Inter_600SemiBold' },
+  disclaimer: { fontSize: 12, fontFamily: 'Inter_400Regular', textAlign: 'center', marginBottom: 16 },
+  footerLinks: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4, marginBottom: 8 },
   footerLink: { fontSize: 11, fontFamily: 'Inter_400Regular', paddingHorizontal: 6, paddingVertical: 2, textDecorationLine: 'underline' },
 });

@@ -1,3 +1,11 @@
+/**
+ * DATASET NOTE
+ * This service uses goat_places_clean_db_ready.json — the "first recommendation pool".
+ * It contains 43 curated, confirmed Gangwon-do places selected from the original
+ * 58-place seed pool. All 43 records have data_status === 'confirmed'.
+ * Lodging (1 place: 레고랜드) is excluded at query time, leaving 42 eligible places.
+ * Do NOT confuse this file with the original 58-place seed (not included in this app).
+ */
 import { Place, MoodCategory, RecommendationCard, RecommendationRole } from '../types/place';
 import { TravelPreferences } from '../types/preferences';
 import places from '../data/goat_places_clean_db_ready.json';
@@ -54,10 +62,10 @@ function scorePreferences(place: Place, prefs: TravelPreferences): number {
 
   if (prefs.transport === '자차') {
     if (place.accessibility.includes('자차 상')) score += 2;
-    else if (place.accessibility.includes('자차')) score += 1;
+    else if (place.accessibility.includes('자차 중')) score += 1;
   } else {
     if (place.accessibility.includes('대중 상')) score += 2;
-    else if (place.accessibility.includes('대중')) score += 1;
+    else if (place.accessibility.includes('대중 중')) score += 1;
   }
 
   const purposeKeywords: Record<string, string[]> = {
@@ -94,13 +102,34 @@ function scorePreferences(place: Place, prefs: TravelPreferences): number {
   return score;
 }
 
-function safetyScore(place: Place): number {
+/**
+ * safetyScore — used for Card 3 ("안전한 대안") ranking.
+ * Accessibility is parsed by exact transport mode tokens:
+ *   '자차 상' / '자차 중' / '자차 하'
+ *   '대중 상' / '대중 중' / '대중 하'
+ * When prefs are provided, only the matching transport mode is scored.
+ * When prefs are absent, either mode at '상'/'중' counts.
+ */
+function safetyScore(place: Place, prefs?: TravelPreferences): number {
   let score = 0;
   const season = getCurrentSeason();
 
-  if (place.accessibility.includes('상')) score += 2;
+  if (prefs) {
+    if (prefs.transport === '자차') {
+      if (place.accessibility.includes('자차 상')) score += 2;
+      else if (place.accessibility.includes('자차 중')) score += 1;
+    } else {
+      if (place.accessibility.includes('대중 상')) score += 2;
+      else if (place.accessibility.includes('대중 중')) score += 1;
+    }
+  } else {
+    if (place.accessibility.includes('자차 상') || place.accessibility.includes('대중 상')) score += 2;
+    else if (place.accessibility.includes('자차 중') || place.accessibility.includes('대중 중')) score += 1;
+  }
+
   if (place.best_season === '사계절') score += 2;
   else if (place.best_season.includes(season)) score += 1;
+
   if (hasRiskNote(place)) score -= 3;
 
   return score;
@@ -154,60 +183,76 @@ export function getRecommendations(
     place: p,
     moodScore: scoreMood(p, mood),
     prefScore: prefs ? scorePreferences(p, prefs) : 0,
-    safety: safetyScore(p),
+    safetyVal: safetyScore(p, prefs),
   }));
 
-  withScores.sort((a, b) => b.moodScore - a.moodScore);
-  const card1Place = withScores[0];
+  const usedIds = new Set<string>();
 
-  const remaining1 = withScores.filter((s) => s.place.place_id !== card1Place?.place.place_id);
+  // Card 1 — highest mood score
+  const sorted1 = [...withScores].sort((a, b) => b.moodScore - a.moodScore);
+  const card1 = sorted1[0];
+  if (card1) usedIds.add(card1.place.place_id);
 
+  // Card 2 — highest combined pref+mood from remaining
+  const pool2 = withScores.filter((s) => !usedIds.has(s.place.place_id));
   if (prefs) {
-    remaining1.sort((a, b) => {
-      const scoreA = a.moodScore * 0.6 + a.prefScore * 1.4;
-      const scoreB = b.moodScore * 0.6 + b.prefScore * 1.4;
-      return scoreB - scoreA;
+    pool2.sort((a, b) => {
+      const sA = a.moodScore * 0.6 + a.prefScore * 1.4;
+      const sB = b.moodScore * 0.6 + b.prefScore * 1.4;
+      return sB - sA;
     });
   } else {
-    remaining1.sort((a, b) => b.moodScore - a.moodScore);
+    pool2.sort((a, b) => b.moodScore - a.moodScore);
   }
-  const card2Place = remaining1[0];
+  const card2 = pool2[0];
+  if (card2) usedIds.add(card2.place.place_id);
 
-  const remaining2 = remaining1.filter((s) => s.place.place_id !== card2Place?.place.place_id);
-  remaining2.sort((a, b) => {
-    const scoreA = a.moodScore * 0.5 + a.safety * 1.5;
-    const scoreB = b.moodScore * 0.5 + b.safety * 1.5;
-    return scoreB - scoreA;
+  // Card 3 — highest safety score from remaining
+  const pool3 = withScores.filter((s) => !usedIds.has(s.place.place_id));
+  pool3.sort((a, b) => {
+    const sA = a.moodScore * 0.5 + a.safetyVal * 1.5;
+    const sB = b.moodScore * 0.5 + b.safetyVal * 1.5;
+    return sB - sA;
   });
-  const card3Place = remaining2[0];
+  const card3 = pool3[0];
+  if (card3) usedIds.add(card3.place.place_id);
+
+  // Fallback: fill any empty slots from remaining eligible places
+  // (guards against degenerate scoring edge cases)
+  const slots = [card1, card2, card3];
+  const fallback = withScores.filter((s) => !usedIds.has(s.place.place_id));
+  for (let i = 0; i < slots.length; i++) {
+    if (!slots[i] && fallback.length > 0) {
+      slots[i] = fallback.shift()!;
+    }
+  }
 
   const role2: RecommendationRole = prefs ? '내 상황 맞춤' : '같은 장면 대안';
   const role3: RecommendationRole = prefs ? '안전한 대안' : '날씨 맞춤';
 
   const cards: RecommendationCard[] = [];
-
-  if (card1Place) {
+  if (slots[0]) {
     cards.push({
-      place: card1Place.place,
+      place: slots[0].place,
       role: '장면 최적',
-      score: card1Place.moodScore,
-      reason: generateReason(card1Place.place, mood, '장면 최적', prefs),
+      score: slots[0].moodScore,
+      reason: generateReason(slots[0].place, mood, '장면 최적', prefs),
     });
   }
-  if (card2Place) {
+  if (slots[1]) {
     cards.push({
-      place: card2Place.place,
+      place: slots[1].place,
       role: role2,
-      score: card2Place.moodScore + card2Place.prefScore,
-      reason: generateReason(card2Place.place, mood, role2, prefs),
+      score: slots[1].moodScore + slots[1].prefScore,
+      reason: generateReason(slots[1].place, mood, role2, prefs),
     });
   }
-  if (card3Place) {
+  if (slots[2]) {
     cards.push({
-      place: card3Place.place,
+      place: slots[2].place,
       role: role3,
-      score: card3Place.moodScore + card3Place.safety,
-      reason: generateReason(card3Place.place, mood, role3, prefs),
+      score: slots[2].moodScore + slots[2].safetyVal,
+      reason: generateReason(slots[2].place, mood, role3, prefs),
     });
   }
 
