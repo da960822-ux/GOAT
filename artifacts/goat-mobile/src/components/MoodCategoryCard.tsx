@@ -2,10 +2,11 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { MoodCategory } from '@/src/types/place';
-import { TagBadge } from './TagBadge';
 import { useColors } from '@/hooks/useColors';
 
-const MOOD_ICONS: Record<string, string> = {
+type FeatherIconName = React.ComponentProps<typeof Feather>['name'];
+
+const MOOD_ICONS: Record<string, FeatherIconName> = {
   mediterranean: 'sun',
   alps: 'wind',
   nordic: 'feather',
@@ -25,7 +26,7 @@ interface MoodCategoryCardProps {
 
 export function MoodCategoryCard({ mood, selected, onPress }: MoodCategoryCardProps) {
   const colors = useColors();
-  const iconName = (MOOD_ICONS[mood.id] ?? 'map-pin') as keyof typeof import('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts').Feather;
+  const iconName: FeatherIconName = MOOD_ICONS[mood.id] ?? 'map-pin';
 
   return (
     <TouchableOpacity

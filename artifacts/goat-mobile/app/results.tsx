@@ -111,5 +111,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   retryText: { fontSize: 14, fontFamily: 'Inter_500Medium' },
+  refreshBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center' as const, justifyContent: 'center' as const },
   spacer: { height: 20 },
 });
