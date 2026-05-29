@@ -1,21 +1,25 @@
 /**
- * KTO 국문 관광정보 서비스_GW
+ * KTO 국문 관광정보 서비스_GW (v2)
  * Provides: address, coordinates, overview, parking, usage time, contact
  *
+ * API version: KorService2 (updated from KorService1 per API portal)
+ * JSON format: append &_type=json
+ *
  * Flow:
- *   1. searchKeyword1 → find contentId for the place (filter to Gangwon, areaCode=32)
- *   2. detailCommon1  → overview, coords, contact
- *   3. detailIntro1   → parking, usage time, rest day (by contentTypeId)
+ *   1. searchKeyword2 → find contentId (areaCode=32 Gangwon)
+ *   2. detailCommon2  → overview, coords, contact
+ *   3. detailIntro2   → parking, usage time, rest day (by contentTypeId)
  */
 
-import { ktoFetch, getAuthParams, extractItems, stripHtml } from './ktoApi';
-import { KTOTourInfo } from './ktoTypes';
+import { ktoFetch, getAuthParams, extractItems, stripHtml } from "./ktoApi";
+import { KTOTourInfo } from "./ktoTypes";
 
-const SEARCH_URL = 'https://apis.data.go.kr/B551011/KorService1/searchKeyword1';
-const DETAIL_COMMON_URL = 'https://apis.data.go.kr/B551011/KorService1/detailCommon1';
-const DETAIL_INTRO_URL = 'https://apis.data.go.kr/B551011/KorService1/detailIntro1';
+const KOR_BASE = "https://apis.data.go.kr/B551011/KorService2";
+const SEARCH_URL = `${KOR_BASE}/searchKeyword2`;
+const DETAIL_COMMON_URL = `${KOR_BASE}/detailCommon2`;
+const DETAIL_INTRO_URL = `${KOR_BASE}/detailIntro2`;
 
-const GANGWON_AREA_CODE = '32';
+const GANGWON_AREA_CODE = "32";
 
 const cache = new Map<string, KTOTourInfo | null>();
 
@@ -26,6 +30,7 @@ interface SearchResult {
   mapx: string;
   mapy: string;
   title: string;
+  firstimage?: string;
 }
 
 async function searchPlace(keyword: string): Promise<SearchResult | null> {
@@ -33,23 +38,24 @@ async function searchPlace(keyword: string): Promise<SearchResult | null> {
     ...getAuthParams(),
     keyword,
     areaCode: GANGWON_AREA_CODE,
-    numOfRows: '10',
-    pageNo: '1',
+    numOfRows: "10",
+    pageNo: "1",
   });
   const items = extractItems(json);
   if (!items.length) return null;
 
-  // Prefer item whose title closely matches the search keyword
-  const target = keyword.split(' ').pop() ?? keyword;
+  // Prefer item whose title closely matches the last word of the keyword
+  const target = keyword.split(" ").pop() ?? keyword;
   const matched = items.find((i: any) => i.title?.includes(target)) ?? items[0];
 
   return {
-    contentId: matched.contentid ?? '',
-    contentTypeId: matched.contenttypeid ?? '12',
-    addr1: matched.addr1 ?? '',
-    mapx: matched.mapx ?? '',
-    mapy: matched.mapy ?? '',
-    title: matched.title ?? '',
+    contentId: matched.contentid ?? "",
+    contentTypeId: matched.contenttypeid ?? "12",
+    addr1: matched.addr1 ?? "",
+    mapx: matched.mapx ?? "",
+    mapy: matched.mapy ?? "",
+    title: matched.title ?? "",
+    firstimage: matched.firstimage || undefined,
   };
 }
 
@@ -63,13 +69,13 @@ async function fetchDetailCommon(contentId: string): Promise<{
   const json = await ktoFetch(DETAIL_COMMON_URL, {
     ...getAuthParams(),
     contentId,
-    defaultYN: 'Y',
-    firstImageYN: 'N',
-    areacodeYN: 'N',
-    catcodeYN: 'N',
-    addrinfoYN: 'Y',
-    mapinfoYN: 'Y',
-    overviewYN: 'Y',
+    defaultYN: "Y",
+    firstImageYN: "N",
+    areacodeYN: "N",
+    catcodeYN: "N",
+    addrinfoYN: "Y",
+    mapinfoYN: "Y",
+    overviewYN: "Y",
   });
   const items = extractItems(json);
   const item = items[0];
@@ -83,11 +89,10 @@ async function fetchDetailCommon(contentId: string): Promise<{
   };
 }
 
-async function fetchDetailIntro(contentId: string, contentTypeId: string): Promise<{
-  parking?: string;
-  usageTime?: string;
-  restDate?: string;
-}> {
+async function fetchDetailIntro(
+  contentId: string,
+  contentTypeId: string
+): Promise<{ parking?: string; usageTime?: string; restDate?: string }> {
   const json = await ktoFetch(DETAIL_INTRO_URL, {
     ...getAuthParams(),
     contentId,
@@ -97,7 +102,7 @@ async function fetchDetailIntro(contentId: string, contentTypeId: string): Promi
   const item = items[0];
   if (!item) return {};
 
-  // Field names vary by contentTypeId — try all known variants
+  // Field names vary by contentTypeId — try all known variants across types
   const parking =
     item.parking ??
     item.chkparkingbeach ??
@@ -131,7 +136,7 @@ async function fetchDetailIntro(contentId: string, contentTypeId: string): Promi
 export async function getTourInfo(placeName: string, city: string): Promise<KTOTourInfo> {
   const cacheKey = `${placeName}::${city}`;
   if (cache.has(cacheKey)) {
-    return cache.get(cacheKey) ?? { source: 'local' };
+    return cache.get(cacheKey) ?? { source: "local" };
   }
 
   try {
@@ -140,7 +145,7 @@ export async function getTourInfo(placeName: string, city: string): Promise<KTOT
     if (!found?.contentId) found = await searchPlace(`${city} ${placeName}`);
     if (!found?.contentId) {
       cache.set(cacheKey, null);
-      return { source: 'local' };
+      return { source: "local" };
     }
 
     // 2. Parallel detail fetches
@@ -149,7 +154,6 @@ export async function getTourInfo(placeName: string, city: string): Promise<KTOT
       fetchDetailIntro(found.contentId, found.contentTypeId),
     ]);
 
-    // Prefer detail coords over search coords (more accurate)
     const rawMapx = common.mapx ?? found.mapx;
     const rawMapy = common.mapy ?? found.mapy;
     const longitude = rawMapx ? parseFloat(rawMapx) : undefined;
@@ -162,20 +166,21 @@ export async function getTourInfo(placeName: string, city: string): Promise<KTOT
       address: found.addr1 || undefined,
       latitude: latitude && !isNaN(latitude) ? latitude : undefined,
       longitude: longitude && !isNaN(longitude) ? longitude : undefined,
+      imageUrl: found.firstimage,
       overview: common.overview,
       parking: intro.parking,
       usageTime: intro.usageTime,
       restDate: intro.restDate,
       phone: common.tel,
       homepage: common.homepage,
-      source: 'KTO_TOUR_INFO',
+      source: "KTO_TOUR_INFO",
     };
 
     cache.set(cacheKey, result);
     return result;
   } catch {
     cache.set(cacheKey, null);
-    return { source: 'local' };
+    return { source: "local" };
   }
 }
 

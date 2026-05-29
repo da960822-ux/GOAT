@@ -30,12 +30,17 @@ interface GalleryItem {
   galSearchKeyword?: string;
 }
 
-async function fetchByKeyword(keyword: string): Promise<KTOPhotoResult | null> {
+/**
+ * Fetch a gallery photo by contentId.
+ * NOTE: The PhotoGalleryService1 API rejects free-form Korean `keyword` params
+ * with INVALID_REQUEST_PARAMETER_ERROR — only use contentId or no filter.
+ */
+async function fetchByContentId(contentId: string): Promise<KTOPhotoResult | null> {
   const json = await ktoFetch(BASE_URL, {
     ...getAuthParams(),
     numOfRows: '5',
     pageNo: '1',
-    keyword,
+    contentId,
   });
   const items = extractItems(json) as GalleryItem[];
   if (!items.length) return null;
@@ -58,58 +63,23 @@ async function fetchByKeyword(keyword: string): Promise<KTOPhotoResult | null> {
   };
 }
 
+/** Fetch photo for a contentId — exported for use by usePlacePhoto */
+export async function getPlacePhotoByContentId(contentId: string): Promise<KTOPhotoResult | null> {
+  return fetchByContentId(contentId);
+}
+
 /**
- * Fetch the best available tourism photo for a place.
- * Falls back through photo contest API then returns null imageUrl.
- * Results are cached in memory for the session.
+ * @deprecated Use usePlacePhoto hook instead — it sources photos from
+ * KorService2 firstimage (getTourInfo) and getPlacePhotoByContentId.
+ * Kept for API compatibility; always returns fallback.
  */
 export async function getPlacePhoto(
-  placeName: string,
-  primaryMood: string,
-  moodTags: string[],
-  city?: string
+  _placeName: string,
+  _primaryMood: string,
+  _moodTags: string[],
+  _city?: string
 ): Promise<KTOPhotoResult> {
-  if (photoCache.has(placeName)) {
-    return photoCache.get(placeName) ?? { imageUrl: null, source: 'fallback' };
-  }
-
-  // 1. Exact place name
-  let result = await fetchByKeyword(placeName);
-
-  // 2. City + place name
-  if (!result?.imageUrl && city) {
-    result = await fetchByKeyword(`${city} ${placeName}`);
-  }
-
-  // 3. Primary mood
-  if (!result?.imageUrl) {
-    result = await fetchByKeyword(primaryMood);
-  }
-
-  // 4. First mood tag
-  if (!result?.imageUrl && moodTags.length > 0) {
-    result = await fetchByKeyword(moodTags[0]);
-  }
-
-  // 5. Award photo fallback (lazy import to avoid circular dep)
-  if (!result?.imageUrl) {
-    try {
-      const { getAwardPhoto } = await import('./ktoAwardPhotoApi');
-      const award = await getAwardPhoto(placeName, primaryMood, moodTags);
-      if (award.imageUrl) {
-        result = { ...award, source: 'KTO_AWARD_PHOTO_API' };
-      }
-    } catch {
-      // award photo API not available — continue to fallback
-    }
-  }
-
-  const final: KTOPhotoResult = result?.imageUrl
-    ? result
-    : { imageUrl: null, source: 'fallback' };
-
-  photoCache.set(placeName, final);
-  return final;
+  return { imageUrl: null, source: 'fallback' };
 }
 
 export function clearPhotoCache(): void {

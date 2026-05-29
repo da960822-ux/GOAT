@@ -20,6 +20,8 @@ export interface KTOTourInfo {
   address?: string;
   latitude?: number;
   longitude?: number;
+  /** firstimage URL from searchKeyword2 result — primary photo source */
+  imageUrl?: string;
   overview?: string;
   parking?: string;
   usageTime?: string;
