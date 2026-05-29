@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { Image } from 'expo-image';
 import { Feather } from '@expo/vector-icons';
 import { RecommendationCard } from '@/src/types/place';
 import { RecommendationRoleBadge } from './RecommendationRoleBadge';
 import { openKakaoMap } from '@/src/services/mapLink';
 import { getRegionPalette } from '@/src/utils/regionColors';
 import { useColors } from '@/hooks/useColors';
+import { usePlacePhoto } from '@/src/hooks/usePlacePhoto';
 
 interface PlaceCardProps {
   card: RecommendationCard;
@@ -16,6 +18,11 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
   const { place, role, reason, distanceKm } = card;
   const colors = useColors();
   const region = getRegionPalette(place.region_group);
+  const { photo, loading: photoLoading } = usePlacePhoto(
+    place.place_name,
+    place.primary_mood,
+    place.mood_tags
+  );
 
   async function handleKakaoMap() {
     try {
@@ -29,80 +36,106 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
     ? place.best_time.slice(0, 14) + '…'
     : place.best_time;
 
+  const hasPhoto = !photoLoading && !!photo?.imageUrl;
+
   return (
-    <View style={[
-      styles.card,
-      { backgroundColor: '#FAFAF9', borderColor: colors.border },
-    ]}>
-      {/* Top: role badge + region + optional distance */}
-      <View style={styles.topRow}>
-        <RecommendationRoleBadge role={role} />
-        <View style={styles.topRight}>
-          {distanceKm != null && (
-            <View style={[styles.distChip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
-              <Feather name="navigation" size={10} color="#5B21B6" />
-              <Text style={styles.distChipText}>약 {distanceKm}km</Text>
-            </View>
+    <View style={[styles.card, { backgroundColor: '#FAFAF9', borderColor: colors.border }]}>
+
+      {/* Thumbnail — full-bleed at top */}
+      {(hasPhoto || photoLoading) ? (
+        <View style={[styles.thumbWrap, { backgroundColor: region.bg }]}>
+          {hasPhoto && (
+            <Image
+              source={{ uri: photo!.imageUrl! }}
+              style={styles.thumb}
+              contentFit="cover"
+              transition={300}
+              onError={() => {/* silently fall back */}}
+            />
           )}
-          <View style={[styles.regionBadge, { backgroundColor: region.bg, borderColor: region.border }]}>
-            <View style={[styles.regionDot, { backgroundColor: region.accent }]} />
-            <Text style={[styles.regionLabel, { color: region.accent }]}>{place.city}</Text>
-          </View>
+          {photoLoading && (
+            <View style={[styles.thumbSkeleton, { backgroundColor: region.bg }]} />
+          )}
+          {/* Gradient-like bottom fade */}
+          <View style={styles.thumbFade} />
         </View>
-      </View>
-
-      {/* Reason — emotional headline */}
-      <Text style={[styles.reason, { color: colors.foreground }]} numberOfLines={3}>
-        {reason}
-      </Text>
-
-      {/* Place name + type */}
-      <View style={styles.nameRow}>
-        <Text style={[styles.placeName, { color: colors.foreground }]}>{place.place_name}</Text>
-        <Text style={[styles.meta, { color: colors.mutedForeground }]}>{place.place_type}</Text>
-      </View>
-
-      {/* Mood tags */}
-      <View style={styles.tags}>
-        {place.mood_tags.slice(0, 4).map((tag) => (
-          <View key={tag} style={[styles.tag, { backgroundColor: region.bg, borderColor: region.border }]}>
-            <Text style={[styles.tagText, { color: region.accent }]}>#{tag}</Text>
-          </View>
-        ))}
-      </View>
-
-      {/* Practical info — secondary row */}
-      <View style={styles.infoRow}>
-        <InfoPill icon="clock" label={timeShort} color={colors.mutedForeground} />
-        <InfoPill icon="calendar" label={place.best_season} color={colors.mutedForeground} />
-      </View>
-
-      {/* Caution */}
-      {!!place.note && (
-        <View style={[styles.cautionRow, { backgroundColor: '#FFFBEB', borderColor: '#FDE68A' }]}>
-          <Feather name="alert-triangle" size={11} color="#D97706" style={{ marginTop: 1 }} />
-          <Text style={styles.cautionText} numberOfLines={2}>{place.note}</Text>
-        </View>
+      ) : (
+        /* Fallback: thin colour band */
+        <View style={[styles.thumbFallback, { backgroundColor: region.bg, borderBottomColor: region.border }]} />
       )}
 
-      {/* Divider */}
-      <View style={[styles.divider, { backgroundColor: colors.border }]} />
+      {/* Card body */}
+      <View style={styles.body}>
+        {/* Top: role badge + region + optional distance */}
+        <View style={styles.topRow}>
+          <RecommendationRoleBadge role={role} />
+          <View style={styles.topRight}>
+            {distanceKm != null && (
+              <View style={[styles.distChip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
+                <Feather name="navigation" size={10} color="#5B21B6" />
+                <Text style={styles.distChipText}>약 {distanceKm}km</Text>
+              </View>
+            )}
+            <View style={[styles.regionBadge, { backgroundColor: region.bg, borderColor: region.border }]}>
+              <View style={[styles.regionDot, { backgroundColor: region.accent }]} />
+              <Text style={[styles.regionLabel, { color: region.accent }]}>{place.city}</Text>
+            </View>
+          </View>
+        </View>
 
-      {/* Actions */}
-      <View style={styles.actions}>
-        <TouchableOpacity
-          style={styles.kakaoBtn}
-          onPress={handleKakaoMap}
-          activeOpacity={0.82}
-        >
-          <Feather name="navigation" size={13} color="#3A1D00" />
-          <Text style={styles.kakaoBtnText}>카카오맵</Text>
-        </TouchableOpacity>
+        {/* Reason — emotional headline */}
+        <Text style={[styles.reason, { color: colors.foreground }]} numberOfLines={3}>
+          {reason}
+        </Text>
 
-        <TouchableOpacity style={styles.detailLink} onPress={onPress} activeOpacity={0.7}>
-          <Text style={[styles.detailLinkText, { color: colors.primary }]}>장소 열어보기</Text>
-          <Feather name="arrow-right" size={13} color={colors.primary} />
-        </TouchableOpacity>
+        {/* Place name + type */}
+        <View style={styles.nameRow}>
+          <Text style={[styles.placeName, { color: colors.foreground }]}>{place.place_name}</Text>
+          <Text style={[styles.meta, { color: colors.mutedForeground }]}>{place.place_type}</Text>
+        </View>
+
+        {/* Mood tags */}
+        <View style={styles.tags}>
+          {place.mood_tags.slice(0, 4).map((tag) => (
+            <View key={tag} style={[styles.tag, { backgroundColor: region.bg, borderColor: region.border }]}>
+              <Text style={[styles.tagText, { color: region.accent }]}>#{tag}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Practical info — secondary row */}
+        <View style={styles.infoRow}>
+          <InfoPill icon="clock" label={timeShort} color={colors.mutedForeground} />
+          <InfoPill icon="calendar" label={place.best_season} color={colors.mutedForeground} />
+        </View>
+
+        {/* Caution */}
+        {!!place.note && (
+          <View style={[styles.cautionRow, { backgroundColor: '#FFFBEB', borderColor: '#FDE68A' }]}>
+            <Feather name="alert-triangle" size={11} color="#D97706" style={{ marginTop: 1 }} />
+            <Text style={styles.cautionText} numberOfLines={2}>{place.note}</Text>
+          </View>
+        )}
+
+        {/* Divider */}
+        <View style={[styles.divider, { backgroundColor: colors.border }]} />
+
+        {/* Actions */}
+        <View style={styles.actions}>
+          <TouchableOpacity
+            style={styles.kakaoBtn}
+            onPress={handleKakaoMap}
+            activeOpacity={0.82}
+          >
+            <Feather name="navigation" size={13} color="#3A1D00" />
+            <Text style={styles.kakaoBtnText}>카카오맵</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.detailLink} onPress={onPress} activeOpacity={0.7}>
+            <Text style={[styles.detailLinkText, { color: colors.primary }]}>장소 열어보기</Text>
+            <Feather name="arrow-right" size={13} color={colors.primary} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -117,23 +150,55 @@ function InfoPill({ icon, label, color }: { icon: string; label: string; color: 
   );
 }
 
+const THUMB_HEIGHT = 152;
+
 const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     borderWidth: 1,
-    padding: 20,
     marginBottom: 16,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 12,
     elevation: 2,
   },
+
+  thumbWrap: {
+    width: '100%',
+    height: THUMB_HEIGHT,
+    position: 'relative',
+  },
+  thumb: {
+    width: '100%',
+    height: THUMB_HEIGHT,
+  },
+  thumbSkeleton: {
+    width: '100%',
+    height: THUMB_HEIGHT,
+    opacity: 0.5,
+  },
+  thumbFade: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 40,
+    backgroundColor: 'rgba(250,250,249,0.55)',
+  },
+  thumbFallback: {
+    height: 6,
+    borderBottomWidth: 1,
+  },
+
+  body: { padding: 18 },
+
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 14,
+    marginBottom: 12,
   },
   topRight: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   distChip: {
@@ -162,19 +227,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Inter_400Regular',
     lineHeight: 22,
-    marginBottom: 14,
+    marginBottom: 12,
     color: '#3D3D3D',
   },
 
-  nameRow: { marginBottom: 12 },
-  placeName: { fontSize: 20, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 2 },
+  nameRow: { marginBottom: 10 },
+  placeName: { fontSize: 19, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 2 },
   meta: { fontSize: 12, fontFamily: 'Inter_400Regular' },
 
-  tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginBottom: 12 },
+  tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginBottom: 10 },
   tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, borderWidth: 1 },
   tagText: { fontSize: 11, fontFamily: 'Inter_400Regular' },
 
-  infoRow: { flexDirection: 'row', gap: 12, marginBottom: 12 },
+  infoRow: { flexDirection: 'row', gap: 12, marginBottom: 10 },
   infoPill: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   infoPillText: { fontSize: 12, fontFamily: 'Inter_400Regular' },
 
@@ -185,17 +250,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 9,
     padding: 8,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   cautionText: { flex: 1, fontSize: 11, fontFamily: 'Inter_400Regular', lineHeight: 17, color: '#92400E' },
 
-  divider: { height: 1, marginBottom: 14 },
+  divider: { height: 1, marginBottom: 12 },
 
-  actions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
+  actions: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   kakaoBtn: {
     flexDirection: 'row',
     alignItems: 'center',
