@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   heroContent: { padding: 24, flex: 1, justifyContent: 'space-between', paddingBottom: 28 },
   logoRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   logoBadge: {
-    backgroundColor: '#84CC16',
+    backgroundColor: '#C6E33D',
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 10,
