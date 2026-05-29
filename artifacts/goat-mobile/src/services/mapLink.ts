@@ -37,10 +37,25 @@ export function createKakaoMapWebLink(place: Place): string {
 }
 
 export async function openKakaoMap(place: Place): Promise<void> {
-  const appUrl = createKakaoMapLink(place);
-  const webUrl = createKakaoMapWebLink(place);
-  const canOpen = await Linking.canOpenURL(appUrl);
-  await Linking.openURL(canOpen ? appUrl : webUrl);
+  const query = encodeURIComponent(`${place.city} ${place.place_name}`);
+  const appUrl = `kakaomap://search?q=${query}`;
+  const webUrl = `https://map.kakao.com/?q=${query}`;
+
+  try {
+    const canOpen = await Linking.canOpenURL(appUrl);
+    if (canOpen) {
+      await Linking.openURL(appUrl);
+    } else {
+      await Linking.openURL(webUrl);
+    }
+  } catch {
+    try {
+      await Linking.openURL(webUrl);
+    } catch {
+      const { Alert } = await import('react-native');
+      Alert.alert('카카오맵을 열 수 없어요. 잠시 후 다시 시도해주세요.');
+    }
+  }
 }
 
 // ─── Naver Map ─────────────────────────────────────────────────────────────

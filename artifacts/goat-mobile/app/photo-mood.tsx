@@ -49,11 +49,8 @@ export default function PhotoMoodScreen() {
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={[styles.hint, { backgroundColor: colors.secondary }]}>
           <Text style={[styles.hintText, { color: colors.mutedForeground }]}>
-            가고 싶은 여행 사진을 올리면{'\n'}GOAT가 감성을 분석해 장소를 추천해드려요.
+            가고 싶은 여행 사진을 올리면 GOAT가 사진 속 분위기와 비슷한 강원 감성 장소를 추천해드려요.
           </Text>
-          <View style={[styles.betaBadge, { backgroundColor: colors.primary }]}>
-            <Text style={styles.betaText}>BETA · 현재 목업 모드</Text>
-          </View>
         </View>
 
         {state === 'idle' && (
@@ -69,7 +66,7 @@ export default function PhotoMoodScreen() {
               사진을 눌러 감성 분석 시작
             </Text>
             <Text style={[styles.uploadSub, { color: colors.mutedForeground }]}>
-              해외여행 감성 사진, SNS 저장 사진 모두 OK{'\n'}지금은 목업으로 작동합니다
+              해외여행 감성 사진, SNS 저장 사진 모두 OK
             </Text>
             <View style={[styles.uploadBtn, { backgroundColor: colors.primary }]}>
               <Feather name="upload" size={14} color="#FFFFFF" />

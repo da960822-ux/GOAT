@@ -68,9 +68,6 @@ export default function LandingScreen() {
         >
           <Feather name="camera" size={16} color={colors.primary} />
           <Text style={[styles.ctaSecondaryText, { color: colors.primary }]}>사진으로 감성 찾기</Text>
-          <View style={[styles.betaPill, { backgroundColor: colors.muted }]}>
-            <Text style={[styles.betaPillText, { color: colors.mutedForeground }]}>BETA</Text>
-          </View>
         </TouchableOpacity>
 
         <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
