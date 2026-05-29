@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+  View, ScrollView, StyleSheet, Text, TouchableOpacity
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { Header } from '@/src/components/Header';
@@ -12,7 +14,7 @@ import { RecommendationCard } from '@/src/types/place';
 export default function ResultsScreen() {
   const router = useRouter();
   const colors = useColors();
-  const { selectedMood, recommendations } = useApp();
+  const { selectedMood, travelPreferences, recommendations } = useApp();
 
   if (!selectedMood || recommendations.length === 0) {
     return (
@@ -35,6 +37,14 @@ export default function ResultsScreen() {
     });
   }
 
+  const conditionChips = [
+    { icon: 'heart', label: '선택 감성', value: selectedMood.name.split('·')[0].trim() },
+    travelPreferences && { icon: 'users', label: '동행', value: travelPreferences.companion },
+    travelPreferences && { icon: 'navigation', label: '이동수단', value: travelPreferences.transport },
+    travelPreferences && { icon: 'clock', label: '방문 시간', value: travelPreferences.visitTime },
+    travelPreferences && { icon: 'star', label: '여행 목적', value: travelPreferences.purpose },
+  ].filter(Boolean) as { icon: string; label: string; value: string }[];
+
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header
@@ -47,13 +57,17 @@ export default function ResultsScreen() {
         }
       />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={[styles.moodBanner, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
-          <Text style={[styles.moodLabel, { color: colors.mutedForeground }]}>선택한 감성</Text>
-          <Text style={[styles.moodName, { color: colors.primary }]}>{selectedMood.name}</Text>
-          <View style={styles.moodKeywords}>
-            {selectedMood.keywords.slice(0, 4).map((kw) => (
-              <View key={kw} style={[styles.kwChip, { backgroundColor: colors.muted }]}>
-                <Text style={[styles.kwText, { color: colors.secondaryForeground }]}>{kw}</Text>
+
+        <View style={[styles.conditionCard, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
+          <Text style={[styles.conditionTitle, { color: colors.mutedForeground }]}>선택한 조건</Text>
+          <View style={styles.conditionGrid}>
+            {conditionChips.map((chip) => (
+              <View key={chip.label} style={[styles.conditionChip, { backgroundColor: colors.background, borderColor: colors.border }]}>
+                <Feather name={chip.icon as any} size={11} color={colors.primary} />
+                <View style={styles.conditionChipText}>
+                  <Text style={[styles.conditionChipLabel, { color: colors.mutedForeground }]}>{chip.label}</Text>
+                  <Text style={[styles.conditionChipValue, { color: colors.foreground }]} numberOfLines={1}>{chip.value}</Text>
+                </View>
               </View>
             ))}
           </View>
@@ -64,10 +78,10 @@ export default function ResultsScreen() {
             <View style={[styles.countBadge, { backgroundColor: colors.primary }]}>
               <Text style={styles.countText}>3</Text>
             </View>
-            <Text style={[styles.sectionTitle, { color: colors.foreground }]}>추천 장소</Text>
+            <Text style={[styles.sectionTitle, { color: colors.foreground }]}>맞춤 추천 장소</Text>
           </View>
           <Text style={[styles.sectionSub, { color: colors.mutedForeground }]}>
-            장면 최적 · 같은 장면 대안 · 날씨 맞춤으로 비교해보세요.
+            장면 최적 · 내 상황 맞춤 · 안전한 대안으로 비교해보세요.
           </Text>
         </View>
 
@@ -96,23 +110,43 @@ export default function ResultsScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 32 },
-  moodBanner: {
+
+  conditionCard: {
     borderRadius: 16,
     borderWidth: 1,
-    padding: 16,
+    padding: 14,
     marginBottom: 20,
   },
-  moodLabel: { fontSize: 11, fontFamily: 'Inter_500Medium', marginBottom: 4, letterSpacing: 0.5, textTransform: 'uppercase' },
-  moodName: { fontSize: 22, fontWeight: '800', fontFamily: 'Inter_700Bold', marginBottom: 10 },
-  moodKeywords: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  kwChip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
-  kwText: { fontSize: 12, fontFamily: 'Inter_500Medium' },
+  conditionTitle: {
+    fontSize: 11,
+    fontFamily: 'Inter_500Medium',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+    marginBottom: 10,
+  },
+  conditionGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 7 },
+  conditionChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    borderRadius: 10,
+    borderWidth: 1,
+    minWidth: '44%',
+    flex: 1,
+  },
+  conditionChipText: { flex: 1 },
+  conditionChipLabel: { fontSize: 10, fontFamily: 'Inter_400Regular', marginBottom: 1 },
+  conditionChipValue: { fontSize: 12, fontFamily: 'Inter_600SemiBold' },
+
   sectionHeader: { marginBottom: 16 },
   countRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 5 },
   countBadge: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
   countText: { color: '#FFFFFF', fontSize: 13, fontWeight: '700', fontFamily: 'Inter_700Bold' },
   sectionTitle: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold' },
   sectionSub: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
+
   retryBtn: {
     flexDirection: 'row',
     alignItems: 'center',

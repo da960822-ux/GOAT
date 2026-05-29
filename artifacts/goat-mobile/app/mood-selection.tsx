@@ -7,13 +7,12 @@ import { MoodCategoryCard } from '@/src/components/MoodCategoryCard';
 import { BottomCTA } from '@/src/components/BottomCTA';
 import { moodCategories } from '@/src/data/moodCategories';
 import { useApp } from '@/src/context/AppContext';
-import { getRecommendations } from '@/src/services/recommendationService';
 import { useColors } from '@/hooks/useColors';
 
 export default function MoodSelectionScreen() {
   const router = useRouter();
   const colors = useColors();
-  const { setSelectedMood, setRecommendations } = useApp();
+  const { setSelectedMood } = useApp();
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   function handleSelect(id: string) {
@@ -25,10 +24,8 @@ export default function MoodSelectionScreen() {
     if (!selectedId) return;
     const mood = moodCategories.find((m) => m.id === selectedId);
     if (!mood) return;
-    const cards = getRecommendations(selectedId);
     setSelectedMood(mood);
-    setRecommendations(cards);
-    router.push('/results');
+    router.push('/travel-preference');
   }
 
   const selected = moodCategories.find((m) => m.id === selectedId);
@@ -57,10 +54,10 @@ export default function MoodSelectionScreen() {
         <View style={styles.spacer} />
       </ScrollView>
       <BottomCTA
-        label="추천 카드 보기"
+        label="다음: 여행 조건 선택"
         onPress={handleConfirm}
         disabled={!selectedId}
-        subtitle={selected ? `"${selected.name}" 감성으로 추천받기` : '감성을 선택해주세요'}
+        subtitle={selected ? `"${selected.name}" 감성 선택됨 · 다음 단계에서 조건 입력` : '감성을 선택해주세요'}
       />
     </View>
   );

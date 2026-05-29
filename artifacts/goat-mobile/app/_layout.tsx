@@ -25,6 +25,7 @@ function RootLayoutNav() {
     <Stack screenOptions={{ headerShown: false, animation: "slide_from_right" }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="mood-selection" />
+      <Stack.Screen name="travel-preference" />
       <Stack.Screen name="results" />
       <Stack.Screen name="detail/[id]" />
       <Stack.Screen name="about" />

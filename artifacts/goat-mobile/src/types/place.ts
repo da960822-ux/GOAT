@@ -35,7 +35,12 @@ export interface MoodCategory {
   placeNames: string[];
 }
 
-export type RecommendationRole = '장면 최적' | '같은 장면 대안' | '날씨 맞춤';
+export type RecommendationRole =
+  | '장면 최적'
+  | '내 상황 맞춤'
+  | '안전한 대안'
+  | '같은 장면 대안'
+  | '날씨 맞춤';
 
 export interface RecommendationCard {
   place: Place;

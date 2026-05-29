@@ -1,4 +1,5 @@
 import { Place, MoodCategory, RecommendationCard, RecommendationRole } from '../types/place';
+import { TravelPreferences } from '../types/preferences';
 import places from '../data/goat_places_clean_db_ready.json';
 import { moodCategories } from '../data/moodCategories';
 
@@ -21,9 +22,8 @@ function hasRiskNote(place: Place): boolean {
   return RISK_KEYWORDS.some((k) => place.note.includes(k));
 }
 
-function scorePlace(place: Place, mood: MoodCategory): number {
+function scoreMood(place: Place, mood: MoodCategory): number {
   let score = 0;
-  const season = getCurrentSeason();
 
   if (mood.placeNames.includes(place.place_name)) score += 5;
 
@@ -36,35 +36,82 @@ function scorePlace(place: Place, mood: MoodCategory): number {
     if (place.mood_tags.includes(kw)) score += 2;
   });
 
-  if (place.recommendation_use.includes(mood.name.split('·')[0])) score += 1;
-
-  if (place.best_season === '사계절' || place.best_season.includes(season)) score += 1;
-
-  if (place.accessibility.includes('대중 상') || place.accessibility.includes('자차 상')) score += 1;
-
-  if (hasRiskNote(place)) score -= 1;
-
   return score;
 }
 
-function scoreWeather(place: Place): number {
-  const season = getCurrentSeason();
+function scorePreferences(place: Place, prefs: TravelPreferences): number {
   let score = 0;
 
-  if (place.best_season === '사계절') score += 3;
-  else if (place.best_season.includes(season)) score += 2;
+  const timeKeywords: Record<string, string[]> = {
+    '오전': ['오전', '아침', '이른'],
+    '오후': ['오후', '낮'],
+    '일몰': ['일몰', '노을', '저녁노을', '황혼'],
+    '저녁': ['저녁', '야경'],
+    '밤/새벽': ['밤', '새벽', '야간'],
+  };
+  const timeMatches = timeKeywords[prefs.visitTime] ?? [];
+  if (timeMatches.some((t) => place.best_time.includes(t))) score += 2;
 
-  if (place.best_time.includes('실내') || place.place_type.includes('미술관') ||
-      place.place_type.includes('카페') || place.place_type.includes('시장')) score += 2;
+  if (prefs.transport === '자차') {
+    if (place.accessibility.includes('자차 상')) score += 2;
+    else if (place.accessibility.includes('자차')) score += 1;
+  } else {
+    if (place.accessibility.includes('대중 상')) score += 2;
+    else if (place.accessibility.includes('대중')) score += 1;
+  }
 
-  if (place.accessibility.includes('대중 상') || place.accessibility.includes('자차 상')) score += 1;
+  const purposeKeywords: Record<string, string[]> = {
+    '가볍게 산책': ['산책', '공원', '해변', '둘레길', '걷기'],
+    '사진 위주': ['사진', '포토', '인생샷', '뷰', '전망'],
+    '액티비티': ['액티비티', '체험', '스키', '래프팅', '짚라인', '활동'],
+    '조용한 휴식': ['휴식', '힐링', '조용', '여유', '명상'],
+  };
+  const purposeKws = purposeKeywords[prefs.purpose] ?? [];
+  if (
+    purposeKws.some(
+      (kw) =>
+        place.recommendation_use.includes(kw) ||
+        place.place_type.includes(kw) ||
+        place.photo_point.includes(kw)
+    )
+  ) score += 2;
 
-  if (place.note.includes('우천') || place.note.includes('비')) score -= 1;
+  const companionKeywords: Record<string, string[]> = {
+    '혼자': ['혼자', '1인', '독립', '자유'],
+    '연인': ['커플', '연인', '데이트', '로맨틱'],
+    '친구': ['친구', '그룹', '소그룹'],
+    '가족': ['가족', '아이', '어린이', '유아'],
+  };
+  const companionKws = companionKeywords[prefs.companion] ?? [];
+  if (
+    companionKws.some(
+      (kw) =>
+        place.recommendation_use.includes(kw) ||
+        place.place_type.includes(kw)
+    )
+  ) score += 1;
 
   return score;
 }
 
-function generateReason(place: Place, mood: MoodCategory, role: RecommendationRole): string {
+function safetyScore(place: Place): number {
+  let score = 0;
+  const season = getCurrentSeason();
+
+  if (place.accessibility.includes('상')) score += 2;
+  if (place.best_season === '사계절') score += 2;
+  else if (place.best_season.includes(season)) score += 1;
+  if (hasRiskNote(place)) score -= 3;
+
+  return score;
+}
+
+function generateReason(
+  place: Place,
+  mood: MoodCategory,
+  role: RecommendationRole,
+  prefs?: TravelPreferences
+): string {
   if (role === '장면 최적') {
     const matching = mood.keywords.filter((kw) => place.mood_tags.includes(kw));
     if (matching.length > 0) {
@@ -72,14 +119,30 @@ function generateReason(place: Place, mood: MoodCategory, role: RecommendationRo
     }
     return `${mood.keywords[0]} 분위기를 가장 잘 담고 있는 강원도 대표 장소입니다.`;
   }
-  if (role === '같은 장면 대안') {
-    return `첫 번째 장소가 붐비거나 멀다면, 비슷한 ${mood.keywords[0]} 분위기의 대안입니다.`;
+
+  if (role === '내 상황 맞춤') {
+    if (!prefs) return '선택하신 조건에 맞는 장소입니다.';
+    const parts: string[] = [];
+    if (prefs.transport === '자차' && place.accessibility.includes('자차')) parts.push('자차 접근 최적');
+    if (prefs.transport === '대중교통' && place.accessibility.includes('대중')) parts.push('대중교통 접근 가능');
+    if (prefs.companion === '연인' && (place.recommendation_use.includes('커플') || place.recommendation_use.includes('연인'))) parts.push('커플 추천');
+    if (prefs.companion === '가족' && place.recommendation_use.includes('가족')) parts.push('가족 여행 적합');
+    if (prefs.purpose === '사진 위주' && place.photo_point) parts.push('포토 포인트 있음');
+    if (prefs.purpose === '조용한 휴식' && (place.recommendation_use.includes('휴식') || place.recommendation_use.includes('힐링'))) parts.push('조용한 휴식 가능');
+    if (parts.length > 0) {
+      return `${parts.slice(0, 2).join(' · ')} 조건에 맞는 장소입니다.`;
+    }
+    return `"${prefs.companion}"와 "${prefs.purpose}" 여행 조건에 잘 맞는 장소입니다.`;
   }
+
   const season = getCurrentSeason();
-  return `${season} 날씨와 접근성이 좋아 지금 방문하기 최적인 대안입니다.`;
+  return `${season} 방문 조건과 접근성이 안정적이며, ${mood.keywords[0]} 감성을 함께 갖춘 대안입니다.`;
 }
 
-export function getRecommendations(moodId: string): RecommendationCard[] {
+export function getRecommendations(
+  moodId: string,
+  prefs?: TravelPreferences
+): RecommendationCard[] {
   const mood = moodCategories.find((m) => m.id === moodId);
   if (!mood) return [];
 
@@ -87,46 +150,64 @@ export function getRecommendations(moodId: string): RecommendationCard[] {
     (p) => p.data_status === 'confirmed' && !isLodging(p)
   );
 
-  const scored = eligible
-    .map((p) => ({ place: p, score: scorePlace(p, mood) }))
-    .sort((a, b) => b.score - a.score);
+  const withScores = eligible.map((p) => ({
+    place: p,
+    moodScore: scoreMood(p, mood),
+    prefScore: prefs ? scorePreferences(p, prefs) : 0,
+    safety: safetyScore(p),
+  }));
 
-  const top = scored[0];
-  const alt = scored.find((s) => s.place.place_id !== top?.place.place_id);
-  const remaining = scored.filter(
-    (s) => s.place.place_id !== top?.place.place_id && s.place.place_id !== alt?.place.place_id
-  );
+  withScores.sort((a, b) => b.moodScore - a.moodScore);
+  const card1Place = withScores[0];
 
-  const weatherScored = remaining
-    .map((s) => ({ ...s, wscore: scoreWeather(s.place) }))
-    .sort((a, b) => b.wscore - a.wscore);
+  const remaining1 = withScores.filter((s) => s.place.place_id !== card1Place?.place.place_id);
 
-  const weather = weatherScored[0];
+  if (prefs) {
+    remaining1.sort((a, b) => {
+      const scoreA = a.moodScore * 0.6 + a.prefScore * 1.4;
+      const scoreB = b.moodScore * 0.6 + b.prefScore * 1.4;
+      return scoreB - scoreA;
+    });
+  } else {
+    remaining1.sort((a, b) => b.moodScore - a.moodScore);
+  }
+  const card2Place = remaining1[0];
+
+  const remaining2 = remaining1.filter((s) => s.place.place_id !== card2Place?.place.place_id);
+  remaining2.sort((a, b) => {
+    const scoreA = a.moodScore * 0.5 + a.safety * 1.5;
+    const scoreB = b.moodScore * 0.5 + b.safety * 1.5;
+    return scoreB - scoreA;
+  });
+  const card3Place = remaining2[0];
+
+  const role2: RecommendationRole = prefs ? '내 상황 맞춤' : '같은 장면 대안';
+  const role3: RecommendationRole = prefs ? '안전한 대안' : '날씨 맞춤';
 
   const cards: RecommendationCard[] = [];
 
-  if (top) {
+  if (card1Place) {
     cards.push({
-      place: top.place,
+      place: card1Place.place,
       role: '장면 최적',
-      score: top.score,
-      reason: generateReason(top.place, mood, '장면 최적'),
+      score: card1Place.moodScore,
+      reason: generateReason(card1Place.place, mood, '장면 최적', prefs),
     });
   }
-  if (alt) {
+  if (card2Place) {
     cards.push({
-      place: alt.place,
-      role: '같은 장면 대안',
-      score: alt.score,
-      reason: generateReason(alt.place, mood, '같은 장면 대안'),
+      place: card2Place.place,
+      role: role2,
+      score: card2Place.moodScore + card2Place.prefScore,
+      reason: generateReason(card2Place.place, mood, role2, prefs),
     });
   }
-  if (weather) {
+  if (card3Place) {
     cards.push({
-      place: weather.place,
-      role: '날씨 맞춤',
-      score: weather.score,
-      reason: generateReason(weather.place, mood, '날씨 맞춤'),
+      place: card3Place.place,
+      role: role3,
+      score: card3Place.moodScore + card3Place.safety,
+      reason: generateReason(card3Place.place, mood, role3, prefs),
     });
   }
 

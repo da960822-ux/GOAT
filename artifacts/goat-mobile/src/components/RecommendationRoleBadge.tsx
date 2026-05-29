@@ -11,9 +11,11 @@ export function RecommendationRoleBadge({ role }: RecommendationRoleBadgeProps) 
   const colors = useColors();
 
   const config: Record<RecommendationRole, { bg: string; text: string; label: string }> = {
-    '장면 최적': { bg: colors.roleBest, text: '#FFFFFF', label: '✦ 장면 최적' },
-    '같은 장면 대안': { bg: colors.roleAlt, text: '#FFFFFF', label: '◎ 같은 장면 대안' },
-    '날씨 맞춤': { bg: colors.roleWeather, text: '#FFFFFF', label: '◈ 날씨 맞춤' },
+    '장면 최적':      { bg: colors.roleBest,    text: '#FFFFFF', label: '✦ 장면 최적' },
+    '내 상황 맞춤':   { bg: '#0EA5E9',           text: '#FFFFFF', label: '◎ 내 상황 맞춤' },
+    '안전한 대안':    { bg: '#16A34A',           text: '#FFFFFF', label: '◈ 안전한 대안' },
+    '같은 장면 대안': { bg: colors.roleAlt,     text: '#FFFFFF', label: '◎ 같은 장면 대안' },
+    '날씨 맞춤':      { bg: colors.roleWeather, text: '#FFFFFF', label: '◈ 날씨 맞춤' },
   };
 
   const c = config[role];
