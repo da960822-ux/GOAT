@@ -94,7 +94,7 @@ export default function DetailScreen() {
             <View style={[styles.photoCardIcon, { backgroundColor: region?.accent ?? colors.primary }]}>
               <Feather name="camera" size={14} color="#FFFFFF" />
             </View>
-            <Text style={[styles.photoCardTitle, { color: region?.accent ?? colors.primary }]}>강원 장면 포인트</Text>
+            <Text style={[styles.photoCardTitle, { color: region?.accent ?? colors.primary }]}>장면 포인트</Text>
             <View style={[styles.sceneRegionTag, { backgroundColor: region?.border ?? '#EDE9FE' }]}>
               <Text style={[styles.sceneRegionText, { color: region?.accent ?? colors.primary }]}>
                 {place.city} · {region?.label ?? place.region_group}

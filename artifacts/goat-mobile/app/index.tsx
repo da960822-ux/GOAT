@@ -32,7 +32,7 @@ export default function LandingScreen() {
             <Text style={styles.logoSubtitle}>강원도 감성 여행</Text>
           </View>
           <Text style={styles.heroTagline}>
-            해외여행 감성,{'\n'}강원에서 찾기
+            강원에서 찾는{'\n'}나만의 해외여행 컷
           </Text>
         </View>
       </ImageBackground>
@@ -47,7 +47,7 @@ export default function LandingScreen() {
           보고 싶은 분위기만 골라주세요
         </Text>
         <Text style={[styles.subcopy, { color: colors.mutedForeground }]}>
-          장소명을 몰라도 괜찮아요. 보고 싶은 분위기만 고르면 GOAT가 3곳으로 압축해드려요.
+          바다, 고원, 목장, 항구, 골목까지. 보고 싶은 장면을 고르면 어울리는 장소 3곳을 추천해드려요.
         </Text>
 
         <TouchableOpacity
@@ -85,8 +85,9 @@ export default function LandingScreen() {
 
         <View style={styles.infoRow}>
           {[
-            { icon: 'map-pin', text: '강원 감성 명소 43곳' },
-            { icon: 'navigation', text: '카카오맵으로 바로 이동' },
+            { icon: 'map-pin', text: '감성 명소 43곳' },
+            { icon: 'log-in', text: '로그인 없이 바로 시작' },
+            { icon: 'navigation', text: '카카오맵으로 이동' },
           ].map((item) => (
             <View key={item.text} style={[styles.infoChip, { borderColor: colors.border }]}>
               <Feather name={item.icon as any} size={11} color={colors.mutedForeground} />
@@ -95,9 +96,6 @@ export default function LandingScreen() {
           ))}
         </View>
 
-        <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
-          로그인 없이 바로 시작
-        </Text>
 
         <View style={styles.footerLinks}>
           {[

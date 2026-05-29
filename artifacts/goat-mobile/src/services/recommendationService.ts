@@ -146,7 +146,7 @@ function generateReason(
     if (matching.length > 0) {
       return `${mood.name.split('·')[0]} 감성과 완벽히 맞닿는 "${matching.slice(0, 2).join(', ')}" 포인트를 갖춘 장소입니다.`;
     }
-    return `${mood.keywords[0]} 분위기를 가장 잘 담고 있는 강원도 대표 장소입니다.`;
+    return `${mood.keywords[0]} 분위기를 가장 잘 담고 있는 장소예요.`;
   }
 
   if (role === '내 상황 맞춤') {
