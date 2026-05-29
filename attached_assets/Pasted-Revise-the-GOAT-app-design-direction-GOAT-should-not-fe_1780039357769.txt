@@ -1,0 +1,110 @@
+Revise the GOAT app design direction.
+
+GOAT should not feel like a productivity app, data dashboard, or efficiency tool.
+Travel is emotional, slow, visual, and mood-driven.
+
+Design goal:
+Make GOAT feel like a lightweight travel mood curation app.
+The app should reduce decision fatigue, but it should not feel like it is forcing users to optimize their trip.
+
+Core feeling:
+- emotional
+- visual
+- calm
+- travel-magazine-like
+- postcard-like
+- moodboard-like
+- minimal but warm
+
+Avoid:
+- overly efficient/task-management feeling
+- dashboard-like layout
+- too many form-like steps
+- too much data on the first view
+- cold fintech-style UI
+- generic AI app look
+
+1. Landing screen
+- Make the first impression emotional, not functional.
+- Main message should feel like:
+  "해외여행 같은 장면을 강원에서 찾아보세요"
+  or
+  "오늘 끌리는 감성으로 강원을 골라보세요"
+- The primary CTA should be emotional:
+  "오늘의 감성 찾기"
+  or
+  "지금 끌리는 장면 고르기"
+- Keep explanations short and poetic.
+- Do not make the app feel like a fast task completion tool.
+
+2. Mood selection screen
+- Mood cards should feel like postcards or travel magazine cards.
+- Each mood should have:
+  - mood title
+  - short emotional scene phrase
+  - 2~3 soft tags
+- Example:
+  "산토리니 감성"
+  "흰 건물과 푸른 바다가 만나는 장면"
+  "#오션뷰 #일몰 #이국적"
+- Prioritize visual mood over dense information.
+
+3. Travel preference screen
+- Make preferences feel like light travel context, not a required form.
+- Required fields should remain minimal.
+- Use softer copy:
+  "누구와 떠나나요?"
+  "어떻게 이동하나요?"
+  "오늘 여행의 목적은?"
+- visitTime should be optional and feel like a gentle hint:
+  "시간대도 정했다면 알려주세요"
+- Avoid making the user feel tested or filtered.
+
+4. Results screen
+- Results should feel like curated travel cards, not ranked search results.
+- Use card roles, but make them warm:
+  - "가장 닮은 장면"
+  - "비슷한 감성의 대안"
+  - "오늘 가기 편한 선택"
+- Each card should have one emotional reason first, then practical chips second.
+- Practical info such as weather, access, safety should support the mood, not dominate it.
+
+5. Place detail screen
+- Detail should feel like opening a travel card.
+- Top area must be visual.
+- Order:
+  1. hero visual
+  2. emotional one-line description
+  3. why this place matches the mood
+  4. photo point
+  5. gentle visit tips
+  6. safety/access info
+  7. KakaoMap CTA
+- KakaoMap CTA should be clear but not aggressive.
+
+6. Copywriting tone
+Use warm Korean travel copy.
+Avoid cold terms like:
+- 최적화
+- 효율
+- 조건 기반
+- 데이터 기반 추천
+- 빠른 의사결정
+
+Prefer:
+- 감성
+- 장면
+- 오늘 끌리는
+- 닮은 분위기
+- 가볍게 떠나기
+- 이국적인 순간
+- 지금 가기 좋은
+
+7. Overall visual style
+- White or soft warm background
+- Large mood cards
+- More whitespace
+- Fewer icons
+- Softer buttons
+- Travel-card visuals
+- Avoid excessive gradients and startup-template UI

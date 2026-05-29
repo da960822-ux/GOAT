@@ -6,6 +6,6 @@ export type TravelPurpose = '가볍게 산책' | '사진 위주' | '액티비티
 export interface TravelPreferences {
   companion: Companion;
   transport: Transport;
-  visitTime: VisitTime;
+  visitTime?: VisitTime | null;
   purpose: TravelPurpose;
 }

@@ -10,12 +10,13 @@ import { EmptyState } from '@/src/components/EmptyState';
 import { StepIndicator } from '@/src/components/StepIndicator';
 import { useApp } from '@/src/context/AppContext';
 import { useColors } from '@/hooks/useColors';
+import { getRecommendations } from '@/src/services/recommendationService';
 import { RecommendationCard } from '@/src/types/place';
 
 export default function ResultsScreen() {
   const router = useRouter();
   const colors = useColors();
-  const { selectedMood, travelPreferences, recommendations } = useApp();
+  const { selectedMood, travelPreferences, recommendations, setRecommendations } = useApp();
 
   if (!selectedMood || recommendations.length === 0) {
     return (
@@ -52,11 +53,27 @@ export default function ResultsScreen() {
     });
   }
 
+  function handleEditConditions() {
+    router.push('/travel-preference');
+  }
+
+  function handleReRecommend() {
+    if (!selectedMood) return;
+    const currentIds = recommendations.map((c) => c.place.place_id);
+    const newCards = getRecommendations(selectedMood.id, travelPreferences ?? undefined, currentIds);
+    if (newCards.length >= 3) {
+      setRecommendations(newCards);
+    } else {
+      const fallback = getRecommendations(selectedMood.id, travelPreferences ?? undefined);
+      setRecommendations(fallback);
+    }
+  }
+
   const conditionParts = [
     selectedMood.name.split('·')[0].trim() + ' 감성',
     travelPreferences?.companion,
     travelPreferences?.transport,
-    travelPreferences?.visitTime,
+    travelPreferences?.visitTime ?? null,
     travelPreferences?.purpose,
   ].filter(Boolean) as string[];
 
@@ -76,7 +93,13 @@ export default function ResultsScreen() {
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
         <View style={[styles.conditionBanner, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
-          <Text style={[styles.conditionLabel, { color: colors.mutedForeground }]}>선택한 조건</Text>
+          <View style={styles.conditionBannerTop}>
+            <Text style={[styles.conditionLabel, { color: colors.mutedForeground }]}>선택한 조건</Text>
+            <TouchableOpacity onPress={handleEditConditions} style={styles.editBtn}>
+              <Feather name="sliders" size={12} color={colors.primary} />
+              <Text style={[styles.editBtnText, { color: colors.primary }]}>조건 수정</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={[styles.conditionText, { color: colors.foreground }]} numberOfLines={2}>
             {conditionParts.join(' · ')}
           </Text>
@@ -100,11 +123,20 @@ export default function ResultsScreen() {
         ))}
 
         <TouchableOpacity
+          style={[styles.reRecommendBtn, { backgroundColor: colors.primary + '12', borderColor: colors.primary + '40' }]}
+          onPress={handleReRecommend}
+          activeOpacity={0.75}
+        >
+          <Feather name="zap" size={14} color={colors.primary} />
+          <Text style={[styles.reRecommendText, { color: colors.primary }]}>이 감성으로 다시 추천</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
           style={[styles.retryBtn, { borderColor: colors.border }]}
           onPress={() => router.replace('/mood-selection')}
         >
-          <Feather name="rotate-ccw" size={14} color={colors.primary} />
-          <Text style={[styles.retryText, { color: colors.primary }]}>다른 감성으로 다시 찾기</Text>
+          <Feather name="rotate-ccw" size={14} color={colors.mutedForeground} />
+          <Text style={[styles.retryText, { color: colors.mutedForeground }]}>다른 감성으로 다시 찾기</Text>
         </TouchableOpacity>
 
         <View style={styles.spacer} />
@@ -123,14 +155,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     marginBottom: 20,
+    gap: 4,
+  },
+  conditionBannerTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 2,
   },
   conditionLabel: {
     fontSize: 11,
     fontFamily: 'Inter_500Medium',
     letterSpacing: 0.5,
     textTransform: 'uppercase',
-    marginBottom: 4,
   },
+  editBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  editBtnText: { fontSize: 12, fontFamily: 'Inter_600SemiBold' },
   conditionText: {
     fontSize: 14,
     fontFamily: 'Inter_600SemiBold',
@@ -141,6 +187,19 @@ const styles = StyleSheet.create({
   sectionTitle: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 4 },
   sectionSub: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
 
+  reRecommendBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 7,
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginTop: 4,
+    marginBottom: 8,
+  },
+  reRecommendText: { fontSize: 14, fontFamily: 'Inter_600SemiBold' },
+
   retryBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -149,7 +208,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
     borderWidth: 1,
-    marginTop: 4,
+    marginTop: 0,
   },
   retryText: { fontSize: 14, fontFamily: 'Inter_500Medium' },
   refreshBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },

@@ -28,7 +28,7 @@ export default function AboutScreen() {
 
         <Section title="GOAT란?" colors={colors}>
           <Paragraph colors={colors}>
-            GOAT는 "Greatest Of All Time"의 약자로, 강원도에서 가장 인상적인 감성 여행지를 큐레이션하는 앱입니다.
+            GOAT는 "Gangwon Of All Time"의 약자로, 강원도 안에서 해외여행 같은 이색 장면을 빠르게 고를 수 있게 돕는 감성 관광 큐레이션 서비스입니다.
           </Paragraph>
           <Paragraph colors={colors}>
             흔히 유럽·일본·동남아시아 여행에서 느끼는 '그 장면 감성'을 강원도 안에서 30초 만에 찾아드립니다.
@@ -38,7 +38,7 @@ export default function AboutScreen() {
         <Section title="어떻게 작동하나요?" colors={colors}>
           {[
             { step: '1', text: '9가지 해외 감성 카테고리 중 하나를 선택합니다.' },
-            { step: '2', text: 'GOAT가 43개 명소를 감성 점수로 분석합니다.' },
+            { step: '2', text: '초기 MVP에서는 선별된 강원 이색 장면 후보를 중심으로 감성 추천을 제공합니다.' },
             { step: '3', text: '장면 최적 · 상황 맞춤 · 안전한 대안, 3장의 카드를 추천받습니다.' },
             { step: '4', text: '카드를 눌러 상세 정보와 카카오맵 링크를 확인합니다.' },
           ].map((item) => (

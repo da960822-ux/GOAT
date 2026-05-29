@@ -53,19 +53,19 @@ export default function TravelPreferenceScreen() {
   const [visitTime, setVisitTime] = useState<VisitTime | null>(null);
   const [purpose, setPurpose] = useState<TravelPurpose | null>(null);
 
-  const allSelected = companion && transport && visitTime && purpose;
-  const count = [companion, transport, visitTime, purpose].filter(Boolean).length;
+  const requiredSelected = companion && transport && purpose;
+  const count = [companion, transport, purpose].filter(Boolean).length;
 
   function pick() {
     if (Platform.OS !== 'web') Haptics.selectionAsync();
   }
 
   function handleConfirm() {
-    if (!allSelected || !selectedMood) return;
+    if (!requiredSelected || !selectedMood) return;
     const prefs: TravelPreferences = {
       companion: companion!,
       transport: transport!,
-      visitTime: visitTime!,
+      visitTime: visitTime ?? null,
       purpose: purpose!,
     };
     setTravelPreferences(prefs);
@@ -73,6 +73,8 @@ export default function TravelPreferenceScreen() {
     setRecommendations(cards);
     router.push('/results');
   }
+
+  const subtitleParts = [companion, transport, visitTime, purpose].filter(Boolean) as string[];
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
@@ -91,7 +93,7 @@ export default function TravelPreferenceScreen() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <QuestionBlock label="누구와 가나요?" done={!!companion} colors={colors}>
+        <QuestionBlock label="누구와 가나요?" done={!!companion} required colors={colors}>
           <View style={styles.pillRow}>
             {COMPANIONS.map(({ value, icon }) => (
               <PillButton
@@ -106,7 +108,7 @@ export default function TravelPreferenceScreen() {
           </View>
         </QuestionBlock>
 
-        <QuestionBlock label="어떻게 이동하나요?" done={!!transport} colors={colors}>
+        <QuestionBlock label="어떻게 이동하나요?" done={!!transport} required colors={colors}>
           <View style={styles.pillRow}>
             {TRANSPORTS.map(({ value, icon }) => (
               <PillButton
@@ -122,7 +124,7 @@ export default function TravelPreferenceScreen() {
           </View>
         </QuestionBlock>
 
-        <QuestionBlock label="언제 가나요?" done={!!visitTime} colors={colors}>
+        <QuestionBlock label="언제 가나요?" done={!!visitTime} optional colors={colors}>
           <View style={styles.pillRow}>
             {VISIT_TIMES.map(({ value, icon }) => (
               <PillButton
@@ -130,14 +132,14 @@ export default function TravelPreferenceScreen() {
                 label={value}
                 icon={icon}
                 selected={visitTime === value}
-                onPress={() => { setVisitTime(value); pick(); }}
+                onPress={() => { setVisitTime(visitTime === value ? null : value); pick(); }}
                 colors={colors}
               />
             ))}
           </View>
         </QuestionBlock>
 
-        <QuestionBlock label="오늘 원하는 여행은?" done={!!purpose} colors={colors}>
+        <QuestionBlock label="오늘 원하는 여행은?" done={!!purpose} required colors={colors}>
           <View style={styles.pillRow}>
             {PURPOSES.map(({ value, icon }) => (
               <PillButton
@@ -156,10 +158,10 @@ export default function TravelPreferenceScreen() {
       </ScrollView>
 
       <BottomCTA
-        label={allSelected ? '추천 카드 보기' : `${count}/4 선택 중`}
+        label={requiredSelected ? '추천 카드 보기' : `${count}/3 필수 선택`}
         onPress={handleConfirm}
-        disabled={!allSelected}
-        subtitle={allSelected ? `${companion} · ${transport} · ${visitTime} · ${purpose}` : undefined}
+        disabled={!requiredSelected}
+        subtitle={requiredSelected ? subtitleParts.join(' · ') : undefined}
       />
     </View>
   );
@@ -168,18 +170,29 @@ export default function TravelPreferenceScreen() {
 function QuestionBlock({
   label,
   done,
+  required,
+  optional,
   colors,
   children,
 }: {
   label: string;
   done: boolean;
+  required?: boolean;
+  optional?: boolean;
   colors: any;
   children: React.ReactNode;
 }) {
   return (
     <View style={[styles.block, { borderBottomColor: colors.border }]}>
       <View style={styles.blockHeader}>
-        <Text style={[styles.blockLabel, { color: colors.foreground }]}>{label}</Text>
+        <View style={styles.blockLabelRow}>
+          <Text style={[styles.blockLabel, { color: colors.foreground }]}>{label}</Text>
+          {optional && (
+            <View style={[styles.optionalPill, { backgroundColor: colors.muted }]}>
+              <Text style={[styles.optionalText, { color: colors.mutedForeground }]}>선택</Text>
+            </View>
+          )}
+        </View>
         {done && (
           <View style={[styles.donePill, { backgroundColor: '#D1FAE5' }]}>
             <Text style={styles.donePillText}>선택됨</Text>
@@ -252,7 +265,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   blockHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 },
+  blockLabelRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   blockLabel: { fontSize: 17, fontWeight: '700', fontFamily: 'Inter_700Bold' },
+  optionalPill: { paddingHorizontal: 7, paddingVertical: 2, borderRadius: 5 },
+  optionalText: { fontSize: 11, fontFamily: 'Inter_500Medium' },
   donePill: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
   donePillText: { fontSize: 11, fontFamily: 'Inter_600SemiBold', color: '#065F46' },
   pillRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },

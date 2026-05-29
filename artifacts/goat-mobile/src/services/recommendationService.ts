@@ -50,15 +50,17 @@ function scoreMood(place: Place, mood: MoodCategory): number {
 function scorePreferences(place: Place, prefs: TravelPreferences): number {
   let score = 0;
 
-  const timeKeywords: Record<string, string[]> = {
-    '오전': ['오전', '아침', '이른'],
-    '오후': ['오후', '낮'],
-    '일몰': ['일몰', '노을', '저녁노을', '황혼'],
-    '저녁': ['저녁', '야경'],
-    '밤/새벽': ['밤', '새벽', '야간'],
-  };
-  const timeMatches = timeKeywords[prefs.visitTime] ?? [];
-  if (timeMatches.some((t) => place.best_time.includes(t))) score += 2;
+  if (prefs.visitTime) {
+    const timeKeywords: Record<string, string[]> = {
+      '오전': ['오전', '아침', '이른'],
+      '오후': ['오후', '낮'],
+      '일몰': ['일몰', '노을', '저녁노을', '황혼'],
+      '저녁': ['저녁', '야경'],
+      '밤/새벽': ['밤', '새벽', '야간'],
+    };
+    const timeMatches = timeKeywords[prefs.visitTime] ?? [];
+    if (timeMatches.some((t) => place.best_time.includes(t))) score += 2;
+  }
 
   if (prefs.transport === '자차') {
     if (place.accessibility.includes('자차 상')) score += 2;
@@ -143,40 +145,74 @@ function generateReason(
 ): string {
   if (role === '장면 최적') {
     const matching = mood.keywords.filter((kw) => place.mood_tags.includes(kw));
+    const moodName = mood.name.split('·')[0].trim();
     if (matching.length > 0) {
-      return `${mood.name.split('·')[0]} 감성과 완벽히 맞닿는 "${matching.slice(0, 2).join(', ')}" 포인트를 갖춘 장소입니다.`;
+      const tagStr = matching.slice(0, 2).map((t) => `'${t}'`).join(', ');
+      const photoHint = place.photo_point ? `사진 포인트: ${place.photo_point.split('.')[0].trim()}.` : '';
+      return `${moodName} 감성과 가장 가까운 ${tagStr} 장면을 가진 장소예요.${photoHint ? ' ' + photoHint : ''}`;
     }
-    return `${mood.keywords[0]} 분위기를 가장 잘 담고 있는 장소예요.`;
+    const photoHint = place.photo_point ? place.photo_point.split('.')[0].trim() : '';
+    return `${moodName} 분위기를 가장 잘 담고 있는 장소예요.${photoHint ? ` 포토 포인트: ${photoHint}.` : ''}`;
   }
 
   if (role === '내 상황 맞춤') {
     if (!prefs) return '선택하신 조건에 맞는 장소입니다.';
     const parts: string[] = [];
-    if (prefs.transport === '자차' && place.accessibility.includes('자차')) parts.push('자차 접근 최적');
-    if (prefs.transport === '대중교통' && place.accessibility.includes('대중')) parts.push('대중교통 접근 가능');
-    if (prefs.companion === '연인' && (place.recommendation_use.includes('커플') || place.recommendation_use.includes('연인'))) parts.push('커플 추천');
+    if (prefs.transport === '자차' && place.accessibility.includes('자차 상')) parts.push('자차 접근 최적');
+    else if (prefs.transport === '자차' && place.accessibility.includes('자차')) parts.push('자차 접근 가능');
+    if (prefs.transport === '대중교통' && place.accessibility.includes('대중 상')) parts.push('대중교통 접근 최적');
+    else if (prefs.transport === '대중교통' && place.accessibility.includes('대중')) parts.push('대중교통 이용 가능');
+    if (prefs.companion === '연인' && (place.recommendation_use.includes('커플') || place.recommendation_use.includes('연인'))) parts.push('커플 코스 적합');
     if (prefs.companion === '가족' && place.recommendation_use.includes('가족')) parts.push('가족 여행 적합');
-    if (prefs.purpose === '사진 위주' && place.photo_point) parts.push('포토 포인트 있음');
+    if (prefs.companion === '혼자' && (place.recommendation_use.includes('혼자') || place.recommendation_use.includes('1인'))) parts.push('나홀로 여행 추천');
+    if (prefs.purpose === '사진 위주' && place.photo_point) parts.push(`포토 포인트 있음`);
     if (prefs.purpose === '조용한 휴식' && (place.recommendation_use.includes('휴식') || place.recommendation_use.includes('힐링'))) parts.push('조용한 휴식 가능');
+    if (prefs.purpose === '가볍게 산책' && (place.place_type.includes('해변') || place.place_type.includes('공원') || place.recommendation_use.includes('산책'))) parts.push('산책 코스 적합');
     if (parts.length > 0) {
-      return `${parts.slice(0, 2).join(' · ')} 조건에 맞는 장소입니다.`;
+      return `${prefs.companion}와 함께 ${prefs.transport}로 방문하기 좋아요. ${parts.slice(0, 2).join(' · ')} 조건이 맞습니다.`;
     }
-    return `"${prefs.companion}"와 "${prefs.purpose}" 여행 조건에 잘 맞는 장소입니다.`;
+    return `'${prefs.companion}' · '${prefs.purpose}' 조건에 잘 맞는 같은 감성대의 대안이에요.`;
+  }
+
+  if (role === '같은 장면 대안') {
+    const moodName = mood.name.split('·')[0].trim();
+    const sharedTags = mood.keywords.filter((kw) => place.mood_tags.includes(kw));
+    if (sharedTags.length > 0) {
+      return `${moodName} 감성의 대안으로, '${sharedTags[0]}' 같은 비슷한 분위기를 더 여유롭게 즐길 수 있어요.`;
+    }
+    return `비슷한 ${moodName} 분위기를 가진 대안 장소예요. 첫 번째 추천이 여의치 않을 때 추천합니다.`;
   }
 
   const season = getCurrentSeason();
-  return `${season} 방문 조건과 접근성이 안정적이며, ${mood.keywords[0]} 감성을 함께 갖춘 대안입니다.`;
+  const isAllSeason = place.best_season === '사계절';
+  const isSeasonMatch = place.best_season.includes(season);
+  const accessGood = place.accessibility.includes('상');
+  const noRisk = !hasRiskNote(place);
+
+  const parts: string[] = [];
+  if (isAllSeason) parts.push('사계절 방문 가능');
+  else if (isSeasonMatch) parts.push(`${season} 방문 최적`);
+  if (accessGood) parts.push('접근성 우수');
+  if (noRisk) parts.push('안전 유의사항 없음');
+
+  if (parts.length > 0) {
+    return `${parts.slice(0, 2).join(' · ')} 조건이 안정적인 대안이에요. 현재 계절에 부담 없이 방문할 수 있습니다.`;
+  }
+  return `${season} 방문 조건과 접근성이 안정적인 대안입니다.`;
 }
 
 export function getRecommendations(
   moodId: string,
-  prefs?: TravelPreferences
+  prefs?: TravelPreferences,
+  excludeIds?: string[]
 ): RecommendationCard[] {
   const mood = moodCategories.find((m) => m.id === moodId);
   if (!mood) return [];
 
+  const excluded = new Set(excludeIds ?? []);
+
   const eligible: Place[] = (places as Place[]).filter(
-    (p) => p.data_status === 'confirmed' && !isLodging(p)
+    (p) => p.data_status === 'confirmed' && !isLodging(p) && !excluded.has(p.place_id)
   );
 
   const withScores = eligible.map((p) => ({
@@ -218,7 +254,6 @@ export function getRecommendations(
   if (card3) usedIds.add(card3.place.place_id);
 
   // Fallback: fill any empty slots from remaining eligible places
-  // (guards against degenerate scoring edge cases)
   const slots = [card1, card2, card3];
   const fallback = withScores.filter((s) => !usedIds.has(s.place.place_id));
   for (let i = 0; i < slots.length; i++) {
