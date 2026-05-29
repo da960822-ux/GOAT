@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useColors } from '@/hooks/useColors';
+import { GoatLogo } from '@/src/components/GoatLogo';
 
 export default function LandingScreen() {
   const router = useRouter();
@@ -28,9 +29,7 @@ export default function LandingScreen() {
         <View style={styles.overlay} />
         <View style={[styles.heroContent, { paddingTop: topPad + 24 }]}>
           <View style={styles.logoRow}>
-            <View style={styles.logoBadge}>
-              <Text style={styles.logoText}>GOAT</Text>
-            </View>
+            <GoatLogo variant="badge" size="md" theme="dark" />
           </View>
           <Text style={styles.heroTagline}>
             강원에서 찾는{'\n'}나만의 해외여행 컷
@@ -86,25 +85,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   logoRow: { flexDirection: 'row' },
-  logoBadge: {
-    backgroundColor: '#C6E33D',
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 8,
-  },
-  logoText: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: '#1A2E05',
-    fontFamily: 'Inter_700Bold',
-    letterSpacing: 2,
-  },
   heroTagline: {
     fontSize: 32,
-    fontWeight: '800',
+    fontWeight: '700',
     color: '#FFFFFF',
     fontFamily: 'Inter_700Bold',
-    lineHeight: 42,
+    lineHeight: 44,
+    letterSpacing: 0.3,
   },
   bottom: {
     flex: 1,

@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, Text, Image } from 'react-native';
+import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
+import { GoatLogo } from '@/src/components/GoatLogo';
 
 export default function AboutScreen() {
   const router = useRouter();
@@ -13,17 +14,13 @@ export default function AboutScreen() {
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
         {/* Brand hero */}
-        <View style={[styles.hero, { backgroundColor: colors.secondary }]}>
-          <Image
-            source={require('@/assets/brand/goat-brand.png')}
-            style={styles.brandImage}
-            resizeMode="contain"
-          />
-          <View style={[styles.brandSentenceBox, { borderTopColor: colors.border }]}>
-            <Text style={[styles.brandSentence, { color: colors.primary }]}>
+        <View style={[styles.hero, { backgroundColor: colors.primary }]}>
+          <GoatLogo variant="stacked" size="lg" theme="dark" />
+          <View style={[styles.brandSentenceBox, { borderTopColor: 'rgba(255,255,255,0.15)' }]}>
+            <Text style={styles.brandSentence}>
               해외의 감성을, 강원도에서.
             </Text>
-            <Text style={[styles.brandDesc, { color: colors.mutedForeground }]}>
+            <Text style={styles.brandDesc}>
               GOAT는 강원도 안에서 발견하는 해외 여행 같은 순간을 제안하는 감성 여행 모바일 앱 브랜드입니다.
             </Text>
           </View>
@@ -107,22 +104,22 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
 
-  hero: { alignItems: 'center', paddingVertical: 28, paddingHorizontal: 24, marginBottom: 4 },
-  brandImage: { width: '100%', height: 180, marginBottom: 20 },
-  brandSentenceBox: { width: '100%', paddingTop: 18, borderTopWidth: 1, alignItems: 'center' },
+  hero: { alignItems: 'center', paddingVertical: 36, paddingHorizontal: 24, marginBottom: 4, gap: 24 },
+  brandSentenceBox: { width: '100%', paddingTop: 20, borderTopWidth: 1, alignItems: 'center', gap: 8 },
   brandSentence: {
     fontSize: 18,
-    fontWeight: '800',
+    fontWeight: '700',
     fontFamily: 'Inter_700Bold',
     letterSpacing: 0.5,
-    marginBottom: 8,
     textAlign: 'center',
+    color: '#FFFFFF',
   },
   brandDesc: {
     fontSize: 13,
     fontFamily: 'Inter_400Regular',
     lineHeight: 20,
     textAlign: 'center',
+    color: 'rgba(255,255,255,0.6)',
   },
 
   section: { paddingHorizontal: 20, paddingVertical: 20, borderBottomWidth: 1 },
