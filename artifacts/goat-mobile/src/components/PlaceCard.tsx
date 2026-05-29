@@ -4,6 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { RecommendationCard } from '@/src/types/place';
 import { RecommendationRoleBadge } from './RecommendationRoleBadge';
 import { openKakaoMap } from '@/src/services/mapLink';
+import { getRegionPalette } from '@/src/utils/regionColors';
 import { useColors } from '@/hooks/useColors';
 
 interface PlaceCardProps {
@@ -14,16 +15,13 @@ interface PlaceCardProps {
 export function PlaceCard({ card, onPress }: PlaceCardProps) {
   const { place, role, reason } = card;
   const colors = useColors();
+  const region = getRegionPalette(place.region_group);
 
   async function handleKakaoMap() {
     try {
       await openKakaoMap(place);
     } catch {
-      Alert.alert(
-        '지도 앱 열기',
-        '카카오맵을 열 수 없어 웹 지도로 연결할게요.',
-        [{ text: '확인' }]
-      );
+      Alert.alert('카카오맵을 열 수 없어요. 잠시 후 다시 시도해주세요.');
     }
   }
 
@@ -36,14 +34,25 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
     : place.best_time;
 
   return (
-    <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
-      <RecommendationRoleBadge role={role} />
+    <View style={[
+      styles.card,
+      { backgroundColor: colors.card, borderColor: colors.border, borderTopColor: region.accent, borderTopWidth: 3 },
+    ]}>
+      <View style={styles.topRow}>
+        <RecommendationRoleBadge role={role} />
+        <View style={[styles.regionBadge, { backgroundColor: region.bg, borderColor: region.border }]}>
+          <View style={[styles.regionDot, { backgroundColor: region.accent }]} />
+          <Text style={[styles.regionLabel, { color: region.accent }]}>
+            {place.city} · {region.label}
+          </Text>
+        </View>
+      </View>
 
       <View style={styles.nameRow}>
         <View style={styles.nameBlock}>
           <Text style={[styles.placeName, { color: colors.foreground }]}>{place.place_name}</Text>
           <Text style={[styles.meta, { color: colors.mutedForeground }]}>
-            {place.city} · {place.place_type}
+            {place.place_type}
           </Text>
         </View>
       </View>
@@ -53,9 +62,9 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
       </View>
 
       <View style={styles.infoChips}>
-        <InfoChip icon="clock" label={timeShort} colors={colors} />
-        <InfoChip icon="calendar" label={place.best_season} colors={colors} />
-        <InfoChip icon="navigation" label={accessShort} colors={colors} />
+        <InfoChip icon="clock" label={timeShort} accent={region.accent} bg={region.bg} border={region.border} />
+        <InfoChip icon="calendar" label={place.best_season} accent={region.accent} bg={region.bg} border={region.border} />
+        <InfoChip icon="navigation" label={accessShort} accent={region.accent} bg={region.bg} border={region.border} />
       </View>
 
       <View style={styles.tags}>
@@ -92,11 +101,13 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
   );
 }
 
-function InfoChip({ icon, label, colors }: { icon: string; label: string; colors: any }) {
+function InfoChip({ icon, label, accent, bg, border }: {
+  icon: string; label: string; accent: string; bg: string; border: string;
+}) {
   return (
-    <View style={[styles.chip, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
-      <Feather name={icon as any} size={11} color={colors.primary} />
-      <Text style={[styles.chipText, { color: colors.foreground }]}>{label}</Text>
+    <View style={[styles.chip, { backgroundColor: bg, borderColor: border }]}>
+      <Feather name={icon as any} size={11} color={accent} />
+      <Text style={[styles.chipText, { color: accent }]}>{label}</Text>
     </View>
   );
 }
@@ -112,8 +123,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 10,
     elevation: 2,
+    overflow: 'hidden',
   },
-  nameRow: { flexDirection: 'row', alignItems: 'center', marginTop: 12, marginBottom: 10 },
+  topRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
+  regionBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  regionDot: { width: 6, height: 6, borderRadius: 3 },
+  regionLabel: { fontSize: 11, fontFamily: 'Inter_600SemiBold' },
+  nameRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
   nameBlock: { flex: 1 },
   placeName: { fontSize: 20, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 3 },
   meta: { fontSize: 13, fontFamily: 'Inter_400Regular' },

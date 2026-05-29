@@ -70,8 +70,33 @@ export default function LandingScreen() {
           <Text style={[styles.ctaSecondaryText, { color: colors.primary }]}>사진으로 감성 찾기</Text>
         </TouchableOpacity>
 
+        <View style={styles.regionChips}>
+          {[
+            { label: '동해안', color: '#0284C7', bg: '#F0F9FF' },
+            { label: '고원', color: '#15803D', bg: '#F0FDF4' },
+            { label: '영서', color: '#4D7C0F', bg: '#F7FEE7' },
+            { label: '북부내륙', color: '#4338CA', bg: '#EEF2FF' },
+          ].map((r) => (
+            <View key={r.label} style={[styles.regionChip, { backgroundColor: r.bg }]}>
+              <Text style={[styles.regionChipText, { color: r.color }]}>{r.label}</Text>
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.infoRow}>
+          {[
+            { icon: 'map-pin', text: '강원 감성 명소 43곳' },
+            { icon: 'navigation', text: '카카오맵으로 바로 이동' },
+          ].map((item) => (
+            <View key={item.text} style={[styles.infoChip, { borderColor: colors.border }]}>
+              <Feather name={item.icon as any} size={11} color={colors.mutedForeground} />
+              <Text style={[styles.infoChipText, { color: colors.mutedForeground }]}>{item.text}</Text>
+            </View>
+          ))}
+        </View>
+
         <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
-          강원 감성 명소 43곳 · 로그인 없이 바로 시작
+          로그인 없이 바로 시작
         </Text>
 
         <View style={styles.footerLinks}>
@@ -153,8 +178,34 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   ctaSecondaryText: { fontSize: 15, fontFamily: 'Inter_600SemiBold' },
-  betaPill: { paddingHorizontal: 7, paddingVertical: 2, borderRadius: 5 },
-  betaPillText: { fontSize: 10, fontFamily: 'Inter_600SemiBold' },
+  regionChips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: 12,
+  },
+  regionChip: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  regionChipText: { fontSize: 12, fontFamily: 'Inter_600SemiBold' },
+  infoRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginBottom: 12,
+  },
+  infoChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  infoChipText: { fontSize: 12, fontFamily: 'Inter_400Regular' },
   disclaimer: { fontSize: 12, fontFamily: 'Inter_400Regular', textAlign: 'center', marginBottom: 16 },
   footerLinks: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 4, marginBottom: 8 },
   footerLink: { fontSize: 11, fontFamily: 'Inter_400Regular', paddingHorizontal: 6, paddingVertical: 2, textDecorationLine: 'underline' },

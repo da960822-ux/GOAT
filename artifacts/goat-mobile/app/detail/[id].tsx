@@ -9,6 +9,7 @@ import { RecommendationRoleBadge } from '@/src/components/RecommendationRoleBadg
 import { EmptyState } from '@/src/components/EmptyState';
 import { getPlaceById, getAlternatives } from '@/src/services/recommendationService';
 import { openKakaoMap } from '@/src/services/mapLink';
+import { getRegionPalette } from '@/src/utils/regionColors';
 import { useColors } from '@/hooks/useColors';
 import { Place, RecommendationRole } from '@/src/types/place';
 
@@ -21,6 +22,7 @@ export default function DetailScreen() {
 
   const place = getPlaceById(id ?? '');
   const alternatives = place ? getAlternatives(place.place_id, 3) : [];
+  const region = place ? getRegionPalette(place.region_group) : null;
 
   async function handleKakaoMap() {
     if (!place) return;
@@ -51,15 +53,20 @@ export default function DetailScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Hero */}
-        <View style={[styles.hero, { backgroundColor: colors.secondary }]}>
-          <View style={[styles.heroIcon, { backgroundColor: colors.primary }]}>
-            <Feather name="map-pin" size={28} color="#FFFFFF" />
+        <View style={[styles.hero, { backgroundColor: region?.bg ?? colors.secondary, borderBottomColor: region?.border ?? colors.border }]}>
+          <View style={[styles.heroIcon, { backgroundColor: region?.accent ?? colors.primary }]}>
+            <Feather name={region?.icon as any ?? 'map-pin'} size={28} color="#FFFFFF" />
           </View>
           <Text style={[styles.placeName, { color: colors.foreground }]}>{place.place_name}</Text>
-          <Text style={[styles.moodSubtitle, { color: colors.primary }]}>{place.primary_mood}</Text>
-          <Text style={[styles.metaLine, { color: colors.mutedForeground }]}>
-            {place.city} · {place.region_group} · {place.place_type}
-          </Text>
+          <Text style={[styles.moodSubtitle, { color: region?.accent ?? colors.primary }]}>{place.primary_mood}</Text>
+
+          <View style={[styles.regionPill, { backgroundColor: region?.bg ?? colors.secondary, borderColor: region?.border ?? colors.border }]}>
+            <View style={[styles.regionDot, { backgroundColor: region?.accent ?? colors.primary }]} />
+            <Text style={[styles.regionPillText, { color: region?.accent ?? colors.primary }]}>
+              {place.city} · {region?.label ?? place.region_group} · {place.place_type}
+            </Text>
+          </View>
+
           {typedRole && (
             <View style={styles.roleWrap}>
               <RecommendationRoleBadge role={typedRole} />
@@ -81,15 +88,20 @@ export default function DetailScreen() {
           </View>
         </InfoCard>
 
-        {/* Photo point — styled prominently */}
-        <View style={[styles.photoCard, { backgroundColor: '#F5F0FF', borderColor: '#DDD6FE' }]}>
+        {/* Gangwon scene point */}
+        <View style={[styles.photoCard, { backgroundColor: region?.bg ?? '#F5F0FF', borderColor: region?.border ?? '#DDD6FE' }]}>
           <View style={styles.photoCardHeader}>
-            <View style={[styles.photoCardIcon, { backgroundColor: colors.primary }]}>
+            <View style={[styles.photoCardIcon, { backgroundColor: region?.accent ?? colors.primary }]}>
               <Feather name="camera" size={14} color="#FFFFFF" />
             </View>
-            <Text style={[styles.photoCardTitle, { color: colors.primary }]}>포토 포인트</Text>
+            <Text style={[styles.photoCardTitle, { color: region?.accent ?? colors.primary }]}>강원 장면 포인트</Text>
+            <View style={[styles.sceneRegionTag, { backgroundColor: region?.border ?? '#EDE9FE' }]}>
+              <Text style={[styles.sceneRegionText, { color: region?.accent ?? colors.primary }]}>
+                {place.city} · {region?.label ?? place.region_group}
+              </Text>
+            </View>
           </View>
-          <Text style={[styles.photoCardText, { color: '#3B0764' }]}>{place.photo_point}</Text>
+          <Text style={[styles.photoCardText, { color: colors.foreground }]}>{place.photo_point}</Text>
         </View>
 
         {/* Visit info */}
@@ -203,11 +215,23 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     paddingHorizontal: 20,
     marginBottom: 4,
+    borderBottomWidth: 1,
   },
   heroIcon: { width: 64, height: 64, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
   placeName: { fontSize: 24, fontWeight: '800', fontFamily: 'Inter_700Bold', textAlign: 'center', marginBottom: 4 },
-  moodSubtitle: { fontSize: 14, fontFamily: 'Inter_600SemiBold', textAlign: 'center', marginBottom: 6 },
-  metaLine: { fontSize: 13, fontFamily: 'Inter_400Regular', textAlign: 'center', marginBottom: 12 },
+  moodSubtitle: { fontSize: 14, fontFamily: 'Inter_600SemiBold', textAlign: 'center', marginBottom: 10 },
+  regionPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+    marginBottom: 12,
+  },
+  regionDot: { width: 7, height: 7, borderRadius: 4 },
+  regionPillText: { fontSize: 12, fontFamily: 'Inter_600SemiBold' },
   roleWrap: { marginTop: 4 },
 
   infoCard: {
@@ -226,9 +250,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 16,
   },
-  photoCardHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 },
+  photoCardHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10, flexWrap: 'wrap' },
   photoCardIcon: { width: 28, height: 28, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
   photoCardTitle: { fontSize: 13, fontWeight: '600', fontFamily: 'Inter_600SemiBold' },
+  sceneRegionTag: {
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: 5,
+    marginLeft: 'auto',
+  },
+  sceneRegionText: { fontSize: 11, fontFamily: 'Inter_500Medium' },
   photoCardText: { fontSize: 15, fontFamily: 'Inter_400Regular', lineHeight: 22 },
 
   tagRow: { flexDirection: 'row', flexWrap: 'wrap' },
