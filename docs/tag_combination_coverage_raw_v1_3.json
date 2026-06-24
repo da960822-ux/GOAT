@@ -1,0 +1,8194 @@
+[
+  {
+    "id": "sea-road-sunset",
+    "description": "바다/해안도로/캘리포니아 감성",
+    "inputTags": [
+      "바다",
+      "해안도로",
+      "캘리포니아",
+      "로드트립",
+      "일몰",
+      "드라이브",
+      "오션뷰",
+      "청량함",
+      "이국적",
+      "서핑",
+      "해변",
+      "팜트리",
+      "고원",
+      "호수",
+      "숲",
+      "라벤더",
+      "발리",
+      "산토리니",
+      "유럽감성",
+      "일본감성",
+      "북유럽",
+      "알프스"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-031",
+      "GOAT-044",
+      "GOAT-040"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-031",
+        "name": "금진해변·헌화로 드라이브 코스",
+        "score": 98,
+        "matchedTags": [
+          "바다와가까운해안도로,서핑해변",
+          "해안도로",
+          "캘리포니아",
+          "로드트립",
+          "드라이브",
+          "서핑",
+          "해변"
+        ],
+        "breakdown": {
+          "tag": 161.3,
+          "sceneSpecific": 44,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 1,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 61.5,
+        "matchedTags": [
+          "캘리포니아",
+          "서핑",
+          "팜트리",
+          "발리"
+        ],
+        "breakdown": {
+          "tag": 56.6,
+          "sceneSpecific": 60,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 59.7,
+        "matchedTags": [
+          "외옹치바다향기로",
+          "해안",
+          "오션뷰",
+          "해안데크길",
+          "유럽"
+        ],
+        "breakdown": {
+          "tag": 94.3,
+          "sceneSpecific": 12,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 58,
+    "poolPolicy": "ALL58",
+    "poolReason": "후보 장소나 확장 장면 태그가 포함되어 58개 전체 후보를 사용했습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 42,
+    "strongCandidateCount": 16,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-031",
+        "name": "금진해변·헌화로 드라이브 코스",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "해안도로/해변",
+        "dataStatus": "future_candidate",
+        "score": 98,
+        "matchedTags": [
+          "바다와가까운해안도로,서핑해변",
+          "해안도로",
+          "캘리포니아",
+          "로드트립",
+          "드라이브",
+          "서핑",
+          "해변"
+        ],
+        "scoreBreakdown": {
+          "tag": 161.3,
+          "sceneSpecific": 44,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 1,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "city": "양양군",
+        "regionGroup": "동해안권",
+        "placeType": "서프비치",
+        "dataStatus": "confirmed",
+        "score": 61.5,
+        "matchedTags": [
+          "캘리포니아",
+          "서핑",
+          "팜트리",
+          "발리"
+        ],
+        "scoreBreakdown": {
+          "tag": 56.6,
+          "sceneSpecific": 60,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "해안데크길",
+        "dataStatus": "confirmed",
+        "score": 59.7,
+        "matchedTags": [
+          "외옹치바다향기로",
+          "해안",
+          "오션뷰",
+          "해안데크길",
+          "유럽"
+        ],
+        "scoreBreakdown": {
+          "tag": 94.3,
+          "sceneSpecific": 12,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "city": "삼척시",
+        "regionGroup": "동해안권",
+        "placeType": "해안 트레일",
+        "dataStatus": "confirmed",
+        "score": 56.2,
+        "matchedTags": [
+          "오션뷰",
+          "해안",
+          "유럽"
+        ],
+        "scoreBreakdown": {
+          "tag": 89.8,
+          "sceneSpecific": 12,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 5,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "지질/해안",
+        "dataStatus": "confirmed",
+        "score": 47.4,
+        "matchedTags": [
+          "해안",
+          "데크"
+        ],
+        "scoreBreakdown": {
+          "tag": 64.8,
+          "sceneSpecific": 12,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "해변 도로/포토존",
+        "dataStatus": "confirmed",
+        "score": 47.2,
+        "matchedTags": [
+          "바다도로",
+          "도로",
+          "해변",
+          "감성",
+          "일본"
+        ],
+        "scoreBreakdown": {
+          "tag": 76.2,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "해변/카페거리",
+        "dataStatus": "confirmed",
+        "score": 46.4,
+        "matchedTags": [
+          "해변",
+          "캘리포니아",
+          "일몰"
+        ],
+        "scoreBreakdown": {
+          "tag": 94.4,
+          "sceneSpecific": -20,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "철길/해변",
+        "dataStatus": "confirmed",
+        "score": 45.8,
+        "matchedTags": [
+          "바다",
+          "해변",
+          "감성"
+        ],
+        "scoreBreakdown": {
+          "tag": 76,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "카페/서프감성",
+        "dataStatus": "confirmed",
+        "score": 45.6,
+        "matchedTags": [
+          "캘리포니아",
+          "서핑보드",
+          "감성"
+        ],
+        "scoreBreakdown": {
+          "tag": 49.5,
+          "sceneSpecific": 28,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-039",
+        "name": "묵호등대·논골담길",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "해안 언덕마을",
+        "dataStatus": "future_candidate",
+        "score": 45.1,
+        "matchedTags": [
+          "바다",
+          "해안"
+        ],
+        "scoreBreakdown": {
+          "tag": 72.2,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 1,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "city": "양양군",
+        "regionGroup": "동해안권",
+        "placeType": "서프타운/해변권역",
+        "dataStatus": "confirmed",
+        "score": 44.5,
+        "matchedTags": [
+          "죽도해변",
+          "캘리포니아",
+          "서핑숍"
+        ],
+        "scoreBreakdown": {
+          "tag": 54.8,
+          "sceneSpecific": 20,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "해변",
+        "dataStatus": "confirmed",
+        "score": 41.3,
+        "matchedTags": [
+          "바다",
+          "해변"
+        ],
+        "scoreBreakdown": {
+          "tag": 64.1,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 3,
+          "weather": 4,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-027",
+        "name": "정동진 썬크루즈 리조트",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "리조트/랜드마크",
+        "dataStatus": "confirmed",
+        "score": 37.6,
+        "matchedTags": [
+          "해안"
+        ],
+        "scoreBreakdown": {
+          "tag": 62.3,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "미술관/절벽",
+        "dataStatus": "confirmed",
+        "score": 37.1,
+        "matchedTags": [
+          "오션뷰"
+        ],
+        "scoreBreakdown": {
+          "tag": 40.1,
+          "sceneSpecific": 12,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 4,
+          "weather": 5,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "재생관광/호수",
+        "dataStatus": "confirmed",
+        "score": 28.5,
+        "matchedTags": [
+          "에메랄드",
+          "호수",
+          "라벤더"
+        ],
+        "scoreBreakdown": {
+          "tag": 33.4,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 3,
+          "weather": 4,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "city": "삼척시",
+        "regionGroup": "동해안권",
+        "placeType": "항구/해변",
+        "dataStatus": "confirmed",
+        "score": 25,
+        "matchedTags": [
+          "에메랄드바다",
+          "해변",
+          "에메랄드"
+        ],
+        "scoreBreakdown": {
+          "tag": 29.1,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-031",
+        "name": "금진해변·헌화로 드라이브 코스",
+        "score": 98,
+        "matchedTags": [
+          "바다와가까운해안도로,서핑해변",
+          "해안도로",
+          "캘리포니아",
+          "로드트립",
+          "드라이브",
+          "서핑",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 61.5,
+        "matchedTags": [
+          "캘리포니아",
+          "서핑",
+          "팜트리",
+          "발리"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 59.7,
+        "matchedTags": [
+          "외옹치바다향기로",
+          "해안",
+          "오션뷰",
+          "해안데크길",
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 56.2,
+        "matchedTags": [
+          "오션뷰",
+          "해안",
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 47.4,
+        "matchedTags": [
+          "해안",
+          "데크"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 47.2,
+        "matchedTags": [
+          "바다도로",
+          "도로",
+          "해변",
+          "감성",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 46.4,
+        "matchedTags": [
+          "해변",
+          "캘리포니아",
+          "일몰"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 45.8,
+        "matchedTags": [
+          "바다",
+          "해변",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 45.6,
+        "matchedTags": [
+          "캘리포니아",
+          "서핑보드",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-039",
+        "name": "묵호등대·논골담길",
+        "score": 45.1,
+        "matchedTags": [
+          "바다",
+          "해안"
+        ]
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 44.5,
+        "matchedTags": [
+          "죽도해변",
+          "캘리포니아",
+          "서핑숍"
+        ]
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 41.3,
+        "matchedTags": [
+          "바다",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-027",
+        "name": "정동진 썬크루즈 리조트",
+        "score": 37.6,
+        "matchedTags": [
+          "해안"
+        ]
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 37.1,
+        "matchedTags": [
+          "오션뷰"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 28.5,
+        "matchedTags": [
+          "에메랄드",
+          "호수",
+          "라벤더"
+        ]
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 25,
+        "matchedTags": [
+          "에메랄드바다",
+          "해변",
+          "에메랄드"
+        ]
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 23.5,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-005",
+        "name": "아웃오브파크",
+        "score": 23.3,
+        "matchedTags": [
+          "로드트립",
+          "사인"
+        ]
+      },
+      {
+        "placeId": "GOAT-056",
+        "name": "용화해변",
+        "score": 23.1,
+        "matchedTags": [
+          "해변,케이블카연계동선,바다색",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 20.8,
+        "matchedTags": [
+          "작은",
+          "일본감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 20.8,
+        "matchedTags": [
+          "감성",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 20.8,
+        "matchedTags": [
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-052",
+        "name": "사유의 숲",
+        "score": 20.7,
+        "matchedTags": [
+          "숲",
+          "발리"
+        ]
+      },
+      {
+        "placeId": "GOAT-046",
+        "name": "두둥실",
+        "score": 20.1,
+        "matchedTags": [
+          "발리",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-053",
+        "name": "쏠비치 삼척·산토리니 광장",
+        "score": 19.3,
+        "matchedTags": [
+          "산토리니"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 19.1,
+        "matchedTags": [
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 18.3,
+        "matchedTags": [
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 17.3,
+        "matchedTags": [
+          "라벤더",
+          "프로방스"
+        ]
+      },
+      {
+        "placeId": "GOAT-034",
+        "name": "유메모리 리조트",
+        "score": 16.6,
+        "matchedTags": [
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-033",
+        "name": "휴식 료칸 풀빌라",
+        "score": 15.2,
+        "matchedTags": [
+          "일본숙소"
+        ]
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 14.2,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 14.2,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 13.9,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-049",
+        "name": "켄싱턴리조트 설악밸리",
+        "score": 12.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 12.6,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "score": 7.6,
+        "matchedTags": [
+          "일몰",
+          "산토리니"
+        ]
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 3.6,
+        "matchedTags": [
+          "고원",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-007",
+        "name": "스테이 조각밤",
+        "score": 2,
+        "matchedTags": [
+          "다도",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-008",
+        "name": "이와림",
+        "score": 2,
+        "matchedTags": [
+          "다도",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 1.5,
+        "matchedTags": [
+          "능선",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 0.4,
+        "matchedTags": [
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 0.2,
+        "matchedTags": [
+          "고원",
+          "샤스타데이지",
+          "유럽"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "japan-small-town",
+    "description": "일본 소도시/철길/골목 감성",
+    "inputTags": [
+      "일본",
+      "가마쿠라",
+      "골목",
+      "소도시",
+      "철길",
+      "골목산책",
+      "조용함",
+      "감성적",
+      "숲",
+      "정원",
+      "서점",
+      "성당",
+      "호수",
+      "카페",
+      "소품샵",
+      "일본감성",
+      "레트로"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-029",
+      "GOAT-037",
+      "GOAT-032"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 95.4,
+        "matchedTags": [
+          "일본",
+          "가마쿠라",
+          "소도시",
+          "철길",
+          "감성",
+          "해변"
+        ],
+        "breakdown": {
+          "tag": 153.9,
+          "sceneSpecific": 46,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 81.8,
+        "matchedTags": [
+          "일본",
+          "가마쿠라",
+          "소도시",
+          "감성",
+          "해변"
+        ],
+        "breakdown": {
+          "tag": 125.3,
+          "sceneSpecific": 38,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 74.8,
+        "matchedTags": [
+          "일본감성",
+          "골목",
+          "소도시",
+          "골목산책",
+          "거리",
+          "소품샵"
+        ],
+        "breakdown": {
+          "tag": 142.4,
+          "sceneSpecific": 4,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 26,
+    "strongCandidateCount": 12,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "철길/해변",
+        "dataStatus": "confirmed",
+        "score": 95.4,
+        "matchedTags": [
+          "일본",
+          "가마쿠라",
+          "소도시",
+          "철길",
+          "감성",
+          "해변"
+        ],
+        "scoreBreakdown": {
+          "tag": 153.9,
+          "sceneSpecific": 46,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "해변 도로/포토존",
+        "dataStatus": "confirmed",
+        "score": 81.8,
+        "matchedTags": [
+          "일본",
+          "가마쿠라",
+          "소도시",
+          "감성",
+          "해변"
+        ],
+        "scoreBreakdown": {
+          "tag": 125.3,
+          "sceneSpecific": 38,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "골목/소품샵",
+        "dataStatus": "confirmed",
+        "score": 74.8,
+        "matchedTags": [
+          "일본감성",
+          "골목",
+          "소도시",
+          "골목산책",
+          "거리",
+          "소품샵"
+        ],
+        "scoreBreakdown": {
+          "tag": 142.4,
+          "sceneSpecific": 4,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "서점/골목",
+        "dataStatus": "confirmed",
+        "score": 58.7,
+        "matchedTags": [
+          "일본",
+          "골목",
+          "산책",
+          "조용함",
+          "서점"
+        ],
+        "scoreBreakdown": {
+          "tag": 115.9,
+          "sceneSpecific": -8,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "시장/항구",
+        "dataStatus": "confirmed",
+        "score": 49.7,
+        "matchedTags": [
+          "골목"
+        ],
+        "scoreBreakdown": {
+          "tag": 66.2,
+          "sceneSpecific": 24,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "카페",
+        "dataStatus": "confirmed",
+        "score": 43.1,
+        "matchedTags": [
+          "일본",
+          "감성",
+          "카페",
+          "소품",
+          "레트로"
+        ],
+        "scoreBreakdown": {
+          "tag": 62.4,
+          "sceneSpecific": 8,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "항구/야간거리",
+        "dataStatus": "confirmed",
+        "score": 39.2,
+        "matchedTags": [
+          "감성",
+          "거리"
+        ],
+        "scoreBreakdown": {
+          "tag": 27.1,
+          "sceneSpecific": 38,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "야간거리/산책로",
+        "dataStatus": "confirmed",
+        "score": 34.7,
+        "matchedTags": [
+          "산책"
+        ],
+        "scoreBreakdown": {
+          "tag": 36.2,
+          "sceneSpecific": 18,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "카페/서프감성",
+        "dataStatus": "confirmed",
+        "score": 31.2,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ],
+        "scoreBreakdown": {
+          "tag": 33.9,
+          "sceneSpecific": 8,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "해안데크길",
+        "dataStatus": "confirmed",
+        "score": 28.2,
+        "matchedTags": [
+          "산책",
+          "해안데크길"
+        ],
+        "scoreBreakdown": {
+          "tag": 38.8,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "city": "삼척시",
+        "regionGroup": "동해안권",
+        "placeType": "카페/디저트공간",
+        "dataStatus": "confirmed",
+        "score": 27.9,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ],
+        "scoreBreakdown": {
+          "tag": 33.9,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "정원/농장",
+        "dataStatus": "confirmed",
+        "score": 26.7,
+        "matchedTags": [
+          "언덕",
+          "정원"
+        ],
+        "scoreBreakdown": {
+          "tag": 35.1,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 95.4,
+        "matchedTags": [
+          "일본",
+          "가마쿠라",
+          "소도시",
+          "철길",
+          "감성",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 81.8,
+        "matchedTags": [
+          "일본",
+          "가마쿠라",
+          "소도시",
+          "감성",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 74.8,
+        "matchedTags": [
+          "일본감성",
+          "골목",
+          "소도시",
+          "골목산책",
+          "거리",
+          "소품샵"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 58.7,
+        "matchedTags": [
+          "일본",
+          "골목",
+          "산책",
+          "조용함",
+          "서점"
+        ]
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 49.7,
+        "matchedTags": [
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 43.1,
+        "matchedTags": [
+          "일본",
+          "감성",
+          "카페",
+          "소품",
+          "레트로"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 39.2,
+        "matchedTags": [
+          "감성",
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 34.7,
+        "matchedTags": [
+          "산책"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 31.2,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 28.2,
+        "matchedTags": [
+          "산책",
+          "해안데크길"
+        ]
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 27.9,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 26.7,
+        "matchedTags": [
+          "언덕",
+          "정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 24.5,
+        "matchedTags": [
+          "소도시",
+          "성당"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 17.2,
+        "matchedTags": [
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 16.5,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 16,
+        "matchedTags": [
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 15.5,
+        "matchedTags": [
+          "에메랄드",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 14.8,
+        "matchedTags": [
+          "데크"
+        ]
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 14.4,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 13.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 13.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 13.1,
+        "matchedTags": [
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 12.1,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 9.1,
+        "matchedTags": [
+          "일본정원",
+          "감성",
+          "정원",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 8.1,
+        "matchedTags": [
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 6.4,
+        "matchedTags": [
+          "숲"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "alps-meadow",
+    "description": "알프스 목장/초원/동물 감성",
+    "inputTags": [
+      "초원",
+      "목장",
+      "알프스",
+      "가족여행",
+      "동물",
+      "자연친화",
+      "탁트임",
+      "고원",
+      "설경",
+      "유럽감성",
+      "숲",
+      "호수",
+      "정원",
+      "자작나무",
+      "해안도로",
+      "오션뷰",
+      "전망대",
+      "풍력발전기"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-017",
+      "GOAT-018",
+      "GOAT-019"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 86.5,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "가족여행",
+          "능선",
+          "설경"
+        ],
+        "breakdown": {
+          "tag": 146.7,
+          "sceneSpecific": 23,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 81.6,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "동물",
+          "설경"
+        ],
+        "breakdown": {
+          "tag": 134.8,
+          "sceneSpecific": 23,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 74.9,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "고원",
+          "설원",
+          "풍력발전기"
+        ],
+        "breakdown": {
+          "tag": 118.8,
+          "sceneSpecific": 23,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 19,
+    "strongCandidateCount": 9,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 86.5,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "가족여행",
+          "능선",
+          "설경"
+        ],
+        "scoreBreakdown": {
+          "tag": 146.7,
+          "sceneSpecific": 23,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 81.6,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "동물",
+          "설경"
+        ],
+        "scoreBreakdown": {
+          "tag": 134.8,
+          "sceneSpecific": 23,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 74.9,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "고원",
+          "설원",
+          "풍력발전기"
+        ],
+        "scoreBreakdown": {
+          "tag": 118.8,
+          "sceneSpecific": 23,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "city": "춘천시",
+        "regionGroup": "영서권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 66.7,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "가족여행",
+          "동물",
+          "능선"
+        ],
+        "scoreBreakdown": {
+          "tag": 168.1,
+          "sceneSpecific": 15,
+          "region": -35,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "city": "강릉시",
+        "regionGroup": "고원권",
+        "placeType": "고원/별관측",
+        "dataStatus": "confirmed",
+        "score": 43.6,
+        "matchedTags": [
+          "초원",
+          "고원",
+          "설원"
+        ],
+        "scoreBreakdown": {
+          "tag": 62.6,
+          "sceneSpecific": 8,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "숲/산악",
+        "dataStatus": "confirmed",
+        "score": 39.8,
+        "matchedTags": [
+          "북유럽",
+          "숲",
+          "전망"
+        ],
+        "scoreBreakdown": {
+          "tag": 21.5,
+          "sceneSpecific": 42,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "city": "태백시",
+        "regionGroup": "고원권",
+        "placeType": "고원/풍력발전",
+        "dataStatus": "confirmed",
+        "score": 39.4,
+        "matchedTags": [
+          "알프스",
+          "고원",
+          "풍력발전기"
+        ],
+        "scoreBreakdown": {
+          "tag": 49.5,
+          "sceneSpecific": 8,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 3,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "city": "정선군",
+        "regionGroup": "고원권",
+        "placeType": "산/억새",
+        "dataStatus": "confirmed",
+        "score": 38.1,
+        "matchedTags": [
+          "초원",
+          "능선"
+        ],
+        "scoreBreakdown": {
+          "tag": 55.5,
+          "sceneSpecific": 8,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "city": "횡성군",
+        "regionGroup": "고원권",
+        "placeType": "산/설경",
+        "dataStatus": "confirmed",
+        "score": 29.9,
+        "matchedTags": [
+          "능선",
+          "설경"
+        ],
+        "scoreBreakdown": {
+          "tag": 14.7,
+          "sceneSpecific": 25,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 86.5,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "가족여행",
+          "능선",
+          "설경"
+        ]
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 81.6,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "동물",
+          "설경"
+        ]
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 74.9,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "고원",
+          "설원",
+          "풍력발전기"
+        ]
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 66.7,
+        "matchedTags": [
+          "초원",
+          "목장",
+          "알프스",
+          "가족여행",
+          "동물",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 43.6,
+        "matchedTags": [
+          "초원",
+          "고원",
+          "설원"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 39.8,
+        "matchedTags": [
+          "북유럽",
+          "숲",
+          "전망"
+        ]
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 39.4,
+        "matchedTags": [
+          "알프스",
+          "고원",
+          "풍력발전기"
+        ]
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 38.1,
+        "matchedTags": [
+          "초원",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 29.9,
+        "matchedTags": [
+          "능선",
+          "설경"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 23.8,
+        "matchedTags": [
+          "고원",
+          "유럽",
+          "풍력발전기"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 19.4,
+        "matchedTags": [
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 17.3,
+        "matchedTags": [
+          "자연",
+          "겨울",
+          "북유럽",
+          "숲",
+          "자작나무"
+        ]
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 13.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "score": 12.1,
+        "matchedTags": [
+          "가족",
+          "동물",
+          "숲길"
+        ]
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 5.8,
+        "matchedTags": [
+          "가족여행",
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 4.8,
+        "matchedTags": [
+          "유럽",
+          "해안데크길",
+          "해안",
+          "오션뷰"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 2.3,
+        "matchedTags": [
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 1.2,
+        "matchedTags": [
+          "유럽",
+          "해안",
+          "오션뷰"
+        ]
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 0.6,
+        "matchedTags": [
+          "죽도해변",
+          "전망"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ryokan-lodging",
+    "description": "료칸/숙소 감성도 58개 후보 안에서 추천",
+    "inputTags": [
+      "료칸",
+      "일본",
+      "숙소",
+      "자쿠지",
+      "다도",
+      "히노끼탕",
+      "조용함",
+      "프리미엄숙소",
+      "일본감성",
+      "숲",
+      "정원",
+      "서점",
+      "성당",
+      "골목",
+      "호수"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-007",
+      "GOAT-008",
+      "GOAT-033"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-007",
+        "name": "스테이 조각밤",
+        "score": 91,
+        "matchedTags": [
+          "료칸",
+          "일본",
+          "숙소",
+          "자쿠지",
+          "다도",
+          "프리미엄숙소"
+        ],
+        "breakdown": {
+          "tag": 163.5,
+          "sceneSpecific": 18,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-008",
+        "name": "이와림",
+        "score": 91,
+        "matchedTags": [
+          "료칸",
+          "일본",
+          "숙소",
+          "자쿠지",
+          "다도",
+          "프리미엄숙소"
+        ],
+        "breakdown": {
+          "tag": 163.5,
+          "sceneSpecific": 18,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-033",
+        "name": "휴식 료칸 풀빌라",
+        "score": 76,
+        "matchedTags": [
+          "료칸",
+          "일본숙소",
+          "숙소",
+          "히노끼탕"
+        ],
+        "breakdown": {
+          "tag": 131.5,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 58,
+    "poolPolicy": "ALL58",
+    "poolReason": "숙소·료칸·리조트 감성이 포함되어 58개 전체 후보를 사용했습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 17,
+    "strongCandidateCount": 8,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-007",
+        "name": "스테이 조각밤",
+        "city": "춘천시",
+        "regionGroup": "영서권",
+        "placeType": "숙소",
+        "dataStatus": "confirmed",
+        "score": 91,
+        "matchedTags": [
+          "료칸",
+          "일본",
+          "숙소",
+          "자쿠지",
+          "다도",
+          "프리미엄숙소"
+        ],
+        "scoreBreakdown": {
+          "tag": 163.5,
+          "sceneSpecific": 18,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-008",
+        "name": "이와림",
+        "city": "춘천시",
+        "regionGroup": "영서권",
+        "placeType": "숙소",
+        "dataStatus": "confirmed",
+        "score": 91,
+        "matchedTags": [
+          "료칸",
+          "일본",
+          "숙소",
+          "자쿠지",
+          "다도",
+          "프리미엄숙소"
+        ],
+        "scoreBreakdown": {
+          "tag": 163.5,
+          "sceneSpecific": 18,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-033",
+        "name": "휴식 료칸 풀빌라",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "숙소",
+        "dataStatus": "confirmed",
+        "score": 76,
+        "matchedTags": [
+          "료칸",
+          "일본숙소",
+          "숙소",
+          "히노끼탕"
+        ],
+        "scoreBreakdown": {
+          "tag": 131.5,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-034",
+        "name": "유메모리 리조트",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "숙소",
+        "dataStatus": "confirmed",
+        "score": 69.4,
+        "matchedTags": [
+          "료칸",
+          "일본",
+          "숙소",
+          "히노끼",
+          "정원"
+        ],
+        "scoreBreakdown": {
+          "tag": 139.7,
+          "sceneSpecific": -10,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-052",
+        "name": "사유의 숲",
+        "city": "삼척시",
+        "regionGroup": "동해안권",
+        "placeType": "숙소/풀빌라",
+        "dataStatus": "confirmed",
+        "score": 47.4,
+        "matchedTags": [
+          "숙소",
+          "숲"
+        ],
+        "scoreBreakdown": {
+          "tag": 80.8,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-049",
+        "name": "켄싱턴리조트 설악밸리",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "리조트/숙소",
+        "dataStatus": "confirmed",
+        "score": 41,
+        "matchedTags": [
+          "숙소"
+        ],
+        "scoreBreakdown": {
+          "tag": 71.4,
+          "sceneSpecific": -10,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-005",
+        "name": "아웃오브파크",
+        "city": "춘천시",
+        "regionGroup": "영서권",
+        "placeType": "카라반/숙박",
+        "dataStatus": "confirmed",
+        "score": 32.5,
+        "matchedTags": [
+          "숙박"
+        ],
+        "scoreBreakdown": {
+          "tag": 45,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 0
+        }
+      },
+      {
+        "placeId": "GOAT-027",
+        "name": "정동진 썬크루즈 리조트",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "리조트/랜드마크",
+        "dataStatus": "confirmed",
+        "score": 28.3,
+        "matchedTags": [
+          "숙박"
+        ],
+        "scoreBreakdown": {
+          "tag": 45,
+          "sceneSpecific": -10,
+          "region": 0,
+          "lodgingIntent": 30,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 0
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-007",
+        "name": "스테이 조각밤",
+        "score": 91,
+        "matchedTags": [
+          "료칸",
+          "일본",
+          "숙소",
+          "자쿠지",
+          "다도",
+          "프리미엄숙소"
+        ]
+      },
+      {
+        "placeId": "GOAT-008",
+        "name": "이와림",
+        "score": 91,
+        "matchedTags": [
+          "료칸",
+          "일본",
+          "숙소",
+          "자쿠지",
+          "다도",
+          "프리미엄숙소"
+        ]
+      },
+      {
+        "placeId": "GOAT-033",
+        "name": "휴식 료칸 풀빌라",
+        "score": 76,
+        "matchedTags": [
+          "료칸",
+          "일본숙소",
+          "숙소",
+          "히노끼탕"
+        ]
+      },
+      {
+        "placeId": "GOAT-034",
+        "name": "유메모리 리조트",
+        "score": 69.4,
+        "matchedTags": [
+          "료칸",
+          "일본",
+          "숙소",
+          "히노끼",
+          "정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-052",
+        "name": "사유의 숲",
+        "score": 47.4,
+        "matchedTags": [
+          "숙소",
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-049",
+        "name": "켄싱턴리조트 설악밸리",
+        "score": 41,
+        "matchedTags": [
+          "숙소"
+        ]
+      },
+      {
+        "placeId": "GOAT-005",
+        "name": "아웃오브파크",
+        "score": 32.5,
+        "matchedTags": [
+          "숙박"
+        ]
+      },
+      {
+        "placeId": "GOAT-027",
+        "name": "정동진 썬크루즈 리조트",
+        "score": 28.3,
+        "matchedTags": [
+          "숙박"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 12.6,
+        "matchedTags": [
+          "일본",
+          "바다도로",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 11,
+        "matchedTags": [
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 9.9,
+        "matchedTags": [
+          "일본",
+          "조용함",
+          "서점",
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-015",
+        "name": "알펜시아 리조트",
+        "score": 9.6,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-053",
+        "name": "쏠비치 삼척·산토리니 광장",
+        "score": 9.6,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 7.6,
+        "matchedTags": [
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 1.3,
+        "matchedTags": [
+          "일본감성",
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 0.8,
+        "matchedTags": [
+          "일본",
+          "감성",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 0.2,
+        "matchedTags": [
+          "일본정원",
+          "감성",
+          "정원"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rainy-canyon",
+    "description": "흐린 날/협곡/비오는 날 대안",
+    "inputTags": [
+      "협곡",
+      "절벽",
+      "흐린날",
+      "아이슬란드",
+      "잔도",
+      "주상절리",
+      "웅장함",
+      "자연친화",
+      "에메랄드호수",
+      "숲",
+      "목장",
+      "초원",
+      "고원",
+      "호수",
+      "정원",
+      "자작나무"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-058",
+      "GOAT-010",
+      "GOAT-057"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-058",
+        "name": "한탄강 주상절리길",
+        "score": 94.3,
+        "matchedTags": [
+          "협곡",
+          "절벽",
+          "아이슬란드",
+          "잔도",
+          "주상절리"
+        ],
+        "breakdown": {
+          "tag": 156.2,
+          "sceneSpecific": 59,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 5,
+          "dataStatus": 1,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "score": 42.5,
+        "matchedTags": [
+          "협곡"
+        ],
+        "breakdown": {
+          "tag": 59,
+          "sceneSpecific": 35,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 40.8,
+        "matchedTags": [
+          "출렁다리",
+          "절벽"
+        ],
+        "breakdown": {
+          "tag": 74,
+          "sceneSpecific": 22,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 58,
+    "poolPolicy": "ALL58",
+    "poolReason": "후보 장소나 확장 장면 태그가 포함되어 58개 전체 후보를 사용했습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 56,
+    "strongCandidateCount": 4,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-058",
+        "name": "한탄강 주상절리길",
+        "city": "철원군",
+        "regionGroup": "북부내륙권",
+        "placeType": "협곡/잔도",
+        "dataStatus": "future_candidate",
+        "score": 94.3,
+        "matchedTags": [
+          "협곡",
+          "절벽",
+          "아이슬란드",
+          "잔도",
+          "주상절리"
+        ],
+        "scoreBreakdown": {
+          "tag": 156.2,
+          "sceneSpecific": 59,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 5,
+          "dataStatus": 1,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "city": "원주시",
+        "regionGroup": "영서권",
+        "placeType": "협곡/스카이워크",
+        "dataStatus": "confirmed",
+        "score": 42.5,
+        "matchedTags": [
+          "협곡"
+        ],
+        "scoreBreakdown": {
+          "tag": 59,
+          "sceneSpecific": 35,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "city": "삼척시",
+        "regionGroup": "동해안권",
+        "placeType": "해안 트레일",
+        "dataStatus": "confirmed",
+        "score": 40.8,
+        "matchedTags": [
+          "출렁다리",
+          "절벽"
+        ],
+        "scoreBreakdown": {
+          "tag": 74,
+          "sceneSpecific": 22,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "city": "인제군",
+        "regionGroup": "북부내륙권",
+        "placeType": "숲/자연",
+        "dataStatus": "confirmed",
+        "score": 25.6,
+        "matchedTags": [
+          "자연",
+          "숲",
+          "자작나무"
+        ],
+        "scoreBreakdown": {
+          "tag": 23.3,
+          "sceneSpecific": 30,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-058",
+        "name": "한탄강 주상절리길",
+        "score": 94.3,
+        "matchedTags": [
+          "협곡",
+          "절벽",
+          "아이슬란드",
+          "잔도",
+          "주상절리"
+        ]
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "score": 42.5,
+        "matchedTags": [
+          "협곡"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 40.8,
+        "matchedTags": [
+          "출렁다리",
+          "절벽"
+        ]
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 25.6,
+        "matchedTags": [
+          "자연",
+          "숲",
+          "자작나무"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 22.5,
+        "matchedTags": [
+          "흐린날"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 22.3,
+        "matchedTags": [
+          "절벽",
+          "해안데크길"
+        ]
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 22.1,
+        "matchedTags": [
+          "목장",
+          "초원",
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 21.5,
+        "matchedTags": [
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 20,
+        "matchedTags": [
+          "목장",
+          "초원",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 19.1,
+        "matchedTags": [
+          "목장",
+          "초원",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 18.2,
+        "matchedTags": [
+          "목장",
+          "초원"
+        ]
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 17.9,
+        "matchedTags": [
+          "절벽"
+        ]
+      },
+      {
+        "placeId": "GOAT-027",
+        "name": "정동진 썬크루즈 리조트",
+        "score": 17.9,
+        "matchedTags": [
+          "절벽"
+        ]
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 14.1,
+        "matchedTags": [
+          "초원",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 14,
+        "matchedTags": [
+          "아이슬란드형",
+          "에메랄드호수",
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 13.7,
+        "matchedTags": [
+          "초원",
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 13,
+        "matchedTags": [
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 8.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 8.1,
+        "matchedTags": [
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 8.1,
+        "matchedTags": [
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "score": 7.2,
+        "matchedTags": [
+          "정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 7.2,
+        "matchedTags": [
+          "정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "score": 6.6,
+        "matchedTags": [
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-009",
+        "name": "뮤지엄 SAN",
+        "score": 5.8,
+        "matchedTags": [
+          "워터가든,콘크리트동선,조각정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 5.2,
+        "matchedTags": [
+          "데크"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 4.7,
+        "matchedTags": [
+          "정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-015",
+        "name": "알펜시아 리조트",
+        "score": 4.2,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 3.8,
+        "matchedTags": [
+          "에메랄드"
+        ]
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-005",
+        "name": "아웃오브파크",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-007",
+        "name": "스테이 조각밤",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-008",
+        "name": "이와림",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-033",
+        "name": "휴식 료칸 풀빌라",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-049",
+        "name": "켄싱턴리조트 설악밸리",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-053",
+        "name": "쏠비치 삼척·산토리니 광장",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-031",
+        "name": "금진해변·헌화로 드라이브 코스",
+        "score": 2.5,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-039",
+        "name": "묵호등대·논골담길",
+        "score": 2.5,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-034",
+        "name": "유메모리 리조트",
+        "score": 2.2,
+        "matchedTags": [
+          "정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "score": 1.9,
+        "matchedTags": [
+          "숲길"
+        ]
+      },
+      {
+        "placeId": "GOAT-052",
+        "name": "사유의 숲",
+        "score": 1.5,
+        "matchedTags": [
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 0.8,
+        "matchedTags": []
+      }
+    ]
+  },
+  {
+    "id": "nordic-winter-forest",
+    "description": "북유럽 숲/겨울/설경 감성",
+    "inputTags": [
+      "북유럽",
+      "숲",
+      "자작나무",
+      "겨울",
+      "설경",
+      "숲길",
+      "눈꽃",
+      "조용함",
+      "자연친화",
+      "침엽수림",
+      "정원",
+      "서점",
+      "성당",
+      "골목",
+      "호수",
+      "목장",
+      "초원",
+      "고원"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-012",
+      "GOAT-020",
+      "GOAT-024"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 98,
+        "matchedTags": [
+          "북유럽",
+          "숲",
+          "자작나무",
+          "겨울",
+          "숲길",
+          "자연"
+        ],
+        "breakdown": {
+          "tag": 196.5,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 71.1,
+        "matchedTags": [
+          "북유럽",
+          "숲",
+          "숲길",
+          "침엽수림"
+        ],
+        "breakdown": {
+          "tag": 116.8,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 56.6,
+        "matchedTags": [
+          "겨울",
+          "설경",
+          "눈꽃",
+          "능선"
+        ],
+        "breakdown": {
+          "tag": 98.8,
+          "sceneSpecific": 25,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 43,
+    "strongCandidateCount": 8,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "city": "인제군",
+        "regionGroup": "북부내륙권",
+        "placeType": "숲/자연",
+        "dataStatus": "confirmed",
+        "score": 98,
+        "matchedTags": [
+          "북유럽",
+          "숲",
+          "자작나무",
+          "겨울",
+          "숲길",
+          "자연"
+        ],
+        "scoreBreakdown": {
+          "tag": 196.5,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "숲/산악",
+        "dataStatus": "confirmed",
+        "score": 71.1,
+        "matchedTags": [
+          "북유럽",
+          "숲",
+          "숲길",
+          "침엽수림"
+        ],
+        "scoreBreakdown": {
+          "tag": 116.8,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "city": "횡성군",
+        "regionGroup": "고원권",
+        "placeType": "산/설경",
+        "dataStatus": "confirmed",
+        "score": 56.6,
+        "matchedTags": [
+          "겨울",
+          "설경",
+          "눈꽃",
+          "능선"
+        ],
+        "scoreBreakdown": {
+          "tag": 98.8,
+          "sceneSpecific": 25,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 49.6,
+        "matchedTags": [
+          "설경",
+          "목장",
+          "초원",
+          "능선"
+        ],
+        "scoreBreakdown": {
+          "tag": 83.9,
+          "sceneSpecific": 23,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 47.8,
+        "matchedTags": [
+          "설경",
+          "목장",
+          "초원"
+        ],
+        "scoreBreakdown": {
+          "tag": 79.7,
+          "sceneSpecific": 23,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 44.2,
+        "matchedTags": [
+          "설원",
+          "목장",
+          "초원",
+          "고원"
+        ],
+        "scoreBreakdown": {
+          "tag": 71,
+          "sceneSpecific": 23,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "city": "강릉시",
+        "regionGroup": "고원권",
+        "placeType": "고원/별관측",
+        "dataStatus": "confirmed",
+        "score": 34.1,
+        "matchedTags": [
+          "설원",
+          "초원",
+          "고원"
+        ],
+        "scoreBreakdown": {
+          "tag": 66,
+          "sceneSpecific": 8,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "city": "홍천군",
+        "regionGroup": "영서권",
+        "placeType": "동물 테마파크",
+        "dataStatus": "confirmed",
+        "score": 28.3,
+        "matchedTags": [
+          "숲길"
+        ],
+        "scoreBreakdown": {
+          "tag": 61.9,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 98,
+        "matchedTags": [
+          "북유럽",
+          "숲",
+          "자작나무",
+          "겨울",
+          "숲길",
+          "자연"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 71.1,
+        "matchedTags": [
+          "북유럽",
+          "숲",
+          "숲길",
+          "침엽수림"
+        ]
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 56.6,
+        "matchedTags": [
+          "겨울",
+          "설경",
+          "눈꽃",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 49.6,
+        "matchedTags": [
+          "설경",
+          "목장",
+          "초원",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 47.8,
+        "matchedTags": [
+          "설경",
+          "목장",
+          "초원"
+        ]
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 44.2,
+        "matchedTags": [
+          "설원",
+          "목장",
+          "초원",
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 34.1,
+        "matchedTags": [
+          "설원",
+          "초원",
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "score": 28.3,
+        "matchedTags": [
+          "숲길"
+        ]
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 19.6,
+        "matchedTags": [
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 19.4,
+        "matchedTags": [
+          "유럽",
+          "성당",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 18.3,
+        "matchedTags": [
+          "목장",
+          "초원",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 16.8,
+        "matchedTags": [
+          "유럽",
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 15.9,
+        "matchedTags": [
+          "유럽",
+          "산책",
+          "해안데크길"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 15.4,
+        "matchedTags": [
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "score": 15.1,
+        "matchedTags": [
+          "유럽",
+          "정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 14.2,
+        "matchedTags": [
+          "조용함",
+          "서점",
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 11.6,
+        "matchedTags": [
+          "초원",
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 11.3,
+        "matchedTags": [
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 10.4,
+        "matchedTags": [
+          "언덕",
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 7.5,
+        "matchedTags": [
+          "정원",
+          "언덕"
+        ]
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 7.2,
+        "matchedTags": [
+          "정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 7.2,
+        "matchedTags": [
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 7.2,
+        "matchedTags": [
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 6.8,
+        "matchedTags": [
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 6.8,
+        "matchedTags": [
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "score": 4.7,
+        "matchedTags": [
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 4.7,
+        "matchedTags": [
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 4.6,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 4.4,
+        "matchedTags": [
+          "산책"
+        ]
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 4.4,
+        "matchedTags": [
+          "데크"
+        ]
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-009",
+        "name": "뮤지엄 SAN",
+        "score": 3.3,
+        "matchedTags": [
+          "워터가든,콘크리트동선,조각정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "score": 2.5,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 2.1,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 1.9,
+        "matchedTags": [
+          "에메랄드"
+        ]
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 0.8,
+        "matchedTags": []
+      }
+    ]
+  },
+  {
+    "id": "retro-night-market",
+    "description": "레트로/시장/야간 감성",
+    "inputTags": [
+      "레트로",
+      "시장",
+      "야간",
+      "후쿠오카",
+      "먹거리",
+      "밤거리",
+      "도시적",
+      "빈티지",
+      "항구",
+      "오사카",
+      "카페거리",
+      "구도심",
+      "버스킹",
+      "폐광",
+      "브라운관tv"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-043",
+      "GOAT-038",
+      "GOAT-035"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 77.5,
+        "matchedTags": [
+          "시장",
+          "야간",
+          "후쿠오카",
+          "먹거리",
+          "항구",
+          "오사카"
+        ],
+        "breakdown": {
+          "tag": 154.9,
+          "sceneSpecific": 24,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 71.2,
+        "matchedTags": [
+          "야간",
+          "후쿠오카",
+          "거리",
+          "밤거리",
+          "항구"
+        ],
+        "breakdown": {
+          "tag": 125.9,
+          "sceneSpecific": 38,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 66,
+        "matchedTags": [
+          "야간",
+          "후쿠오카",
+          "먹거리",
+          "오사카",
+          "구도심",
+          "버스킹"
+        ],
+        "breakdown": {
+          "tag": 133.4,
+          "sceneSpecific": 18,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 43,
+    "strongCandidateCount": 4,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "시장/항구",
+        "dataStatus": "confirmed",
+        "score": 77.5,
+        "matchedTags": [
+          "시장",
+          "야간",
+          "후쿠오카",
+          "먹거리",
+          "항구",
+          "오사카"
+        ],
+        "scoreBreakdown": {
+          "tag": 154.9,
+          "sceneSpecific": 24,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "항구/야간거리",
+        "dataStatus": "confirmed",
+        "score": 71.2,
+        "matchedTags": [
+          "야간",
+          "후쿠오카",
+          "거리",
+          "밤거리",
+          "항구"
+        ],
+        "scoreBreakdown": {
+          "tag": 125.9,
+          "sceneSpecific": 38,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "야간거리/산책로",
+        "dataStatus": "confirmed",
+        "score": 66,
+        "matchedTags": [
+          "야간",
+          "후쿠오카",
+          "먹거리",
+          "오사카",
+          "구도심",
+          "버스킹"
+        ],
+        "scoreBreakdown": {
+          "tag": 133.4,
+          "sceneSpecific": 18,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 6
+        }
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "카페",
+        "dataStatus": "confirmed",
+        "score": 27.2,
+        "matchedTags": [
+          "레트로",
+          "카페",
+          "브라운관tv"
+        ],
+        "scoreBreakdown": {
+          "tag": 54.3,
+          "sceneSpecific": 8,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 77.5,
+        "matchedTags": [
+          "시장",
+          "야간",
+          "후쿠오카",
+          "먹거리",
+          "항구",
+          "오사카"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 71.2,
+        "matchedTags": [
+          "야간",
+          "후쿠오카",
+          "거리",
+          "밤거리",
+          "항구"
+        ]
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 66,
+        "matchedTags": [
+          "야간",
+          "후쿠오카",
+          "먹거리",
+          "오사카",
+          "구도심",
+          "버스킹"
+        ]
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 27.2,
+        "matchedTags": [
+          "레트로",
+          "카페",
+          "브라운관tv"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 23.2,
+        "matchedTags": [
+          "레트로",
+          "폐광"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 22.6,
+        "matchedTags": [
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 22.6,
+        "matchedTags": [
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 12.9,
+        "matchedTags": [
+          "블루아워"
+        ]
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 5.3,
+        "matchedTags": [
+          "항구",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 5.1,
+        "matchedTags": [
+          "카페거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "score": 3.7,
+        "matchedTags": [
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 3.7,
+        "matchedTags": [
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 3.7,
+        "matchedTags": [
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 3.7,
+        "matchedTags": [
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 3,
+        "matchedTags": [
+          "재생관광"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 2.5,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 2.5,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 2.3,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 2.3,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 2.3,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 2.3,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-009",
+        "name": "뮤지엄 SAN",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 1.3,
+        "matchedTags": []
+      }
+    ]
+  },
+  {
+    "id": "plateau-stars",
+    "description": "고원/별/몽골 감성",
+    "inputTags": [
+      "고원",
+      "별",
+      "은하수",
+      "몽골",
+      "별보기",
+      "고랭지밭",
+      "탁트임",
+      "자연친화",
+      "밤",
+      "새벽",
+      "초원",
+      "해안도로",
+      "오션뷰",
+      "전망대",
+      "풍력발전기",
+      "숲",
+      "목장",
+      "호수",
+      "정원",
+      "자작나무"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-030",
+      "GOAT-016",
+      "GOAT-023"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 98,
+        "matchedTags": [
+          "고원",
+          "별",
+          "은하수",
+          "몽골",
+          "별보기",
+          "고랭지밭",
+          "초원"
+        ],
+        "breakdown": {
+          "tag": 204.8,
+          "sceneSpecific": 72,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 79.4,
+        "matchedTags": [
+          "고원",
+          "별",
+          "새벽",
+          "풍력발전기"
+        ],
+        "breakdown": {
+          "tag": 95.5,
+          "sceneSpecific": 62,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 76.9,
+        "matchedTags": [
+          "고원",
+          "별",
+          "고랭지",
+          "풍력발전기"
+        ],
+        "breakdown": {
+          "tag": 93.5,
+          "sceneSpecific": 62,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 15,
+    "strongCandidateCount": 9,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "city": "강릉시",
+        "regionGroup": "고원권",
+        "placeType": "고원/별관측",
+        "dataStatus": "confirmed",
+        "score": 98,
+        "matchedTags": [
+          "고원",
+          "별",
+          "은하수",
+          "몽골",
+          "별보기",
+          "고랭지밭",
+          "초원"
+        ],
+        "scoreBreakdown": {
+          "tag": 204.8,
+          "sceneSpecific": 72,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "고원/풍력발전",
+        "dataStatus": "confirmed",
+        "score": 79.4,
+        "matchedTags": [
+          "고원",
+          "별",
+          "새벽",
+          "풍력발전기"
+        ],
+        "scoreBreakdown": {
+          "tag": 95.5,
+          "sceneSpecific": 62,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "city": "태백시",
+        "regionGroup": "고원권",
+        "placeType": "고원/풍력발전",
+        "dataStatus": "confirmed",
+        "score": 76.9,
+        "matchedTags": [
+          "고원",
+          "별",
+          "고랭지",
+          "풍력발전기"
+        ],
+        "scoreBreakdown": {
+          "tag": 93.5,
+          "sceneSpecific": 62,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 62.4,
+        "matchedTags": [
+          "고원",
+          "초원",
+          "풍력발전기",
+          "목장"
+        ],
+        "scoreBreakdown": {
+          "tag": 71.8,
+          "sceneSpecific": 49,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 42,
+        "matchedTags": [
+          "능선",
+          "초원",
+          "목장"
+        ],
+        "scoreBreakdown": {
+          "tag": 48.8,
+          "sceneSpecific": 23,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "숲/산악",
+        "dataStatus": "confirmed",
+        "score": 37.7,
+        "matchedTags": [
+          "전망",
+          "숲"
+        ],
+        "scoreBreakdown": {
+          "tag": 19.6,
+          "sceneSpecific": 42,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "city": "횡성군",
+        "regionGroup": "고원권",
+        "placeType": "산/설경",
+        "dataStatus": "confirmed",
+        "score": 35.9,
+        "matchedTags": [
+          "능선"
+        ],
+        "scoreBreakdown": {
+          "tag": 32.3,
+          "sceneSpecific": 25,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 0
+        }
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "city": "정선군",
+        "regionGroup": "고원권",
+        "placeType": "산/억새",
+        "dataStatus": "confirmed",
+        "score": 33.6,
+        "matchedTags": [
+          "능선",
+          "초원"
+        ],
+        "scoreBreakdown": {
+          "tag": 43.6,
+          "sceneSpecific": 8,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "목장/초원",
+        "dataStatus": "confirmed",
+        "score": 28.5,
+        "matchedTags": [
+          "초원",
+          "목장"
+        ],
+        "scoreBreakdown": {
+          "tag": 16.5,
+          "sceneSpecific": 23,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 98,
+        "matchedTags": [
+          "고원",
+          "별",
+          "은하수",
+          "몽골",
+          "별보기",
+          "고랭지밭",
+          "초원"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 79.4,
+        "matchedTags": [
+          "고원",
+          "별",
+          "새벽",
+          "풍력발전기"
+        ]
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 76.9,
+        "matchedTags": [
+          "고원",
+          "별",
+          "고랭지",
+          "풍력발전기"
+        ]
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 62.4,
+        "matchedTags": [
+          "고원",
+          "초원",
+          "풍력발전기",
+          "목장"
+        ]
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 42,
+        "matchedTags": [
+          "능선",
+          "초원",
+          "목장"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 37.7,
+        "matchedTags": [
+          "전망",
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 35.9,
+        "matchedTags": [
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 33.6,
+        "matchedTags": [
+          "능선",
+          "초원"
+        ]
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 28.5,
+        "matchedTags": [
+          "초원",
+          "목장"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 15.4,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 13.9,
+        "matchedTags": [
+          "자연",
+          "숲",
+          "자작나무"
+        ]
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 13.2,
+        "matchedTags": [
+          "능선",
+          "초원",
+          "목장"
+        ]
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 11.7,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 7.2,
+        "matchedTags": [
+          "에메랄드",
+          "전망대",
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 0.5,
+        "matchedTags": [
+          "블루아워",
+          "해안",
+          "오션뷰",
+          "해안데크길"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bali-surf-beach",
+    "description": "발리/서핑/해변 감성",
+    "inputTags": [
+      "발리",
+      "서핑",
+      "해변",
+      "라탄",
+      "서프비치",
+      "비치클럽",
+      "청량함",
+      "이국적",
+      "프라이빗비치",
+      "팜트리",
+      "바다",
+      "고원",
+      "호수",
+      "숲",
+      "라벤더",
+      "캘리포니아",
+      "산토리니",
+      "유럽감성",
+      "일본감성",
+      "북유럽",
+      "알프스"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-044",
+      "GOAT-045",
+      "GOAT-047"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 98,
+        "matchedTags": [
+          "발리",
+          "서핑",
+          "서프비치",
+          "비치",
+          "팜트리",
+          "캘리포니아"
+        ],
+        "breakdown": {
+          "tag": 133.8,
+          "sceneSpecific": 110,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 56.1,
+        "matchedTags": [
+          "서핑숍",
+          "죽도해변",
+          "캘리포니아"
+        ],
+        "breakdown": {
+          "tag": 60.6,
+          "sceneSpecific": 40,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 51,
+        "matchedTags": [
+          "서핑보드",
+          "서프",
+          "캘리포니아",
+          "감성"
+        ],
+        "breakdown": {
+          "tag": 60.5,
+          "sceneSpecific": 28,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 29,
+    "strongCandidateCount": 11,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "city": "양양군",
+        "regionGroup": "동해안권",
+        "placeType": "서프비치",
+        "dataStatus": "confirmed",
+        "score": 98,
+        "matchedTags": [
+          "발리",
+          "서핑",
+          "서프비치",
+          "비치",
+          "팜트리",
+          "캘리포니아"
+        ],
+        "scoreBreakdown": {
+          "tag": 133.8,
+          "sceneSpecific": 110,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 7
+        }
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "city": "양양군",
+        "regionGroup": "동해안권",
+        "placeType": "서프타운/해변권역",
+        "dataStatus": "confirmed",
+        "score": 56.1,
+        "matchedTags": [
+          "서핑숍",
+          "죽도해변",
+          "캘리포니아"
+        ],
+        "scoreBreakdown": {
+          "tag": 60.6,
+          "sceneSpecific": 40,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "카페/서프감성",
+        "dataStatus": "confirmed",
+        "score": 51,
+        "matchedTags": [
+          "서핑보드",
+          "서프",
+          "캘리포니아",
+          "감성"
+        ],
+        "scoreBreakdown": {
+          "tag": 60.5,
+          "sceneSpecific": 28,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "철길/해변",
+        "dataStatus": "confirmed",
+        "score": 35,
+        "matchedTags": [
+          "해변",
+          "바다",
+          "감성"
+        ],
+        "scoreBreakdown": {
+          "tag": 50,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "해변 도로/포토존",
+        "dataStatus": "confirmed",
+        "score": 34.2,
+        "matchedTags": [
+          "해변",
+          "바다도로",
+          "감성",
+          "일본"
+        ],
+        "scoreBreakdown": {
+          "tag": 48.2,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "해안데크길",
+        "dataStatus": "confirmed",
+        "score": 30.3,
+        "matchedTags": [
+          "외옹치바다향기로",
+          "해안데크길",
+          "유럽"
+        ],
+        "scoreBreakdown": {
+          "tag": 26.7,
+          "sceneSpecific": 12,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "city": "삼척시",
+        "regionGroup": "동해안권",
+        "placeType": "항구/해변",
+        "dataStatus": "confirmed",
+        "score": 30.3,
+        "matchedTags": [
+          "해변",
+          "에메랄드바다",
+          "에메랄드"
+        ],
+        "scoreBreakdown": {
+          "tag": 38.8,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "해변",
+        "dataStatus": "confirmed",
+        "score": 30.1,
+        "matchedTags": [
+          "해변",
+          "바다"
+        ],
+        "scoreBreakdown": {
+          "tag": 38.1,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "city": "삼척시",
+        "regionGroup": "동해안권",
+        "placeType": "해안 트레일",
+        "dataStatus": "confirmed",
+        "score": 28.8,
+        "matchedTags": [
+          "오션뷰",
+          "유럽"
+        ],
+        "scoreBreakdown": {
+          "tag": 29.2,
+          "sceneSpecific": 12,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "지질/해안",
+        "dataStatus": "confirmed",
+        "score": 27.5,
+        "matchedTags": [
+          "해안",
+          "데크"
+        ],
+        "scoreBreakdown": {
+          "tag": 19.9,
+          "sceneSpecific": 12,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 0
+        }
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "해변 포토존",
+        "dataStatus": "confirmed",
+        "score": 26.4,
+        "matchedTags": [
+          "해변"
+        ],
+        "scoreBreakdown": {
+          "tag": 35.3,
+          "sceneSpecific": 0,
+          "region": 26,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 98,
+        "matchedTags": [
+          "발리",
+          "서핑",
+          "서프비치",
+          "비치",
+          "팜트리",
+          "캘리포니아"
+        ]
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 56.1,
+        "matchedTags": [
+          "서핑숍",
+          "죽도해변",
+          "캘리포니아"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 51,
+        "matchedTags": [
+          "서핑보드",
+          "서프",
+          "캘리포니아",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 35,
+        "matchedTags": [
+          "해변",
+          "바다",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 34.2,
+        "matchedTags": [
+          "해변",
+          "바다도로",
+          "감성",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 30.3,
+        "matchedTags": [
+          "외옹치바다향기로",
+          "해안데크길",
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 30.3,
+        "matchedTags": [
+          "해변",
+          "에메랄드바다",
+          "에메랄드"
+        ]
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 30.1,
+        "matchedTags": [
+          "해변",
+          "바다"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 28.8,
+        "matchedTags": [
+          "오션뷰",
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 27.5,
+        "matchedTags": [
+          "해안",
+          "데크"
+        ]
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 26.4,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 24.5,
+        "matchedTags": [
+          "해변",
+          "캘리포니아"
+        ]
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 23.9,
+        "matchedTags": [
+          "오션뷰"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 23.8,
+        "matchedTags": [
+          "에메랄드",
+          "호수",
+          "라벤더"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 19.1,
+        "matchedTags": [
+          "작은",
+          "일본감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 19.1,
+        "matchedTags": [
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 19.1,
+        "matchedTags": [
+          "감성",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 19.1,
+        "matchedTags": [
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 17.3,
+        "matchedTags": [
+          "라벤더",
+          "프로방스"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 16.6,
+        "matchedTags": [
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 14.2,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 14.2,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 12.6,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 12.6,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 6.1,
+        "matchedTags": [
+          "고원",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 4,
+        "matchedTags": [
+          "능선",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 2.2,
+        "matchedTags": [
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 0.7,
+        "matchedTags": [
+          "능선",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 0.2,
+        "matchedTags": [
+          "고원",
+          "샤스타데이지",
+          "유럽"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "europe-garden-church",
+    "description": "유럽 정원/성당 감성",
+    "inputTags": [
+      "유럽감성",
+      "정원",
+      "성당",
+      "수목원",
+      "유럽마을",
+      "낭만적",
+      "조용함",
+      "꽃밭",
+      "라벤더",
+      "고즈넉함",
+      "일몰",
+      "블루아워",
+      "카페",
+      "산토리니",
+      "숲",
+      "서점",
+      "골목",
+      "호수"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-001",
+      "GOAT-013",
+      "GOAT-050"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "score": 57.8,
+        "matchedTags": [
+          "유럽",
+          "정원",
+          "수목원"
+        ],
+        "breakdown": {
+          "tag": 100.8,
+          "sceneSpecific": 30,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 49.2,
+        "matchedTags": [
+          "유럽",
+          "성당",
+          "유럽마을",
+          "고즈넉함",
+          "소도시"
+        ],
+        "breakdown": {
+          "tag": 94,
+          "sceneSpecific": 16,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 45.8,
+        "matchedTags": [
+          "프로방스",
+          "정원",
+          "꽃밭",
+          "라벤더",
+          "언덕"
+        ],
+        "breakdown": {
+          "tag": 77.9,
+          "sceneSpecific": 30,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 39,
+    "strongCandidateCount": 7,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "city": "춘천시",
+        "regionGroup": "영서권",
+        "placeType": "수목원/정원",
+        "dataStatus": "confirmed",
+        "score": 57.8,
+        "matchedTags": [
+          "유럽",
+          "정원",
+          "수목원"
+        ],
+        "scoreBreakdown": {
+          "tag": 100.8,
+          "sceneSpecific": 30,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "city": "인제군",
+        "regionGroup": "북부내륙권",
+        "placeType": "건축/종교시설",
+        "dataStatus": "confirmed",
+        "score": 49.2,
+        "matchedTags": [
+          "유럽",
+          "성당",
+          "유럽마을",
+          "고즈넉함",
+          "소도시"
+        ],
+        "scoreBreakdown": {
+          "tag": 94,
+          "sceneSpecific": 16,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "정원/농장",
+        "dataStatus": "confirmed",
+        "score": 45.8,
+        "matchedTags": [
+          "프로방스",
+          "정원",
+          "꽃밭",
+          "라벤더",
+          "언덕"
+        ],
+        "scoreBreakdown": {
+          "tag": 77.9,
+          "sceneSpecific": 30,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "city": "춘천시",
+        "regionGroup": "영서권",
+        "placeType": "카페/정원",
+        "dataStatus": "confirmed",
+        "score": 40.5,
+        "matchedTags": [
+          "감성",
+          "정원",
+          "카페"
+        ],
+        "scoreBreakdown": {
+          "tag": 71.1,
+          "sceneSpecific": 18,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "city": "인제군",
+        "regionGroup": "북부내륙권",
+        "placeType": "숲/자연",
+        "dataStatus": "confirmed",
+        "score": 29.2,
+        "matchedTags": [
+          "북유럽",
+          "숲"
+        ],
+        "scoreBreakdown": {
+          "tag": 26.1,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "숲/산악",
+        "dataStatus": "confirmed",
+        "score": 25.9,
+        "matchedTags": [
+          "북유럽",
+          "숲"
+        ],
+        "scoreBreakdown": {
+          "tag": 26.1,
+          "sceneSpecific": 34,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "해안데크길",
+        "dataStatus": "confirmed",
+        "score": 25.7,
+        "matchedTags": [
+          "유럽",
+          "블루아워",
+          "산책",
+          "해안데크길"
+        ],
+        "scoreBreakdown": {
+          "tag": 53.6,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "score": 57.8,
+        "matchedTags": [
+          "유럽",
+          "정원",
+          "수목원"
+        ]
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 49.2,
+        "matchedTags": [
+          "유럽",
+          "성당",
+          "유럽마을",
+          "고즈넉함",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 45.8,
+        "matchedTags": [
+          "프로방스",
+          "정원",
+          "꽃밭",
+          "라벤더",
+          "언덕"
+        ]
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 40.5,
+        "matchedTags": [
+          "감성",
+          "정원",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 29.2,
+        "matchedTags": [
+          "북유럽",
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 25.9,
+        "matchedTags": [
+          "북유럽",
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 25.7,
+        "matchedTags": [
+          "유럽",
+          "블루아워",
+          "산책",
+          "해안데크길"
+        ]
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 24.2,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "score": 20,
+        "matchedTags": [
+          "일몰",
+          "카페",
+          "산토리니"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 19.9,
+        "matchedTags": [
+          "유럽",
+          "샤스타데이지"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 19.7,
+        "matchedTags": [
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 19.2,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 18.2,
+        "matchedTags": [
+          "감성",
+          "해변",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 18.2,
+        "matchedTags": [
+          "감성",
+          "해변",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 18.2,
+        "matchedTags": [
+          "감성",
+          "야간",
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 17.2,
+        "matchedTags": [
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-009",
+        "name": "뮤지엄 SAN",
+        "score": 17.1,
+        "matchedTags": [
+          "워터가든,콘크리트동선,조각정원"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 16.7,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 16.4,
+        "matchedTags": [
+          "작은",
+          "거리",
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 15.3,
+        "matchedTags": [
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 14.2,
+        "matchedTags": [
+          "조용함",
+          "서점",
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 11.1,
+        "matchedTags": [
+          "일몰",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 9.1,
+        "matchedTags": [
+          "라벤더",
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 9,
+        "matchedTags": [
+          "야간",
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 7.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 6.2,
+        "matchedTags": [
+          "야간",
+          "산책"
+        ]
+      },
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "score": 4.7,
+        "matchedTags": [
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 4.4,
+        "matchedTags": [
+          "데크"
+        ]
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 3,
+        "matchedTags": [
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 3,
+        "matchedTags": [
+          "해변",
+          "에메랄드"
+        ]
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "score": 2.6,
+        "matchedTags": [
+          "숲길"
+        ]
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 1.9,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 1.9,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 0.8,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 0.2,
+        "matchedTags": [
+          "언덕"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lake-reflection-sns",
+    "description": "호수/반영/SNS 감성",
+    "inputTags": [
+      "호수",
+      "반영",
+      "SNS",
+      "데크길",
+      "랜드아트",
+      "산책",
+      "청량함",
+      "감성적",
+      "바다",
+      "해변",
+      "서핑",
+      "고원",
+      "숲",
+      "라벤더",
+      "카페",
+      "골목",
+      "소품샵",
+      "서점",
+      "일본감성",
+      "레트로"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-014",
+      "GOAT-036",
+      "GOAT-040"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "score": 87.8,
+        "matchedTags": [
+          "호수",
+          "반영",
+          "sns",
+          "데크길",
+          "랜드아트"
+        ],
+        "breakdown": {
+          "tag": 160.6,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 62.2,
+        "matchedTags": [
+          "호수",
+          "sns",
+          "에메랄드",
+          "라벤더"
+        ],
+        "breakdown": {
+          "tag": 109.3,
+          "sceneSpecific": 38,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 40.8,
+        "matchedTags": [
+          "해안데크길",
+          "산책",
+          "외옹치바다향기로"
+        ],
+        "breakdown": {
+          "tag": 76,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 43,
+    "strongCandidateCount": 5,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "city": "양구군",
+        "regionGroup": "북부내륙권",
+        "placeType": "호수/랜드아트",
+        "dataStatus": "confirmed",
+        "score": 87.8,
+        "matchedTags": [
+          "호수",
+          "반영",
+          "sns",
+          "데크길",
+          "랜드아트"
+        ],
+        "scoreBreakdown": {
+          "tag": 160.6,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 5
+        }
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "재생관광/호수",
+        "dataStatus": "confirmed",
+        "score": 62.2,
+        "matchedTags": [
+          "호수",
+          "sns",
+          "에메랄드",
+          "라벤더"
+        ],
+        "scoreBreakdown": {
+          "tag": 109.3,
+          "sceneSpecific": 38,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": -1,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "해안데크길",
+        "dataStatus": "confirmed",
+        "score": 40.8,
+        "matchedTags": [
+          "해안데크길",
+          "산책",
+          "외옹치바다향기로"
+        ],
+        "scoreBreakdown": {
+          "tag": 76,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "골목/소품샵",
+        "dataStatus": "confirmed",
+        "score": 28,
+        "matchedTags": [
+          "산책",
+          "거리",
+          "골목",
+          "소품샵",
+          "일본감성"
+        ],
+        "scoreBreakdown": {
+          "tag": 59.2,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "서점/골목",
+        "dataStatus": "confirmed",
+        "score": 25.5,
+        "matchedTags": [
+          "산책",
+          "골목",
+          "서점",
+          "일본"
+        ],
+        "scoreBreakdown": {
+          "tag": 53.3,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 5,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "score": 87.8,
+        "matchedTags": [
+          "호수",
+          "반영",
+          "sns",
+          "데크길",
+          "랜드아트"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 62.2,
+        "matchedTags": [
+          "호수",
+          "sns",
+          "에메랄드",
+          "라벤더"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 40.8,
+        "matchedTags": [
+          "해안데크길",
+          "산책",
+          "외옹치바다향기로"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 28,
+        "matchedTags": [
+          "산책",
+          "거리",
+          "골목",
+          "소품샵",
+          "일본감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 25.5,
+        "matchedTags": [
+          "산책",
+          "골목",
+          "서점",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 24.7,
+        "matchedTags": [
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 24.6,
+        "matchedTags": [
+          "감성",
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 23.8,
+        "matchedTags": [
+          "산책"
+        ]
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 22.3,
+        "matchedTags": [
+          "데크",
+          "해안"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 21.4,
+        "matchedTags": [
+          "숲"
+        ]
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 21.3,
+        "matchedTags": [
+          "감성",
+          "카페",
+          "소품",
+          "일본",
+          "레트로"
+        ]
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 18.4,
+        "matchedTags": [
+          "에메랄드",
+          "에메랄드바다",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 17.2,
+        "matchedTags": [
+          "골목"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 16.6,
+        "matchedTags": [
+          "감성",
+          "바다",
+          "해변",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 15.8,
+        "matchedTags": [
+          "감성",
+          "바다도로",
+          "해변",
+          "소도시",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 12.1,
+        "matchedTags": [
+          "해변",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 11.6,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 11.6,
+        "matchedTags": [
+          "감성",
+          "서핑보드",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 11.6,
+        "matchedTags": [
+          "감성",
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 9.9,
+        "matchedTags": [
+          "죽도해변",
+          "서핑숍",
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 9.7,
+        "matchedTags": [
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 8.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 7.9,
+        "matchedTags": [
+          "바다",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "score": 7.2,
+        "matchedTags": [
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 7.2,
+        "matchedTags": [
+          "레트로"
+        ]
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 6.8,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 6.5,
+        "matchedTags": [
+          "고원",
+          "샤스타데이지"
+        ]
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 6.2,
+        "matchedTags": [
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 5.8,
+        "matchedTags": [
+          "고원",
+          "언덕"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 5.8,
+        "matchedTags": [
+          "라벤더",
+          "언덕"
+        ]
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 5.1,
+        "matchedTags": [
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "score": 5.1,
+        "matchedTags": [
+          "숲길"
+        ]
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 5.1,
+        "matchedTags": [
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 4.7,
+        "matchedTags": [
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 4.7,
+        "matchedTags": [
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 4.7,
+        "matchedTags": [
+          "서핑"
+        ]
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 3.6,
+        "matchedTags": [
+          "오션뷰"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 3.6,
+        "matchedTags": [
+          "오션뷰"
+        ]
+      },
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-009",
+        "name": "뮤지엄 SAN",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "score": 3.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 2.6,
+        "matchedTags": [
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 0.8,
+        "matchedTags": []
+      }
+    ]
+  },
+  {
+    "id": "japanese-retro-cafe",
+    "description": "일본풍/레트로/카페 감성",
+    "inputTags": [
+      "카페",
+      "일본풍",
+      "레트로",
+      "디저트",
+      "우드톤",
+      "브라운관TV",
+      "감성적",
+      "빈티지",
+      "골목",
+      "소품샵",
+      "서점",
+      "일본감성",
+      "폐광",
+      "시장",
+      "구도심"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-042",
+      "GOAT-054",
+      "GOAT-006"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 98,
+        "matchedTags": [
+          "카페",
+          "일본풍",
+          "레트로",
+          "디저트",
+          "우드톤",
+          "브라운관tv",
+          "감성",
+          "소품"
+        ],
+        "breakdown": {
+          "tag": 211.7,
+          "sceneSpecific": 48,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 9
+        }
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 49.8,
+        "matchedTags": [
+          "카페",
+          "감성",
+          "디저트"
+        ],
+        "breakdown": {
+          "tag": 98.6,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 42.3,
+        "matchedTags": [
+          "카페",
+          "감성"
+        ],
+        "breakdown": {
+          "tag": 80.6,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 43,
+    "poolPolicy": "PRIMARY43",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": false,
+    "allPositiveCount": 43,
+    "strongCandidateCount": 12,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "카페",
+        "dataStatus": "confirmed",
+        "score": 98,
+        "matchedTags": [
+          "카페",
+          "일본풍",
+          "레트로",
+          "디저트",
+          "우드톤",
+          "브라운관tv",
+          "감성",
+          "소품"
+        ],
+        "scoreBreakdown": {
+          "tag": 211.7,
+          "sceneSpecific": 48,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 9
+        }
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "city": "삼척시",
+        "regionGroup": "동해안권",
+        "placeType": "카페/디저트공간",
+        "dataStatus": "confirmed",
+        "score": 49.8,
+        "matchedTags": [
+          "카페",
+          "감성",
+          "디저트"
+        ],
+        "scoreBreakdown": {
+          "tag": 98.6,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "city": "춘천시",
+        "regionGroup": "영서권",
+        "placeType": "카페/정원",
+        "dataStatus": "confirmed",
+        "score": 42.3,
+        "matchedTags": [
+          "카페",
+          "감성"
+        ],
+        "scoreBreakdown": {
+          "tag": 80.6,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "city": "고성군",
+        "regionGroup": "동해안권",
+        "placeType": "카페/서프감성",
+        "dataStatus": "confirmed",
+        "score": 42.3,
+        "matchedTags": [
+          "카페",
+          "감성"
+        ],
+        "scoreBreakdown": {
+          "tag": 80.6,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "항구/야간거리",
+        "dataStatus": "confirmed",
+        "score": 36,
+        "matchedTags": [
+          "거리",
+          "감성"
+        ],
+        "scoreBreakdown": {
+          "tag": 45.4,
+          "sceneSpecific": 38,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "골목/소품샵",
+        "dataStatus": "confirmed",
+        "score": 34.9,
+        "matchedTags": [
+          "거리",
+          "일본감성",
+          "골목",
+          "소품샵"
+        ],
+        "scoreBreakdown": {
+          "tag": 68.8,
+          "sceneSpecific": 8,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "city": "춘천시",
+        "regionGroup": "영서권",
+        "placeType": "카페/전망공간",
+        "dataStatus": "confirmed",
+        "score": 32.5,
+        "matchedTags": [
+          "카페"
+        ],
+        "scoreBreakdown": {
+          "tag": 61,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "해변/카페거리",
+        "dataStatus": "confirmed",
+        "score": 32.5,
+        "matchedTags": [
+          "카페"
+        ],
+        "scoreBreakdown": {
+          "tag": 61,
+          "sceneSpecific": 14,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 1
+        }
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "city": "동해시",
+        "regionGroup": "동해안권",
+        "placeType": "해변 도로/포토존",
+        "dataStatus": "confirmed",
+        "score": 28.6,
+        "matchedTags": [
+          "해변",
+          "일본",
+          "감성",
+          "소도시"
+        ],
+        "scoreBreakdown": {
+          "tag": 61.6,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "city": "정선군",
+        "regionGroup": "고원권",
+        "placeType": "산업유산/미술관",
+        "dataStatus": "confirmed",
+        "score": 28.5,
+        "matchedTags": [
+          "레트로",
+          "폐광"
+        ],
+        "scoreBreakdown": {
+          "tag": 61.4,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "철길/해변",
+        "dataStatus": "confirmed",
+        "score": 26.9,
+        "matchedTags": [
+          "해변",
+          "일본",
+          "감성",
+          "소도시"
+        ],
+        "scoreBreakdown": {
+          "tag": 61.6,
+          "sceneSpecific": 0,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "city": "속초시",
+        "regionGroup": "동해안권",
+        "placeType": "서점/골목",
+        "dataStatus": "confirmed",
+        "score": 26.1,
+        "matchedTags": [
+          "일본",
+          "골목",
+          "서점"
+        ],
+        "scoreBreakdown": {
+          "tag": 45.7,
+          "sceneSpecific": 10,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 4,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 4
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 98,
+        "matchedTags": [
+          "카페",
+          "일본풍",
+          "레트로",
+          "디저트",
+          "우드톤",
+          "브라운관tv",
+          "감성",
+          "소품"
+        ]
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 49.8,
+        "matchedTags": [
+          "카페",
+          "감성",
+          "디저트"
+        ]
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 42.3,
+        "matchedTags": [
+          "카페",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 42.3,
+        "matchedTags": [
+          "카페",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 36,
+        "matchedTags": [
+          "거리",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 34.9,
+        "matchedTags": [
+          "거리",
+          "일본감성",
+          "골목",
+          "소품샵"
+        ]
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "score": 32.5,
+        "matchedTags": [
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 32.5,
+        "matchedTags": [
+          "카페"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 28.6,
+        "matchedTags": [
+          "해변",
+          "일본",
+          "감성",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 28.5,
+        "matchedTags": [
+          "레트로",
+          "폐광"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 26.9,
+        "matchedTags": [
+          "해변",
+          "일본",
+          "감성",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 26.1,
+        "matchedTags": [
+          "일본",
+          "골목",
+          "서점"
+        ]
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 19,
+        "matchedTags": [
+          "골목",
+          "시장"
+        ]
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 13.7,
+        "matchedTags": [
+          "산책",
+          "구도심"
+        ]
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 13.3,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 13.3,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 12,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 12,
+        "matchedTags": [
+          "거리"
+        ]
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 9.5,
+        "matchedTags": [
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 4.3,
+        "matchedTags": [
+          "재생관광"
+        ]
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 2.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-009",
+        "name": "뮤지엄 SAN",
+        "score": 2.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "score": 2.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 2.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 2.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 2.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 2.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 2.9,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 2.3,
+        "matchedTags": [
+          "언덕"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 2.3,
+        "matchedTags": [
+          "산책"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 2.3,
+        "matchedTags": [
+          "언덕"
+        ]
+      },
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 1.3,
+        "matchedTags": []
+      }
+    ]
+  },
+  {
+    "id": "abstract-mood-only",
+    "description": "추상 무드만 들어온 경우 moodExpansion + ALL58 재시도 확인",
+    "inputTags": [
+      "청량함",
+      "이국적",
+      "바다",
+      "해변",
+      "서핑",
+      "고원",
+      "호수",
+      "숲",
+      "라벤더",
+      "캘리포니아",
+      "발리",
+      "산토리니",
+      "유럽감성",
+      "일본감성",
+      "북유럽",
+      "알프스"
+    ],
+    "expectedTopPlaceIds": [
+      "GOAT-044",
+      "GOAT-031",
+      "GOAT-012"
+    ],
+    "actualTop3": [
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 37.9,
+        "matchedTags": [
+          "서핑",
+          "캘리포니아",
+          "발리"
+        ],
+        "breakdown": {
+          "tag": 28,
+          "sceneSpecific": 60,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-031",
+        "name": "금진해변·헌화로 드라이브 코스",
+        "score": 31.8,
+        "matchedTags": [
+          "바다와가까운해안도로,서핑해변",
+          "해변",
+          "서핑",
+          "캘리포니아"
+        ],
+        "breakdown": {
+          "tag": 31.3,
+          "sceneSpecific": 44,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 1,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 27.6,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ],
+        "breakdown": {
+          "tag": 21.3,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      }
+    ],
+    "seedPoolSize": 58,
+    "candidatePoolSize": 58,
+    "poolPolicy": "ALL58",
+    "poolReason": "기본 방문지 추천이므로 검증 완료 비숙박 1차 pool로 좁혔습니다. 단, 태그 조합의 후보 폭이 좁거나 3번째 후보 점수가 약해 58개 전체 pool로 재시도했습니다.",
+    "fallbackUsed": false,
+    "adaptivePoolRetryUsed": true,
+    "allPositiveCount": 58,
+    "strongCandidateCount": 4,
+    "strongCandidates": [
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "city": "양양군",
+        "regionGroup": "동해안권",
+        "placeType": "서프비치",
+        "dataStatus": "confirmed",
+        "score": 37.9,
+        "matchedTags": [
+          "서핑",
+          "캘리포니아",
+          "발리"
+        ],
+        "scoreBreakdown": {
+          "tag": 28,
+          "sceneSpecific": 60,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 3
+        }
+      },
+      {
+        "placeId": "GOAT-031",
+        "name": "금진해변·헌화로 드라이브 코스",
+        "city": "강릉시",
+        "regionGroup": "동해안권",
+        "placeType": "해안도로/해변",
+        "dataStatus": "future_candidate",
+        "score": 31.8,
+        "matchedTags": [
+          "바다와가까운해안도로,서핑해변",
+          "해변",
+          "서핑",
+          "캘리포니아"
+        ],
+        "scoreBreakdown": {
+          "tag": 31.3,
+          "sceneSpecific": 44,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 1,
+          "directMatchCount": 4
+        }
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "city": "인제군",
+        "regionGroup": "북부내륙권",
+        "placeType": "숲/자연",
+        "dataStatus": "confirmed",
+        "score": 27.6,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ],
+        "scoreBreakdown": {
+          "tag": 21.3,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "city": "평창군",
+        "regionGroup": "고원권",
+        "placeType": "숲/산악",
+        "dataStatus": "confirmed",
+        "score": 27.6,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ],
+        "scoreBreakdown": {
+          "tag": 21.3,
+          "sceneSpecific": 42,
+          "region": 0,
+          "lodgingIntent": 0,
+          "season": 0,
+          "time": 0,
+          "weather": 0,
+          "dataStatus": 3,
+          "directMatchCount": 2
+        }
+      }
+    ],
+    "positiveCandidates": [
+      {
+        "placeId": "GOAT-044",
+        "name": "서피비치",
+        "score": 37.9,
+        "matchedTags": [
+          "서핑",
+          "캘리포니아",
+          "발리"
+        ]
+      },
+      {
+        "placeId": "GOAT-031",
+        "name": "금진해변·헌화로 드라이브 코스",
+        "score": 31.8,
+        "matchedTags": [
+          "바다와가까운해안도로,서핑해변",
+          "해변",
+          "서핑",
+          "캘리포니아"
+        ]
+      },
+      {
+        "placeId": "GOAT-012",
+        "name": "원대리 자작나무숲",
+        "score": 27.6,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-020",
+        "name": "발왕산 천년주목숲길·애니포레",
+        "score": 27.6,
+        "matchedTags": [
+          "숲",
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-047",
+        "name": "에이프레임(A-Frame)",
+        "score": 24.3,
+        "matchedTags": [
+          "서핑보드",
+          "캘리포니아",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-045",
+        "name": "죽도해변·인구해변·양리단길",
+        "score": 19,
+        "matchedTags": [
+          "죽도해변",
+          "서핑숍",
+          "캘리포니아"
+        ]
+      },
+      {
+        "placeId": "GOAT-019",
+        "name": "삼양라운드힐",
+        "score": 18.6,
+        "matchedTags": [
+          "고원",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-017",
+        "name": "대관령양떼목장",
+        "score": 16.5,
+        "matchedTags": [
+          "능선",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-016",
+        "name": "육백마지기",
+        "score": 15.2,
+        "matchedTags": [
+          "고원",
+          "샤스타데이지",
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-018",
+        "name": "하늘목장",
+        "score": 14.7,
+        "matchedTags": [
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-040",
+        "name": "외옹치 바다향기로",
+        "score": 14.7,
+        "matchedTags": [
+          "외옹치바다향기로",
+          "해안데크길",
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-057",
+        "name": "초곡용굴촛대바위길",
+        "score": 14,
+        "matchedTags": [
+          "오션뷰",
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-024",
+        "name": "태기산",
+        "score": 13.4,
+        "matchedTags": [
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-004",
+        "name": "해피초원목장",
+        "score": 13.2,
+        "matchedTags": [
+          "능선",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-023",
+        "name": "매봉산 바람의 언덕",
+        "score": 12.4,
+        "matchedTags": [
+          "고원",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-029",
+        "name": "정동진 철길 건널목",
+        "score": 12.2,
+        "matchedTags": [
+          "바다",
+          "해변",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-037",
+        "name": "어달삼거리",
+        "score": 11.5,
+        "matchedTags": [
+          "바다도로",
+          "해변",
+          "감성",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-002",
+        "name": "레고랜드 코리아 리조트",
+        "score": 11.2,
+        "matchedTags": [
+          "북유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-036",
+        "name": "무릉별유천지",
+        "score": 10.7,
+        "matchedTags": [
+          "에메랄드",
+          "호수",
+          "라벤더"
+        ]
+      },
+      {
+        "placeId": "GOAT-051",
+        "name": "능파대",
+        "score": 10.1,
+        "matchedTags": [
+          "해안",
+          "데크"
+        ]
+      },
+      {
+        "placeId": "GOAT-015",
+        "name": "알펜시아 리조트",
+        "score": 9.5,
+        "matchedTags": [
+          "유럽리조트",
+          "알프스"
+        ]
+      },
+      {
+        "placeId": "GOAT-021",
+        "name": "삼탄아트마인",
+        "score": 9.5,
+        "matchedTags": [
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-005",
+        "name": "아웃오브파크",
+        "score": 9,
+        "matchedTags": [
+          "사인"
+        ]
+      },
+      {
+        "placeId": "GOAT-026",
+        "name": "하슬라아트월드",
+        "score": 9,
+        "matchedTags": [
+          "오션뷰"
+        ]
+      },
+      {
+        "placeId": "GOAT-052",
+        "name": "사유의 숲",
+        "score": 9,
+        "matchedTags": [
+          "숲",
+          "발리"
+        ]
+      },
+      {
+        "placeId": "GOAT-030",
+        "name": "안반데기",
+        "score": 8.5,
+        "matchedTags": [
+          "고원"
+        ]
+      },
+      {
+        "placeId": "GOAT-046",
+        "name": "두둥실",
+        "score": 8,
+        "matchedTags": [
+          "발리",
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-055",
+        "name": "장호항",
+        "score": 7.6,
+        "matchedTags": [
+          "에메랄드바다",
+          "해변",
+          "에메랄드"
+        ]
+      },
+      {
+        "placeId": "GOAT-013",
+        "name": "인제성당",
+        "score": 7.3,
+        "matchedTags": [
+          "유럽",
+          "소도시"
+        ]
+      },
+      {
+        "placeId": "GOAT-048",
+        "name": "아야진해수욕장",
+        "score": 7.3,
+        "matchedTags": [
+          "바다",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-050",
+        "name": "하늬라벤더팜",
+        "score": 6.9,
+        "matchedTags": [
+          "라벤더",
+          "프로방스"
+        ]
+      },
+      {
+        "placeId": "GOAT-022",
+        "name": "민둥산",
+        "score": 6.4,
+        "matchedTags": [
+          "능선"
+        ]
+      },
+      {
+        "placeId": "GOAT-001",
+        "name": "제이드가든",
+        "score": 6.2,
+        "matchedTags": [
+          "유럽"
+        ]
+      },
+      {
+        "placeId": "GOAT-006",
+        "name": "교토정원",
+        "score": 6.2,
+        "matchedTags": [
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-032",
+        "name": "교동 소품샵 거리",
+        "score": 6.2,
+        "matchedTags": [
+          "작은",
+          "일본감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-038",
+        "name": "묵호항 일대",
+        "score": 6.2,
+        "matchedTags": [
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-042",
+        "name": "카페 흰다정",
+        "score": 6.2,
+        "matchedTags": [
+          "감성",
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-054",
+        "name": "라메종드마리",
+        "score": 6.2,
+        "matchedTags": [
+          "감성"
+        ]
+      },
+      {
+        "placeId": "GOAT-028",
+        "name": "BTS 버스정류장",
+        "score": 6.1,
+        "matchedTags": [
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-056",
+        "name": "용화해변",
+        "score": 5.7,
+        "matchedTags": [
+          "해변,케이블카연계동선,바다색",
+          "해변"
+        ]
+      },
+      {
+        "placeId": "GOAT-003",
+        "name": "춘천 산토리니",
+        "score": 5.1,
+        "matchedTags": [
+          "산토리니"
+        ]
+      },
+      {
+        "placeId": "GOAT-014",
+        "name": "한반도섬",
+        "score": 5.1,
+        "matchedTags": [
+          "호수"
+        ]
+      },
+      {
+        "placeId": "GOAT-053",
+        "name": "쏠비치 삼척·산토리니 광장",
+        "score": 5.1,
+        "matchedTags": [
+          "산토리니"
+        ]
+      },
+      {
+        "placeId": "GOAT-039",
+        "name": "묵호등대·논골담길",
+        "score": 4.3,
+        "matchedTags": [
+          "바다"
+        ]
+      },
+      {
+        "placeId": "GOAT-027",
+        "name": "정동진 썬크루즈 리조트",
+        "score": 4,
+        "matchedTags": [
+          "해안"
+        ]
+      },
+      {
+        "placeId": "GOAT-007",
+        "name": "스테이 조각밤",
+        "score": 3.7,
+        "matchedTags": [
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-008",
+        "name": "이와림",
+        "score": 3.7,
+        "matchedTags": [
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-034",
+        "name": "유메모리 리조트",
+        "score": 3.7,
+        "matchedTags": [
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-041",
+        "name": "속초 서점 투어 골목",
+        "score": 3.7,
+        "matchedTags": [
+          "일본"
+        ]
+      },
+      {
+        "placeId": "GOAT-011",
+        "name": "알파카월드",
+        "score": 3,
+        "matchedTags": [
+          "숲길"
+        ]
+      },
+      {
+        "placeId": "GOAT-033",
+        "name": "휴식 료칸 풀빌라",
+        "score": 2.3,
+        "matchedTags": [
+          "일본숙소"
+        ]
+      },
+      {
+        "placeId": "GOAT-025",
+        "name": "안목해변 카페거리",
+        "score": 1.7,
+        "matchedTags": [
+          "해변",
+          "캘리포니아"
+        ]
+      },
+      {
+        "placeId": "GOAT-009",
+        "name": "뮤지엄 SAN",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-010",
+        "name": "소금산 그랜드밸리",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-035",
+        "name": "월화거리",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-043",
+        "name": "속초 관광수산시장·대포항",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-049",
+        "name": "켄싱턴리조트 설악밸리",
+        "score": 1.3,
+        "matchedTags": []
+      },
+      {
+        "placeId": "GOAT-058",
+        "name": "한탄강 주상절리길",
+        "score": 0.4,
+        "matchedTags": []
+      }
+    ]
+  }
+]
