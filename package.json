@@ -1,16 +1,16 @@
 {
-  "name": "goat-handoff-package-v1-3-api-first-fallback",
-  "version": "1.3.0",
-  "private": true,
-  "type": "module",
-  "description": "GOAT recommendation handoff package v1.3: API-first quality gate, real API card mapper, 58 seed fallback, conditional PRIMARY43 filtering, tag coverage and adaptive ALL58 retry.",
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
-    "test:recommend": "tsx test_engine.ts",
-    "typecheck": "tsc --noEmit"
+    "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
   },
+  "private": true,
   "devDependencies": {
-    "tsx": "^4.0.0",
-    "typescript": "^5.0.0",
-    "@types/node": "^22.0.0"
+    "prettier": "^3.8.3",
+    "typescript": "~5.9.3"
   }
 }
