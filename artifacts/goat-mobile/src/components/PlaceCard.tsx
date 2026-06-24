@@ -33,7 +33,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
     place.city
   );
 
-  const { concentration } = useVisitConcentration(place.place_name);
+  const { concentration } = useVisitConcentration(place.place_name, place.city);
   const crowdChip = concentration?.concentrationLevel
     ? CROWD_CHIP[concentration.concentrationLevel]
     : null;

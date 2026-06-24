@@ -13,13 +13,12 @@
 
 import { ktoFetch, getAuthParams, extractItems, stripHtml } from "./ktoApi";
 import { KTOTourInfo } from "./ktoTypes";
+import { getKtoSearchTerms, isRelevantKtoResult } from "./ktoPlaceSearch";
 
 const KOR_BASE = "https://apis.data.go.kr/B551011/KorService2";
 const SEARCH_URL = `${KOR_BASE}/searchKeyword2`;
 const DETAIL_COMMON_URL = `${KOR_BASE}/detailCommon2`;
 const DETAIL_INTRO_URL = `${KOR_BASE}/detailIntro2`;
-
-const GANGWON_AREA_CODE = "32";
 
 const cache = new Map<string, KTOTourInfo | null>();
 
@@ -33,20 +32,20 @@ interface SearchResult {
   firstimage?: string;
 }
 
-async function searchPlace(keyword: string): Promise<SearchResult | null> {
+async function searchPlace(keyword: string, city: string): Promise<SearchResult | null> {
   const json = await ktoFetch(SEARCH_URL, {
     ...getAuthParams(),
     keyword,
-    areaCode: GANGWON_AREA_CODE,
     numOfRows: "10",
     pageNo: "1",
   });
   const items = extractItems(json);
   if (!items.length) return null;
 
-  // Prefer item whose title closely matches the last word of the keyword
-  const target = keyword.split(" ").pop() ?? keyword;
-  const matched = items.find((i: any) => i.title?.includes(target)) ?? items[0];
+  const matched = items.find((item: any) =>
+    isRelevantKtoResult(city, keyword, item.title ?? "", item.addr1 ?? "")
+  );
+  if (!matched) return null;
 
   return {
     contentId: matched.contentid ?? "",
@@ -130,7 +129,7 @@ async function fetchDetailIntro(
 
 /**
  * Fetch official tourism info for a place.
- * Searches Gangwon (areaCode=32) only.
+ * Searches by name and validates the returned address against the place city.
  * Results are cached in memory for the session.
  */
 export async function getTourInfo(placeName: string, city: string): Promise<KTOTourInfo> {
@@ -140,9 +139,11 @@ export async function getTourInfo(placeName: string, city: string): Promise<KTOT
   }
 
   try {
-    // 1. Search by place name, then city + name
-    let found = await searchPlace(placeName);
-    if (!found?.contentId) found = await searchPlace(`${city} ${placeName}`);
+    let found: SearchResult | null = null;
+    for (const searchTerm of getKtoSearchTerms(placeName)) {
+      found = await searchPlace(searchTerm, city);
+      if (found?.contentId) break;
+    }
     if (!found?.contentId) {
       cache.set(cacheKey, null);
       return { source: "local" };

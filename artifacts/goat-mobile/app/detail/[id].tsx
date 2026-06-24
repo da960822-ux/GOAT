@@ -54,7 +54,7 @@ export default function DetailScreen() {
   const { info: tourInfo } = useTourInfo(place?.place_name ?? '', place?.city ?? '');
   const { concentration } = useVisitConcentration(
     place?.place_name ?? '',
-    tourInfo?.contentId
+    place?.city ?? ''
   );
 
   useEffect(() => {

@@ -1,23 +1,19 @@
 /**
  * KTO 관광사진 정보_GW — Tourism Photo Gallery API
- * Endpoint: https://apis.data.go.kr/B551011/PhotoGalleryService1/galleryList1
+ * Endpoint: https://apis.data.go.kr/B551011/PhotoGalleryService1/gallerySearchList1
  *
- * Search priority:
- *   1. place_name
- *   2. city + place_name
- *   3. primary_mood
- *   4. mood_tags[0]
- *   5. 관광공모전 수상작 (award photo fallback via ktoAwardPhotoApi)
- *   6. { imageUrl: null, source: 'fallback' }
+ * Searches the official tourism photo gallery by a place-specific keyword.
+ * Results from another city/province are rejected.
  */
 
 import { ktoFetch, getAuthParams, extractItems } from './ktoApi';
 import { KTOPhotoResult } from './ktoTypes';
+import { getKtoSearchTerms, isRelevantKtoResult } from './ktoPlaceSearch';
 
 export type { KTOPhotoResult };
 
 const BASE_URL =
-  'https://apis.data.go.kr/B551011/PhotoGalleryService1/galleryList1';
+  'https://apis.data.go.kr/B551011/PhotoGalleryService1/gallerySearchList1';
 
 const photoCache = new Map<string, KTOPhotoResult | null>();
 
@@ -30,22 +26,25 @@ interface GalleryItem {
   galSearchKeyword?: string;
 }
 
-/**
- * Fetch a gallery photo by contentId.
- * NOTE: The PhotoGalleryService1 API rejects free-form Korean `keyword` params
- * with INVALID_REQUEST_PARAMETER_ERROR — only use contentId or no filter.
- */
-async function fetchByContentId(contentId: string): Promise<KTOPhotoResult | null> {
+async function fetchByKeyword(keyword: string, city: string): Promise<KTOPhotoResult | null> {
   const json = await ktoFetch(BASE_URL, {
     ...getAuthParams(),
     numOfRows: '5',
     pageNo: '1',
-    contentId,
+    keyword,
   });
   const items = extractItems(json) as GalleryItem[];
   if (!items.length) return null;
 
-  const item = items.find((i) => i.galWebImageUrl) ?? items[0];
+  const item = items.find((candidate) =>
+    Boolean(candidate.galWebImageUrl || candidate.galThumbnailImageUrl) &&
+    isRelevantKtoResult(
+      city,
+      keyword,
+      candidate.galTitle ?? '',
+      [candidate.galAddr1, candidate.galAddr2].filter(Boolean).join(' ')
+    )
+  );
   if (!item) return null;
 
   const imageUrl = item.galWebImageUrl ?? item.galThumbnailImageUrl ?? null;
@@ -63,23 +62,26 @@ async function fetchByContentId(contentId: string): Promise<KTOPhotoResult | nul
   };
 }
 
-/** Fetch photo for a contentId — exported for use by usePlacePhoto */
-export async function getPlacePhotoByContentId(contentId: string): Promise<KTOPhotoResult | null> {
-  return fetchByContentId(contentId);
-}
-
-/**
- * @deprecated Use usePlacePhoto hook instead — it sources photos from
- * KorService2 firstimage (getTourInfo) and getPlacePhotoByContentId.
- * Kept for API compatibility; always returns fallback.
- */
 export async function getPlacePhoto(
-  _placeName: string,
-  _primaryMood: string,
-  _moodTags: string[],
-  _city?: string
+  placeName: string,
+  city: string
 ): Promise<KTOPhotoResult> {
-  return { imageUrl: null, source: 'fallback' };
+  const cacheKey = `${city}::${placeName}`;
+  if (photoCache.has(cacheKey)) {
+    return photoCache.get(cacheKey) ?? { imageUrl: null, source: 'fallback' };
+  }
+
+  for (const searchTerm of getKtoSearchTerms(placeName)) {
+    const result = await fetchByKeyword(searchTerm, city);
+    if (result?.imageUrl) {
+      photoCache.set(cacheKey, result);
+      return result;
+    }
+  }
+
+  const fallback: KTOPhotoResult = { imageUrl: null, source: 'fallback' };
+  photoCache.set(cacheKey, fallback);
+  return fallback;
 }
 
 export function clearPhotoCache(): void {

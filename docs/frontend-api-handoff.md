@@ -331,8 +331,9 @@ GET /api/kto
 | 관광지 검색 | `KorService2/searchKeyword2` |
 | 공통 상세 | `KorService2/detailCommon2` |
 | 소개 상세 | `KorService2/detailIntro2` |
-| 관광사진 | `PhotoGalleryService1/galleryList1` |
-| 방문 집중도 시도 | `VisitorConcentrationService1/getVisitorConcentration1` |
+| 관광사진 목록 | `PhotoGalleryService1/galleryList1` |
+| 장소명 관광사진 검색 | `PhotoGalleryService1/gallerySearchList1` |
+| 방문 집중도 | `TatsCnctrRateService/tatsCnctrRatedList` |
 
 KTO 프록시 응답은 관광공사 원본 JSON이며 공통 성공 응답으로 감싸지 않는다.
 
