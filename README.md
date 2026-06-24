@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="artifacts/goat-mobile/assets/brand/goat-brand.png" alt="GOAT Logo" width="180" />
+  <img src="artifacts/goat-mobile/assets/brand/goat-logo.png" alt="GOAT Logo" width="180" />
 </p>
 
 <h1 align="center">GOAT</h1>
