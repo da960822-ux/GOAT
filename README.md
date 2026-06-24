@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">GOAT</h1>
-<p align="center"><b>Greatest Of All Travels</b></p>
+<p align="center"><b>Gangwon Of All Time</b></p>
 <p align="center">오늘 기분에 맞는 강원도 여행지를 추천해주는 감성 기반 모바일 앱</p>
 
 <p align="center">
