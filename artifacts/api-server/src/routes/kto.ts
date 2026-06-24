@@ -16,7 +16,7 @@ import { Router, Request, Response } from "express";
 const router = Router();
 
 const KTO_BASE = "https://apis.data.go.kr/B551011";
-const SERVICE_KEY = (process.env.EXPO_PUBLIC_KTO_SERVICE_KEY ?? "").trim();
+const SERVICE_KEY = (process.env.KTO_SERVICE_KEY ?? "").trim();
 
 router.get("/kto", async (req: Request, res: Response) => {
   try {

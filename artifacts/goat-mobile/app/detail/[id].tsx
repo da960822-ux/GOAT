@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, ScrollView, StyleSheet, Text,
-  TouchableOpacity, Alert, Platform, Linking,
+  TouchableOpacity, Alert, Platform, Linking, ActivityIndicator,
 } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -11,7 +11,8 @@ import { Header } from '@/src/components/Header';
 import { TagBadge } from '@/src/components/TagBadge';
 import { RecommendationRoleBadge } from '@/src/components/RecommendationRoleBadge';
 import { EmptyState } from '@/src/components/EmptyState';
-import { getPlaceById, getAlternatives } from '@/src/services/recommendationService';
+import { useGetPlace } from '@workspace/api-client-react';
+import { useApp } from '@/src/context/AppContext';
 import { openKakaoMap } from '@/src/services/mapLink';
 import { getRegionPalette } from '@/src/utils/regionColors';
 import { toggleBookmark, isBookmarked } from '@/src/services/bookmarkService';
@@ -30,9 +31,16 @@ export default function DetailScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const bottomPad = Platform.OS === 'web' ? 34 : insets.bottom;
+  const { recommendations } = useApp();
+  const { data, isLoading, isError, refetch } = useGetPlace(id ?? '');
 
-  const place = getPlaceById(id ?? '');
-  const alternatives = place ? getAlternatives(place.place_id, 3) : [];
+  const place = data?.data.place as Place | undefined;
+  const alternatives = place
+    ? recommendations
+        .map((card) => card.place)
+        .filter((candidate) => candidate.place_id !== place.place_id)
+        .slice(0, 3)
+    : [];
   const region = place ? getRegionPalette(place.region_group) : null;
 
   const [bookmarked, setBookmarked] = useState(false);
@@ -54,6 +62,15 @@ export default function DetailScreen() {
     isBookmarked(place.place_id).then(setBookmarked);
   }, [place?.place_id]);
 
+  if (isLoading) {
+    return (
+      <View style={[styles.root, styles.loadingState, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={[styles.loadingText, { color: colors.mutedForeground }]}>장소 정보를 불러오는 중이에요</Text>
+      </View>
+    );
+  }
+
   async function handleBookmark() {
     if (!place) return;
     const saved = await toggleBookmark(place);
@@ -73,11 +90,16 @@ export default function DetailScreen() {
     }
   }
 
-  if (!place) {
+  if (isError || !place) {
     return (
       <View style={[styles.root, { backgroundColor: colors.background }]}>
         <Header title="장소 상세" onBack={() => router.back()} />
-        <EmptyState title="장소를 찾을 수 없습니다" description="다시 검색해주세요." />
+        <EmptyState
+          title="장소를 찾을 수 없습니다"
+          description="서버 연결을 확인하고 다시 시도해주세요."
+          actionLabel="다시 시도"
+          onAction={() => refetch()}
+        />
       </View>
     );
   }
@@ -373,6 +395,8 @@ function AlternativeCard({ place, colors, onPress }: {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
+  loadingState: { alignItems: 'center', justifyContent: 'center', gap: 12 },
+  loadingText: { fontSize: 14, fontFamily: 'Inter_400Regular' },
   scroll: { paddingBottom: 40 },
   bookmarkBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
 

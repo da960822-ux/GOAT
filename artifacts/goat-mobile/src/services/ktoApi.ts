@@ -1,35 +1,27 @@
 /**
  * Shared KTO API utilities
  *
- * On WEB:  all requests are proxied through the Express api-server at
- *   https://${EXPO_PUBLIC_DOMAIN}/api/kto?path=<KTO_path>&<params>
- *   → avoids CORS restrictions in the browser
- *
- * On NATIVE (iOS/Android): requests go directly to apis.data.go.kr with
- *   the serviceKey embedded at build time (no CORS restriction on native).
+ * Web, iOS and Android all use the Express proxy so the KTO service key
+ * remains server-only.
  */
 
 import { Platform } from "react-native";
+import { API_BASE_URL, resolveApiUrl } from "../config/api";
 
-const SERVICE_KEY = (process.env.EXPO_PUBLIC_KTO_SERVICE_KEY ?? "").trim();
 const MOBILE_OS = process.env.EXPO_PUBLIC_KTO_MOBILE_OS ?? "ETC";
 const MOBILE_APP = process.env.EXPO_PUBLIC_KTO_MOBILE_APP ?? "GOAT";
-const PROXY_DOMAIN = process.env.EXPO_PUBLIC_DOMAIN ?? "";
 
 const KTO_B551011 = "https://apis.data.go.kr/B551011/";
 const FETCH_TIMEOUT_MS = 10_000;
 
 if (__DEV__) {
-  if (Platform.OS === "web" && !PROXY_DOMAIN) {
-    console.warn("[ktoApi] EXPO_PUBLIC_DOMAIN not set — KTO proxy unavailable on web.");
-  } else if (Platform.OS !== "web" && !SERVICE_KEY) {
-    console.warn("[ktoApi] EXPO_PUBLIC_KTO_SERVICE_KEY not set — KTO API unavailable on native.");
+  if (Platform.OS !== "web" && !API_BASE_URL) {
+    console.warn("[ktoApi] EXPO_PUBLIC_API_BASE_URL not set — API proxy unavailable on native.");
   }
 }
 
 export function hasServiceKey(): boolean {
-  if (Platform.OS === "web") return !!PROXY_DOMAIN;
-  return !!SERVICE_KEY;
+  return Platform.OS === "web" || Boolean(API_BASE_URL);
 }
 
 /** Returns the common auth/identity params (excluding serviceKey) */
@@ -44,31 +36,19 @@ export function getAuthParams(): Record<string, string> {
 /**
  * Build the request URL.
  *
- * Web:    routes through the api-server proxy at /api/kto
- * Native: direct KTO request with serviceKey embedded
+ * All platforms route through the api-server proxy at /api/kto.
  */
 export function buildUrl(
   base: string,
   params: Record<string, string | number>
 ): string {
-  if (Platform.OS === "web" && PROXY_DOMAIN) {
-    // Strip the KTO base prefix to get the path segment, e.g.
-    //   "https://apis.data.go.kr/B551011/PhotoGalleryService1/galleryList1"
-    //   → "PhotoGalleryService1/galleryList1"
-    const ktoPath = base.startsWith(KTO_B551011)
-      ? base.slice(KTO_B551011.length)
-      : base;
+  const ktoPath = base.startsWith(KTO_B551011)
+    ? base.slice(KTO_B551011.length)
+    : base;
 
-    const proxyParams = new URLSearchParams({ path: ktoPath });
-    Object.entries(params).forEach(([k, v]) => proxyParams.append(k, String(v)));
-    return `https://${PROXY_DOMAIN}/api/kto?${proxyParams.toString()}`;
-  }
-
-  // Native: direct call — serviceKey appended as-is (already URL-encoded)
-  const query = Object.entries(params)
-    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
-    .join("&");
-  return `${base}?serviceKey=${SERVICE_KEY}&${query}`;
+  const proxyParams = new URLSearchParams({ path: ktoPath });
+  Object.entries(params).forEach(([k, v]) => proxyParams.append(k, String(v)));
+  return resolveApiUrl(`/api/kto?${proxyParams.toString()}`);
 }
 
 /**
@@ -79,9 +59,7 @@ export async function ktoFetch(
   base: string,
   params: Record<string, string | number>
 ): Promise<any> {
-  const isWeb = Platform.OS === "web";
-  if (isWeb && !PROXY_DOMAIN) return null;
-  if (!isWeb && !SERVICE_KEY) return null;
+  if (!hasServiceKey()) return null;
 
   const url = buildUrl(base, params);
   const controller = new AbortController();

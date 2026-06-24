@@ -1,22 +1,23 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
-  version: 0.1.0
-  description: API specification
+  version: 0.3.0
+  description: Korean Travel Guide API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+  - name: moods
+  - name: recommendations
+  - name: places
+  - name: kto
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +25,126 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /moods:
+    get:
+      operationId: getMoods
+      tags: [moods]
+      summary: Get the 12 validated GOAT mood combinations
+      responses:
+        "200":
+          description: Mood inventory
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MoodsSuccessResponse"
+  /recommend-from-tags:
+    post:
+      operationId: recommendFromTags
+      tags: [recommendations]
+      summary: Recommend three places using the GOAT v1.3+ scoring engine
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecommendFromTagsRequest"
+      responses:
+        "200":
+          description: Recommendations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecommendationsSuccessResponse"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /places/{id}:
+    get:
+      operationId: getPlace
+      tags: [places]
+      summary: Get a place by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        "200":
+          description: Place details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlaceSuccessResponse"
+        "404":
+          description: Place not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /kto:
+    get:
+      operationId: proxyKto
+      tags: [kto]
+      summary: Proxy a Korea Tourism Organization API request
+      parameters:
+        - name: path
+          in: query
+          required: true
+          schema:
+            type: string
+          description: KTO path below https://apis.data.go.kr/B551011/
+        - name: MobileOS
+          in: query
+          schema: { type: string, default: ETC }
+        - name: MobileApp
+          in: query
+          schema: { type: string, default: GOAT }
+        - name: _type
+          in: query
+          schema: { type: string, enum: [json] }
+        - name: keyword
+          in: query
+          schema: { type: string }
+        - name: contentId
+          in: query
+          schema: { type: string }
+        - name: contentTypeId
+          in: query
+          schema: { type: string }
+        - name: areaCode
+          in: query
+          schema: { type: string }
+        - name: numOfRows
+          in: query
+          schema: { type: integer, minimum: 1 }
+        - name: pageNo
+          in: query
+          schema: { type: integer, minimum: 1 }
+      responses:
+        "200":
+          description: Raw KTO JSON response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "400":
+          description: Missing path
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KtoProxyError"
+        "500":
+          description: Missing service key or upstream failure
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KtoProxyError"
 components:
   schemas:
     HealthStatus:
@@ -31,6 +152,251 @@ components:
       properties:
         status:
           type: string
+      required: [status]
+    ApiSuccessBase:
+      type: object
+      properties:
+        success:
+          type: boolean
+          const: true
+        code:
+          type: string
+          const: SUCCESS
+        message:
+          type: string
+      required: [success, code, message]
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          const: false
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          nullable: true
+      required: [success, code, message, data]
+    KtoProxyError:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+    Mood:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        keywords:
+          type: array
+          items:
+            type: string
+      required: [id, name, description, keywords]
+    MoodsData:
+      type: object
+      properties:
+        moods:
+          type: array
+          items:
+            $ref: "#/components/schemas/Mood"
+      required: [moods]
+    MoodsSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/MoodsData"
+          required: [data]
+    TravelPreferences:
+      type: object
+      properties:
+        companion:
+          type: string
+          enum: [혼자, 연인, 친구, 가족]
+        transport:
+          type: string
+          enum: [자차, 대중교통]
+        visitTime:
+          type: [string, "null"]
+          enum: [오전, 오후, 일몰, 저녁, 밤/새벽, null]
+        purpose:
+          type: string
+          enum: [가볍게 산책, 사진 위주, 액티비티, 조용한 휴식]
+      required: [companion, transport, purpose]
+      additionalProperties: false
+    TravelOrigin:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [current, region, skip]
+        latitude:
+          type: number
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          minimum: -180
+          maximum: 180
+        regionName:
+          type: string
+          minLength: 1
+      required: [type]
+      additionalProperties: false
+    RecommendFromTagsRequest:
+      type: object
+      properties:
+        moodId:
+          type: string
+          minLength: 1
+        preferences:
+          $ref: "#/components/schemas/TravelPreferences"
+        origin:
+          $ref: "#/components/schemas/TravelOrigin"
+        excludeIds:
+          type: array
+          uniqueItems: true
+          maxItems: 58
+          items:
+            type: string
+            minLength: 1
+      required: [moodId]
+      additionalProperties: false
+    Place:
+      type: object
+      properties:
+        place_id: { type: string }
+        city: { type: string }
+        region_group: { type: string }
+        place_name: { type: string }
+        place_type: { type: string }
+        primary_mood: { type: string }
+        mood_tags:
+          type: array
+          items: { type: string }
+        photo_point: { type: string }
+        best_time: { type: string }
+        best_season: { type: string }
+        accessibility: { type: string }
+        data_status:
+          type: string
+          enum: [confirmed, needs_verification, future_candidate]
+        recommendation_use: { type: string }
+        note: { type: string }
+        address: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+        imageUrl: { type: string }
+        parking: { type: string }
+        travelTime: { type: string }
+        weatherFit: { type: string }
+        crowdLevel: { type: string }
+        contactInfo: { type: string }
+        description: { type: string }
       required:
-        - status
-
+        - place_id
+        - city
+        - region_group
+        - place_name
+        - place_type
+        - primary_mood
+        - mood_tags
+        - photo_point
+        - best_time
+        - best_season
+        - accessibility
+        - data_status
+        - recommendation_use
+        - note
+    Recommendation:
+      type: object
+      properties:
+        place:
+          $ref: "#/components/schemas/Place"
+        role:
+          type: string
+          enum: [장면 최적, 같은 분위기 대안, 조건 맞춤]
+        score:
+          type: number
+        reason:
+          type: string
+        matchedTags:
+          type: array
+          items:
+            type: string
+        scoreBreakdown:
+          type: object
+          additionalProperties:
+            type: number
+        safetyNotes:
+          type: array
+          items:
+            type: string
+        weatherFit:
+          type: string
+        parkingInfo:
+          type: string
+      required:
+        [place, role, score, reason, matchedTags, scoreBreakdown, safetyNotes, weatherFit, parkingInfo]
+    RecommendationsData:
+      type: object
+      properties:
+        moodId:
+          type: string
+        appliedTags:
+          type: array
+          items:
+            type: string
+        seedPoolSize:
+          type: integer
+          const: 58
+        candidatePoolSize:
+          type: integer
+          minimum: 0
+          maximum: 58
+        poolPolicy:
+          type: string
+          enum: [ALL58, PRIMARY43]
+        poolReason:
+          type: string
+        fallbackUsed:
+          type: boolean
+        adaptivePoolRetryUsed:
+          type: boolean
+        recommendations:
+          type: array
+          minItems: 3
+          maxItems: 3
+          items:
+            $ref: "#/components/schemas/Recommendation"
+      required:
+        [moodId, appliedTags, seedPoolSize, candidatePoolSize, poolPolicy, poolReason, fallbackUsed, adaptivePoolRetryUsed, recommendations]
+    RecommendationsSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/RecommendationsData"
+          required: [data]
+    PlaceData:
+      type: object
+      properties:
+        place:
+          $ref: "#/components/schemas/Place"
+      required: [place]
+    PlaceSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/PlaceData"
+          required: [data]

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  View, ScrollView, StyleSheet, Text, TouchableOpacity
+  View, ScrollView, StyleSheet, Text, TouchableOpacity, Alert
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
@@ -10,13 +10,14 @@ import { EmptyState } from '@/src/components/EmptyState';
 import { StepIndicator } from '@/src/components/StepIndicator';
 import { useApp } from '@/src/context/AppContext';
 import { useColors } from '@/hooks/useColors';
-import { getRecommendations } from '@/src/services/recommendationService';
+import { recommendFromTags } from '@workspace/api-client-react';
 import { RecommendationCard } from '@/src/types/place';
 
 export default function ResultsScreen() {
   const router = useRouter();
   const colors = useColors();
   const { selectedMood, travelPreferences, recommendations, setRecommendations, origin } = useApp();
+  const [isRecommending, setIsRecommending] = useState(false);
 
   if (!selectedMood || recommendations.length === 0) {
     return (
@@ -57,25 +58,22 @@ export default function ResultsScreen() {
     router.push('/travel-preference');
   }
 
-  function handleReRecommend() {
-    if (!selectedMood) return;
+  async function handleReRecommend() {
+    if (!selectedMood || isRecommending) return;
     const currentIds = recommendations.map((c) => c.place.place_id);
-    const newCards = getRecommendations(
-      selectedMood.id,
-      travelPreferences ?? undefined,
-      currentIds,
-      origin ?? undefined
-    );
-    if (newCards.length >= 3) {
-      setRecommendations(newCards);
-    } else {
-      const fallback = getRecommendations(
-        selectedMood.id,
-        travelPreferences ?? undefined,
-        undefined,
-        origin ?? undefined
-      );
-      setRecommendations(fallback);
+    setIsRecommending(true);
+    try {
+      const result = await recommendFromTags({
+        moodId: selectedMood.id,
+        preferences: travelPreferences ?? undefined,
+        origin: origin ?? undefined,
+        excludeIds: currentIds,
+      });
+      setRecommendations(result.data.recommendations);
+    } catch {
+      Alert.alert('다시 추천하지 못했어요', '잠시 후 다시 시도해주세요.');
+    } finally {
+      setIsRecommending(false);
     }
   }
 
@@ -151,10 +149,13 @@ export default function ResultsScreen() {
         <TouchableOpacity
           style={[styles.reRecommendBtn, { backgroundColor: colors.primary + '12', borderColor: colors.primary + '40' }]}
           onPress={handleReRecommend}
+          disabled={isRecommending}
           activeOpacity={0.75}
         >
           <Feather name="zap" size={14} color={colors.primary} />
-          <Text style={[styles.reRecommendText, { color: colors.primary }]}>이 감성으로 다시 추천</Text>
+          <Text style={[styles.reRecommendText, { color: colors.primary }]}>
+            {isRecommending ? '다른 장소를 찾는 중…' : '이 감성으로 다시 추천'}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity

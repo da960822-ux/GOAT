@@ -22,7 +22,7 @@ const CROWD_CHIP: Record<string, { label: string; bg: string; border: string; te
 };
 
 export function PlaceCard({ card, onPress }: PlaceCardProps) {
-  const { place, role, reason, distanceKm } = card;
+  const { place, role, reason } = card;
   const colors = useColors();
   const region = getRegionPalette(place.region_group);
 
@@ -89,12 +89,6 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
             {crowdChip && (
               <View style={[styles.chip, { backgroundColor: crowdChip.bg, borderColor: crowdChip.border }]}>
                 <Text style={[styles.chipText, { color: crowdChip.text }]}>{crowdChip.label}</Text>
-              </View>
-            )}
-            {distanceKm != null && (
-              <View style={[styles.chip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
-                <Feather name="navigation" size={10} color="#5B21B6" />
-                <Text style={[styles.chipText, { color: '#5B21B6' }]}>약 {distanceKm}km</Text>
               </View>
             )}
             <View style={[styles.regionBadge, { backgroundColor: region.bg, borderColor: region.border }]}>

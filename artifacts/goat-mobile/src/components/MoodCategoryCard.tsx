@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { MoodCategory } from '@/src/types/place';
+import type { Mood } from '@workspace/api-client-react';
 import { useColors } from '@/hooks/useColors';
 
 type FeatherIconName = React.ComponentProps<typeof Feather>['name'];
@@ -14,27 +14,18 @@ interface SceneTheme {
 }
 
 const SCENE_THEME: Record<string, SceneTheme> = {
-  mediterranean: { icon: 'sun',    accent: '#0369A1', bg: '#F0F9FF', border: '#BAE6FD' },
-  alps:          { icon: 'triangle', accent: '#15803D', bg: '#F0FDF4', border: '#BBF7D0' },
-  nordic:        { icon: 'feather', accent: '#4338CA', bg: '#EEF2FF', border: '#C7D2FE' },
-  japan:         { icon: 'coffee',  accent: '#B45309', bg: '#FEF3C7', border: '#FDE68A' },
-  california:    { icon: 'anchor',  accent: '#0284C7', bg: '#E0F2FE', border: '#7DD3FC' },
-  nightharbor:   { icon: 'moon',    accent: '#7C3AED', bg: '#F5F0FF', border: '#DDD6FE' },
-  cliff:         { icon: 'layers',  accent: '#475569', bg: '#F8FAFC', border: '#CBD5E1' },
-  architecture:  { icon: 'box',     accent: '#57534E', bg: '#FAFAF9', border: '#D6D3D1' },
-  family:        { icon: 'smile',   accent: '#C2410C', bg: '#FFF7ED', border: '#FDBA74' },
-};
-
-const SCENE_PHRASE: Record<string, string> = {
-  mediterranean: '흰 건물과 푸른 바다가 맞닿는 지중해 장면',
-  alps:          '드넓은 초원 위, 바람과 별이 가득한 고원',
-  nordic:        '자작나무숲 사이로 걷는 조용한 숲길',
-  japan:         '레트로 카페와 골목이 이어지는 소도시 산책',
-  california:    '서핑보드와 노을이 어우러지는 활기찬 해변',
-  nightharbor:   '항구 불빛과 먹거리가 가득한 밤 산책',
-  cliff:         '절벽 끝에서 마주하는 웅장한 바다와 협곡',
-  architecture:  '미니멀 건축과 예술이 만나는 감각적인 공간',
-  family:        '컬러풀한 체험과 사진 명소가 기다리는 즐거운 하루',
+  'california-coast':   { icon: 'navigation', accent: '#0369A1', bg: '#F0F9FF', border: '#BAE6FD' },
+  'japan-small-town':   { icon: 'map', accent: '#B45309', bg: '#FEF3C7', border: '#FDE68A' },
+  'alps-meadow':        { icon: 'triangle', accent: '#15803D', bg: '#F0FDF4', border: '#BBF7D0' },
+  'ryokan-lodging':     { icon: 'home', accent: '#9F1239', bg: '#FFF1F2', border: '#FECDD3' },
+  'rainy-canyon':       { icon: 'layers', accent: '#475569', bg: '#F8FAFC', border: '#CBD5E1' },
+  'nordic-winter':      { icon: 'feather', accent: '#4338CA', bg: '#EEF2FF', border: '#C7D2FE' },
+  'retro-night-market': { icon: 'moon', accent: '#7C3AED', bg: '#F5F0FF', border: '#DDD6FE' },
+  'plateau-stars':      { icon: 'star', accent: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE' },
+  'bali-surf':          { icon: 'anchor', accent: '#0284C7', bg: '#E0F2FE', border: '#7DD3FC' },
+  'europe-garden':      { icon: 'sun', accent: '#047857', bg: '#ECFDF5', border: '#A7F3D0' },
+  'lake-reflection':    { icon: 'camera', accent: '#0F766E', bg: '#F0FDFA', border: '#99F6E4' },
+  'japan-retro-cafe':   { icon: 'coffee', accent: '#A16207', bg: '#FFFBEB', border: '#FDE68A' },
 };
 
 const FALLBACK_THEME: SceneTheme = {
@@ -45,7 +36,7 @@ const FALLBACK_THEME: SceneTheme = {
 };
 
 interface MoodCategoryCardProps {
-  mood: MoodCategory;
+  mood: Mood;
   selected: boolean;
   onPress: () => void;
 }
@@ -53,7 +44,7 @@ interface MoodCategoryCardProps {
 export function MoodCategoryCard({ mood, selected, onPress }: MoodCategoryCardProps) {
   const colors = useColors();
   const theme = SCENE_THEME[mood.id] ?? FALLBACK_THEME;
-  const scenePhrase = SCENE_PHRASE[mood.id] ?? mood.description;
+  const scenePhrase = mood.description;
 
   const cardBg = selected ? theme.accent : theme.bg;
   const cardBorder = selected ? theme.accent : theme.border;
