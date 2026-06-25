@@ -24,7 +24,7 @@ Last updated: 2025-05 (v1.0.0 shell)
 - [x] Optional fields (lat, lng, imageUrl, etc.) typed as optional — no component depends on them
 
 ## Map Links
-- [x] KakaoMap only shown in UI (app deeplink → web fallback via Linking.canOpenURL)
+- [x] KakaoMap only shown in UI (native app deep link → web fallback; web opens map URL directly)
 - [x] Search query: city + place_name (no lat/lng available)
 - [x] Naver Map and Tmap functions retained in mapLink.ts but not exposed in UI
 - [x] ANDROID_PACKAGE_NAME / IOS_BUNDLE_IDENTIFIER constants extracted with TODO comment

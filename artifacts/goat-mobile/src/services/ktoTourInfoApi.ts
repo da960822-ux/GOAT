@@ -6,7 +6,7 @@
  * JSON format: append &_type=json
  *
  * Flow:
- *   1. searchKeyword2 → find contentId (areaCode=32 Gangwon)
+ *   1. searchKeyword2 → find contentId, then validate the returned city
  *   2. detailCommon2  → overview, coords, contact
  *   3. detailIntro2   → parking, usage time, rest day (by contentTypeId)
  */

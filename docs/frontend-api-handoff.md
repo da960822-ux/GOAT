@@ -1,6 +1,6 @@
 # GOAT 프론트엔드 연동 API 명세
 
-> 버전: 0.3.0  
+> 버전: 0.4.0
 > 기준일: 2026-06-24  
 > OpenAPI 원본: `lib/api-spec/openapi.yaml`  
 > 생성 TypeScript 클라이언트: `lib/api-client-react/src/generated/`
@@ -318,7 +318,6 @@ GET /api/kto?path={관광공사 경로}&{관광공사 파라미터}
 GET /api/kto
   ?path=KorService2/searchKeyword2
   &keyword=대관령양떼목장
-  &areaCode=32
   &MobileOS=ETC
   &MobileApp=GOAT
   &_type=json
@@ -331,7 +330,6 @@ GET /api/kto
 | 관광지 검색 | `KorService2/searchKeyword2` |
 | 공통 상세 | `KorService2/detailCommon2` |
 | 소개 상세 | `KorService2/detailIntro2` |
-| 관광사진 목록 | `PhotoGalleryService1/galleryList1` |
 | 장소명 관광사진 검색 | `PhotoGalleryService1/gallerySearchList1` |
 | 방문 집중도 | `TatsCnctrRateService/tatsCnctrRatedList` |
 
@@ -346,6 +344,202 @@ KTO 프록시 응답은 관광공사 원본 JSON이며 공통 성공 응답으�
 ```
 
 관광공사 호출 실패는 추천 API 실패로 이어지지 않는다. 프론트는 seed 정보·기본 이미지·`unknown` 상태로 대체한다.
+
+### 8.1 사진 조회
+
+`POST /api/recommend-from-tags`와 `GET /api/places/{id}` 응답에는 관광공사 사진 URL이 포함되지 않는다. 카드와 상세 화면이 장소 정보를 받은 뒤 기존 `usePlacePhoto` Hook으로 사진을 별도 조회한다.
+
+```ts
+const { photo, loading } = usePlacePhoto(
+  place.place_name,
+  place.primary_mood,
+  place.mood_tags,
+  place.city,
+);
+```
+
+사진 조회 순서:
+
+```text
+PhotoGalleryService1/gallerySearchList1
+→ 장소명·공식 검색 별칭으로 검색
+→ 촬영 지역과 place.city 검증
+→ 없으면 KorService2/searchKeyword2의 firstimage
+→ 모두 없으면 imageUrl: null
+```
+
+관광사진 요청 예시:
+
+```text
+GET /api/kto
+  ?path=PhotoGalleryService1/gallerySearchList1
+  &keyword=헌화로
+  &numOfRows=5
+  &pageNo=1
+  &MobileOS=ETC
+  &MobileApp=GOAT
+  &_type=json
+```
+
+관광사진 원본 응답의 주요 필드:
+
+```json
+{
+  "response": {
+    "header": {
+      "resultCode": "0000",
+      "resultMsg": "OK"
+    },
+    "body": {
+      "items": {
+        "item": [
+          {
+            "galContentId": "사진 ID",
+            "galTitle": "헌화로",
+            "galWebImageUrl": "http://...jpg",
+            "galPhotographyLocation": "강원도 강릉",
+            "galSearchKeyword": "검색 키워드"
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+프론트에서 사용하는 정규화 결과:
+
+```ts
+type KTOPhotoResult = {
+  imageUrl: string | null;
+  title?: string;
+  location?: string;
+  keywords?: string[];
+  source: "KTO_PHOTO_API" | "KTO_AWARD_PHOTO_API" | "fallback";
+};
+```
+
+주의사항:
+
+- 관광정보의 `contentId`를 `galleryList1`에 전달하지 않는다. 두 API의 ID는 사진 검색용으로 호환되지 않는다.
+- 촬영 지역이 장소의 `city`와 다르면 사진을 사용하지 않는다.
+- `금진해변·헌화로 드라이브 코스`는 `헌화로`, `금진해변` 순으로 별칭 검색한다.
+- `두둥실`처럼 다른 지역의 동명 장소만 검색되면 fallback 처리한다.
+
+### 8.2 방문 집중도 조회
+
+```ts
+const { concentration, loading } = useVisitConcentration(
+  place.place_name,
+  place.city,
+);
+```
+
+요청 예시:
+
+```text
+GET /api/kto
+  ?path=TatsCnctrRateService/tatsCnctrRatedList
+  &pageNo=1
+  &numOfRows=30
+  &MobileOS=ETC
+  &MobileApp=GOAT
+  &areaCd=51
+  &signguCd=51110
+  &tAtsNm=레고랜드 코리아 리조트
+  &_type=json
+```
+
+- `areaCd=51`은 강원특별자치도다.
+- `signguCd`는 장소의 `city`를 관광지 시군구 코드로 변환한 값이다.
+- `cnctrRate`는 가장 붐비는 시기를 100으로 본 상대 집중률이다.
+- 현재 화면 구간은 `0~39.99: low`, `40~69.99: medium`, `70 이상: high`다.
+- 관광공사에 없는 장소나 호출 실패는 `unknown`이다.
+- 추천 점수와 순위에는 반영하지 않고 카드·상세 안내에만 사용한다.
+
+프론트 정규화 타입:
+
+```ts
+type KTOVisitConcentration = {
+  concentrationLevel: "low" | "medium" | "high" | "unknown";
+  trendLabel?: string;
+  concentrationRate?: number;
+  baseDate?: string;
+  source: "KTO_VISIT_CONCENTRATION" | "fallback";
+};
+```
+
+### 8.3 현재 관광사진 연결 범위
+
+2026-06-24 실제 API 조회 기준이다. 관광공사 데이터 변경에 따라 달라질 수 있다.
+
+사진 연결 34개:
+
+```text
+GOAT-001 제이드가든
+GOAT-003 춘천 산토리니
+GOAT-004 해피초원목장
+GOAT-005 아웃오브파크
+GOAT-010 소금산 그랜드밸리
+GOAT-011 알파카월드
+GOAT-012 원대리 자작나무숲
+GOAT-013 인제성당
+GOAT-014 한반도섬
+GOAT-015 알펜시아 리조트
+GOAT-016 육백마지기
+GOAT-017 대관령양떼목장
+GOAT-018 하늘목장
+GOAT-019 삼양라운드힐
+GOAT-021 삼탄아트마인
+GOAT-022 민둥산
+GOAT-023 매봉산 바람의 언덕
+GOAT-024 태기산
+GOAT-025 안목해변 카페거리
+GOAT-026 하슬라아트월드
+GOAT-027 정동진 썬크루즈 리조트
+GOAT-028 BTS 버스정류장
+GOAT-030 안반데기
+GOAT-031 금진해변·헌화로 드라이브 코스
+GOAT-035 월화거리
+GOAT-036 무릉별유천지
+GOAT-040 외옹치 바다향기로
+GOAT-044 서피비치
+GOAT-048 아야진해수욕장
+GOAT-050 하늬라벤더팜
+GOAT-051 능파대
+GOAT-055 장호항
+GOAT-056 용화해변
+GOAT-058 한탄강 주상절리길
+```
+
+사진 미연결 24개:
+
+```text
+GOAT-002 레고랜드 코리아 리조트
+GOAT-006 교토정원
+GOAT-007 스테이 조각밤
+GOAT-008 이와림
+GOAT-009 뮤지엄 SAN
+GOAT-020 발왕산 천년주목숲길·애니포레
+GOAT-029 정동진 철길 건널목
+GOAT-032 교동 소품샵 거리
+GOAT-033 휴식 료칸 풀빌라
+GOAT-034 유메모리 리조트
+GOAT-037 어달삼거리
+GOAT-038 묵호항 일대
+GOAT-039 묵호등대·논골담길
+GOAT-041 속초 서점 투어 골목
+GOAT-042 카페 흰다정
+GOAT-043 속초 관광수산시장·대포항
+GOAT-045 죽도해변·인구해변·양리단길
+GOAT-046 두둥실
+GOAT-047 에이프레임(A-Frame)
+GOAT-049 켄싱턴리조트 설악밸리
+GOAT-052 사유의 숲
+GOAT-053 쏠비치 삼척·산토리니 광장
+GOAT-054 라메종드마리
+GOAT-057 초곡용굴촛대바위길
+```
 
 ## 9. 생성 클라이언트 사용
 

@@ -21,9 +21,15 @@ interface GalleryItem {
   galWebImageUrl?: string;
   galThumbnailImageUrl?: string;
   galTitle?: string;
+  galPhotographyLocation?: string;
   galAddr1?: string;
   galAddr2?: string;
   galSearchKeyword?: string;
+}
+
+function getGalleryLocation(item: GalleryItem): string {
+  return item.galPhotographyLocation
+    ?? [item.galAddr1, item.galAddr2].filter(Boolean).join(' ');
 }
 
 async function fetchByKeyword(keyword: string, city: string): Promise<KTOPhotoResult | null> {
@@ -42,13 +48,13 @@ async function fetchByKeyword(keyword: string, city: string): Promise<KTOPhotoRe
       city,
       keyword,
       candidate.galTitle ?? '',
-      [candidate.galAddr1, candidate.galAddr2].filter(Boolean).join(' ')
+      getGalleryLocation(candidate)
     )
   );
   if (!item) return null;
 
   const imageUrl = item.galWebImageUrl ?? item.galThumbnailImageUrl ?? null;
-  const location = [item.galAddr1, item.galAddr2].filter(Boolean).join(' ') || undefined;
+  const location = getGalleryLocation(item) || undefined;
   const keywords = item.galSearchKeyword
     ? item.galSearchKeyword.split(/[, ]+/).filter(Boolean)
     : undefined;

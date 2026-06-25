@@ -13,7 +13,7 @@
  * TODO: Replace placeholder bundle IDs with real values before production build.
  */
 import { Place } from '../types/place';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 
 const ANDROID_PACKAGE_NAME = 'com.goattravel.app';
 const IOS_BUNDLE_IDENTIFIER = 'com.goattravel.app';
@@ -46,13 +46,18 @@ export async function openKakaoMap(
   const appUrl = createKakaoMapLink(place, coords);
   const webUrl = createKakaoMapWebLink(place, coords);
 
+  // Browsers cannot reliably detect or launch a native custom scheme. Opening
+  // kakaomap:// on desktop web can leave an empty about:blank tab, so web must
+  // go directly to KakaoMap's public map/search URL.
+  if (Platform.OS === 'web') {
+    await Linking.openURL(webUrl);
+    return;
+  }
+
+  // On Android/iOS, try the KakaoMap app first. React Native rejects openURL
+  // when no app handles the scheme, which lets us fall back to the web map.
   try {
-    const canOpen = await Linking.canOpenURL(appUrl);
-    if (canOpen) {
-      await Linking.openURL(appUrl);
-    } else {
-      await Linking.openURL(webUrl);
-    }
+    await Linking.openURL(appUrl);
   } catch {
     try {
       await Linking.openURL(webUrl);
