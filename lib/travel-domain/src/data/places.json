@@ -534,7 +534,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "원주시 소금산 그랜드밸리",
+    "mapSearchQuery": "원주시 소금산 그랜드밸리 매표소",
     "externalMapQueries": {
       "kakao": "원주시 소금산 그랜드밸리",
       "naver": "원주시 소금산 그랜드밸리",
@@ -1085,7 +1085,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "평창군 발왕산 천년주목숲길·애니포레",
+    "mapSearchQuery": "평창군 발왕산 천년주목숲길 애니포레",
     "externalMapQueries": {
       "kakao": "평창군 발왕산 천년주목숲길·애니포레",
       "naver": "평창군 발왕산 천년주목숲길·애니포레",
@@ -1701,7 +1701,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "강릉시 금진해변·헌화로 드라이브 코스",
+    "mapSearchQuery": "강릉시 금진해변 헌화로",
     "externalMapQueries": {
       "kakao": "강릉시 금진해변·헌화로 드라이브 코스",
       "naver": "강릉시 금진해변·헌화로 드라이브 코스",
@@ -1755,7 +1755,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "강릉시 교동 소품샵 거리",
+    "mapSearchQuery": "강릉시 교동 소품샵",
     "externalMapQueries": {
       "kakao": "강릉시 교동 소품샵 거리",
       "naver": "강릉시 교동 소품샵 거리",
@@ -2081,7 +2081,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "동해시 묵호항 일대",
+    "mapSearchQuery": "동해시 묵호항",
     "externalMapQueries": {
       "kakao": "동해시 묵호항 일대",
       "naver": "동해시 묵호항 일대",
@@ -2138,7 +2138,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "동해시 묵호등대·논골담길",
+    "mapSearchQuery": "동해시 묵호등대 논골담길",
     "externalMapQueries": {
       "kakao": "동해시 묵호등대·논골담길",
       "naver": "동해시 묵호등대·논골담길",
@@ -2254,7 +2254,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "속초시 속초 서점 투어 골목",
+    "mapSearchQuery": "속초시 서점 골목",
     "externalMapQueries": {
       "kakao": "속초시 속초 서점 투어 골목",
       "naver": "속초시 속초 서점 투어 골목",
@@ -2364,7 +2364,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "속초시 속초 관광수산시장·대포항",
+    "mapSearchQuery": "속초시 관광수산시장",
     "externalMapQueries": {
       "kakao": "속초시 속초 관광수산시장·대포항",
       "naver": "속초시 속초 관광수산시장·대포항",
@@ -2474,7 +2474,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "양양군 죽도해변·인구해변·양리단길",
+    "mapSearchQuery": "양양군 죽도해변 인구해변 양리단길",
     "externalMapQueries": {
       "kakao": "양양군 죽도해변·인구해변·양리단길",
       "naver": "양양군 죽도해변·인구해변·양리단길",
@@ -2586,7 +2586,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "고성군 에이프레임(A-Frame)",
+    "mapSearchQuery": "고성군 에이프레임",
     "externalMapQueries": {
       "kakao": "고성군 에이프레임(A-Frame)",
       "naver": "고성군 에이프레임(A-Frame)",
@@ -2910,7 +2910,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "삼척시 쏠비치 삼척·산토리니 광장",
+    "mapSearchQuery": "삼척시 쏠비치 삼척",
     "externalMapQueries": {
       "kakao": "삼척시 쏠비치 삼척·산토리니 광장",
       "naver": "삼척시 쏠비치 삼척·산토리니 광장",
@@ -3079,7 +3079,7 @@
     "address": null,
     "latitude": null,
     "longitude": null,
-    "mapSearchQuery": "삼척시 용화해변",
+    "mapSearchQuery": "삼척시 용화해수욕장",
     "externalMapQueries": {
       "kakao": "삼척시 용화해변",
       "naver": "삼척시 용화해변",
