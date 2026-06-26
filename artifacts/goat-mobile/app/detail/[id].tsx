@@ -25,6 +25,10 @@ import { Place, RecommendationRole } from '@/src/types/place';
 
 const HERO_PHOTO_HEIGHT = 240;
 
+function getPhotoSource(photo: NonNullable<ReturnType<typeof usePlacePhoto>['photo']>) {
+  return photo.imageSource ?? { uri: photo.imageUrl! };
+}
+
 export default function DetailScreen() {
   const router = useRouter();
   const { id, role, reason } = useLocalSearchParams<{ id: string; role?: string; reason?: string }>();
@@ -108,7 +112,7 @@ export default function DetailScreen() {
   const accentColor = region?.accent ?? colors.primary;
   const heroBg = region?.bg ?? colors.secondary;
   const heroBorder = region?.border ?? colors.border;
-  const hasPhoto = !!photo?.imageUrl;
+  const hasPhoto = !!(photo?.imageUrl || photo?.imageSource);
 
   const crowdLevel = concentration?.concentrationLevel ?? 'unknown';
   const crowdNote = crowdLevel !== 'unknown' ? VISIT_NOTE[crowdLevel] : null;
@@ -144,7 +148,7 @@ export default function DetailScreen() {
         {hasPhoto ? (
           <View style={styles.photoHeroWrap}>
             <Image
-              source={{ uri: photo!.imageUrl! }}
+              source={getPhotoSource(photo!)}
               style={styles.photoHero}
               contentFit="cover"
               transition={400}

@@ -2,7 +2,12 @@ import { Image } from 'react-native';
 
 import type { KTOPhotoResult } from './ktoTypes';
 
-const LOCAL_PLACE_IMAGE_MODULES: Record<string, number> = {
+type LocalImageModule = number | { uri?: string; default?: { uri?: string } };
+type ImageWithResolver = typeof Image & {
+  resolveAssetSource?: (source: LocalImageModule) => { uri?: string } | null;
+};
+
+const LOCAL_PLACE_IMAGE_MODULES: Record<string, LocalImageModule> = {
   '레고랜드 코리아 리조트': require('../../../../24place_img/레고랜드 코리아 리조트.webp'),
   교토정원: require('../../../../24place_img/춘천 교토정원.jpg'),
   '스테이 조각밤': require('../../../../24place_img/스테이 조각밤.jpg'),
@@ -27,15 +32,28 @@ const LOCAL_PLACE_IMAGE_MODULES: Record<string, number> = {
   초곡용굴촛대바위길: require('../../../../24place_img/초곡용굴촛대바위길.webp'),
 };
 
+function getLocalImageUri(source: LocalImageModule): string | null {
+  if (typeof source === 'object') {
+    return source.uri ?? source.default?.uri ?? null;
+  }
+
+  const resolveAssetSource = (Image as ImageWithResolver).resolveAssetSource;
+  if (typeof resolveAssetSource !== 'function') {
+    return null;
+  }
+
+  return resolveAssetSource(source)?.uri ?? null;
+}
+
 export function getLocalPlacePhoto(placeName: string): KTOPhotoResult | null {
   const source = LOCAL_PLACE_IMAGE_MODULES[placeName];
   if (!source) return null;
 
-  const resolved = Image.resolveAssetSource(source);
-  if (!resolved?.uri) return null;
+  const imageUrl = getLocalImageUri(source);
 
   return {
-    imageUrl: resolved.uri,
+    imageUrl,
+    imageSource: source,
     title: placeName,
     source: 'LOCAL_PLACE_IMAGE',
   };

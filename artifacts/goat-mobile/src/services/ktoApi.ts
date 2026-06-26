@@ -13,6 +13,7 @@ const MOBILE_APP = process.env.EXPO_PUBLIC_KTO_MOBILE_APP ?? "GOAT";
 
 const KTO_B551011 = "https://apis.data.go.kr/B551011/";
 const FETCH_TIMEOUT_MS = 10_000;
+const IMAGE_STATUS_TIMEOUT_MS = 7_000;
 
 if (__DEV__) {
   if (Platform.OS !== "web" && !API_BASE_URL) {
@@ -74,6 +75,29 @@ export async function ktoFetch(
     return await res.json();
   } catch {
     return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+export async function isRemoteImageAvailable(imageUrl: string): Promise<boolean> {
+  if (!imageUrl || !hasServiceKey()) return false;
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), IMAGE_STATUS_TIMEOUT_MS);
+
+  try {
+    const url = resolveApiUrl(`/api/image-status?url=${encodeURIComponent(imageUrl)}`);
+    const res = await fetch(url, {
+      headers: { Accept: "application/json" },
+      signal: controller.signal,
+    });
+    if (!res.ok) return true;
+
+    const data = (await res.json()) as { ok?: boolean };
+    return data.ok !== false;
+  } catch {
+    return true;
   } finally {
     clearTimeout(timer);
   }

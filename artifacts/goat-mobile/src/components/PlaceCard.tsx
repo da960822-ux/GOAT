@@ -21,6 +21,10 @@ const CROWD_CHIP: Record<string, { label: string; bg: string; border: string; te
   high:   { label: '방문 집중 예상',  bg: '#FFF1F2', border: '#FECDD3', text: '#9F1239' },
 };
 
+function getPhotoSource(photo: NonNullable<ReturnType<typeof usePlacePhoto>['photo']>) {
+  return photo.imageSource ?? { uri: photo.imageUrl! };
+}
+
 export function PlaceCard({ card, onPress }: PlaceCardProps) {
   const { place, role, reason } = card;
   const colors = useColors();
@@ -49,7 +53,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
   const timeShort =
     place.best_time.length > 14 ? place.best_time.slice(0, 14) + '…' : place.best_time;
 
-  const hasPhoto = !photoLoading && !!photo?.imageUrl;
+  const hasPhoto = !photoLoading && !!(photo?.imageUrl || photo?.imageSource);
 
   return (
     <View style={[styles.card, { backgroundColor: '#FAFAF9', borderColor: colors.border }]}>
@@ -59,7 +63,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
         <View style={[styles.thumbWrap, { backgroundColor: region.bg }]}>
           {hasPhoto && (
             <Image
-              source={{ uri: photo!.imageUrl! }}
+              source={getPhotoSource(photo!)}
               style={styles.thumb}
               contentFit="cover"
               transition={300}

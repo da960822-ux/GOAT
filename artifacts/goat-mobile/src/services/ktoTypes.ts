@@ -6,6 +6,7 @@
 /** 1. 관광사진 정보_GW — tourism photo gallery */
 export interface KTOPhotoResult {
   imageUrl: string | null;
+  imageSource?: unknown;
   title?: string;
   location?: string;
   keywords?: string[];

@@ -11,7 +11,7 @@
  *   3. detailIntro2   → parking, usage time, rest day (by contentTypeId)
  */
 
-import { ktoFetch, getAuthParams, extractItems, stripHtml } from "./ktoApi";
+import { ktoFetch, getAuthParams, extractItems, stripHtml, isRemoteImageAvailable } from "./ktoApi";
 import { KTOTourInfo } from "./ktoTypes";
 import { getKtoSearchTerms, isRelevantKtoResult } from "./ktoPlaceSearch";
 
@@ -32,6 +32,26 @@ interface SearchResult {
   firstimage?: string;
 }
 
+interface RawSearchItem {
+  contentid?: string;
+  contenttypeid?: string;
+  addr1?: string;
+  mapx?: string;
+  mapy?: string;
+  title?: string;
+  firstimage?: string;
+}
+
+async function findFirstAvailableImageUrl(items: RawSearchItem[]): Promise<string | undefined> {
+  for (const item of items) {
+    if (item.firstimage && (await isRemoteImageAvailable(item.firstimage))) {
+      return item.firstimage;
+    }
+  }
+
+  return undefined;
+}
+
 async function searchPlace(keyword: string, city: string): Promise<SearchResult | null> {
   const json = await ktoFetch(SEARCH_URL, {
     ...getAuthParams(),
@@ -39,13 +59,16 @@ async function searchPlace(keyword: string, city: string): Promise<SearchResult 
     numOfRows: "10",
     pageNo: "1",
   });
-  const items = extractItems(json);
+  const items = extractItems(json) as RawSearchItem[];
   if (!items.length) return null;
 
-  const matched = items.find((item: any) =>
+  const relevantItems = items.filter((item) =>
     isRelevantKtoResult(city, keyword, item.title ?? "", item.addr1 ?? "")
   );
+  const matched = relevantItems[0];
   if (!matched) return null;
+
+  const firstimage = await findFirstAvailableImageUrl(relevantItems);
 
   return {
     contentId: matched.contentid ?? "",
@@ -54,7 +77,7 @@ async function searchPlace(keyword: string, city: string): Promise<SearchResult 
     mapx: matched.mapx ?? "",
     mapy: matched.mapy ?? "",
     title: matched.title ?? "",
-    firstimage: matched.firstimage || undefined,
+    firstimage,
   };
 }
 

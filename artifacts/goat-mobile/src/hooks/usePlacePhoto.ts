@@ -55,14 +55,14 @@ export function usePlacePhoto(
 
         // 3. Local curated image for places that do not have KTO photos
         const localPhoto = getLocalPlacePhoto(placeName);
-        if (!cancelled && localPhoto?.imageUrl) {
+        if (!cancelled && (localPhoto?.imageUrl || localPhoto?.imageSource)) {
           setPhoto(localPhoto);
           setLoading(false);
           return;
         }
       } catch {
         const localPhoto = getLocalPlacePhoto(placeName);
-        if (!cancelled && localPhoto?.imageUrl) {
+        if (!cancelled && (localPhoto?.imageUrl || localPhoto?.imageSource)) {
           setPhoto(localPhoto);
           setLoading(false);
           return;

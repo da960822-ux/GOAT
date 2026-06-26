@@ -6,7 +6,7 @@
  * Results from another city/province are rejected.
  */
 
-import { ktoFetch, getAuthParams, extractItems } from './ktoApi';
+import { ktoFetch, getAuthParams, extractItems, isRemoteImageAvailable } from './ktoApi';
 import { KTOPhotoResult } from './ktoTypes';
 import { getKtoSearchTerms, isRelevantKtoResult } from './ktoPlaceSearch';
 
@@ -35,14 +35,14 @@ function getGalleryLocation(item: GalleryItem): string {
 async function fetchByKeyword(keyword: string, city: string): Promise<KTOPhotoResult | null> {
   const json = await ktoFetch(BASE_URL, {
     ...getAuthParams(),
-    numOfRows: '5',
+    numOfRows: '10',
     pageNo: '1',
     keyword,
   });
   const items = extractItems(json) as GalleryItem[];
   if (!items.length) return null;
 
-  const item = items.find((candidate) =>
+  const candidates = items.filter((candidate) =>
     Boolean(candidate.galWebImageUrl || candidate.galThumbnailImageUrl) &&
     isRelevantKtoResult(
       city,
@@ -51,21 +51,28 @@ async function fetchByKeyword(keyword: string, city: string): Promise<KTOPhotoRe
       getGalleryLocation(candidate)
     )
   );
-  if (!item) return null;
 
-  const imageUrl = item.galWebImageUrl ?? item.galThumbnailImageUrl ?? null;
-  const location = getGalleryLocation(item) || undefined;
-  const keywords = item.galSearchKeyword
-    ? item.galSearchKeyword.split(/[, ]+/).filter(Boolean)
-    : undefined;
+  for (const item of candidates) {
+    const imageUrl = item.galWebImageUrl ?? item.galThumbnailImageUrl ?? null;
+    if (!imageUrl || !(await isRemoteImageAvailable(imageUrl))) {
+      continue;
+    }
 
-  return {
-    imageUrl: imageUrl || null,
-    title: item.galTitle,
-    location,
-    keywords,
-    source: 'KTO_PHOTO_API',
-  };
+    const location = getGalleryLocation(item) || undefined;
+    const keywords = item.galSearchKeyword
+      ? item.galSearchKeyword.split(/[, ]+/).filter(Boolean)
+      : undefined;
+
+    return {
+      imageUrl,
+      title: item.galTitle,
+      location,
+      keywords,
+      source: 'KTO_PHOTO_API',
+    };
+  }
+
+  return null;
 }
 
 export async function getPlacePhoto(
