@@ -9,7 +9,7 @@ export interface KTOPhotoResult {
   title?: string;
   location?: string;
   keywords?: string[];
-  source: 'KTO_PHOTO_API' | 'KTO_AWARD_PHOTO_API' | 'fallback';
+  source: 'KTO_PHOTO_API' | 'KTO_AWARD_PHOTO_API' | 'LOCAL_PLACE_IMAGE' | 'fallback';
 }
 
 /** 2. 국문 관광정보 서비스_GW — official tourism info */

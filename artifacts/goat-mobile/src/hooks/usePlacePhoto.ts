@@ -4,13 +4,15 @@
  * Photo fetch priority:
  *   1. PhotoGalleryService1 keyword search with city validation
  *   2. KorService2 firstimage (when the gallery has no matching photo)
- *   3. null imageUrl (show placeholder / gradient)
+ *   3. Local curated image for places without KTO photos
+ *   4. null imageUrl (show placeholder / gradient)
  *
  */
 
 import { useState, useEffect } from 'react';
 import { getTourInfo } from '../services/ktoTourInfoApi';
 import { getPlacePhoto, KTOPhotoResult } from '../services/ktoPhotoApi';
+import { getLocalPlacePhoto } from '../services/localPlacePhoto';
 
 export type { KTOPhotoResult };
 
@@ -50,8 +52,21 @@ export function usePlacePhoto(
           setLoading(false);
           return;
         }
+
+        // 3. Local curated image for places that do not have KTO photos
+        const localPhoto = getLocalPlacePhoto(placeName);
+        if (!cancelled && localPhoto?.imageUrl) {
+          setPhoto(localPhoto);
+          setLoading(false);
+          return;
+        }
       } catch {
-        // fall through to null
+        const localPhoto = getLocalPlacePhoto(placeName);
+        if (!cancelled && localPhoto?.imageUrl) {
+          setPhoto(localPhoto);
+          setLoading(false);
+          return;
+        }
       }
 
       if (!cancelled) {

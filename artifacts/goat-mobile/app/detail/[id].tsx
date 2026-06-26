@@ -206,7 +206,7 @@ export default function DetailScreen() {
 
           {hasPhoto && (
             <Text style={[styles.photoCredit, { color: colors.mutedForeground }]}>
-              📷 사진 출처: 한국관광공사
+              📷 사진 출처: {photo?.source === 'LOCAL_PLACE_IMAGE' ? '프로젝트 보조 이미지' : '한국관광공사'}
             </Text>
           )}
         </View>

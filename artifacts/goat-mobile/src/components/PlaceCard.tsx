@@ -69,9 +69,11 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
             <View style={[styles.thumbSkeleton, { backgroundColor: region.bg }]} />
           )}
           <View style={styles.thumbFade} />
-          {hasPhoto && photo?.source === 'KTO_PHOTO_API' && (
+          {hasPhoto && (photo?.source === 'KTO_PHOTO_API' || photo?.source === 'LOCAL_PLACE_IMAGE') && (
             <View style={styles.photoSourceBadge}>
-              <Text style={styles.photoSourceText}>관광사진 기반</Text>
+              <Text style={styles.photoSourceText}>
+                {photo.source === 'LOCAL_PLACE_IMAGE' ? '보조 이미지' : '관광사진 기반'}
+              </Text>
             </View>
           )}
         </View>
