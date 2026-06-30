@@ -57,6 +57,7 @@ export type TravelPreferencesTransport = typeof TravelPreferencesTransport[keyof
 export const TravelPreferencesTransport = {
   자차: '자차',
   대중교통: '대중교통',
+  도보중심: '도보중심',
 } as const;
 
 /**
@@ -66,10 +67,13 @@ export type TravelPreferencesVisitTime = typeof TravelPreferencesVisitTime[keyof
 
 
 export const TravelPreferencesVisitTime = {
+  새벽: '새벽',
   오전: '오전',
+  한낮: '한낮',
   오후: '오후',
   일몰: '일몰',
   저녁: '저녁',
+  야간: '야간',
   '밤/새벽': '밤/새벽',
 } as const;
 
@@ -116,9 +120,54 @@ export interface TravelOrigin {
   regionName?: string;
 }
 
+export type RecommendFromTagsRequestTravelPurpose = typeof RecommendFromTagsRequestTravelPurpose[keyof typeof RecommendFromTagsRequestTravelPurpose];
+
+
+export const RecommendFromTagsRequestTravelPurpose = {
+  '사진·포토스팟': '사진·포토스팟',
+  '산책·힐링': '산책·힐링',
+  '카페·실내휴식': '카페·실내휴식',
+  '전시·건축관람': '전시·건축관람',
+  '체험·액티비티': '체험·액티비티',
+  '먹거리·야간탐방': '먹거리·야간탐방',
+  '숙소·리조트': '숙소·리조트',
+} as const;
+
+export type RecommendFromTagsRequestTransportType = typeof RecommendFromTagsRequestTransportType[keyof typeof RecommendFromTagsRequestTransportType];
+
+
+export const RecommendFromTagsRequestTransportType = {
+  자차: '자차',
+  대중교통: '대중교통',
+  도보중심: '도보중심',
+} as const;
+
+export type RecommendFromTagsRequestVisitTime = typeof RecommendFromTagsRequestVisitTime[keyof typeof RecommendFromTagsRequestVisitTime];
+
+
+export const RecommendFromTagsRequestVisitTime = {
+  새벽: '새벽',
+  오전: '오전',
+  한낮: '한낮',
+  오후: '오후',
+  저녁: '저녁',
+  야간: '야간',
+} as const;
+
 export interface RecommendFromTagsRequest {
   /** @minLength 1 */
-  moodId: string;
+  moodId?: string;
+  /** @minLength 1 */
+  referenceCardId?: string;
+  travelPurpose?: RecommendFromTagsRequestTravelPurpose;
+  transportType?: RecommendFromTagsRequestTransportType;
+  visitTime?: RecommendFromTagsRequestVisitTime;
+  /**
+     * @minimum 1
+     * @maximum 12
+     */
+  currentMonth?: number;
+  debug?: boolean;
   preferences?: TravelPreferences;
   origin?: TravelOrigin;
   /** @maxItems 58 */
@@ -192,8 +241,13 @@ export const RecommendationsDataPoolPolicy = {
   PRIMARY43: 'PRIMARY43',
 } as const;
 
+export type RecommendationsDataCardsItem = { [key: string]: unknown };
+
+export type RecommendationsDataAlternativesItem = { [key: string]: unknown };
+
 export interface RecommendationsData {
   moodId: string;
+  referenceCardId?: string;
   appliedTags: string[];
   seedPoolSize: 58;
   /**
@@ -210,6 +264,13 @@ export interface RecommendationsData {
      * @maxItems 3
      */
   recommendations: Recommendation[];
+  /**
+     * @minItems 3
+     * @maxItems 3
+     */
+  cards?: RecommendationsDataCardsItem[];
+  alternatives?: RecommendationsDataAlternativesItem[];
+  warnings?: string[];
 }
 
 export type RecommendationsSuccessResponse = ApiSuccessBase & {

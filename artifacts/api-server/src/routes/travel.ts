@@ -12,12 +12,26 @@ const router: IRouter = Router();
 
 const requestSchema = z
   .object({
-    moodId: z.string().min(1),
+    moodId: z.string().min(1).optional(),
+    referenceCardId: z.string().min(1).optional(),
+    travelPurpose: z.enum([
+      "사진·포토스팟",
+      "산책·힐링",
+      "카페·실내휴식",
+      "전시·건축관람",
+      "체험·액티비티",
+      "먹거리·야간탐방",
+      "숙소·리조트",
+    ]).optional(),
+    transportType: z.enum(["자차", "대중교통", "도보중심"]).optional(),
+    visitTime: z.enum(["새벽", "오전", "한낮", "오후", "저녁", "야간"]).optional(),
+    currentMonth: z.number().int().min(1).max(12).optional(),
+    debug: z.boolean().optional(),
     preferences: z
       .object({
         companion: z.enum(["혼자", "연인", "친구", "가족"]),
-        transport: z.enum(["자차", "대중교통"]),
-        visitTime: z.enum(["오전", "오후", "일몰", "저녁", "밤/새벽"]).nullable().optional(),
+        transport: z.enum(["자차", "대중교통", "도보중심"]),
+        visitTime: z.enum(["새벽", "오전", "한낮", "오후", "일몰", "저녁", "야간", "밤/새벽"]).nullable().optional(),
         purpose: z.enum(["가볍게 산책", "사진 위주", "액티비티", "조용한 휴식"]),
       })
       .strict()
@@ -36,7 +50,11 @@ const requestSchema = z
       "excludeIds에는 중복된 장소 ID를 넣을 수 없습니다.",
     ).optional(),
   })
-  .strict();
+  .strict()
+  .refine((body) => body.moodId || body.referenceCardId, {
+    message: "moodId 또는 referenceCardId 중 하나는 필수입니다.",
+    path: ["moodId"],
+  });
 
 router.get("/moods", (_req, res) => {
   res.json({
@@ -68,19 +86,30 @@ router.post("/recommend-from-tags", (req, res, next) => {
     return;
   }
 
-  const mood = moodCategories.find(({ id }) => id === parsed.data.moodId);
-  if (!mood) {
+  const mood = parsed.data.moodId
+    ? moodCategories.find(({ id }) => id === parsed.data.moodId)
+    : undefined;
+  if (parsed.data.moodId && !mood) {
     next(new ApiError(400, "INVALID_MOOD_ID", "존재하지 않는 감성 ID입니다."));
     return;
   }
 
   const result = getRecommendations(
-    mood.id,
+    mood?.id,
     parsed.data.preferences as TravelPreferences | undefined,
     parsed.data.excludeIds,
+    {
+      referenceCardId: parsed.data.referenceCardId,
+      travelPurpose: parsed.data.travelPurpose,
+      transportType: parsed.data.transportType,
+      visitTime: parsed.data.visitTime,
+      currentMonth: parsed.data.currentMonth,
+      excludeIds: parsed.data.excludeIds,
+      debug: parsed.data.debug,
+    },
   );
   if (!result) {
-    next(new ApiError(400, "INVALID_MOOD_ID", "존재하지 않는 감성 ID입니다."));
+    next(new ApiError(400, "INVALID_REQUEST", "추천 기준을 찾을 수 없습니다."));
     return;
   }
 

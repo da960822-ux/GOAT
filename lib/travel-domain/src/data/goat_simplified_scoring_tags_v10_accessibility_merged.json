@@ -1,0 +1,2486 @@
+{
+  "tag_sets": {
+    "primaryTheme": [
+      "바다·해안 무드",
+      "일본 소도시·골목 무드",
+      "알프스·고원·목장 무드",
+      "숲·정원·자연휴식 무드",
+      "레트로·시장·항구 무드",
+      "건축·전시·랜드마크 무드",
+      "휴양·카페·이국공간 무드"
+    ],
+    "mood_tags": [
+      "K팝감성",
+      "가마쿠라감성",
+      "가족친화",
+      "건축미",
+      "글로벌",
+      "낭만적",
+      "도시적",
+      "동물교감감성",
+      "라틴감성",
+      "레트로",
+      "로드트립감성",
+      "로컬감성",
+      "료칸감성",
+      "모험적",
+      "몽골감성",
+      "몽환적",
+      "미국서부감성",
+      "미니멀",
+      "발리감성",
+      "북유럽감성",
+      "빈티지",
+      "산토리니감성",
+      "서핑감성",
+      "스릴감",
+      "신비로움",
+      "아기자기함",
+      "아늑함",
+      "아이슬란드감성",
+      "알프스감성",
+      "애니메이션감성",
+      "여유로움",
+      "예술적",
+      "웅장함",
+      "유럽감성",
+      "이국적",
+      "일본감성",
+      "일본소도시감성",
+      "자연친화",
+      "자유로움",
+      "조용함",
+      "지중해감성",
+      "청량함",
+      "캘리포니아감성",
+      "컬러풀",
+      "탁트임",
+      "트렌디",
+      "프라이빗",
+      "프리미엄",
+      "현대적",
+      "홋카이도감성",
+      "활기",
+      "휴양감",
+      "힐링"
+    ],
+    "sceneTags": [
+      "건축",
+      "고원",
+      "골목",
+      "광장",
+      "꽃밭",
+      "노을",
+      "동물",
+      "등대",
+      "랜드마크",
+      "료칸",
+      "리조트",
+      "마을",
+      "목장",
+      "미술관",
+      "바다",
+      "벽화마을",
+      "별",
+      "산",
+      "산업유산",
+      "산책로",
+      "서점",
+      "서프타운",
+      "서핑",
+      "설경",
+      "소품샵",
+      "숙소",
+      "숲",
+      "스카이워크",
+      "시장",
+      "실내공간",
+      "암석",
+      "야간거리",
+      "은하수",
+      "잔도",
+      "전망대",
+      "절벽",
+      "정원",
+      "종교시설",
+      "주상절리",
+      "철길",
+      "초원",
+      "출렁다리",
+      "카라반",
+      "카페",
+      "케이블카",
+      "테마파크",
+      "포토존",
+      "풀빌라",
+      "풍력발전기",
+      "항구",
+      "해변",
+      "해식동굴",
+      "해안도로",
+      "해안산책로",
+      "해안언덕",
+      "협곡",
+      "호수"
+    ],
+    "place_type": [
+      "건축/종교시설",
+      "고원/별관측",
+      "고원/풍력발전",
+      "골목/소품샵",
+      "동물 테마파크",
+      "리조트",
+      "리조트/광장",
+      "리조트/랜드마크",
+      "리조트/숙소",
+      "목장/초원",
+      "미술관/건축",
+      "미술관/절벽",
+      "산/설경",
+      "산/억새",
+      "산업유산/미술관",
+      "서점/골목",
+      "서프비치",
+      "서프타운/해변권역",
+      "수목원/정원",
+      "숙소",
+      "숙소/풀빌라",
+      "숲/산악",
+      "숲/자연",
+      "시장/항구",
+      "야간거리/산책로",
+      "재생관광/호수",
+      "정원/농장",
+      "지질/해안",
+      "철길/해변",
+      "카라반/숙박",
+      "카페",
+      "카페/감성공간",
+      "카페/디저트공간",
+      "카페/서프감성",
+      "카페/전망공간",
+      "카페/정원",
+      "테마파크",
+      "항구/야간거리",
+      "항구/해변",
+      "해변",
+      "해변 도로/포토존",
+      "해변 포토존",
+      "해변/카페거리",
+      "해안 언덕마을",
+      "해안 트레일",
+      "해안데크길",
+      "해안도로/해변",
+      "협곡/스카이워크",
+      "협곡/잔도",
+      "호수/랜드아트"
+    ],
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링",
+      "카페·실내휴식",
+      "전시·건축관람",
+      "체험·액티비티",
+      "먹거리·야간탐방",
+      "숙소·리조트"
+    ],
+    "season_tags": [
+      "봄",
+      "여름",
+      "가을",
+      "겨울",
+      "사계절"
+    ],
+    "city": [
+      "강릉시",
+      "고성군",
+      "동해시",
+      "삼척시",
+      "속초시",
+      "양구군",
+      "양양군",
+      "원주시",
+      "인제군",
+      "정선군",
+      "철원군",
+      "춘천시",
+      "태백시",
+      "평창군",
+      "홍천군",
+      "횡성군"
+    ],
+    "region_group": [
+      "고원권",
+      "동해안권",
+      "북부내륙권",
+      "영서권"
+    ],
+    "best_time": [
+      "새벽",
+      "오전",
+      "한낮",
+      "오후",
+      "저녁",
+      "야간"
+    ],
+    "transportType": [
+      "자차",
+      "대중교통",
+      "도보중심"
+    ],
+    "recommendation_use": [
+      "K팝 팬 코스 추천",
+      "SNS 화제 스팟 추천",
+      "SNS·재생관광 추천",
+      "가을 트레킹 추천",
+      "가족·동물교감 추천",
+      "가족·사진스팟 추천",
+      "건축·사진스팟 추천",
+      "겨울 리조트 코스 추천",
+      "겨울 설경 코스 추천",
+      "골목 산책 추천",
+      "꽃밭·정원 코스 추천",
+      "드라이브 코스 추천",
+      "리조트·사진스팟 추천",
+      "목장 코스 추천",
+      "목장·설원 코스 추천",
+      "목장형 코스 추천",
+      "별보기·고원 코스 추천",
+      "브랜딩 후보 코스 추천",
+      "비 오는 날 대안 코스 추천",
+      "비오는 날 대안 코스 추천",
+      "사진·전시 코스 추천",
+      "사진스팟 추천",
+      "새벽·고원 포토스팟 추천",
+      "서프 감성 카페 추천",
+      "서프타운 권역 추천",
+      "서핑·비치 포토스팟 추천",
+      "숙박·포토존 추천",
+      "숙소 추천",
+      "숙소·리조트 추천",
+      "숲길·겨울 코스 추천",
+      "숲길·케이블카 연계 추천",
+      "액티비티·포토스팟 추천",
+      "야간 대안 코스 추천",
+      "야간 항구 코스 추천",
+      "야간·먹거리 코스 추천",
+      "일본 소도시 감성 추천",
+      "일출·고원 포토스팟 추천",
+      "일출·랜드마크 추천",
+      "장호항 연계 대안 코스 추천",
+      "조용한 감성스팟 추천",
+      "조용한 실내 대안 코스 추천",
+      "지질·해안 포토스팟 추천",
+      "카페 감성 추천",
+      "카페·감성공간 추천",
+      "해변 카페 코스 추천",
+      "해변 코스 추천",
+      "해안 산책 추천",
+      "해안 트레킹 추천",
+      "해양 액티비티·포토스팟 추천",
+      "해외감성 사진스팟"
+    ],
+    "photo_point": [
+      "이탈리안 웨딩가든, 벽돌 게이트, 수로",
+      "호텔 파사드, 미니랜드, 입구 광장",
+      "흰 종탑, 잔디마당, 춘천 시가지 전망",
+      "초원 능선, 동물 방목, 목장길",
+      "에어스트림 카라반, 옐로우 스쿨버스, 영문 사인",
+      "일본식 정원, 원목 인테리어, 다다미 공간",
+      "프라이빗 자쿠지, 수공간, 다도 세트",
+      "워터가든, 콘크리트 동선, 조각정원",
+      "출렁다리, 울렁다리, 스카이타워",
+      "라틴빌리지존, 숲길, 동물 교감 동선",
+      "흰 자작나무 숲길, 반복되는 수간 원근감",
+      "서양식 성당 외관, 조용한 마을 분위기",
+      "데크길, 호수 반영, 섬 실루엣",
+      "리조트 광장, 유럽풍 동선, 스키점프대",
+      "풍력발전기, 샤스타데이지, 고원 능선",
+      "울타리 초원, 양떼, 능선 조망",
+      "목장길, 초원 사면, 동물 방목",
+      "광활한 목장, 풍력발전기, 설원",
+      "침엽수림 숲길, 고산 전망",
+      "수직갱, 녹슨 설비, 갤러리 공간",
+      "억새 능선, 돌리네 지형, 탁 트인 산세",
+      "풍력발전기, 배추밭, 능선도로",
+      "상고대, 눈꽃 능선, 설산 풍경",
+      "해변 전면 카페 파사드, 방파제, 모래사장",
+      "절벽 조각공원, 오션뷰 테라스",
+      "배형 외관, 해돋이 전망, 해안 절벽",
+      "파란 정류장, 수평선, 모래사장",
+      "철길 뒤로 보이는 바다 풍경",
+      "고랭지 밭, 은하수, 광활한 고원",
+      "바다와 가까운 해안도로, 서핑 해변",
+      "작은 소품샵, 정갈한 골목, 갤러리",
+      "다다미방, 히노끼탕, 중정",
+      "정원 산책로, 히노끼 사우나, 유카타 체험",
+      "조명 산책로, 먹거리, 버스킹 분위기",
+      "청옥호·금곡호, 전망대, 라벤더",
+      "바다를 향해 뻗은 도로와 낮은 건물",
+      "저녁 항구 분위기, 바닷바람, 야외 해산물 거리",
+      "가파른 언덕길, 바다 전망, 등대 주변",
+      "절벽 데크, 암반, 파도선",
+      "동아서점, 완벽한 날들 등 서점 동선",
+      "우드톤 인테리어, 레트로 소품",
+      "시장 골목, 항구 야경, 여행자 밀집 분위기",
+      "비치 사인, 빈백, 서핑존, 팜트리",
+      "죽도정 전망, 서핑숍 거리, 노을",
+      "라탄 소품, 목재 가구, 발리풍 인테리어",
+      "서핑보드 벽면, 서퍼 카페 인테리어",
+      "에메랄드빛 바다, 백사장, 갯바위",
+      "스위스풍 독립 객실, 산장 외관",
+      "라벤더 언덕, 양귀비, 메타세쿼이아",
+      "타포니 바위, 해안 데크, 파도",
+      "야자수, 라탄 소품, 야외 수영장",
+      "백색 건물, 코발트 지붕, 산토리니 광장",
+      "유럽식 주택 외관, 디저트 공간",
+      "에메랄드 수면, 방파제, 카누 시점",
+      "해변, 케이블카 연계 동선, 바다색",
+      "출렁다리, 해식동굴, 촛대바위",
+      "현무암 협곡, 절벽 잔도, 안개 낀 풍경"
+    ]
+  },
+  "places": [
+    {
+      "place_id": "GOAT-001",
+      "place_name": "제이드가든",
+      "city": "춘천시",
+      "region_group": "영서권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "유럽감성",
+        "자연친화",
+        "조용함",
+        "힐링",
+        "여유로움",
+        "이국적"
+      ],
+      "sceneTags": [
+        "정원",
+        "산책로"
+      ],
+      "place_type": "수목원/정원",
+      "photo_point": "이탈리안 웨딩가든, 벽돌 게이트, 수로",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "봄",
+        "가을"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "사진스팟 추천",
+      "note": "공식/위치 검증 후 좌표 입력"
+    },
+    {
+      "place_id": "GOAT-002",
+      "place_name": "레고랜드 코리아 리조트",
+      "city": "춘천시",
+      "region_group": "영서권",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "mood_tags": [
+        "가족친화",
+        "예술적",
+        "건축미",
+        "현대적",
+        "웅장함",
+        "컬러풀",
+        "활기"
+      ],
+      "sceneTags": [
+        "테마파크",
+        "랜드마크",
+        "광장"
+      ],
+      "place_type": "테마파크",
+      "photo_point": "호텔 파사드, 미니랜드, 입구 광장",
+      "purpose_tags": [
+        "체험·액티비티",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "봄",
+        "가을"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "가족·사진스팟 추천",
+      "note": "입장권/운영일 확인 필요"
+    },
+    {
+      "place_id": "GOAT-003",
+      "place_name": "춘천 산토리니",
+      "city": "춘천시",
+      "region_group": "영서권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "산토리니감성",
+        "지중해감성",
+        "프리미엄",
+        "휴양감",
+        "탁트임",
+        "낭만적",
+        "아늑함"
+      ],
+      "sceneTags": [
+        "정원",
+        "카페",
+        "랜드마크",
+        "전망대"
+      ],
+      "place_type": "카페/전망공간",
+      "photo_point": "흰 종탑, 잔디마당, 춘천 시가지 전망",
+      "purpose_tags": [
+        "카페·실내휴식",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "해외감성 사진스팟",
+      "note": "카페 운영 여부 확인 필요"
+    },
+    {
+      "place_id": "GOAT-004",
+      "place_name": "해피초원목장",
+      "city": "춘천시",
+      "region_group": "영서권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "알프스감성",
+        "가족친화",
+        "동물교감감성",
+        "자연친화",
+        "탁트임",
+        "청량함"
+      ],
+      "sceneTags": [
+        "목장",
+        "초원",
+        "산",
+        "동물"
+      ],
+      "place_type": "목장/초원",
+      "photo_point": "초원 능선, 동물 방목, 목장길",
+      "purpose_tags": [
+        "체험·액티비티",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름",
+        "가을"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "목장형 코스 추천",
+      "note": "평창 대관령 목장권역과 별도 장소로 관리"
+    },
+    {
+      "place_id": "GOAT-005",
+      "place_name": "아웃오브파크",
+      "city": "춘천시",
+      "region_group": "영서권",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "mood_tags": [
+        "미국서부감성",
+        "레트로",
+        "프라이빗",
+        "빈티지",
+        "로드트립감성",
+        "로컬감성",
+        "자유로움"
+      ],
+      "sceneTags": [
+        "숙소",
+        "포토존",
+        "카라반"
+      ],
+      "place_type": "카라반/숙박",
+      "photo_point": "에어스트림 카라반, 옐로우 스쿨버스, 영문 사인",
+      "purpose_tags": [
+        "숙소·리조트",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "봄",
+        "가을"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "숙박·포토존 추천",
+      "note": "숙박시설 성격 강함"
+    },
+    {
+      "place_id": "GOAT-006",
+      "place_name": "교토정원",
+      "city": "춘천시",
+      "region_group": "영서권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "일본소도시감성",
+        "일본감성",
+        "조용함",
+        "힐링",
+        "아늑함",
+        "아기자기함",
+        "이국적"
+      ],
+      "sceneTags": [
+        "정원",
+        "카페",
+        "료칸"
+      ],
+      "place_type": "카페/정원",
+      "photo_point": "일본식 정원, 원목 인테리어, 다다미 공간",
+      "purpose_tags": [
+        "카페·실내휴식",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "카페·감성공간 추천",
+      "note": "상업시설로 운영상태 확인 필요"
+    },
+    {
+      "place_id": "GOAT-007",
+      "place_name": "스테이 조각밤",
+      "city": "춘천시",
+      "region_group": "영서권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "료칸감성",
+        "일본소도시감성",
+        "프리미엄",
+        "일본감성",
+        "프라이빗",
+        "조용함",
+        "힐링"
+      ],
+      "sceneTags": [
+        "정원",
+        "숙소",
+        "료칸"
+      ],
+      "place_type": "숙소",
+      "photo_point": "프라이빗 자쿠지, 수공간, 다도 세트",
+      "purpose_tags": [
+        "숙소·리조트"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "숙소 추천",
+      "note": "이와림과 분리 저장"
+    },
+    {
+      "place_id": "GOAT-008",
+      "place_name": "이와림",
+      "city": "춘천시",
+      "region_group": "영서권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "료칸감성",
+        "일본소도시감성",
+        "프리미엄",
+        "일본감성",
+        "프라이빗",
+        "조용함",
+        "힐링"
+      ],
+      "sceneTags": [
+        "정원",
+        "숙소",
+        "료칸"
+      ],
+      "place_type": "숙소",
+      "photo_point": "프라이빗 자쿠지, 수공간, 다도 세트",
+      "purpose_tags": [
+        "숙소·리조트"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "숙소 추천",
+      "note": "스테이 조각밤과 분리 저장"
+    },
+    {
+      "place_id": "GOAT-009",
+      "place_name": "뮤지엄 SAN",
+      "city": "원주시",
+      "region_group": "영서권",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "mood_tags": [
+        "예술적",
+        "미니멀",
+        "건축미",
+        "현대적",
+        "웅장함",
+        "조용함",
+        "도시적"
+      ],
+      "sceneTags": [
+        "정원",
+        "미술관",
+        "건축"
+      ],
+      "place_type": "미술관/건축",
+      "photo_point": "워터가든, 콘크리트 동선, 조각정원",
+      "purpose_tags": [
+        "전시·건축관람",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "가을"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "건축·사진스팟 추천",
+      "note": "입장권 확인 필요"
+    },
+    {
+      "place_id": "GOAT-010",
+      "place_name": "소금산 그랜드밸리",
+      "city": "원주시",
+      "region_group": "영서권",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "mood_tags": [
+        "예술적",
+        "건축미",
+        "모험적",
+        "탁트임",
+        "신비로움",
+        "스릴감",
+        "웅장함"
+      ],
+      "sceneTags": [
+        "협곡",
+        "스카이워크",
+        "출렁다리",
+        "전망대"
+      ],
+      "place_type": "협곡/스카이워크",
+      "photo_point": "출렁다리, 울렁다리, 스카이타워",
+      "purpose_tags": [
+        "체험·액티비티",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "가을"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "상",
+        "car": "상"
+      },
+      "recommendation_use": "액티비티·포토스팟 추천",
+      "note": "운영·안전 공지 확인 필요"
+    },
+    {
+      "place_id": "GOAT-011",
+      "place_name": "알파카월드",
+      "city": "홍천군",
+      "region_group": "영서권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "라틴감성",
+        "가족친화",
+        "동물교감감성",
+        "자연친화",
+        "힐링",
+        "아기자기함",
+        "조용함"
+      ],
+      "sceneTags": [
+        "숲",
+        "테마파크",
+        "마을",
+        "동물"
+      ],
+      "place_type": "동물 테마파크",
+      "photo_point": "라틴빌리지존, 숲길, 동물 교감 동선",
+      "purpose_tags": [
+        "체험·액티비티",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "가을"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "가족·동물교감 추천",
+      "note": "입장권 확인 필요"
+    },
+    {
+      "place_id": "GOAT-012",
+      "place_name": "원대리 자작나무숲",
+      "city": "인제군",
+      "region_group": "북부내륙권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "북유럽감성",
+        "유럽감성",
+        "자연친화",
+        "신비로움",
+        "몽환적",
+        "조용함",
+        "힐링"
+      ],
+      "sceneTags": [
+        "숲",
+        "설경",
+        "산책로"
+      ],
+      "place_type": "숲/자연",
+      "photo_point": "흰 자작나무 숲길, 반복되는 수간 원근감",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "가을",
+        "겨울"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "숲길·겨울 코스 추천",
+      "note": "계절·입산 통제 확인 필요"
+    },
+    {
+      "place_id": "GOAT-013",
+      "place_name": "인제성당",
+      "city": "인제군",
+      "region_group": "북부내륙권",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "mood_tags": [
+        "유럽감성",
+        "예술적",
+        "건축미",
+        "현대적",
+        "웅장함",
+        "조용함",
+        "이국적"
+      ],
+      "sceneTags": [
+        "건축",
+        "종교시설",
+        "마을"
+      ],
+      "place_type": "건축/종교시설",
+      "photo_point": "서양식 성당 외관, 조용한 마을 분위기",
+      "purpose_tags": [
+        "전시·건축관람",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "조용한 감성스팟 추천",
+      "note": "종교시설 예절 안내 필요"
+    },
+    {
+      "place_id": "GOAT-014",
+      "place_name": "한반도섬",
+      "city": "양구군",
+      "region_group": "북부내륙권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "자연친화",
+        "탁트임",
+        "힐링",
+        "여유로움",
+        "조용함"
+      ],
+      "sceneTags": [
+        "호수",
+        "산책로"
+      ],
+      "place_type": "호수/랜드아트",
+      "photo_point": "데크길, 호수 반영, 섬 실루엣",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "가을"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "SNS 화제 스팟 추천",
+      "note": "해외감성보다는 화제성 중심"
+    },
+    {
+      "place_id": "GOAT-015",
+      "place_name": "알펜시아 리조트",
+      "city": "평창군",
+      "region_group": "고원권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "알프스감성",
+        "프리미엄",
+        "휴양감",
+        "탁트임",
+        "신비로움",
+        "자연친화",
+        "청량함"
+      ],
+      "sceneTags": [
+        "리조트",
+        "랜드마크",
+        "설경"
+      ],
+      "place_type": "리조트",
+      "photo_point": "리조트 광장, 유럽풍 동선, 스키점프대",
+      "purpose_tags": [
+        "숙소·리조트",
+        "체험·액티비티"
+      ],
+      "season_tags": [
+        "겨울"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "상",
+        "car": "상"
+      },
+      "recommendation_use": "겨울 리조트 코스 추천",
+      "note": "숙박/방문 목적 구분 필요"
+    },
+    {
+      "place_id": "GOAT-016",
+      "place_name": "육백마지기",
+      "city": "평창군",
+      "region_group": "고원권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "알프스감성",
+        "유럽감성",
+        "탁트임",
+        "청량함",
+        "자연친화",
+        "낭만적"
+      ],
+      "sceneTags": [
+        "고원",
+        "풍력발전기",
+        "꽃밭",
+        "별"
+      ],
+      "place_type": "고원/풍력발전",
+      "photo_point": "풍력발전기, 샤스타데이지, 고원 능선",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "새벽",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "새벽·고원 포토스팟 추천",
+      "note": "도로·기상 확인 필요"
+    },
+    {
+      "place_id": "GOAT-017",
+      "place_name": "대관령양떼목장",
+      "city": "평창군",
+      "region_group": "고원권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "알프스감성",
+        "가족친화",
+        "자연친화",
+        "탁트임",
+        "청량함",
+        "신비로움"
+      ],
+      "sceneTags": [
+        "목장",
+        "초원",
+        "설경",
+        "동물"
+      ],
+      "place_type": "목장/초원",
+      "photo_point": "울타리 초원, 양떼, 능선 조망",
+      "purpose_tags": [
+        "체험·액티비티",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름",
+        "겨울"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "목장 코스 추천",
+      "note": "목장권역 중 개별 장소"
+    },
+    {
+      "place_id": "GOAT-018",
+      "place_name": "하늘목장",
+      "city": "평창군",
+      "region_group": "고원권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "알프스감성",
+        "가족친화",
+        "자연친화",
+        "탁트임",
+        "청량함",
+        "모험적"
+      ],
+      "sceneTags": [
+        "목장",
+        "초원",
+        "동물"
+      ],
+      "place_type": "목장/초원",
+      "photo_point": "목장길, 초원 사면, 동물 방목",
+      "purpose_tags": [
+        "체험·액티비티",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름",
+        "겨울"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "목장 코스 추천",
+      "note": "목장권역 중 개별 장소"
+    },
+    {
+      "place_id": "GOAT-019",
+      "place_name": "삼양라운드힐",
+      "city": "평창군",
+      "region_group": "고원권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "홋카이도감성",
+        "알프스감성",
+        "탁트임",
+        "자연친화",
+        "신비로움",
+        "청량함",
+        "이국적"
+      ],
+      "sceneTags": [
+        "목장",
+        "초원",
+        "풍력발전기",
+        "설경"
+      ],
+      "place_type": "목장/초원",
+      "photo_point": "광활한 목장, 풍력발전기, 설원",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "여름",
+        "겨울"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "목장·설원 코스 추천",
+      "note": "구 삼양목장 명칭 포함 검색 필요"
+    },
+    {
+      "place_id": "GOAT-020",
+      "place_name": "발왕산 천년주목숲길·애니포레",
+      "city": "평창군",
+      "region_group": "고원권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "북유럽감성",
+        "유럽감성",
+        "자연친화",
+        "신비로움",
+        "조용함",
+        "힐링",
+        "여유로움"
+      ],
+      "sceneTags": [
+        "숲",
+        "산",
+        "케이블카"
+      ],
+      "place_type": "숲/산악",
+      "photo_point": "침엽수림 숲길, 고산 전망",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "가을",
+        "겨울"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "숲길·케이블카 연계 추천",
+      "note": "발왕산 케이블카와 연계 가능"
+    },
+    {
+      "place_id": "GOAT-021",
+      "place_name": "삼탄아트마인",
+      "city": "정선군",
+      "region_group": "고원권",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "mood_tags": [
+        "레트로",
+        "빈티지",
+        "예술적",
+        "로컬감성",
+        "신비로움",
+        "조용함",
+        "활기"
+      ],
+      "sceneTags": [
+        "산업유산",
+        "미술관"
+      ],
+      "place_type": "산업유산/미술관",
+      "photo_point": "수직갱, 녹슨 설비, 갤러리 공간",
+      "purpose_tags": [
+        "전시·건축관람",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "비오는 날 대안 코스 추천",
+      "note": "운영일 확인 필요"
+    },
+    {
+      "place_id": "GOAT-022",
+      "place_name": "민둥산",
+      "city": "정선군",
+      "region_group": "고원권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "탁트임",
+        "자연친화",
+        "신비로움",
+        "모험적",
+        "낭만적",
+        "힐링",
+        "조용함"
+      ],
+      "sceneTags": [
+        "산",
+        "초원"
+      ],
+      "place_type": "산/억새",
+      "photo_point": "억새 능선, 돌리네 지형, 탁 트인 산세",
+      "purpose_tags": [
+        "산책·힐링",
+        "체험·액티비티"
+      ],
+      "season_tags": [
+        "가을"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "가을 트레킹 추천",
+      "note": "등산 난이도 정보 필요"
+    },
+    {
+      "place_id": "GOAT-023",
+      "place_name": "매봉산 바람의 언덕",
+      "city": "태백시",
+      "region_group": "고원권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "알프스감성",
+        "로드트립감성",
+        "탁트임",
+        "청량함",
+        "자연친화",
+        "낭만적",
+        "이국적"
+      ],
+      "sceneTags": [
+        "고원",
+        "풍력발전기",
+        "노을"
+      ],
+      "place_type": "고원/풍력발전",
+      "photo_point": "풍력발전기, 배추밭, 능선도로",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "새벽",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "일출·고원 포토스팟 추천",
+      "note": "도로 통제·기상 확인 필요"
+    },
+    {
+      "place_id": "GOAT-024",
+      "place_name": "태기산",
+      "city": "횡성군",
+      "region_group": "고원권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "신비로움",
+        "자연친화",
+        "몽환적",
+        "조용함",
+        "힐링",
+        "여유로움"
+      ],
+      "sceneTags": [
+        "산",
+        "설경"
+      ],
+      "place_type": "산/설경",
+      "photo_point": "상고대, 눈꽃 능선, 설산 풍경",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "겨울"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "겨울 설경 코스 추천",
+      "note": "겨울 도로상태 확인 필요"
+    },
+    {
+      "place_id": "GOAT-025",
+      "place_name": "안목해변 카페거리",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "휴양감",
+        "청량함",
+        "탁트임",
+        "낭만적",
+        "활기",
+        "아늑함"
+      ],
+      "sceneTags": [
+        "바다",
+        "해변",
+        "항구",
+        "카페"
+      ],
+      "place_type": "해변/카페거리",
+      "photo_point": "해변 전면 카페 파사드, 방파제, 모래사장",
+      "purpose_tags": [
+        "카페·실내휴식",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "상",
+        "car": "상"
+      },
+      "recommendation_use": "해변 카페 코스 추천",
+      "note": "대중교통 접근성 좋음"
+    },
+    {
+      "place_id": "GOAT-026",
+      "place_name": "하슬라아트월드",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "mood_tags": [
+        "지중해감성",
+        "예술적",
+        "건축미",
+        "탁트임",
+        "웅장함",
+        "현대적",
+        "이국적"
+      ],
+      "sceneTags": [
+        "절벽",
+        "바다",
+        "미술관"
+      ],
+      "place_type": "미술관/절벽",
+      "photo_point": "절벽 조각공원, 오션뷰 테라스",
+      "purpose_tags": [
+        "전시·건축관람",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "사진·전시 코스 추천",
+      "note": "입장권 확인 필요"
+    },
+    {
+      "place_id": "GOAT-027",
+      "place_name": "정동진 썬크루즈 리조트",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "mood_tags": [
+        "프리미엄",
+        "휴양감",
+        "예술적",
+        "건축미",
+        "탁트임",
+        "현대적",
+        "웅장함"
+      ],
+      "sceneTags": [
+        "절벽",
+        "리조트",
+        "랜드마크",
+        "노을"
+      ],
+      "place_type": "리조트/랜드마크",
+      "photo_point": "배형 외관, 해돋이 전망, 해안 절벽",
+      "purpose_tags": [
+        "숙소·리조트",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "겨울"
+      ],
+      "best_time": "새벽",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "일출·랜드마크 추천",
+      "note": "숙박/비숙박 방문 구분 필요"
+    },
+    {
+      "place_id": "GOAT-028",
+      "place_name": "BTS 버스정류장",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "K팝감성",
+        "로드트립감성",
+        "청량함",
+        "탁트임",
+        "낭만적",
+        "글로벌",
+        "이국적"
+      ],
+      "sceneTags": [
+        "바다",
+        "해변",
+        "포토존"
+      ],
+      "place_type": "해변 포토존",
+      "photo_point": "파란 정류장, 수평선, 모래사장",
+      "purpose_tags": [
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "새벽",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "K팝 팬 코스 추천",
+      "note": "해외감성보다 글로벌 화제성 중심"
+    },
+    {
+      "place_id": "GOAT-029",
+      "place_name": "정동진 철길 건널목",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "가마쿠라감성",
+        "일본소도시감성",
+        "애니메이션감성",
+        "일본감성",
+        "청량함",
+        "탁트임",
+        "아기자기함"
+      ],
+      "sceneTags": [
+        "해변",
+        "바다",
+        "철길"
+      ],
+      "place_type": "철길/해변",
+      "photo_point": "철길 뒤로 보이는 바다 풍경",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "일본 소도시 감성 추천",
+      "note": "안전 촬영 안내 필요"
+    },
+    {
+      "place_id": "GOAT-030",
+      "place_name": "안반데기",
+      "city": "강릉시",
+      "region_group": "고원권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "몽골감성",
+        "홋카이도감성",
+        "알프스감성",
+        "탁트임",
+        "신비로움",
+        "자연친화",
+        "청량함"
+      ],
+      "sceneTags": [
+        "고원",
+        "별",
+        "은하수"
+      ],
+      "place_type": "고원/별관측",
+      "photo_point": "고랭지 밭, 은하수, 광활한 고원",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름",
+        "겨울"
+      ],
+      "best_time": "야간",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "별보기·고원 코스 추천",
+      "note": "기상·도로 확인 필요"
+    },
+    {
+      "place_id": "GOAT-031",
+      "place_name": "금진해변·헌화로 드라이브 코스",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "캘리포니아감성",
+        "로드트립감성",
+        "서핑감성",
+        "청량함",
+        "탁트임",
+        "낭만적",
+        "자유로움"
+      ],
+      "sceneTags": [
+        "바다",
+        "해안도로",
+        "해변",
+        "서핑"
+      ],
+      "place_type": "해안도로/해변",
+      "photo_point": "바다와 가까운 해안도로, 서핑 해변",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "봄",
+        "가을"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "드라이브 코스 추천",
+      "note": "무드 브랜딩 후보군"
+    },
+    {
+      "place_id": "GOAT-032",
+      "place_name": "교동 소품샵 거리",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "일본소도시감성",
+        "일본감성",
+        "예술적",
+        "조용함",
+        "아기자기함",
+        "도시적",
+        "이국적"
+      ],
+      "sceneTags": [
+        "골목",
+        "소품샵"
+      ],
+      "place_type": "골목/소품샵",
+      "photo_point": "작은 소품샵, 정갈한 골목, 갤러리",
+      "purpose_tags": [
+        "산책·힐링",
+        "카페·실내휴식"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "골목 산책 추천",
+      "note": "개별 매장 변동성 큼"
+    },
+    {
+      "place_id": "GOAT-033",
+      "place_name": "휴식 료칸 풀빌라",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "료칸감성",
+        "일본소도시감성",
+        "프리미엄",
+        "일본감성",
+        "프라이빗",
+        "휴양감",
+        "조용함"
+      ],
+      "sceneTags": [
+        "숙소",
+        "료칸"
+      ],
+      "place_type": "숙소",
+      "photo_point": "다다미방, 히노끼탕, 중정",
+      "purpose_tags": [
+        "숙소·리조트"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "숙소 추천",
+      "note": "상업시설 운영상태 확인 필요"
+    },
+    {
+      "place_id": "GOAT-034",
+      "place_name": "유메모리 리조트",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "료칸감성",
+        "일본소도시감성",
+        "프리미엄",
+        "프라이빗",
+        "일본감성",
+        "조용함",
+        "힐링"
+      ],
+      "sceneTags": [
+        "정원",
+        "숙소",
+        "료칸"
+      ],
+      "place_type": "숙소",
+      "photo_point": "정원 산책로, 히노끼 사우나, 유카타 체험",
+      "purpose_tags": [
+        "숙소·리조트"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "숙소 추천",
+      "note": "상업시설 운영상태 확인 필요"
+    },
+    {
+      "place_id": "GOAT-035",
+      "place_name": "월화거리",
+      "city": "강릉시",
+      "region_group": "동해안권",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "mood_tags": [
+        "레트로",
+        "빈티지",
+        "로컬감성",
+        "활기",
+        "낭만적",
+        "도시적"
+      ],
+      "sceneTags": [
+        "야간거리",
+        "산책로"
+      ],
+      "place_type": "야간거리/산책로",
+      "photo_point": "조명 산책로, 먹거리, 버스킹 분위기",
+      "purpose_tags": [
+        "먹거리·야간탐방",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "상",
+        "car": "상"
+      },
+      "recommendation_use": "야간 대안 코스 추천",
+      "note": "식당 중심 데이터와 분리 필요"
+    },
+    {
+      "place_id": "GOAT-036",
+      "place_name": "무릉별유천지",
+      "city": "동해시",
+      "region_group": "동해안권",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "mood_tags": [
+        "아이슬란드감성",
+        "예술적",
+        "건축미",
+        "신비로움",
+        "청량함",
+        "탁트임",
+        "현대적"
+      ],
+      "sceneTags": [
+        "호수",
+        "전망대",
+        "꽃밭"
+      ],
+      "place_type": "재생관광/호수",
+      "photo_point": "청옥호·금곡호, 전망대, 라벤더",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "한낮",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "SNS·재생관광 추천",
+      "note": "운영시간 확인 필요"
+    },
+    {
+      "place_id": "GOAT-037",
+      "place_name": "어달삼거리",
+      "city": "동해시",
+      "region_group": "동해안권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "가마쿠라감성",
+        "일본소도시감성",
+        "일본감성",
+        "로드트립감성",
+        "청량함",
+        "조용함",
+        "아기자기함"
+      ],
+      "sceneTags": [
+        "바다",
+        "해안도로",
+        "포토존"
+      ],
+      "place_type": "해변 도로/포토존",
+      "photo_point": "바다를 향해 뻗은 도로와 낮은 건물",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "일본 소도시 감성 추천",
+      "note": "도로 촬영 안전 안내 필요"
+    },
+    {
+      "place_id": "GOAT-038",
+      "place_name": "묵호항 일대",
+      "city": "동해시",
+      "region_group": "동해안권",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "mood_tags": [
+        "레트로",
+        "로컬감성",
+        "빈티지",
+        "청량함",
+        "활기",
+        "도시적",
+        "이국적"
+      ],
+      "sceneTags": [
+        "항구",
+        "시장",
+        "야간거리"
+      ],
+      "place_type": "항구/야간거리",
+      "photo_point": "저녁 항구 분위기, 바닷바람, 야외 해산물 거리",
+      "purpose_tags": [
+        "먹거리·야간탐방",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "야간 항구 코스 추천",
+      "note": "식당 중심 데이터와 분리 필요"
+    },
+    {
+      "place_id": "GOAT-039",
+      "place_name": "묵호등대·논골담길",
+      "city": "동해시",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "레트로",
+        "로컬감성",
+        "탁트임",
+        "청량함",
+        "이국적"
+      ],
+      "sceneTags": [
+        "해안언덕",
+        "바다",
+        "등대",
+        "벽화마을"
+      ],
+      "place_type": "해안 언덕마을",
+      "photo_point": "가파른 언덕길, 바다 전망, 등대 주변",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "브랜딩 후보 코스 추천",
+      "note": "논골담길/묵호등대 중복 통합"
+    },
+    {
+      "place_id": "GOAT-040",
+      "place_name": "외옹치 바다향기로",
+      "city": "속초시",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "유럽감성",
+        "로드트립감성",
+        "청량함",
+        "탁트임",
+        "자연친화",
+        "웅장함",
+        "힐링"
+      ],
+      "sceneTags": [
+        "해안산책로",
+        "절벽",
+        "바다",
+        "암석"
+      ],
+      "place_type": "해안데크길",
+      "photo_point": "절벽 데크, 암반, 파도선",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "상",
+        "car": "상"
+      },
+      "recommendation_use": "해안 산책 추천",
+      "note": "안전점검·통제 여부 확인 필요"
+    },
+    {
+      "place_id": "GOAT-041",
+      "place_name": "속초 서점 투어 골목",
+      "city": "속초시",
+      "region_group": "동해안권",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "mood_tags": [
+        "일본소도시감성",
+        "일본감성",
+        "로컬감성",
+        "조용함",
+        "힐링",
+        "아늑함",
+        "아기자기함"
+      ],
+      "sceneTags": [
+        "골목",
+        "서점",
+        "실내공간"
+      ],
+      "place_type": "서점/골목",
+      "photo_point": "동아서점, 완벽한 날들 등 서점 동선",
+      "purpose_tags": [
+        "카페·실내휴식",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "상",
+        "car": "중"
+      },
+      "recommendation_use": "조용한 실내 대안 코스 추천",
+      "note": "개별 서점 운영시간 확인 필요"
+    },
+    {
+      "place_id": "GOAT-042",
+      "place_name": "카페 흰다정",
+      "city": "속초시",
+      "region_group": "동해안권",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "mood_tags": [
+        "레트로",
+        "일본감성",
+        "빈티지",
+        "로컬감성",
+        "조용함",
+        "아늑함",
+        "활기"
+      ],
+      "sceneTags": [
+        "카페",
+        "실내공간"
+      ],
+      "place_type": "카페",
+      "photo_point": "우드톤 인테리어, 레트로 소품",
+      "purpose_tags": [
+        "카페·실내휴식",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "카페 감성 추천",
+      "note": "상업시설 운영상태 확인 필요"
+    },
+    {
+      "place_id": "GOAT-043",
+      "place_name": "속초 관광수산시장·대포항",
+      "city": "속초시",
+      "region_group": "동해안권",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "mood_tags": [
+        "레트로",
+        "로컬감성",
+        "빈티지",
+        "청량함",
+        "활기",
+        "도시적"
+      ],
+      "sceneTags": [
+        "항구",
+        "시장",
+        "야간거리"
+      ],
+      "place_type": "시장/항구",
+      "photo_point": "시장 골목, 항구 야경, 여행자 밀집 분위기",
+      "purpose_tags": [
+        "먹거리·야간탐방",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "상",
+        "car": "상"
+      },
+      "recommendation_use": "야간·먹거리 코스 추천",
+      "note": "식당 데이터와 분리 관리 필요"
+    },
+    {
+      "place_id": "GOAT-044",
+      "place_name": "서피비치",
+      "city": "양양군",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "발리감성",
+        "캘리포니아감성",
+        "서핑감성",
+        "휴양감",
+        "청량함",
+        "탁트임",
+        "활기"
+      ],
+      "sceneTags": [
+        "해변",
+        "서핑",
+        "포토존"
+      ],
+      "place_type": "서프비치",
+      "photo_point": "비치 사인, 빈백, 서핑존, 팜트리",
+      "purpose_tags": [
+        "체험·액티비티",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "서핑·비치 포토스팟 추천",
+      "note": "성수기 혼잡도 반영 필요"
+    },
+    {
+      "place_id": "GOAT-045",
+      "place_name": "죽도해변·인구해변·양리단길",
+      "city": "양양군",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "트렌디",
+        "서핑감성",
+        "청량함",
+        "탁트임",
+        "활기",
+        "낭만적"
+      ],
+      "sceneTags": [
+        "해변",
+        "서프타운",
+        "노을"
+      ],
+      "place_type": "서프타운/해변권역",
+      "photo_point": "죽도정 전망, 서핑숍 거리, 노을",
+      "purpose_tags": [
+        "체험·액티비티",
+        "먹거리·야간탐방"
+      ],
+      "season_tags": [
+        "여름",
+        "가을"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "서프타운 권역 추천",
+      "note": "개별 업장보다 권역으로 관리"
+    },
+    {
+      "place_id": "GOAT-046",
+      "place_name": "두둥실",
+      "city": "양양군",
+      "region_group": "동해안권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "발리감성",
+        "프라이빗",
+        "프리미엄",
+        "휴양감",
+        "청량함",
+        "힐링",
+        "아늑함"
+      ],
+      "sceneTags": [
+        "해변",
+        "카페"
+      ],
+      "place_type": "카페/감성공간",
+      "photo_point": "라탄 소품, 목재 가구, 발리풍 인테리어",
+      "purpose_tags": [
+        "카페·실내휴식",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "카페 감성 추천",
+      "note": "업장 운영상태와 식당 여부 확인 필요"
+    },
+    {
+      "place_id": "GOAT-047",
+      "place_name": "에이프레임(A-Frame)",
+      "city": "고성군",
+      "region_group": "동해안권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "프리미엄",
+        "서핑감성",
+        "휴양감",
+        "트렌디",
+        "청량함",
+        "활기",
+        "아늑함"
+      ],
+      "sceneTags": [
+        "카페",
+        "서핑",
+        "포토존"
+      ],
+      "place_type": "카페/서프감성",
+      "photo_point": "서핑보드 벽면, 서퍼 카페 인테리어",
+      "purpose_tags": [
+        "카페·실내휴식",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "서프 감성 카페 추천",
+      "note": "상업시설 운영상태 확인 필요"
+    },
+    {
+      "place_id": "GOAT-048",
+      "place_name": "아야진해수욕장",
+      "city": "고성군",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "휴양감",
+        "로드트립감성",
+        "청량함",
+        "탁트임",
+        "자연친화",
+        "힐링",
+        "낭만적"
+      ],
+      "sceneTags": [
+        "바다",
+        "해변",
+        "암석"
+      ],
+      "place_type": "해변",
+      "photo_point": "에메랄드빛 바다, 백사장, 갯바위",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "한낮",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "해변 코스 추천",
+      "note": "기상·수질·주차 확인 필요"
+    },
+    {
+      "place_id": "GOAT-049",
+      "place_name": "켄싱턴리조트 설악밸리",
+      "city": "고성군",
+      "region_group": "동해안권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "알프스감성",
+        "프리미엄",
+        "탁트임",
+        "자연친화",
+        "청량함",
+        "조용함",
+        "힐링"
+      ],
+      "sceneTags": [
+        "산",
+        "리조트",
+        "숙소"
+      ],
+      "place_type": "리조트/숙소",
+      "photo_point": "스위스풍 독립 객실, 산장 외관",
+      "purpose_tags": [
+        "숙소·리조트",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "가을",
+        "겨울"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "숙소·리조트 추천",
+      "note": "숙박 중심 데이터로 분류"
+    },
+    {
+      "place_id": "GOAT-050",
+      "place_name": "하늬라벤더팜",
+      "city": "고성군",
+      "region_group": "동해안권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "자연친화",
+        "청량함",
+        "컬러풀",
+        "힐링",
+        "조용함",
+        "여유로움",
+        "이국적"
+      ],
+      "sceneTags": [
+        "정원",
+        "꽃밭"
+      ],
+      "place_type": "정원/농장",
+      "photo_point": "라벤더 언덕, 양귀비, 메타세쿼이아",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "꽃밭·정원 코스 추천",
+      "note": "개화시기 반영 필수"
+    },
+    {
+      "place_id": "GOAT-051",
+      "place_name": "능파대",
+      "city": "고성군",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "로드트립감성",
+        "신비로움",
+        "청량함",
+        "탁트임",
+        "자연친화",
+        "낭만적"
+      ],
+      "sceneTags": [
+        "바다",
+        "암석",
+        "산책로"
+      ],
+      "place_type": "지질/해안",
+      "photo_point": "타포니 바위, 해안 데크, 파도",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "지질·해안 포토스팟 추천",
+      "note": "안전 안내 필요"
+    },
+    {
+      "place_id": "GOAT-052",
+      "place_name": "사유의 숲",
+      "city": "삼척시",
+      "region_group": "동해안권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "발리감성",
+        "프리미엄",
+        "프라이빗",
+        "휴양감",
+        "힐링",
+        "아늑함",
+        "여유로움"
+      ],
+      "sceneTags": [
+        "숙소",
+        "풀빌라"
+      ],
+      "place_type": "숙소/풀빌라",
+      "photo_point": "야자수, 라탄 소품, 야외 수영장",
+      "purpose_tags": [
+        "숙소·리조트"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "상"
+      },
+      "recommendation_use": "숙소 추천",
+      "note": "숙박시설 성격 강함"
+    },
+    {
+      "place_id": "GOAT-053",
+      "place_name": "쏠비치 삼척·산토리니 광장",
+      "city": "삼척시",
+      "region_group": "동해안권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "산토리니감성",
+        "지중해감성",
+        "프리미엄",
+        "휴양감",
+        "청량함",
+        "아늑함",
+        "여유로움"
+      ],
+      "sceneTags": [
+        "리조트",
+        "랜드마크",
+        "광장"
+      ],
+      "place_type": "리조트/광장",
+      "photo_point": "백색 건물, 코발트 지붕, 산토리니 광장",
+      "purpose_tags": [
+        "숙소·리조트",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "리조트·사진스팟 추천",
+      "note": "쏠비치 삼척과 산토리니 광장 통합"
+    },
+    {
+      "place_id": "GOAT-054",
+      "place_name": "라메종드마리",
+      "city": "삼척시",
+      "region_group": "동해안권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "프리미엄",
+        "유럽감성",
+        "휴양감",
+        "조용함",
+        "아늑함",
+        "여유로움",
+        "이국적"
+      ],
+      "sceneTags": [
+        "카페",
+        "건축",
+        "실내공간"
+      ],
+      "place_type": "카페/디저트공간",
+      "photo_point": "유럽식 주택 외관, 디저트 공간",
+      "purpose_tags": [
+        "카페·실내휴식",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "카페 감성 추천",
+      "note": "상업시설 운영상태 확인 필요"
+    },
+    {
+      "place_id": "GOAT-055",
+      "place_name": "장호항",
+      "city": "삼척시",
+      "region_group": "동해안권",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "mood_tags": [
+        "레트로",
+        "로컬감성",
+        "휴양감",
+        "빈티지",
+        "청량함",
+        "탁트임",
+        "모험적"
+      ],
+      "sceneTags": [
+        "항구",
+        "해변",
+        "바다"
+      ],
+      "place_type": "항구/해변",
+      "photo_point": "에메랄드 수면, 방파제, 카누 시점",
+      "purpose_tags": [
+        "체험·액티비티",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "한낮",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "해양 액티비티·포토스팟 추천",
+      "note": "용화해변과 연계 가능"
+    },
+    {
+      "place_id": "GOAT-056",
+      "place_name": "용화해변",
+      "city": "삼척시",
+      "region_group": "동해안권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "프리미엄",
+        "휴양감",
+        "청량함",
+        "탁트임",
+        "모험적",
+        "힐링",
+        "아늑함"
+      ],
+      "sceneTags": [
+        "바다",
+        "해변",
+        "케이블카"
+      ],
+      "place_type": "해변",
+      "photo_point": "해변, 케이블카 연계 동선, 바다색",
+      "purpose_tags": [
+        "체험·액티비티",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "여름"
+      ],
+      "best_time": "한낮",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "장호항 연계 대안 코스 추천",
+      "note": "장호항과 별도 장소로 관리"
+    },
+    {
+      "place_id": "GOAT-057",
+      "place_name": "초곡용굴촛대바위길",
+      "city": "삼척시",
+      "region_group": "동해안권",
+      "primaryTheme": "바다·해안 무드",
+      "mood_tags": [
+        "유럽감성",
+        "로드트립감성",
+        "청량함",
+        "모험적",
+        "탁트임",
+        "신비로움",
+        "낭만적"
+      ],
+      "sceneTags": [
+        "해안산책로",
+        "출렁다리",
+        "해식동굴",
+        "암석"
+      ],
+      "place_type": "해안 트레일",
+      "photo_point": "출렁다리, 해식동굴, 촛대바위",
+      "purpose_tags": [
+        "체험·액티비티",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "해안 트레킹 추천",
+      "note": "파도·기상 확인 필요"
+    },
+    {
+      "place_id": "GOAT-058",
+      "place_name": "한탄강 주상절리길",
+      "city": "철원군",
+      "region_group": "북부내륙권",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "mood_tags": [
+        "예술적",
+        "건축미",
+        "신비로움",
+        "모험적",
+        "탁트임",
+        "웅장함",
+        "스릴감"
+      ],
+      "sceneTags": [
+        "협곡",
+        "절벽",
+        "주상절리",
+        "잔도"
+      ],
+      "place_type": "협곡/잔도",
+      "photo_point": "현무암 협곡, 절벽 잔도, 안개 낀 풍경",
+      "purpose_tags": [
+        "체험·액티비티",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "가을",
+        "겨울"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "비 오는 날 대안 코스 추천",
+      "note": "날씨 단점을 장점으로 활용 가능"
+    }
+  ]
+}

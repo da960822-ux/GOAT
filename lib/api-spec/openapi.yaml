@@ -222,10 +222,10 @@ components:
           enum: [혼자, 연인, 친구, 가족]
         transport:
           type: string
-          enum: [자차, 대중교통]
+          enum: [자차, 대중교통, 도보중심]
         visitTime:
           type: [string, "null"]
-          enum: [오전, 오후, 일몰, 저녁, 밤/새벽, null]
+          enum: [새벽, 오전, 한낮, 오후, 일몰, 저녁, 야간, 밤/새벽, null]
         purpose:
           type: string
           enum: [가볍게 산책, 사진 위주, 액티비티, 조용한 휴식]
@@ -256,6 +256,24 @@ components:
         moodId:
           type: string
           minLength: 1
+        referenceCardId:
+          type: string
+          minLength: 1
+        travelPurpose:
+          type: string
+          enum: [사진·포토스팟, 산책·힐링, 카페·실내휴식, 전시·건축관람, 체험·액티비티, 먹거리·야간탐방, 숙소·리조트]
+        transportType:
+          type: string
+          enum: [자차, 대중교통, 도보중심]
+        visitTime:
+          type: string
+          enum: [새벽, 오전, 한낮, 오후, 저녁, 야간]
+        currentMonth:
+          type: integer
+          minimum: 1
+          maximum: 12
+        debug:
+          type: boolean
         preferences:
           $ref: "#/components/schemas/TravelPreferences"
         origin:
@@ -267,7 +285,6 @@ components:
           items:
             type: string
             minLength: 1
-      required: [moodId]
       additionalProperties: false
     Place:
       type: object
@@ -350,6 +367,8 @@ components:
       properties:
         moodId:
           type: string
+        referenceCardId:
+          type: string
         appliedTags:
           type: array
           items:
@@ -376,6 +395,22 @@ components:
           maxItems: 3
           items:
             $ref: "#/components/schemas/Recommendation"
+        cards:
+          type: array
+          minItems: 3
+          maxItems: 3
+          items:
+            type: object
+            additionalProperties: true
+        alternatives:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        warnings:
+          type: array
+          items:
+            type: string
       required:
         [moodId, appliedTags, seedPoolSize, candidatePoolSize, poolPolicy, poolReason, fallbackUsed, adaptivePoolRetryUsed, recommendations]
     RecommendationsSuccessResponse:

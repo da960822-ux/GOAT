@@ -6,10 +6,13 @@
  * OpenAPI spec version: 0.3.0
  */
 import type { Recommendation } from './recommendation';
+import type { RecommendationsDataAlternativesItem } from './recommendationsDataAlternativesItem';
+import type { RecommendationsDataCardsItem } from './recommendationsDataCardsItem';
 import type { RecommendationsDataPoolPolicy } from './recommendationsDataPoolPolicy';
 
 export interface RecommendationsData {
   moodId: string;
+  referenceCardId?: string;
   appliedTags: string[];
   seedPoolSize: 58;
   /**
@@ -26,4 +29,11 @@ export interface RecommendationsData {
      * @maxItems 3
      */
   recommendations: Recommendation[];
+  /**
+     * @minItems 3
+     * @maxItems 3
+     */
+  cards?: RecommendationsDataCardsItem[];
+  alternatives?: RecommendationsDataAlternativesItem[];
+  warnings?: string[];
 }

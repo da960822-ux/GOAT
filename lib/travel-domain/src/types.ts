@@ -1,4 +1,5 @@
 import type { RecommendationInput } from "./v13Engine";
+import type { RecommendationCard as GoatRecommendationCard } from "./goatRecommendationTypes";
 
 export type DataStatus = "confirmed" | "needs_verification" | "future_candidate";
 
@@ -62,6 +63,7 @@ export interface RecommendationCard {
 
 export interface RecommendationResult {
   moodId: string;
+  referenceCardId?: string;
   appliedTags: string[];
   seedPoolSize: number;
   candidatePoolSize: number;
@@ -70,11 +72,14 @@ export interface RecommendationResult {
   fallbackUsed: boolean;
   adaptivePoolRetryUsed: boolean;
   recommendations: RecommendationCard[];
+  cards?: GoatRecommendationCard[];
+  alternatives?: GoatRecommendationCard[];
+  warnings?: string[];
 }
 
 export type Companion = "혼자" | "연인" | "친구" | "가족";
-export type Transport = "자차" | "대중교통";
-export type VisitTime = "오전" | "오후" | "일몰" | "저녁" | "밤/새벽";
+export type Transport = "자차" | "대중교통" | "도보중심";
+export type VisitTime = "새벽" | "오전" | "한낮" | "오후" | "일몰" | "저녁" | "야간" | "밤/새벽";
 export type TravelPurpose = "가볍게 산책" | "사진 위주" | "액티비티" | "조용한 휴식";
 export type OriginType = "current" | "region" | "skip";
 

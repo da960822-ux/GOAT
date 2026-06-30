@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.3.0
  */
 
-export type TravelPreferencesTransport = typeof TravelPreferencesTransport[keyof typeof TravelPreferencesTransport];
+export type RecommendFromTagsRequestTransportType = typeof RecommendFromTagsRequestTransportType[keyof typeof RecommendFromTagsRequestTransportType];
 
 
-export const TravelPreferencesTransport = {
+export const RecommendFromTagsRequestTransportType = {
   자차: '자차',
   대중교통: '대중교통',
   도보중심: '도보중심',

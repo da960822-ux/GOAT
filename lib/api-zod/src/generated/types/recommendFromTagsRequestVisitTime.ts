@@ -6,19 +6,14 @@
  * OpenAPI spec version: 0.3.0
  */
 
-/**
- * @nullable
- */
-export type TravelPreferencesVisitTime = typeof TravelPreferencesVisitTime[keyof typeof TravelPreferencesVisitTime] | null;
+export type RecommendFromTagsRequestVisitTime = typeof RecommendFromTagsRequestVisitTime[keyof typeof RecommendFromTagsRequestVisitTime];
 
 
-export const TravelPreferencesVisitTime = {
+export const RecommendFromTagsRequestVisitTime = {
   새벽: '새벽',
   오전: '오전',
   한낮: '한낮',
   오후: '오후',
-  일몰: '일몰',
   저녁: '저녁',
   야간: '야간',
-  '밤/새벽': '밤/새벽',
 } as const;

@@ -4,20 +4,20 @@ import { readFile } from "node:fs/promises";
 
 const port = 43129;
 const baseUrl = `http://127.0.0.1:${port}/api`;
-const expectedTop3 = {
-  "california-coast": ["GOAT-031", "GOAT-044", "GOAT-040"],
-  "japan-small-town": ["GOAT-029", "GOAT-037", "GOAT-032"],
-  "alps-meadow": ["GOAT-017", "GOAT-018", "GOAT-019"],
-  "ryokan-lodging": ["GOAT-007", "GOAT-008", "GOAT-033"],
-  "rainy-canyon": ["GOAT-058", "GOAT-010", "GOAT-057"],
-  "nordic-winter": ["GOAT-012", "GOAT-020", "GOAT-024"],
-  "retro-night-market": ["GOAT-043", "GOAT-038", "GOAT-035"],
-  "plateau-stars": ["GOAT-030", "GOAT-016", "GOAT-023"],
-  "bali-surf": ["GOAT-044", "GOAT-045", "GOAT-047"],
-  "europe-garden": ["GOAT-001", "GOAT-013", "GOAT-050"],
-  "lake-reflection": ["GOAT-014", "GOAT-036", "GOAT-040"],
-  "japan-retro-cafe": ["GOAT-042", "GOAT-054", "GOAT-006"],
-};
+const expectedMoodIds = [
+  "california-coast",
+  "japan-small-town",
+  "alps-meadow",
+  "ryokan-lodging",
+  "rainy-canyon",
+  "nordic-winter",
+  "retro-night-market",
+  "plateau-stars",
+  "bali-surf",
+  "europe-garden",
+  "lake-reflection",
+  "japan-retro-cafe",
+];
 
 const server = spawn(process.execPath, ["--enable-source-maps", "./dist/index.mjs"], {
   cwd: new URL("..", import.meta.url),
@@ -56,34 +56,44 @@ try {
   await waitForServer();
 
   const places = JSON.parse(
-    await readFile(new URL("../../../lib/travel-domain/src/data/places.json", import.meta.url)),
+    await readFile(new URL("../../../lib/travel-domain/src/data/goat_simplified_scoring_tags_v10_accessibility_merged.json", import.meta.url)),
   );
-  assert.equal(places.length, 58);
-  assert.equal(new Set(places.map(({ placeId }) => placeId)).size, 58);
-  assert.ok(places.some(({ placeId, name }) => placeId === "GOAT-002" && name.includes("레고랜드")));
+  assert.equal(places.places.length, 58);
+  assert.equal(new Set(places.places.map(({ place_id }) => place_id)).size, 58);
+  assert.ok(places.places.some(({ place_id, place_name }) => place_id === "GOAT-002" && place_name.includes("레고랜드")));
 
   const moodsResult = await request("/moods");
   assert.equal(moodsResult.response.status, 200);
   assert.equal(moodsResult.body.data.moods.length, 12);
   assert.deepEqual(
     moodsResult.body.data.moods.map(({ id }) => id),
-    Object.keys(expectedTop3),
+    expectedMoodIds,
   );
 
   for (const mood of moodsResult.body.data.moods) {
     const result = await recommend({ moodId: mood.id });
     assert.equal(result.response.status, 200, mood.id);
     assert.equal(result.body.data.seedPoolSize, 58, mood.id);
-    assert.ok([43, 58].includes(result.body.data.candidatePoolSize), mood.id);
+    assert.ok(result.body.data.referenceCardId, mood.id);
+    assert.equal(result.body.data.cards.length, 3, mood.id);
     assert.equal(result.body.data.recommendations.length, 3, mood.id);
     const ids = result.body.data.recommendations.map(({ place }) => place.place_id);
     assert.equal(new Set(ids).size, 3, mood.id);
-    assert.deepEqual(ids, expectedTop3[mood.id], mood.id);
-    assert.ok(result.body.data.appliedTags.length >= mood.keywords.length, mood.id);
+    assert.deepEqual(
+      result.body.data.cards.map(({ placeId }) => placeId),
+      ids,
+      mood.id,
+    );
+    assert.deepEqual(
+      result.body.data.cards.map(({ role }) => role),
+      ["BEST_SCENE", "SAME_MOOD_ALTERNATIVE", "CONDITION_FIT_ALTERNATIVE"],
+      mood.id,
+    );
     for (const recommendation of result.body.data.recommendations) {
       assert.ok(Array.isArray(recommendation.matchedTags));
       assert.equal(typeof recommendation.score, "number");
       assert.equal(typeof recommendation.scoreBreakdown.tag, "number");
+      assert.equal(typeof recommendation.scoreBreakdown.baseScore, "number");
       assert.ok(!("distanceKm" in recommendation));
     }
   }
@@ -103,12 +113,30 @@ try {
     },
   });
   assert.equal(conditioned.response.status, 200);
+  assert.ok(
+    conditioned.body.data.recommendations.some(
+      (recommendation) => recommendation.scoreBreakdown.travelPurpose > 0,
+    ),
+  );
+  assert.ok(
+    conditioned.body.data.recommendations.some(
+      (recommendation) => recommendation.scoreBreakdown.transport > 0,
+    ),
+  );
   for (const recommendation of conditioned.body.data.recommendations) {
-    assert.notEqual(recommendation.scoreBreakdown.companion, 0);
-    assert.notEqual(recommendation.scoreBreakdown.travelPurpose, 0);
-    assert.notEqual(recommendation.scoreBreakdown.transport, 0);
     assert.ok(!("distanceKm" in recommendation));
   }
+
+  const referenceCardRequest = await recommend({
+    referenceCardId: "REF_SEA_02",
+    travelPurpose: "사진·포토스팟",
+    transportType: "자차",
+    visitTime: "오후",
+    currentMonth: 7,
+  });
+  assert.equal(referenceCardRequest.response.status, 200);
+  assert.equal(referenceCardRequest.body.data.referenceCardId, "REF_SEA_02");
+  assert.equal(referenceCardRequest.body.data.cards.length, 3);
 
   const firstAlps = await recommend({ moodId: "alps-meadow" });
   const excludedIds = firstAlps.body.data.recommendations.map(({ place }) => place.place_id);
@@ -141,7 +169,7 @@ try {
   assert.equal(ktoWithoutKey.response.status, 500);
   assert.match(ktoWithoutKey.body.error, /service key not configured/i);
 
-  console.log("API verification passed: 58 places, 12 moods, v1.3+ Top 3 and condition scores.");
+  console.log("API verification passed: 58 places, 12 moods, GOAT reference-card scoring engine.");
 } finally {
   server.kill();
 }

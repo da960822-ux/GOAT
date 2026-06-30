@@ -39,6 +39,9 @@ export const GetMoodsResponse = zod.object({
  * @summary Recommend three places using the GOAT v1.3+ scoring engine
  */
 
+
+export const recommendFromTagsBodyCurrentMonthMax = 12;
+
 export const recommendFromTagsBodyOriginLatitudeMin = -90;
 export const recommendFromTagsBodyOriginLatitudeMax = 90;
 
@@ -52,11 +55,17 @@ export const recommendFromTagsBodyExcludeIdsMax = 58;
 
 
 export const RecommendFromTagsBody = zod.object({
-  "moodId": zod.string().min(1),
+  "moodId": zod.string().min(1).optional(),
+  "referenceCardId": zod.string().min(1).optional(),
+  "travelPurpose": zod.enum(['사진·포토스팟', '산책·힐링', '카페·실내휴식', '전시·건축관람', '체험·액티비티', '먹거리·야간탐방', '숙소·리조트']).optional(),
+  "transportType": zod.enum(['자차', '대중교통', '도보중심']).optional(),
+  "visitTime": zod.enum(['새벽', '오전', '한낮', '오후', '저녁', '야간']).optional(),
+  "currentMonth": zod.number().min(1).max(recommendFromTagsBodyCurrentMonthMax).optional(),
+  "debug": zod.boolean().optional(),
   "preferences": zod.object({
   "companion": zod.enum(['혼자', '연인', '친구', '가족']),
-  "transport": zod.enum(['자차', '대중교통']),
-  "visitTime": zod.union([zod.literal('오전'),zod.literal('오후'),zod.literal('일몰'),zod.literal('저녁'),zod.literal('밤/새벽'),zod.literal(null)]).nullish(),
+  "transport": zod.enum(['자차', '대중교통', '도보중심']),
+  "visitTime": zod.union([zod.literal('새벽'),zod.literal('오전'),zod.literal('한낮'),zod.literal('오후'),zod.literal('일몰'),zod.literal('저녁'),zod.literal('야간'),zod.literal('밤/새벽'),zod.literal(null)]).nullish(),
   "purpose": zod.enum(['가볍게 산책', '사진 위주', '액티비티', '조용한 휴식'])
 }).optional(),
   "origin": zod.object({
@@ -74,6 +83,9 @@ export const recommendFromTagsResponseTwoDataCandidatePoolSizeMax = 58;
 export const recommendFromTagsResponseTwoDataRecommendationsMin = 3;
 export const recommendFromTagsResponseTwoDataRecommendationsMax = 3;
 
+export const recommendFromTagsResponseTwoDataCardsMin = 3;
+export const recommendFromTagsResponseTwoDataCardsMax = 3;
+
 
 
 export const RecommendFromTagsResponse = zod.object({
@@ -83,6 +95,7 @@ export const RecommendFromTagsResponse = zod.object({
 }).and(zod.object({
   "data": zod.object({
   "moodId": zod.string(),
+  "referenceCardId": zod.string().optional(),
   "appliedTags": zod.array(zod.string()),
   "seedPoolSize": zod.number(),
   "candidatePoolSize": zod.number().min(recommendFromTagsResponseTwoDataCandidatePoolSizeMin).max(recommendFromTagsResponseTwoDataCandidatePoolSizeMax),
@@ -125,7 +138,10 @@ export const RecommendFromTagsResponse = zod.object({
   "safetyNotes": zod.array(zod.string()),
   "weatherFit": zod.string(),
   "parkingInfo": zod.string()
-})).min(recommendFromTagsResponseTwoDataRecommendationsMin).max(recommendFromTagsResponseTwoDataRecommendationsMax)
+})).min(recommendFromTagsResponseTwoDataRecommendationsMin).max(recommendFromTagsResponseTwoDataRecommendationsMax),
+  "cards": zod.array(zod.record(zod.string(), zod.unknown())).min(recommendFromTagsResponseTwoDataCardsMin).max(recommendFromTagsResponseTwoDataCardsMax).optional(),
+  "alternatives": zod.array(zod.record(zod.string(), zod.unknown())).optional(),
+  "warnings": zod.array(zod.string()).optional()
 })
 }))
 

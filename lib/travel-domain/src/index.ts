@@ -4,6 +4,7 @@ export {
   getPlaceById,
   moodCategories,
 } from "./recommendationService";
+export { recommendGoatPlaces, getRecommendedPlaceIds } from "./goatRecommendationEngine";
 export { getGoatRecommendations } from "./v13Engine";
 export type {
   Companion,
@@ -27,3 +28,11 @@ export type {
   RecommendationApiResponse,
   RecommendationInput,
 } from "./v13Engine";
+export type {
+  GoatPlaceDataset,
+  GoatReferenceCardDataset,
+  RecommendRequest,
+  RecommendResult,
+  RecommendationCard as GoatRecommendationCard,
+  ScoreBreakdown as GoatScoreBreakdown,
+} from "./goatRecommendationTypes";
