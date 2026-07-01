@@ -12,9 +12,13 @@ import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { setBaseUrl } from "@workspace/api-client-react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AppProvider } from "@/src/context/AppContext";
+import { API_BASE_URL } from "@/src/config/api";
+
+setBaseUrl(API_BASE_URL || null);
 
 SplashScreen.preventAutoHideAsync();
 

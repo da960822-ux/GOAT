@@ -16,28 +16,169 @@ import { Router, Request, Response } from "express";
 const router = Router();
 
 const KTO_BASE = "https://apis.data.go.kr/B551011";
-const SERVICE_KEY = (process.env.EXPO_PUBLIC_KTO_SERVICE_KEY ?? "").trim();
+const SERVICE_KEY = (process.env.KTO_SERVICE_KEY ?? "").trim();
+const DEFAULT_CACHE_MAX_ENTRIES = 500;
+const DEFAULT_CACHE_TTL_SECONDS = 21_600;
+const DEFAULT_STATIC_CACHE_TTL_SECONDS = 86_400;
+const DEFAULT_VISIT_CACHE_TTL_SECONDS = 3_600;
+
+type QueryValue = string | string[];
+type KtoCacheEntry = {
+  data: unknown;
+  expiresAt: number;
+};
+
+const ktoCache = new Map<string, KtoCacheEntry>();
+
+const readPositiveInt = (value: string | undefined, fallback: number) => {
+  const parsed = Number.parseInt(value ?? "", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+};
+
+const CACHE_MAX_ENTRIES = readPositiveInt(process.env.KTO_CACHE_MAX_ENTRIES, DEFAULT_CACHE_MAX_ENTRIES);
+const CACHE_DEFAULT_TTL_SECONDS = readPositiveInt(
+  process.env.KTO_CACHE_DEFAULT_TTL_SECONDS,
+  DEFAULT_CACHE_TTL_SECONDS,
+);
+const CACHE_STATIC_TTL_SECONDS = readPositiveInt(
+  process.env.KTO_CACHE_STATIC_TTL_SECONDS,
+  DEFAULT_STATIC_CACHE_TTL_SECONDS,
+);
+const CACHE_VISIT_TTL_SECONDS = readPositiveInt(
+  process.env.KTO_CACHE_VISIT_TTL_SECONDS,
+  DEFAULT_VISIT_CACHE_TTL_SECONDS,
+);
+
+const normalizeQueryValue = (value: unknown): string[] => {
+  if (value === undefined) {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item));
+  }
+  return [String(value)];
+};
+
+const getFirstQueryValue = (value: unknown) => normalizeQueryValue(value)[0];
+
+const getCacheTtlSeconds = (ktoPath: string) => {
+  if (ktoPath.includes("TatsCnctrRateService")) {
+    return CACHE_VISIT_TTL_SECONDS;
+  }
+
+  if (
+    ktoPath.includes("PhotoGalleryService1") ||
+    ktoPath.includes("KorService2") ||
+    ktoPath.toLowerCase().includes("photo") ||
+    ktoPath.toLowerCase().includes("gallery")
+  ) {
+    return CACHE_STATIC_TTL_SECONDS;
+  }
+
+  return CACHE_DEFAULT_TTL_SECONDS;
+};
+
+const buildCacheKey = (ktoPath: string, query: Record<string, unknown>) => {
+  const entries = Object.entries(query)
+    .filter(([key]) => key !== "path" && key !== "serviceKey")
+    .flatMap(([key, value]) =>
+      normalizeQueryValue(value)
+        .sort()
+        .map((item) => [key, item] as const),
+    )
+    .sort(([keyA, valueA], [keyB, valueB]) => keyA.localeCompare(keyB) || valueA.localeCompare(valueB));
+
+  const paramStr = entries
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join("&");
+
+  return paramStr ? `${ktoPath}?${paramStr}` : ktoPath;
+};
+
+const appendQueryParams = (params: URLSearchParams, query: Record<string, unknown>) => {
+  for (const [key, value] of Object.entries(query)) {
+    if (key === "path" || key === "serviceKey") {
+      continue;
+    }
+
+    for (const item of normalizeQueryValue(value)) {
+      params.append(key, item);
+    }
+  }
+};
+
+const getKtoResultCode = (data: unknown): string | undefined => {
+  if (!data || typeof data !== "object") {
+    return undefined;
+  }
+
+  const root = data as {
+    header?: { resultCode?: unknown };
+    response?: { header?: { resultCode?: unknown } };
+  };
+  const resultCode = root.response?.header?.resultCode ?? root.header?.resultCode;
+
+  return resultCode === undefined ? undefined : String(resultCode);
+};
+
+const shouldCache = (data: unknown) => {
+  const resultCode = getKtoResultCode(data);
+  return resultCode === undefined || resultCode === "0000";
+};
+
+const trimCache = () => {
+  while (ktoCache.size > CACHE_MAX_ENTRIES) {
+    const oldestKey = ktoCache.keys().next().value;
+    if (!oldestKey) {
+      return;
+    }
+    ktoCache.delete(oldestKey);
+  }
+};
 
 router.get("/kto", async (req: Request, res: Response) => {
   try {
-    if (!SERVICE_KEY) {
-      res.status(500).json({ error: "KTO service key not configured on server" });
-      return;
-    }
-
-    const { path: ktoPath, ...rest } = req.query as Record<string, string>;
+    const rawQuery = req.query as Record<string, QueryValue | undefined>;
+    const ktoPath = getFirstQueryValue(rawQuery.path);
 
     if (!ktoPath) {
+      res.setHeader("X-KTO-Cache", "MISS");
+      res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
       res.status(400).json({ error: "path query param is required" });
       return;
     }
 
-    // Forward all other params to KTO, appending serviceKey server-side
-    const paramStr = Object.entries(rest)
-      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
-      .join("&");
+    if (!SERVICE_KEY) {
+      res.setHeader("X-KTO-Cache", "MISS");
+      res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
+      res.status(500).json({ error: "KTO service key not configured on server" });
+      return;
+    }
 
-    const url = `${KTO_BASE}/${ktoPath}?serviceKey=${SERVICE_KEY}${paramStr ? `&${paramStr}` : ""}`;
+    const cacheKey = buildCacheKey(ktoPath, rawQuery);
+    const ttlSeconds = getCacheTtlSeconds(ktoPath);
+    const cached = ktoCache.get(cacheKey);
+    const now = Date.now();
+
+    if (cached) {
+      if (cached.expiresAt > now) {
+        res.setHeader("X-KTO-Cache", "HIT");
+        res.setHeader("X-KTO-Cache-TTL-Seconds", Math.ceil((cached.expiresAt - now) / 1000).toString());
+        res.json(cached.data);
+        return;
+      }
+
+      ktoCache.delete(cacheKey);
+    }
+
+    res.setHeader("X-KTO-Cache", "MISS");
+    res.setHeader("X-KTO-Cache-TTL-Seconds", ttlSeconds.toString());
+
+    const params = new URLSearchParams({ serviceKey: SERVICE_KEY });
+    appendQueryParams(params, rawQuery);
+
+    const url = `${KTO_BASE}/${ktoPath}?${params.toString()}`;
 
     const response = await fetch(url, {
       headers: { Accept: "application/json" },
@@ -50,8 +191,19 @@ router.get("/kto", async (req: Request, res: Response) => {
     }
 
     const data = await response.json();
+
+    if (shouldCache(data)) {
+      ktoCache.set(cacheKey, {
+        data,
+        expiresAt: now + ttlSeconds * 1000,
+      });
+      trimCache();
+    }
+
     res.json(data);
   } catch {
+    res.setHeader("X-KTO-Cache", "MISS");
+    res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
     res.status(500).json({ error: "proxy fetch failed" });
   }
 });

@@ -5,14 +5,38 @@
  * NOTE: This API returns predicted/trend data — NOT real-time crowd info.
  * UI must never call this "실시간 혼잡도".
  *
- * Endpoint assumed from KTO naming convention; graceful fallback if wrong.
+ * Official endpoint: TatsCnctrRateService/tatsCnctrRatedList
  */
 
 import { ktoFetch, getAuthParams, extractItems } from './ktoApi';
 import { KTOVisitConcentration } from './ktoTypes';
 
 const VISIT_URL =
-  'https://apis.data.go.kr/B551011/VisitorConcentrationService1/getVisitorConcentration1';
+  'https://apis.data.go.kr/B551011/TatsCnctrRateService/tatsCnctrRatedList';
+
+const GANGWON_AREA_CODE = '51';
+
+// Source: 한국관광공사_OpenAPI_관광지_시군구_코드정보_v1.0.xlsx
+const GANGWON_SIGUNGU_CODES: Record<string, string> = {
+  '춘천시': '51110',
+  '원주시': '51130',
+  '강릉시': '51150',
+  '동해시': '51170',
+  '태백시': '51190',
+  '속초시': '51210',
+  '삼척시': '51230',
+  '홍천군': '51720',
+  '횡성군': '51730',
+  '영월군': '51750',
+  '평창군': '51760',
+  '정선군': '51770',
+  '철원군': '51780',
+  '화천군': '51790',
+  '양구군': '51800',
+  '인제군': '51810',
+  '고성군': '51820',
+  '양양군': '51830',
+};
 
 const LEVEL_LABELS: Record<string, string> = {
   low: '방문 여유',
@@ -32,12 +56,13 @@ export const VISIT_NOTE = VISIT_NOTES;
 
 const cache = new Map<string, KTOVisitConcentration>();
 
-function levelFromValue(raw: any): 'low' | 'medium' | 'high' | 'unknown' {
+function levelFromValue(raw: unknown): 'low' | 'medium' | 'high' | 'unknown' {
   if (!raw && raw !== 0) return 'unknown';
   const n = typeof raw === 'number' ? raw : parseFloat(String(raw));
   if (isNaN(n)) return 'unknown';
-  if (n >= 0.7 || n >= 70) return 'high';
-  if (n >= 0.4 || n >= 40) return 'medium';
+  const percentage = n <= 1 ? n * 100 : n;
+  if (percentage >= 70) return 'high';
+  if (percentage >= 40) return 'medium';
   return 'low';
 }
 
@@ -47,9 +72,9 @@ function levelFromValue(raw: any): 'low' | 'medium' | 'high' | 'unknown' {
  */
 export async function getVisitConcentration(
   placeName: string,
-  contentId?: string
+  city: string
 ): Promise<KTOVisitConcentration> {
-  const cacheKey = contentId ?? placeName;
+  const cacheKey = `${city}::${placeName}`;
   if (cache.has(cacheKey)) {
     return cache.get(cacheKey)!;
   }
@@ -60,13 +85,20 @@ export async function getVisitConcentration(
   };
 
   try {
+    const signguCd = GANGWON_SIGUNGU_CODES[city];
+    if (!placeName || !signguCd) {
+      cache.set(cacheKey, fallback);
+      return fallback;
+    }
+
     const params: Record<string, string | number> = {
       ...getAuthParams(),
-      numOfRows: '10',
+      numOfRows: '30',
       pageNo: '1',
+      areaCd: GANGWON_AREA_CODE,
+      signguCd,
+      tAtsNm: placeName,
     };
-    if (contentId) params['contentId'] = contentId;
-    else params['keyword'] = placeName;
 
     const json = await ktoFetch(VISIT_URL, params);
     const items = extractItems(json);
@@ -76,24 +108,16 @@ export async function getVisitConcentration(
     }
 
     const item = items[0];
-    // Try various field names that the API might use
-    const rawValue =
-      item.concentrationIndex ??
-      item.visitorRatio ??
-      item.concentration ??
-      item.visitConcentration ??
-      item.ratio ??
-      undefined;
+    const rawValue = item.cnctrRate;
 
     const level = levelFromValue(rawValue);
+    const concentrationRate = Number.parseFloat(String(rawValue));
 
     const result: KTOVisitConcentration = {
       concentrationLevel: level,
       trendLabel: LEVEL_LABELS[level] || undefined,
-      predictedVisitors: item.numOfVisitor
-        ? parseInt(String(item.numOfVisitor), 10)
-        : undefined,
-      baseDate: item.baseDate ?? item.baseYmd ?? undefined,
+      concentrationRate: Number.isFinite(concentrationRate) ? concentrationRate : undefined,
+      baseDate: item.baseYmd ?? undefined,
       source: 'KTO_VISIT_CONCENTRATION',
     };
 

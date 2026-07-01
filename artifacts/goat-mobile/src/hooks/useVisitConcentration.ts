@@ -9,7 +9,7 @@ interface UseVisitConcentrationResult {
 
 export function useVisitConcentration(
   placeName: string,
-  contentId?: string
+  city: string
 ): UseVisitConcentrationResult {
   const [concentration, setConcentration] = useState<KTOVisitConcentration | null>(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ export function useVisitConcentration(
     setLoading(true);
     setConcentration(null);
 
-    getVisitConcentration(placeName, contentId).then((result) => {
+    getVisitConcentration(placeName, city).then((result) => {
       if (!cancelled) {
         setConcentration(result);
         setLoading(false);
@@ -29,7 +29,7 @@ export function useVisitConcentration(
     return () => {
       cancelled = true;
     };
-  }, [placeName]);
+  }, [placeName, city]);
 
   return { concentration, loading };
 }

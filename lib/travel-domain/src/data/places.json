@@ -1,0 +1,3202 @@
+[
+  {
+    "placeId": "GOAT-001",
+    "name": "제이드가든",
+    "city": "춘천시",
+    "regionGroup": "영서권",
+    "placeType": "수목원/정원",
+    "primaryMood": "유럽 정원",
+    "moodTags": [
+      "영국",
+      "이탈리아",
+      "작은유럽",
+      "정원",
+      "봄가을"
+    ],
+    "searchTags": [
+      "영국",
+      "이탈리아",
+      "작은유럽",
+      "정원",
+      "봄가을",
+      "유럽",
+      "수목원",
+      "사진스팟",
+      "추천"
+    ],
+    "photoPoint": "이탈리안 웨딩가든, 벽돌 게이트, 수로",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "봄",
+      "가을"
+    ],
+    "bestSeasonRaw": "봄,가을",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "사진스팟 추천",
+    "note": "공식/위치 검증 후 좌표 입력",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "춘천시 제이드가든",
+    "externalMapQueries": {
+      "kakao": "춘천시 제이드가든",
+      "naver": "춘천시 제이드가든",
+      "tmap": "춘천시 제이드가든"
+    }
+  },
+  {
+    "placeId": "GOAT-002",
+    "name": "레고랜드 코리아 리조트",
+    "city": "춘천시",
+    "regionGroup": "영서권",
+    "placeType": "테마파크",
+    "primaryMood": "글로벌 테마파크",
+    "moodTags": [
+      "레고시티",
+      "북유럽",
+      "가족여행",
+      "컬러풀"
+    ],
+    "searchTags": [
+      "레고시티",
+      "북유럽",
+      "가족여행",
+      "컬러풀",
+      "글로벌",
+      "테마파크",
+      "가족",
+      "사진스팟",
+      "추천"
+    ],
+    "photoPoint": "호텔 파사드, 미니랜드, 입구 광장",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "봄",
+      "가을"
+    ],
+    "bestSeasonRaw": "봄,가을",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "가족·사진스팟 추천",
+    "note": "입장권/운영일 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "춘천시 레고랜드 코리아 리조트",
+    "externalMapQueries": {
+      "kakao": "춘천시 레고랜드 코리아 리조트",
+      "naver": "춘천시 레고랜드 코리아 리조트",
+      "tmap": "춘천시 레고랜드 코리아 리조트"
+    }
+  },
+  {
+    "placeId": "GOAT-003",
+    "name": "춘천 산토리니",
+    "city": "춘천시",
+    "regionGroup": "영서권",
+    "placeType": "카페/전망공간",
+    "primaryMood": "그리스 지중해",
+    "moodTags": [
+      "산토리니",
+      "지중해",
+      "종탑",
+      "구봉산",
+      "일몰"
+    ],
+    "searchTags": [
+      "산토리니",
+      "지중해",
+      "종탑",
+      "구봉산",
+      "일몰",
+      "그리스",
+      "카페",
+      "전망공간",
+      "해외감성",
+      "사진스팟"
+    ],
+    "photoPoint": "흰 종탑, 잔디마당, 춘천 시가지 전망",
+    "bestTime": [
+      "일몰~블루아워"
+    ],
+    "bestTimeRaw": "일몰~블루아워",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "해외감성 사진스팟",
+    "note": "카페 운영 여부 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "춘천시 춘천 산토리니",
+    "externalMapQueries": {
+      "kakao": "춘천시 춘천 산토리니",
+      "naver": "춘천시 춘천 산토리니",
+      "tmap": "춘천시 춘천 산토리니"
+    }
+  },
+  {
+    "placeId": "GOAT-004",
+    "name": "해피초원목장",
+    "city": "춘천시",
+    "regionGroup": "영서권",
+    "placeType": "목장/초원",
+    "primaryMood": "알프스 목장",
+    "moodTags": [
+      "알프스",
+      "목장",
+      "초원",
+      "동물",
+      "가족여행"
+    ],
+    "searchTags": [
+      "알프스",
+      "목장",
+      "초원",
+      "동물",
+      "가족여행",
+      "목장형",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "초원 능선, 동물 방목, 목장길",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "여름",
+      "가을"
+    ],
+    "bestSeasonRaw": "여름,가을",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "목장형 코스 추천",
+    "note": "평창 대관령 목장권역과 별도 장소로 관리",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "춘천시 해피초원목장",
+    "externalMapQueries": {
+      "kakao": "춘천시 해피초원목장",
+      "naver": "춘천시 해피초원목장",
+      "tmap": "춘천시 해피초원목장"
+    }
+  },
+  {
+    "placeId": "GOAT-005",
+    "name": "아웃오브파크",
+    "city": "춘천시",
+    "regionGroup": "영서권",
+    "placeType": "카라반/숙박",
+    "primaryMood": "미국 서부 로드트립",
+    "moodTags": [
+      "미국서부",
+      "빈티지",
+      "카라반",
+      "스쿨버스",
+      "팝컬처"
+    ],
+    "searchTags": [
+      "미국서부",
+      "빈티지",
+      "카라반",
+      "스쿨버스",
+      "팝컬처",
+      "미국",
+      "서부",
+      "로드트립",
+      "숙박",
+      "포토존",
+      "추천"
+    ],
+    "photoPoint": "에어스트림 카라반, 옐로우 스쿨버스, 영문 사인",
+    "bestTime": [
+      "오후~일몰"
+    ],
+    "bestTimeRaw": "오후~일몰",
+    "bestSeason": [
+      "봄",
+      "가을"
+    ],
+    "bestSeasonRaw": "봄,가을",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숙박·포토존 추천",
+    "note": "숙박시설 성격 강함",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "춘천시 아웃오브파크",
+    "externalMapQueries": {
+      "kakao": "춘천시 아웃오브파크",
+      "naver": "춘천시 아웃오브파크",
+      "tmap": "춘천시 아웃오브파크"
+    }
+  },
+  {
+    "placeId": "GOAT-006",
+    "name": "교토정원",
+    "city": "춘천시",
+    "regionGroup": "영서권",
+    "placeType": "카페/정원",
+    "primaryMood": "교토 젠 감성",
+    "moodTags": [
+      "교토",
+      "일본정원",
+      "다다미",
+      "말차",
+      "차분함"
+    ],
+    "searchTags": [
+      "교토",
+      "일본정원",
+      "다다미",
+      "말차",
+      "차분함",
+      "감성",
+      "카페",
+      "정원",
+      "감성공간",
+      "추천"
+    ],
+    "photoPoint": "일본식 정원, 원목 인테리어, 다다미 공간",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "카페·감성공간 추천",
+    "note": "상업시설로 운영상태 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "춘천시 교토정원",
+    "externalMapQueries": {
+      "kakao": "춘천시 교토정원",
+      "naver": "춘천시 교토정원",
+      "tmap": "춘천시 교토정원"
+    }
+  },
+  {
+    "placeId": "GOAT-007",
+    "name": "스테이 조각밤",
+    "city": "춘천시",
+    "regionGroup": "영서권",
+    "placeType": "숙소",
+    "primaryMood": "일본 료칸",
+    "moodTags": [
+      "료칸",
+      "자쿠지",
+      "다도",
+      "한옥",
+      "프리미엄숙소"
+    ],
+    "searchTags": [
+      "료칸",
+      "자쿠지",
+      "다도",
+      "한옥",
+      "프리미엄숙소",
+      "일본",
+      "숙소",
+      "추천"
+    ],
+    "photoPoint": "프라이빗 자쿠지, 수공간, 다도 세트",
+    "bestTime": [
+      "체크인 후 저녁"
+    ],
+    "bestTimeRaw": "체크인 후 저녁",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숙소 추천",
+    "note": "이와림과 분리 저장",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "춘천시 스테이 조각밤",
+    "externalMapQueries": {
+      "kakao": "춘천시 스테이 조각밤",
+      "naver": "춘천시 스테이 조각밤",
+      "tmap": "춘천시 스테이 조각밤"
+    }
+  },
+  {
+    "placeId": "GOAT-008",
+    "name": "이와림",
+    "city": "춘천시",
+    "regionGroup": "영서권",
+    "placeType": "숙소",
+    "primaryMood": "일본 료칸",
+    "moodTags": [
+      "료칸",
+      "자쿠지",
+      "다도",
+      "한옥",
+      "프리미엄숙소"
+    ],
+    "searchTags": [
+      "료칸",
+      "자쿠지",
+      "다도",
+      "한옥",
+      "프리미엄숙소",
+      "일본",
+      "숙소",
+      "추천"
+    ],
+    "photoPoint": "프라이빗 자쿠지, 수공간, 다도 세트",
+    "bestTime": [
+      "체크인 후 저녁"
+    ],
+    "bestTimeRaw": "체크인 후 저녁",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숙소 추천",
+    "note": "스테이 조각밤과 분리 저장",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "춘천시 이와림",
+    "externalMapQueries": {
+      "kakao": "춘천시 이와림",
+      "naver": "춘천시 이와림",
+      "tmap": "춘천시 이와림"
+    }
+  },
+  {
+    "placeId": "GOAT-009",
+    "name": "뮤지엄 SAN",
+    "city": "원주시",
+    "regionGroup": "영서권",
+    "placeType": "미술관/건축",
+    "primaryMood": "미니멀 건축",
+    "moodTags": [
+      "안도타다오",
+      "미니멀리즘",
+      "현대건축",
+      "워터가든"
+    ],
+    "searchTags": [
+      "안도타다오",
+      "미니멀리즘",
+      "현대건축",
+      "워터가든",
+      "미니멀",
+      "건축",
+      "미술관",
+      "사진스팟",
+      "추천"
+    ],
+    "photoPoint": "워터가든, 콘크리트 동선, 조각정원",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "가을"
+    ],
+    "bestSeasonRaw": "가을",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "건축·사진스팟 추천",
+    "note": "입장권 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "원주시 뮤지엄 SAN",
+    "externalMapQueries": {
+      "kakao": "원주시 뮤지엄 SAN",
+      "naver": "원주시 뮤지엄 SAN",
+      "tmap": "원주시 뮤지엄 SAN"
+    }
+  },
+  {
+    "placeId": "GOAT-010",
+    "name": "소금산 그랜드밸리",
+    "city": "원주시",
+    "regionGroup": "영서권",
+    "placeType": "협곡/스카이워크",
+    "primaryMood": "해외 협곡 스카이워크",
+    "moodTags": [
+      "출렁다리",
+      "울렁다리",
+      "스카이타워",
+      "협곡"
+    ],
+    "searchTags": [
+      "출렁다리",
+      "울렁다리",
+      "스카이타워",
+      "협곡",
+      "해외",
+      "스카이워크",
+      "액티비티",
+      "포토스팟",
+      "추천"
+    ],
+    "photoPoint": "출렁다리, 울렁다리, 스카이타워",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "가을"
+    ],
+    "bestSeasonRaw": "가을",
+    "accessibility": {
+      "publicTransport": "상",
+      "car": "상",
+      "raw": "대중 상 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "액티비티·포토스팟 추천",
+    "note": "운영·안전 공지 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "원주시 소금산 그랜드밸리 매표소",
+    "externalMapQueries": {
+      "kakao": "원주시 소금산 그랜드밸리",
+      "naver": "원주시 소금산 그랜드밸리",
+      "tmap": "원주시 소금산 그랜드밸리"
+    }
+  },
+  {
+    "placeId": "GOAT-011",
+    "name": "알파카월드",
+    "city": "홍천군",
+    "regionGroup": "영서권",
+    "placeType": "동물 테마파크",
+    "primaryMood": "안데스 라틴 빌리지",
+    "moodTags": [
+      "알파카",
+      "안데스",
+      "라틴빌리지",
+      "숲길",
+      "동물교감"
+    ],
+    "searchTags": [
+      "알파카",
+      "안데스",
+      "라틴빌리지",
+      "숲길",
+      "동물교감",
+      "라틴",
+      "빌리지",
+      "동물",
+      "테마파크",
+      "가족",
+      "추천"
+    ],
+    "photoPoint": "라틴빌리지존, 숲길, 동물 교감 동선",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "가을"
+    ],
+    "bestSeasonRaw": "가을",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "가족·동물교감 추천",
+    "note": "입장권 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "홍천군 알파카월드",
+    "externalMapQueries": {
+      "kakao": "홍천군 알파카월드",
+      "naver": "홍천군 알파카월드",
+      "tmap": "홍천군 알파카월드"
+    }
+  },
+  {
+    "placeId": "GOAT-012",
+    "name": "원대리 자작나무숲",
+    "city": "인제군",
+    "regionGroup": "북부내륙권",
+    "placeType": "숲/자연",
+    "primaryMood": "북유럽 설국",
+    "moodTags": [
+      "핀란드",
+      "북유럽",
+      "자작나무",
+      "삿포로",
+      "비에이",
+      "겨울"
+    ],
+    "searchTags": [
+      "핀란드",
+      "북유럽",
+      "자작나무",
+      "삿포로",
+      "비에이",
+      "겨울",
+      "설국",
+      "자연",
+      "숲길",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "흰 자작나무 숲길, 반복되는 수간 원근감",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "늦가을",
+      "겨울"
+    ],
+    "bestSeasonRaw": "늦가을,겨울",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숲길·겨울 코스 추천",
+    "note": "계절·입산 통제 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "인제군 원대리 자작나무숲",
+    "externalMapQueries": {
+      "kakao": "인제군 원대리 자작나무숲",
+      "naver": "인제군 원대리 자작나무숲",
+      "tmap": "인제군 원대리 자작나무숲"
+    }
+  },
+  {
+    "placeId": "GOAT-013",
+    "name": "인제성당",
+    "city": "인제군",
+    "regionGroup": "북부내륙권",
+    "placeType": "건축/종교시설",
+    "primaryMood": "유럽 소도시",
+    "moodTags": [
+      "성당",
+      "유럽마을",
+      "고즈넉함",
+      "역사"
+    ],
+    "searchTags": [
+      "성당",
+      "유럽마을",
+      "고즈넉함",
+      "역사",
+      "유럽",
+      "소도시",
+      "건축",
+      "종교시설",
+      "조용한",
+      "감성스팟",
+      "추천"
+    ],
+    "photoPoint": "서양식 성당 외관, 조용한 마을 분위기",
+    "bestTime": [
+      "오전~오후"
+    ],
+    "bestTimeRaw": "오전~오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "조용한 감성스팟 추천",
+    "note": "종교시설 예절 안내 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "인제군 인제성당",
+    "externalMapQueries": {
+      "kakao": "인제군 인제성당",
+      "naver": "인제군 인제성당",
+      "tmap": "인제군 인제성당"
+    }
+  },
+  {
+    "placeId": "GOAT-014",
+    "name": "한반도섬",
+    "city": "양구군",
+    "regionGroup": "북부내륙권",
+    "placeType": "호수/랜드아트",
+    "primaryMood": "랜드아트 호수 포토스팟",
+    "moodTags": [
+      "호수",
+      "데크길",
+      "반영",
+      "SNS",
+      "인스타"
+    ],
+    "searchTags": [
+      "호수",
+      "데크길",
+      "반영",
+      "SNS",
+      "인스타",
+      "랜드아트",
+      "포토스팟",
+      "화제",
+      "스팟",
+      "추천"
+    ],
+    "photoPoint": "데크길, 호수 반영, 섬 실루엣",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "가을"
+    ],
+    "bestSeasonRaw": "가을",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "SNS 화제 스팟 추천",
+    "note": "해외감성보다는 화제성 중심",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "양구군 한반도섬",
+    "externalMapQueries": {
+      "kakao": "양구군 한반도섬",
+      "naver": "양구군 한반도섬",
+      "tmap": "양구군 한반도섬"
+    }
+  },
+  {
+    "placeId": "GOAT-015",
+    "name": "알펜시아 리조트",
+    "city": "평창군",
+    "regionGroup": "고원권",
+    "placeType": "리조트",
+    "primaryMood": "알프스 리조트",
+    "moodTags": [
+      "알프스",
+      "유럽리조트",
+      "스키",
+      "겨울"
+    ],
+    "searchTags": [
+      "알프스",
+      "유럽리조트",
+      "스키",
+      "겨울",
+      "리조트",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "리조트 광장, 유럽풍 동선, 스키점프대",
+    "bestTime": [
+      "해질녘"
+    ],
+    "bestTimeRaw": "해질녘",
+    "bestSeason": [
+      "겨울"
+    ],
+    "bestSeasonRaw": "겨울",
+    "accessibility": {
+      "publicTransport": "상",
+      "car": "상",
+      "raw": "대중 상 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "겨울 리조트 코스 추천",
+    "note": "숙박/방문 목적 구분 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "평창군 알펜시아 리조트",
+    "externalMapQueries": {
+      "kakao": "평창군 알펜시아 리조트",
+      "naver": "평창군 알펜시아 리조트",
+      "tmap": "평창군 알펜시아 리조트"
+    }
+  },
+  {
+    "placeId": "GOAT-016",
+    "name": "육백마지기",
+    "city": "평창군",
+    "regionGroup": "고원권",
+    "placeType": "고원/풍력발전",
+    "primaryMood": "뉴질랜드·유럽 고원",
+    "moodTags": [
+      "고원",
+      "풍력발전기",
+      "샤스타데이지",
+      "새벽",
+      "별"
+    ],
+    "searchTags": [
+      "고원",
+      "풍력발전기",
+      "샤스타데이지",
+      "새벽",
+      "별",
+      "뉴질랜드",
+      "유럽",
+      "풍력발전",
+      "포토스팟",
+      "추천"
+    ],
+    "photoPoint": "풍력발전기, 샤스타데이지, 고원 능선",
+    "bestTime": [
+      "새벽"
+    ],
+    "bestTimeRaw": "새벽",
+    "bestSeason": [
+      "6~7월"
+    ],
+    "bestSeasonRaw": "6~7월",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "새벽·고원 포토스팟 추천",
+    "note": "도로·기상 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "평창군 육백마지기",
+    "externalMapQueries": {
+      "kakao": "평창군 육백마지기",
+      "naver": "평창군 육백마지기",
+      "tmap": "평창군 육백마지기"
+    }
+  },
+  {
+    "placeId": "GOAT-017",
+    "name": "대관령양떼목장",
+    "city": "평창군",
+    "regionGroup": "고원권",
+    "placeType": "목장/초원",
+    "primaryMood": "스위스 알프스 목장",
+    "moodTags": [
+      "양떼목장",
+      "알프스",
+      "초원",
+      "설경",
+      "가족여행"
+    ],
+    "searchTags": [
+      "양떼목장",
+      "알프스",
+      "초원",
+      "설경",
+      "가족여행",
+      "스위스",
+      "목장",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "울타리 초원, 양떼, 능선 조망",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "여름",
+      "겨울"
+    ],
+    "bestSeasonRaw": "여름,겨울",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "목장 코스 추천",
+    "note": "목장권역 중 개별 장소",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "평창군 대관령양떼목장",
+    "externalMapQueries": {
+      "kakao": "평창군 대관령양떼목장",
+      "naver": "평창군 대관령양떼목장",
+      "tmap": "평창군 대관령양떼목장"
+    }
+  },
+  {
+    "placeId": "GOAT-018",
+    "name": "하늘목장",
+    "city": "평창군",
+    "regionGroup": "고원권",
+    "placeType": "목장/초원",
+    "primaryMood": "스위스 알프스 목장",
+    "moodTags": [
+      "하늘목장",
+      "알프스",
+      "초원",
+      "트랙터마차",
+      "설경"
+    ],
+    "searchTags": [
+      "하늘목장",
+      "알프스",
+      "초원",
+      "트랙터마차",
+      "설경",
+      "스위스",
+      "목장",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "목장길, 초원 사면, 동물 방목",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "여름",
+      "겨울"
+    ],
+    "bestSeasonRaw": "여름,겨울",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "목장 코스 추천",
+    "note": "목장권역 중 개별 장소",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "평창군 하늘목장",
+    "externalMapQueries": {
+      "kakao": "평창군 하늘목장",
+      "naver": "평창군 하늘목장",
+      "tmap": "평창군 하늘목장"
+    }
+  },
+  {
+    "placeId": "GOAT-019",
+    "name": "삼양라운드힐",
+    "city": "평창군",
+    "regionGroup": "고원권",
+    "placeType": "목장/초원",
+    "primaryMood": "홋카이도·알프스 고원",
+    "moodTags": [
+      "삼양목장",
+      "풍력발전기",
+      "설원",
+      "홋카이도",
+      "알프스"
+    ],
+    "searchTags": [
+      "삼양목장",
+      "풍력발전기",
+      "설원",
+      "홋카이도",
+      "알프스",
+      "고원",
+      "목장",
+      "초원",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "광활한 목장, 풍력발전기, 설원",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "겨울",
+      "여름"
+    ],
+    "bestSeasonRaw": "겨울,여름",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "목장·설원 코스 추천",
+    "note": "구 삼양목장 명칭 포함 검색 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "평창군 삼양라운드힐",
+    "externalMapQueries": {
+      "kakao": "평창군 삼양라운드힐",
+      "naver": "평창군 삼양라운드힐",
+      "tmap": "평창군 삼양라운드힐"
+    }
+  },
+  {
+    "placeId": "GOAT-020",
+    "name": "발왕산 천년주목숲길·애니포레",
+    "city": "평창군",
+    "regionGroup": "고원권",
+    "placeType": "숲/산악",
+    "primaryMood": "북유럽 침엽수림",
+    "moodTags": [
+      "북유럽",
+      "흑림",
+      "가문비나무",
+      "숲길",
+      "케이블카"
+    ],
+    "searchTags": [
+      "북유럽",
+      "흑림",
+      "가문비나무",
+      "숲길",
+      "케이블카",
+      "침엽수림",
+      "산악",
+      "연계",
+      "추천"
+    ],
+    "photoPoint": "침엽수림 숲길, 고산 전망",
+    "bestTime": [
+      "오전~오후"
+    ],
+    "bestTimeRaw": "오전~오후",
+    "bestSeason": [
+      "겨울",
+      "가을"
+    ],
+    "bestSeasonRaw": "겨울,가을",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숲길·케이블카 연계 추천",
+    "note": "발왕산 케이블카와 연계 가능",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "평창군 발왕산 천년주목숲길 애니포레",
+    "externalMapQueries": {
+      "kakao": "평창군 발왕산 천년주목숲길·애니포레",
+      "naver": "평창군 발왕산 천년주목숲길·애니포레",
+      "tmap": "평창군 발왕산 천년주목숲길·애니포레"
+    }
+  },
+  {
+    "placeId": "GOAT-021",
+    "name": "삼탄아트마인",
+    "city": "정선군",
+    "regionGroup": "고원권",
+    "placeType": "산업유산/미술관",
+    "primaryMood": "유럽 산업유산",
+    "moodTags": [
+      "폐광",
+      "산업유산",
+      "미술관",
+      "레트로",
+      "흐린날"
+    ],
+    "searchTags": [
+      "폐광",
+      "산업유산",
+      "미술관",
+      "레트로",
+      "흐린날",
+      "유럽",
+      "비오는",
+      "대안",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "수직갱, 녹슨 설비, 갤러리 공간",
+    "bestTime": [
+      "흐린 날 오후"
+    ],
+    "bestTimeRaw": "흐린 날 오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "비오는 날 대안 코스 추천",
+    "note": "운영일 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "정선군 삼탄아트마인",
+    "externalMapQueries": {
+      "kakao": "정선군 삼탄아트마인",
+      "naver": "정선군 삼탄아트마인",
+      "tmap": "정선군 삼탄아트마인"
+    }
+  },
+  {
+    "placeId": "GOAT-022",
+    "name": "민둥산",
+    "city": "정선군",
+    "regionGroup": "고원권",
+    "placeType": "산/억새",
+    "primaryMood": "외계 지형·중앙아시아 초원",
+    "moodTags": [
+      "돌리네",
+      "억새",
+      "초원",
+      "중앙아시아",
+      "신비로움"
+    ],
+    "searchTags": [
+      "돌리네",
+      "억새",
+      "초원",
+      "중앙아시아",
+      "신비로움",
+      "외계",
+      "지형",
+      "가을",
+      "트레킹",
+      "추천"
+    ],
+    "photoPoint": "억새 능선, 돌리네 지형, 탁 트인 산세",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "가을"
+    ],
+    "bestSeasonRaw": "가을",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "가을 트레킹 추천",
+    "note": "등산 난이도 정보 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "정선군 민둥산",
+    "externalMapQueries": {
+      "kakao": "정선군 민둥산",
+      "naver": "정선군 민둥산",
+      "tmap": "정선군 민둥산"
+    }
+  },
+  {
+    "placeId": "GOAT-023",
+    "name": "매봉산 바람의 언덕",
+    "city": "태백시",
+    "regionGroup": "고원권",
+    "placeType": "고원/풍력발전",
+    "primaryMood": "네덜란드 풍차·알프스 고랭지",
+    "moodTags": [
+      "풍력발전기",
+      "고랭지배추밭",
+      "네덜란드",
+      "알프스",
+      "별"
+    ],
+    "searchTags": [
+      "풍력발전기",
+      "고랭지배추밭",
+      "네덜란드",
+      "알프스",
+      "별",
+      "풍차",
+      "고랭지",
+      "고원",
+      "풍력발전",
+      "일출",
+      "포토스팟",
+      "추천"
+    ],
+    "photoPoint": "풍력발전기, 배추밭, 능선도로",
+    "bestTime": [
+      "일출"
+    ],
+    "bestTimeRaw": "일출",
+    "bestSeason": [
+      "여름"
+    ],
+    "bestSeasonRaw": "여름",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "일출·고원 포토스팟 추천",
+    "note": "도로 통제·기상 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "태백시 매봉산 바람의 언덕",
+    "externalMapQueries": {
+      "kakao": "태백시 매봉산 바람의 언덕",
+      "naver": "태백시 매봉산 바람의 언덕",
+      "tmap": "태백시 매봉산 바람의 언덕"
+    }
+  },
+  {
+    "placeId": "GOAT-024",
+    "name": "태기산",
+    "city": "횡성군",
+    "regionGroup": "고원권",
+    "placeType": "산/설경",
+    "primaryMood": "삿포로 설산",
+    "moodTags": [
+      "상고대",
+      "눈꽃",
+      "설산",
+      "겨울",
+      "비에이"
+    ],
+    "searchTags": [
+      "상고대",
+      "눈꽃",
+      "설산",
+      "겨울",
+      "비에이",
+      "삿포로",
+      "설경",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "상고대, 눈꽃 능선, 설산 풍경",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "겨울"
+    ],
+    "bestSeasonRaw": "겨울",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "겨울 설경 코스 추천",
+    "note": "겨울 도로상태 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "횡성군 태기산",
+    "externalMapQueries": {
+      "kakao": "횡성군 태기산",
+      "naver": "횡성군 태기산",
+      "tmap": "횡성군 태기산"
+    }
+  },
+  {
+    "placeId": "GOAT-025",
+    "name": "안목해변 카페거리",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "해변/카페거리",
+    "primaryMood": "캘리포니아 보드워크",
+    "moodTags": [
+      "해변카페",
+      "보드워크",
+      "커피거리",
+      "일출",
+      "일몰"
+    ],
+    "searchTags": [
+      "해변카페",
+      "보드워크",
+      "커피거리",
+      "일출",
+      "일몰",
+      "캘리포니아",
+      "해변",
+      "카페거리",
+      "카페",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "해변 전면 카페 파사드, 방파제, 모래사장",
+    "bestTime": [
+      "일출",
+      "일몰"
+    ],
+    "bestTimeRaw": "일출·일몰",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "상",
+      "car": "상",
+      "raw": "대중 상 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "해변 카페 코스 추천",
+    "note": "대중교통 접근성 좋음",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 안목해변 카페거리",
+    "externalMapQueries": {
+      "kakao": "강릉시 안목해변 카페거리",
+      "naver": "강릉시 안목해변 카페거리",
+      "tmap": "강릉시 안목해변 카페거리"
+    }
+  },
+  {
+    "placeId": "GOAT-026",
+    "name": "하슬라아트월드",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "미술관/절벽",
+    "primaryMood": "지중해 절벽 미술관",
+    "moodTags": [
+      "절벽",
+      "조각공원",
+      "오션뷰",
+      "지중해",
+      "예술"
+    ],
+    "searchTags": [
+      "절벽",
+      "조각공원",
+      "오션뷰",
+      "지중해",
+      "예술",
+      "미술관",
+      "사진",
+      "전시",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "절벽 조각공원, 오션뷰 테라스",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "맑은 날"
+    ],
+    "bestSeasonRaw": "맑은 날",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "사진·전시 코스 추천",
+    "note": "입장권 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 하슬라아트월드",
+    "externalMapQueries": {
+      "kakao": "강릉시 하슬라아트월드",
+      "naver": "강릉시 하슬라아트월드",
+      "tmap": "강릉시 하슬라아트월드"
+    }
+  },
+  {
+    "placeId": "GOAT-027",
+    "name": "정동진 썬크루즈 리조트",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "리조트/랜드마크",
+    "primaryMood": "크루즈형 랜드마크",
+    "moodTags": [
+      "크루즈",
+      "해돋이",
+      "절벽",
+      "정동진",
+      "숙박"
+    ],
+    "searchTags": [
+      "크루즈",
+      "해돋이",
+      "절벽",
+      "정동진",
+      "숙박",
+      "크루즈형",
+      "랜드마크",
+      "리조트",
+      "일출",
+      "추천"
+    ],
+    "photoPoint": "배형 외관, 해돋이 전망, 해안 절벽",
+    "bestTime": [
+      "일출"
+    ],
+    "bestTimeRaw": "일출",
+    "bestSeason": [
+      "겨울"
+    ],
+    "bestSeasonRaw": "겨울",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "일출·랜드마크 추천",
+    "note": "숙박/비숙박 방문 구분 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 정동진 썬크루즈 리조트",
+    "externalMapQueries": {
+      "kakao": "강릉시 정동진 썬크루즈 리조트",
+      "naver": "강릉시 정동진 썬크루즈 리조트",
+      "tmap": "강릉시 정동진 썬크루즈 리조트"
+    }
+  },
+  {
+    "placeId": "GOAT-028",
+    "name": "BTS 버스정류장",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "해변 포토존",
+    "primaryMood": "K-팝 글로벌 포토스팟",
+    "moodTags": [
+      "BTS",
+      "향호해변",
+      "글로벌",
+      "사진스팟",
+      "수평선"
+    ],
+    "searchTags": [
+      "BTS",
+      "향호해변",
+      "글로벌",
+      "사진스팟",
+      "수평선",
+      "포토스팟",
+      "해변",
+      "포토존",
+      "K팝",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "파란 정류장, 수평선, 모래사장",
+    "bestTime": [
+      "이른 아침"
+    ],
+    "bestTimeRaw": "이른 아침",
+    "bestSeason": [
+      "비수기"
+    ],
+    "bestSeasonRaw": "비수기",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "K팝 팬 코스 추천",
+    "note": "해외감성보다 글로벌 화제성 중심",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 BTS 버스정류장",
+    "externalMapQueries": {
+      "kakao": "강릉시 BTS 버스정류장",
+      "naver": "강릉시 BTS 버스정류장",
+      "tmap": "강릉시 BTS 버스정류장"
+    }
+  },
+  {
+    "placeId": "GOAT-029",
+    "name": "정동진 철길 건널목",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "철길/해변",
+    "primaryMood": "가마쿠라 애니메이션 감성",
+    "moodTags": [
+      "가마쿠라",
+      "슬램덩크",
+      "철길",
+      "바다",
+      "일본소도시"
+    ],
+    "searchTags": [
+      "가마쿠라",
+      "슬램덩크",
+      "철길",
+      "바다",
+      "일본소도시",
+      "애니메이션",
+      "감성",
+      "해변",
+      "일본",
+      "소도시",
+      "추천"
+    ],
+    "photoPoint": "철길 뒤로 보이는 바다 풍경",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "일본 소도시 감성 추천",
+    "note": "안전 촬영 안내 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 정동진 철길 건널목",
+    "externalMapQueries": {
+      "kakao": "강릉시 정동진 철길 건널목",
+      "naver": "강릉시 정동진 철길 건널목",
+      "tmap": "강릉시 정동진 철길 건널목"
+    }
+  },
+  {
+    "placeId": "GOAT-030",
+    "name": "안반데기",
+    "city": "강릉시",
+    "regionGroup": "고원권",
+    "placeType": "고원/별관측",
+    "primaryMood": "몽골 초원·비에이 대자연",
+    "moodTags": [
+      "별",
+      "은하수",
+      "고랭지밭",
+      "몽골",
+      "비에이",
+      "설원"
+    ],
+    "searchTags": [
+      "별",
+      "은하수",
+      "고랭지밭",
+      "몽골",
+      "비에이",
+      "설원",
+      "초원",
+      "대자연",
+      "고원",
+      "별관측",
+      "별보기",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "고랭지 밭, 은하수, 광활한 고원",
+    "bestTime": [
+      "밤~새벽"
+    ],
+    "bestTimeRaw": "밤~새벽",
+    "bestSeason": [
+      "여름",
+      "겨울"
+    ],
+    "bestSeasonRaw": "여름,겨울",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "별보기·고원 코스 추천",
+    "note": "기상·도로 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 안반데기",
+    "externalMapQueries": {
+      "kakao": "강릉시 안반데기",
+      "naver": "강릉시 안반데기",
+      "tmap": "강릉시 안반데기"
+    }
+  },
+  {
+    "placeId": "GOAT-031",
+    "name": "금진해변·헌화로 드라이브 코스",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "해안도로/해변",
+    "primaryMood": "캘리포니아 1번 국도",
+    "moodTags": [
+      "캘리포니아",
+      "로드트립",
+      "해안도로",
+      "서핑",
+      "금진해변"
+    ],
+    "searchTags": [
+      "캘리포니아",
+      "로드트립",
+      "해안도로",
+      "서핑",
+      "금진해변",
+      "국도",
+      "해변",
+      "드라이브",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "바다와 가까운 해안도로, 서핑 해변",
+    "bestTime": [
+      "오후~일몰"
+    ],
+    "bestTimeRaw": "오후~일몰",
+    "bestSeason": [
+      "봄",
+      "가을"
+    ],
+    "bestSeasonRaw": "봄,가을",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "future_candidate",
+    "recommendationUse": "드라이브 코스 추천",
+    "note": "무드 브랜딩 후보군",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 금진해변 헌화로",
+    "externalMapQueries": {
+      "kakao": "강릉시 금진해변·헌화로 드라이브 코스",
+      "naver": "강릉시 금진해변·헌화로 드라이브 코스",
+      "tmap": "강릉시 금진해변·헌화로 드라이브 코스"
+    }
+  },
+  {
+    "placeId": "GOAT-032",
+    "name": "교동 소품샵 거리",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "골목/소품샵",
+    "primaryMood": "오노미치 소도시 골목",
+    "moodTags": [
+      "소품샵",
+      "갤러리",
+      "오노미치",
+      "골목산책",
+      "일본감성"
+    ],
+    "searchTags": [
+      "소품샵",
+      "갤러리",
+      "오노미치",
+      "골목산책",
+      "일본감성",
+      "소도시",
+      "골목",
+      "산책",
+      "추천"
+    ],
+    "photoPoint": "작은 소품샵, 정갈한 골목, 갤러리",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "골목 산책 추천",
+    "note": "개별 매장 변동성 큼",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 교동 소품샵",
+    "externalMapQueries": {
+      "kakao": "강릉시 교동 소품샵 거리",
+      "naver": "강릉시 교동 소품샵 거리",
+      "tmap": "강릉시 교동 소품샵 거리"
+    }
+  },
+  {
+    "placeId": "GOAT-033",
+    "name": "휴식 료칸 풀빌라",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "숙소",
+    "primaryMood": "교토 료칸",
+    "moodTags": [
+      "료칸",
+      "다다미",
+      "히노끼탕",
+      "노천탕",
+      "일본숙소"
+    ],
+    "searchTags": [
+      "료칸",
+      "다다미",
+      "히노끼탕",
+      "노천탕",
+      "일본숙소",
+      "교토",
+      "숙소",
+      "추천"
+    ],
+    "photoPoint": "다다미방, 히노끼탕, 중정",
+    "bestTime": [
+      "체크인 후 저녁"
+    ],
+    "bestTimeRaw": "체크인 후 저녁",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숙소 추천",
+    "note": "상업시설 운영상태 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 휴식 료칸 풀빌라",
+    "externalMapQueries": {
+      "kakao": "강릉시 휴식 료칸 풀빌라",
+      "naver": "강릉시 휴식 료칸 풀빌라",
+      "tmap": "강릉시 휴식 료칸 풀빌라"
+    }
+  },
+  {
+    "placeId": "GOAT-034",
+    "name": "유메모리 리조트",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "숙소",
+    "primaryMood": "일본 료칸",
+    "moodTags": [
+      "료칸",
+      "히노끼사우나",
+      "유카타",
+      "숲속힐링"
+    ],
+    "searchTags": [
+      "료칸",
+      "히노끼사우나",
+      "유카타",
+      "숲속힐링",
+      "일본",
+      "숙소",
+      "추천"
+    ],
+    "photoPoint": "정원 산책로, 히노끼 사우나, 유카타 체험",
+    "bestTime": [
+      "체크인 후 저녁"
+    ],
+    "bestTimeRaw": "체크인 후 저녁",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숙소 추천",
+    "note": "상업시설 운영상태 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 유메모리 리조트",
+    "externalMapQueries": {
+      "kakao": "강릉시 유메모리 리조트",
+      "naver": "강릉시 유메모리 리조트",
+      "tmap": "강릉시 유메모리 리조트"
+    }
+  },
+  {
+    "placeId": "GOAT-035",
+    "name": "월화거리",
+    "city": "강릉시",
+    "regionGroup": "동해안권",
+    "placeType": "야간거리/산책로",
+    "primaryMood": "오사카·후쿠오카 야간 산책",
+    "moodTags": [
+      "야간조명",
+      "먹거리",
+      "버스킹",
+      "구도심",
+      "산책"
+    ],
+    "searchTags": [
+      "야간조명",
+      "먹거리",
+      "버스킹",
+      "구도심",
+      "산책",
+      "오사카",
+      "후쿠오카",
+      "야간",
+      "야간거리",
+      "산책로",
+      "대안",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "조명 산책로, 먹거리, 버스킹 분위기",
+    "bestTime": [
+      "저녁"
+    ],
+    "bestTimeRaw": "저녁",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "상",
+      "car": "상",
+      "raw": "대중 상 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "야간 대안 코스 추천",
+    "note": "식당 중심 데이터와 분리 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "강릉시 월화거리",
+    "externalMapQueries": {
+      "kakao": "강릉시 월화거리",
+      "naver": "강릉시 월화거리",
+      "tmap": "강릉시 월화거리"
+    }
+  },
+  {
+    "placeId": "GOAT-036",
+    "name": "무릉별유천지",
+    "city": "동해시",
+    "regionGroup": "동해안권",
+    "placeType": "재생관광/호수",
+    "primaryMood": "아이슬란드형 에메랄드 호수",
+    "moodTags": [
+      "채석장재생",
+      "에메랄드호수",
+      "라벤더",
+      "전망대",
+      "SNS"
+    ],
+    "searchTags": [
+      "채석장재생",
+      "에메랄드호수",
+      "라벤더",
+      "전망대",
+      "SNS",
+      "아이슬란드형",
+      "에메랄드",
+      "호수",
+      "재생관광",
+      "추천"
+    ],
+    "photoPoint": "청옥호·금곡호, 전망대, 라벤더",
+    "bestTime": [
+      "맑은 정오"
+    ],
+    "bestTimeRaw": "맑은 정오",
+    "bestSeason": [
+      "6월"
+    ],
+    "bestSeasonRaw": "6월",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "SNS·재생관광 추천",
+    "note": "운영시간 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "동해시 무릉별유천지",
+    "externalMapQueries": {
+      "kakao": "동해시 무릉별유천지",
+      "naver": "동해시 무릉별유천지",
+      "tmap": "동해시 무릉별유천지"
+    }
+  },
+  {
+    "placeId": "GOAT-037",
+    "name": "어달삼거리",
+    "city": "동해시",
+    "regionGroup": "동해안권",
+    "placeType": "해변 도로/포토존",
+    "primaryMood": "가마쿠라 일본 소도시",
+    "moodTags": [
+      "가마쿠라",
+      "일본소도시",
+      "바다도로",
+      "포토존"
+    ],
+    "searchTags": [
+      "가마쿠라",
+      "일본소도시",
+      "바다도로",
+      "포토존",
+      "일본",
+      "소도시",
+      "해변",
+      "도로",
+      "감성",
+      "추천"
+    ],
+    "photoPoint": "바다를 향해 뻗은 도로와 낮은 건물",
+    "bestTime": [
+      "오전~오후"
+    ],
+    "bestTimeRaw": "오전~오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "일본 소도시 감성 추천",
+    "note": "도로 촬영 안전 안내 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "동해시 어달삼거리",
+    "externalMapQueries": {
+      "kakao": "동해시 어달삼거리",
+      "naver": "동해시 어달삼거리",
+      "tmap": "동해시 어달삼거리"
+    }
+  },
+  {
+    "placeId": "GOAT-038",
+    "name": "묵호항 일대",
+    "city": "동해시",
+    "regionGroup": "동해안권",
+    "placeType": "항구/야간거리",
+    "primaryMood": "후쿠오카 야타이 항구 감성",
+    "moodTags": [
+      "항구",
+      "밤거리",
+      "해산물거리",
+      "후쿠오카",
+      "야타이"
+    ],
+    "searchTags": [
+      "항구",
+      "밤거리",
+      "해산물거리",
+      "후쿠오카",
+      "야타이",
+      "감성",
+      "야간거리",
+      "야간",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "저녁 항구 분위기, 바닷바람, 야외 해산물 거리",
+    "bestTime": [
+      "저녁"
+    ],
+    "bestTimeRaw": "저녁",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "야간 항구 코스 추천",
+    "note": "식당 중심 데이터와 분리 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "동해시 묵호항",
+    "externalMapQueries": {
+      "kakao": "동해시 묵호항 일대",
+      "naver": "동해시 묵호항 일대",
+      "tmap": "동해시 묵호항 일대"
+    }
+  },
+  {
+    "placeId": "GOAT-039",
+    "name": "묵호등대·논골담길",
+    "city": "동해시",
+    "regionGroup": "동해안권",
+    "placeType": "해안 언덕마을",
+    "primaryMood": "아말피 코스트·친퀘테레",
+    "moodTags": [
+      "아말피",
+      "친퀘테레",
+      "해안언덕",
+      "벽화마을",
+      "전망"
+    ],
+    "searchTags": [
+      "아말피",
+      "친퀘테레",
+      "해안언덕",
+      "벽화마을",
+      "전망",
+      "코스트",
+      "해안",
+      "언덕마을",
+      "브랜딩",
+      "후보",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "가파른 언덕길, 바다 전망, 등대 주변",
+    "bestTime": [
+      "오후~일몰"
+    ],
+    "bestTimeRaw": "오후~일몰",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "future_candidate",
+    "recommendationUse": "브랜딩 후보 코스 추천",
+    "note": "논골담길/묵호등대 중복 통합",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "동해시 묵호등대 논골담길",
+    "externalMapQueries": {
+      "kakao": "동해시 묵호등대·논골담길",
+      "naver": "동해시 묵호등대·논골담길",
+      "tmap": "동해시 묵호등대·논골담길"
+    }
+  },
+  {
+    "placeId": "GOAT-040",
+    "name": "외옹치 바다향기로",
+    "city": "속초시",
+    "regionGroup": "동해안권",
+    "placeType": "해안데크길",
+    "primaryMood": "유럽 해안 데크로드",
+    "moodTags": [
+      "해안데크",
+      "절벽",
+      "암반",
+      "오션뷰",
+      "블루아워"
+    ],
+    "searchTags": [
+      "해안데크",
+      "절벽",
+      "암반",
+      "오션뷰",
+      "블루아워",
+      "유럽",
+      "해안",
+      "데크로드",
+      "해안데크길",
+      "산책",
+      "추천"
+    ],
+    "photoPoint": "절벽 데크, 암반, 파도선",
+    "bestTime": [
+      "오전",
+      "블루아워"
+    ],
+    "bestTimeRaw": "오전·블루아워",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "상",
+      "car": "상",
+      "raw": "대중 상 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "해안 산책 추천",
+    "note": "안전점검·통제 여부 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "속초시 외옹치 바다향기로",
+    "externalMapQueries": {
+      "kakao": "속초시 외옹치 바다향기로",
+      "naver": "속초시 외옹치 바다향기로",
+      "tmap": "속초시 외옹치 바다향기로"
+    }
+  },
+  {
+    "placeId": "GOAT-041",
+    "name": "속초 서점 투어 골목",
+    "city": "속초시",
+    "regionGroup": "동해안권",
+    "placeType": "서점/골목",
+    "primaryMood": "일본 동네 산책",
+    "moodTags": [
+      "독립서점",
+      "전통서점",
+      "조용함",
+      "일본동네",
+      "산책"
+    ],
+    "searchTags": [
+      "독립서점",
+      "전통서점",
+      "조용함",
+      "일본동네",
+      "산책",
+      "일본",
+      "동네",
+      "서점",
+      "골목",
+      "조용한",
+      "실내",
+      "대안",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "동아서점, 완벽한 날들 등 서점 동선",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "상",
+      "car": "중",
+      "raw": "대중 상 / 자차 중"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "조용한 실내 대안 코스 추천",
+    "note": "개별 서점 운영시간 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "속초시 서점 골목",
+    "externalMapQueries": {
+      "kakao": "속초시 속초 서점 투어 골목",
+      "naver": "속초시 속초 서점 투어 골목",
+      "tmap": "속초시 속초 서점 투어 골목"
+    }
+  },
+  {
+    "placeId": "GOAT-042",
+    "name": "카페 흰다정",
+    "city": "속초시",
+    "regionGroup": "동해안권",
+    "placeType": "카페",
+    "primaryMood": "일본 레트로 카페",
+    "moodTags": [
+      "일본풍",
+      "우드톤",
+      "브라운관TV",
+      "애니메이션",
+      "디저트"
+    ],
+    "searchTags": [
+      "일본풍",
+      "우드톤",
+      "브라운관TV",
+      "애니메이션",
+      "디저트",
+      "일본",
+      "레트로",
+      "카페",
+      "감성",
+      "추천"
+    ],
+    "photoPoint": "우드톤 인테리어, 레트로 소품",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "카페 감성 추천",
+    "note": "상업시설 운영상태 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "속초시 카페 흰다정",
+    "externalMapQueries": {
+      "kakao": "속초시 카페 흰다정",
+      "naver": "속초시 카페 흰다정",
+      "tmap": "속초시 카페 흰다정"
+    }
+  },
+  {
+    "placeId": "GOAT-043",
+    "name": "속초 관광수산시장·대포항",
+    "city": "속초시",
+    "regionGroup": "동해안권",
+    "placeType": "시장/항구",
+    "primaryMood": "오사카·후쿠오카 활기",
+    "moodTags": [
+      "시장",
+      "항구",
+      "먹거리",
+      "오사카",
+      "후쿠오카",
+      "활기"
+    ],
+    "searchTags": [
+      "시장",
+      "항구",
+      "먹거리",
+      "오사카",
+      "후쿠오카",
+      "활기",
+      "야간",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "시장 골목, 항구 야경, 여행자 밀집 분위기",
+    "bestTime": [
+      "저녁"
+    ],
+    "bestTimeRaw": "저녁",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "상",
+      "car": "상",
+      "raw": "대중 상 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "야간·먹거리 코스 추천",
+    "note": "식당 데이터와 분리 관리 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "속초시 관광수산시장",
+    "externalMapQueries": {
+      "kakao": "속초시 속초 관광수산시장·대포항",
+      "naver": "속초시 속초 관광수산시장·대포항",
+      "tmap": "속초시 속초 관광수산시장·대포항"
+    }
+  },
+  {
+    "placeId": "GOAT-044",
+    "name": "서피비치",
+    "city": "양양군",
+    "regionGroup": "동해안권",
+    "placeType": "서프비치",
+    "primaryMood": "캘리포니아·발리 서프비치",
+    "moodTags": [
+      "서핑",
+      "발리",
+      "캘리포니아",
+      "비치사인",
+      "팜트리"
+    ],
+    "searchTags": [
+      "서핑",
+      "발리",
+      "캘리포니아",
+      "비치사인",
+      "팜트리",
+      "서프비치",
+      "비치",
+      "포토스팟",
+      "추천"
+    ],
+    "photoPoint": "비치 사인, 빈백, 서핑존, 팜트리",
+    "bestTime": [
+      "늦은 오후"
+    ],
+    "bestTimeRaw": "늦은 오후",
+    "bestSeason": [
+      "여름"
+    ],
+    "bestSeasonRaw": "여름",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "서핑·비치 포토스팟 추천",
+    "note": "성수기 혼잡도 반영 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "양양군 서피비치",
+    "externalMapQueries": {
+      "kakao": "양양군 서피비치",
+      "naver": "양양군 서피비치",
+      "tmap": "양양군 서피비치"
+    }
+  },
+  {
+    "placeId": "GOAT-045",
+    "name": "죽도해변·인구해변·양리단길",
+    "city": "양양군",
+    "regionGroup": "동해안권",
+    "placeType": "서프타운/해변권역",
+    "primaryMood": "캘리포니아 서프타운",
+    "moodTags": [
+      "죽도해변",
+      "인구해변",
+      "양리단길",
+      "서핑숍",
+      "노을"
+    ],
+    "searchTags": [
+      "죽도해변",
+      "인구해변",
+      "양리단길",
+      "서핑숍",
+      "노을",
+      "캘리포니아",
+      "서프타운",
+      "해변권역",
+      "권역",
+      "추천"
+    ],
+    "photoPoint": "죽도정 전망, 서핑숍 거리, 노을",
+    "bestTime": [
+      "일몰"
+    ],
+    "bestTimeRaw": "일몰",
+    "bestSeason": [
+      "가을",
+      "여름"
+    ],
+    "bestSeasonRaw": "가을,여름",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "서프타운 권역 추천",
+    "note": "개별 업장보다 권역으로 관리",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "양양군 죽도해변 인구해변 양리단길",
+    "externalMapQueries": {
+      "kakao": "양양군 죽도해변·인구해변·양리단길",
+      "naver": "양양군 죽도해변·인구해변·양리단길",
+      "tmap": "양양군 죽도해변·인구해변·양리단길"
+    }
+  },
+  {
+    "placeId": "GOAT-046",
+    "name": "두둥실",
+    "city": "양양군",
+    "regionGroup": "동해안권",
+    "placeType": "카페/감성공간",
+    "primaryMood": "발리 프라이빗 비치클럽",
+    "moodTags": [
+      "발리",
+      "라탄",
+      "목재가구",
+      "프라이빗비치",
+      "양리단길"
+    ],
+    "searchTags": [
+      "발리",
+      "라탄",
+      "목재가구",
+      "프라이빗비치",
+      "양리단길",
+      "프라이빗",
+      "비치클럽",
+      "카페",
+      "감성공간",
+      "감성",
+      "추천"
+    ],
+    "photoPoint": "라탄 소품, 목재 가구, 발리풍 인테리어",
+    "bestTime": [
+      "오후~일몰"
+    ],
+    "bestTimeRaw": "오후~일몰",
+    "bestSeason": [
+      "여름"
+    ],
+    "bestSeasonRaw": "여름",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "needs_verification",
+    "recommendationUse": "카페 감성 추천",
+    "note": "업장 운영상태와 식당 여부 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "양양군 두둥실",
+    "externalMapQueries": {
+      "kakao": "양양군 두둥실",
+      "naver": "양양군 두둥실",
+      "tmap": "양양군 두둥실"
+    }
+  },
+  {
+    "placeId": "GOAT-047",
+    "name": "에이프레임(A-Frame)",
+    "city": "고성군",
+    "regionGroup": "동해안권",
+    "placeType": "카페/서프감성",
+    "primaryMood": "캘리포니아·하와이 서퍼 카페",
+    "moodTags": [
+      "서핑보드",
+      "하와이",
+      "캘리포니아",
+      "서퍼카페",
+      "포토존"
+    ],
+    "searchTags": [
+      "서핑보드",
+      "하와이",
+      "캘리포니아",
+      "서퍼카페",
+      "포토존",
+      "서퍼",
+      "카페",
+      "서프감성",
+      "서프",
+      "감성",
+      "추천"
+    ],
+    "photoPoint": "서핑보드 벽면, 서퍼 카페 인테리어",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "여름"
+    ],
+    "bestSeasonRaw": "여름",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "서프 감성 카페 추천",
+    "note": "상업시설 운영상태 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "고성군 에이프레임",
+    "externalMapQueries": {
+      "kakao": "고성군 에이프레임(A-Frame)",
+      "naver": "고성군 에이프레임(A-Frame)",
+      "tmap": "고성군 에이프레임(A-Frame)"
+    }
+  },
+  {
+    "placeId": "GOAT-048",
+    "name": "아야진해수욕장",
+    "city": "고성군",
+    "regionGroup": "동해안권",
+    "placeType": "해변",
+    "primaryMood": "한국의 하와이",
+    "moodTags": [
+      "에메랄드바다",
+      "백사장",
+      "갯바위",
+      "하와이",
+      "해변"
+    ],
+    "searchTags": [
+      "에메랄드바다",
+      "백사장",
+      "갯바위",
+      "하와이",
+      "해변",
+      "한국의",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "에메랄드빛 바다, 백사장, 갯바위",
+    "bestTime": [
+      "맑은 정오"
+    ],
+    "bestTimeRaw": "맑은 정오",
+    "bestSeason": [
+      "여름"
+    ],
+    "bestSeasonRaw": "여름",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "해변 코스 추천",
+    "note": "기상·수질·주차 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "고성군 아야진해수욕장",
+    "externalMapQueries": {
+      "kakao": "고성군 아야진해수욕장",
+      "naver": "고성군 아야진해수욕장",
+      "tmap": "고성군 아야진해수욕장"
+    }
+  },
+  {
+    "placeId": "GOAT-049",
+    "name": "켄싱턴리조트 설악밸리",
+    "city": "고성군",
+    "regionGroup": "동해안권",
+    "placeType": "리조트/숙소",
+    "primaryMood": "스위스 산장",
+    "moodTags": [
+      "스위스",
+      "리틀스위스",
+      "산장",
+      "벽난로",
+      "설악"
+    ],
+    "searchTags": [
+      "스위스",
+      "리틀스위스",
+      "산장",
+      "벽난로",
+      "설악",
+      "리조트",
+      "숙소",
+      "추천"
+    ],
+    "photoPoint": "스위스풍 독립 객실, 산장 외관",
+    "bestTime": [
+      "오후~저녁"
+    ],
+    "bestTimeRaw": "오후~저녁",
+    "bestSeason": [
+      "겨울",
+      "가을"
+    ],
+    "bestSeasonRaw": "겨울,가을",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숙소·리조트 추천",
+    "note": "숙박 중심 데이터로 분류",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "고성군 켄싱턴리조트 설악밸리",
+    "externalMapQueries": {
+      "kakao": "고성군 켄싱턴리조트 설악밸리",
+      "naver": "고성군 켄싱턴리조트 설악밸리",
+      "tmap": "고성군 켄싱턴리조트 설악밸리"
+    }
+  },
+  {
+    "placeId": "GOAT-050",
+    "name": "하늬라벤더팜",
+    "city": "고성군",
+    "regionGroup": "동해안권",
+    "placeType": "정원/농장",
+    "primaryMood": "프랑스 프로방스",
+    "moodTags": [
+      "라벤더",
+      "프로방스",
+      "양귀비",
+      "메타세쿼이아"
+    ],
+    "searchTags": [
+      "라벤더",
+      "프로방스",
+      "양귀비",
+      "메타세쿼이아",
+      "프랑스",
+      "정원",
+      "농장",
+      "꽃밭",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "라벤더 언덕, 양귀비, 메타세쿼이아",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "6월"
+    ],
+    "bestSeasonRaw": "6월",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "꽃밭·정원 코스 추천",
+    "note": "개화시기 반영 필수",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "고성군 하늬라벤더팜",
+    "externalMapQueries": {
+      "kakao": "고성군 하늬라벤더팜",
+      "naver": "고성군 하늬라벤더팜",
+      "tmap": "고성군 하늬라벤더팜"
+    }
+  },
+  {
+    "placeId": "GOAT-051",
+    "name": "능파대",
+    "city": "고성군",
+    "regionGroup": "동해안권",
+    "placeType": "지질/해안",
+    "primaryMood": "해외 암식해안 지질 스팟",
+    "moodTags": [
+      "타포니",
+      "암식해안",
+      "지질공원",
+      "파도",
+      "고성핫플"
+    ],
+    "searchTags": [
+      "타포니",
+      "암식해안",
+      "지질공원",
+      "파도",
+      "고성핫플",
+      "해외",
+      "지질",
+      "스팟",
+      "해안",
+      "포토스팟",
+      "추천"
+    ],
+    "photoPoint": "타포니 바위, 해안 데크, 파도",
+    "bestTime": [
+      "늦은 오후"
+    ],
+    "bestTimeRaw": "늦은 오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "지질·해안 포토스팟 추천",
+    "note": "안전 안내 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "고성군 능파대",
+    "externalMapQueries": {
+      "kakao": "고성군 능파대",
+      "naver": "고성군 능파대",
+      "tmap": "고성군 능파대"
+    }
+  },
+  {
+    "placeId": "GOAT-052",
+    "name": "사유의 숲",
+    "city": "삼척시",
+    "regionGroup": "동해안권",
+    "placeType": "숙소/풀빌라",
+    "primaryMood": "발리 고급 풀빌라",
+    "moodTags": [
+      "발리",
+      "야자수",
+      "라탄",
+      "야외수영장",
+      "독채풀빌라"
+    ],
+    "searchTags": [
+      "발리",
+      "야자수",
+      "라탄",
+      "야외수영장",
+      "독채풀빌라",
+      "고급",
+      "풀빌라",
+      "숙소",
+      "추천"
+    ],
+    "photoPoint": "야자수, 라탄 소품, 야외 수영장",
+    "bestTime": [
+      "체크인 후 오후"
+    ],
+    "bestTimeRaw": "체크인 후 오후",
+    "bestSeason": [
+      "여름"
+    ],
+    "bestSeasonRaw": "여름",
+    "accessibility": {
+      "publicTransport": "하",
+      "car": "상",
+      "raw": "대중 하 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "숙소 추천",
+    "note": "숙박시설 성격 강함",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "삼척시 사유의 숲",
+    "externalMapQueries": {
+      "kakao": "삼척시 사유의 숲",
+      "naver": "삼척시 사유의 숲",
+      "tmap": "삼척시 사유의 숲"
+    }
+  },
+  {
+    "placeId": "GOAT-053",
+    "name": "쏠비치 삼척·산토리니 광장",
+    "city": "삼척시",
+    "regionGroup": "동해안권",
+    "placeType": "리조트/광장",
+    "primaryMood": "그리스 산토리니",
+    "moodTags": [
+      "산토리니",
+      "코발트블루",
+      "백색건물",
+      "리조트",
+      "광장"
+    ],
+    "searchTags": [
+      "산토리니",
+      "코발트블루",
+      "백색건물",
+      "리조트",
+      "광장",
+      "그리스",
+      "사진스팟",
+      "추천"
+    ],
+    "photoPoint": "백색 건물, 코발트 지붕, 산토리니 광장",
+    "bestTime": [
+      "일몰~블루아워"
+    ],
+    "bestTimeRaw": "일몰~블루아워",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "리조트·사진스팟 추천",
+    "note": "쏠비치 삼척과 산토리니 광장 통합",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "삼척시 쏠비치 삼척",
+    "externalMapQueries": {
+      "kakao": "삼척시 쏠비치 삼척·산토리니 광장",
+      "naver": "삼척시 쏠비치 삼척·산토리니 광장",
+      "tmap": "삼척시 쏠비치 삼척·산토리니 광장"
+    }
+  },
+  {
+    "placeId": "GOAT-054",
+    "name": "라메종드마리",
+    "city": "삼척시",
+    "regionGroup": "동해안권",
+    "placeType": "카페/디저트공간",
+    "primaryMood": "프랑스 니스·프로방스",
+    "moodTags": [
+      "프랑스",
+      "니스",
+      "프로방스",
+      "갈레트",
+      "디저트",
+      "유럽주택"
+    ],
+    "searchTags": [
+      "프랑스",
+      "니스",
+      "프로방스",
+      "갈레트",
+      "디저트",
+      "유럽주택",
+      "카페",
+      "디저트공간",
+      "감성",
+      "추천"
+    ],
+    "photoPoint": "유럽식 주택 외관, 디저트 공간",
+    "bestTime": [
+      "오후"
+    ],
+    "bestTimeRaw": "오후",
+    "bestSeason": [
+      "사계절"
+    ],
+    "bestSeasonRaw": "사계절",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "카페 감성 추천",
+    "note": "상업시설 운영상태 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "삼척시 라메종드마리",
+    "externalMapQueries": {
+      "kakao": "삼척시 라메종드마리",
+      "naver": "삼척시 라메종드마리",
+      "tmap": "삼척시 라메종드마리"
+    }
+  },
+  {
+    "placeId": "GOAT-055",
+    "name": "장호항",
+    "city": "삼척시",
+    "regionGroup": "동해안권",
+    "placeType": "항구/해변",
+    "primaryMood": "한국의 나폴리·나트랑",
+    "moodTags": [
+      "나폴리",
+      "나트랑",
+      "에메랄드바다",
+      "카누",
+      "스노클링"
+    ],
+    "searchTags": [
+      "나폴리",
+      "나트랑",
+      "에메랄드바다",
+      "카누",
+      "스노클링",
+      "한국의",
+      "항구",
+      "해변",
+      "해양",
+      "액티비티",
+      "포토스팟",
+      "추천"
+    ],
+    "photoPoint": "에메랄드 수면, 방파제, 카누 시점",
+    "bestTime": [
+      "정오"
+    ],
+    "bestTimeRaw": "정오",
+    "bestSeason": [
+      "여름"
+    ],
+    "bestSeasonRaw": "여름",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "해양 액티비티·포토스팟 추천",
+    "note": "용화해변과 연계 가능",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "삼척시 장호항",
+    "externalMapQueries": {
+      "kakao": "삼척시 장호항",
+      "naver": "삼척시 장호항",
+      "tmap": "삼척시 장호항"
+    }
+  },
+  {
+    "placeId": "GOAT-056",
+    "name": "용화해변",
+    "city": "삼척시",
+    "regionGroup": "동해안권",
+    "placeType": "해변",
+    "primaryMood": "나트랑 휴양지 후보",
+    "moodTags": [
+      "나트랑",
+      "해변",
+      "스노클링",
+      "케이블카연계",
+      "휴양지"
+    ],
+    "searchTags": [
+      "나트랑",
+      "해변",
+      "스노클링",
+      "케이블카연계",
+      "휴양지",
+      "후보",
+      "장호항",
+      "연계",
+      "대안",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "해변, 케이블카 연계 동선, 바다색",
+    "bestTime": [
+      "정오"
+    ],
+    "bestTimeRaw": "정오",
+    "bestSeason": [
+      "여름"
+    ],
+    "bestSeasonRaw": "여름",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "future_candidate",
+    "recommendationUse": "장호항 연계 대안 코스 추천",
+    "note": "장호항과 별도 장소로 관리",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "삼척시 용화해수욕장",
+    "externalMapQueries": {
+      "kakao": "삼척시 용화해변",
+      "naver": "삼척시 용화해변",
+      "tmap": "삼척시 용화해변"
+    }
+  },
+  {
+    "placeId": "GOAT-057",
+    "name": "초곡용굴촛대바위길",
+    "city": "삼척시",
+    "regionGroup": "동해안권",
+    "placeType": "해안 트레일",
+    "primaryMood": "유럽 절벽 트레일",
+    "moodTags": [
+      "절벽트레일",
+      "출렁다리",
+      "해식동굴",
+      "촛대바위",
+      "오션뷰"
+    ],
+    "searchTags": [
+      "절벽트레일",
+      "출렁다리",
+      "해식동굴",
+      "촛대바위",
+      "오션뷰",
+      "유럽",
+      "절벽",
+      "트레일",
+      "해안",
+      "트레킹",
+      "추천"
+    ],
+    "photoPoint": "출렁다리, 해식동굴, 촛대바위",
+    "bestTime": [
+      "오전"
+    ],
+    "bestTimeRaw": "오전",
+    "bestSeason": [
+      "맑은 날"
+    ],
+    "bestSeasonRaw": "맑은 날",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "confirmed",
+    "recommendationUse": "해안 트레킹 추천",
+    "note": "파도·기상 확인 필요",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "삼척시 초곡용굴촛대바위길",
+    "externalMapQueries": {
+      "kakao": "삼척시 초곡용굴촛대바위길",
+      "naver": "삼척시 초곡용굴촛대바위길",
+      "tmap": "삼척시 초곡용굴촛대바위길"
+    }
+  },
+  {
+    "placeId": "GOAT-058",
+    "name": "한탄강 주상절리길",
+    "city": "철원군",
+    "regionGroup": "북부내륙권",
+    "placeType": "협곡/잔도",
+    "primaryMood": "아이슬란드·그랜드캐니언",
+    "moodTags": [
+      "현무암협곡",
+      "주상절리",
+      "잔도",
+      "아이슬란드",
+      "다크앤웅장"
+    ],
+    "searchTags": [
+      "현무암협곡",
+      "주상절리",
+      "잔도",
+      "아이슬란드",
+      "다크앤웅장",
+      "그랜드캐니언",
+      "협곡",
+      "대안",
+      "코스",
+      "추천"
+    ],
+    "photoPoint": "현무암 협곡, 절벽 잔도, 안개 낀 풍경",
+    "bestTime": [
+      "흐린 날",
+      "오전"
+    ],
+    "bestTimeRaw": "흐린 날·오전",
+    "bestSeason": [
+      "가을",
+      "겨울"
+    ],
+    "bestSeasonRaw": "가을,겨울",
+    "accessibility": {
+      "publicTransport": "중",
+      "car": "상",
+      "raw": "대중 중 / 자차 상"
+    },
+    "dataStatus": "future_candidate",
+    "recommendationUse": "비 오는 날 대안 코스 추천",
+    "note": "날씨 단점을 장점으로 활용 가능",
+    "isRecommendationCandidate": true,
+    "imageUrl": null,
+    "address": null,
+    "latitude": null,
+    "longitude": null,
+    "mapSearchQuery": "철원군 한탄강 주상절리길",
+    "externalMapQueries": {
+      "kakao": "철원군 한탄강 주상절리길",
+      "naver": "철원군 한탄강 주상절리길",
+      "tmap": "철원군 한탄강 주상절리길"
+    }
+  }
+]

@@ -19,6 +19,9 @@
   ],
   "references": [
     {
+      "path": "../../lib/travel-domain"
+    },
+    {
       "path": "../../lib/api-client-react"
     }
   ]

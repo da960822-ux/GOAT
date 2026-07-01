@@ -6,20 +6,19 @@
  * JSON format: append &_type=json
  *
  * Flow:
- *   1. searchKeyword2 → find contentId (areaCode=32 Gangwon)
+ *   1. searchKeyword2 → find contentId, then validate the returned city
  *   2. detailCommon2  → overview, coords, contact
  *   3. detailIntro2   → parking, usage time, rest day (by contentTypeId)
  */
 
-import { ktoFetch, getAuthParams, extractItems, stripHtml } from "./ktoApi";
+import { ktoFetch, getAuthParams, extractItems, stripHtml, isRemoteImageAvailable } from "./ktoApi";
 import { KTOTourInfo } from "./ktoTypes";
+import { getKtoSearchTerms, isRelevantKtoResult } from "./ktoPlaceSearch";
 
 const KOR_BASE = "https://apis.data.go.kr/B551011/KorService2";
 const SEARCH_URL = `${KOR_BASE}/searchKeyword2`;
 const DETAIL_COMMON_URL = `${KOR_BASE}/detailCommon2`;
 const DETAIL_INTRO_URL = `${KOR_BASE}/detailIntro2`;
-
-const GANGWON_AREA_CODE = "32";
 
 const cache = new Map<string, KTOTourInfo | null>();
 
@@ -33,20 +32,43 @@ interface SearchResult {
   firstimage?: string;
 }
 
-async function searchPlace(keyword: string): Promise<SearchResult | null> {
+interface RawSearchItem {
+  contentid?: string;
+  contenttypeid?: string;
+  addr1?: string;
+  mapx?: string;
+  mapy?: string;
+  title?: string;
+  firstimage?: string;
+}
+
+async function findFirstAvailableImageUrl(items: RawSearchItem[]): Promise<string | undefined> {
+  for (const item of items) {
+    if (item.firstimage && (await isRemoteImageAvailable(item.firstimage))) {
+      return item.firstimage;
+    }
+  }
+
+  return undefined;
+}
+
+async function searchPlace(keyword: string, city: string): Promise<SearchResult | null> {
   const json = await ktoFetch(SEARCH_URL, {
     ...getAuthParams(),
     keyword,
-    areaCode: GANGWON_AREA_CODE,
     numOfRows: "10",
     pageNo: "1",
   });
-  const items = extractItems(json);
+  const items = extractItems(json) as RawSearchItem[];
   if (!items.length) return null;
 
-  // Prefer item whose title closely matches the last word of the keyword
-  const target = keyword.split(" ").pop() ?? keyword;
-  const matched = items.find((i: any) => i.title?.includes(target)) ?? items[0];
+  const relevantItems = items.filter((item) =>
+    isRelevantKtoResult(city, keyword, item.title ?? "", item.addr1 ?? "")
+  );
+  const matched = relevantItems[0];
+  if (!matched) return null;
+
+  const firstimage = await findFirstAvailableImageUrl(relevantItems);
 
   return {
     contentId: matched.contentid ?? "",
@@ -55,7 +77,7 @@ async function searchPlace(keyword: string): Promise<SearchResult | null> {
     mapx: matched.mapx ?? "",
     mapy: matched.mapy ?? "",
     title: matched.title ?? "",
-    firstimage: matched.firstimage || undefined,
+    firstimage,
   };
 }
 
@@ -130,7 +152,7 @@ async function fetchDetailIntro(
 
 /**
  * Fetch official tourism info for a place.
- * Searches Gangwon (areaCode=32) only.
+ * Searches by name and validates the returned address against the place city.
  * Results are cached in memory for the session.
  */
 export async function getTourInfo(placeName: string, city: string): Promise<KTOTourInfo> {
@@ -140,9 +162,11 @@ export async function getTourInfo(placeName: string, city: string): Promise<KTOT
   }
 
   try {
-    // 1. Search by place name, then city + name
-    let found = await searchPlace(placeName);
-    if (!found?.contentId) found = await searchPlace(`${city} ${placeName}`);
+    let found: SearchResult | null = null;
+    for (const searchTerm of getKtoSearchTerms(placeName)) {
+      found = await searchPlace(searchTerm, city);
+      if (found?.contentId) break;
+    }
     if (!found?.contentId) {
       cache.set(cacheKey, null);
       return { source: "local" };

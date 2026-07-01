@@ -2,17 +2,17 @@
  * usePlacePhoto
  *
  * Photo fetch priority:
- *   1. KorService2 firstimage (from getTourInfo — per-place official photo)
- *   2. PhotoGalleryService1 by contentId (when tour info has no firstimage)
- *   3. null imageUrl (show placeholder / gradient)
+ *   1. PhotoGalleryService1 keyword search with city validation
+ *   2. KorService2 firstimage (when the gallery has no matching photo)
+ *   3. Local curated image for places without KTO photos
+ *   4. null imageUrl (show placeholder / gradient)
  *
- * PhotoGalleryService1 keyword search was removed — the API rejects free-form
- * Korean keywords with INVALID_REQUEST_PARAMETER_ERROR.
  */
 
 import { useState, useEffect } from 'react';
 import { getTourInfo } from '../services/ktoTourInfoApi';
-import { KTOPhotoResult } from '../services/ktoPhotoApi';
+import { getPlacePhoto, KTOPhotoResult } from '../services/ktoPhotoApi';
+import { getLocalPlacePhoto } from '../services/localPlacePhoto';
 
 export type { KTOPhotoResult };
 
@@ -37,7 +37,15 @@ export function usePlacePhoto(
 
     (async () => {
       try {
-        // 1. KorService2 firstimage — most accurate per-place photo
+        // 1. Curated tourism photo gallery with place/city validation
+        const result = await getPlacePhoto(placeName, city ?? '');
+        if (!cancelled && result.imageUrl) {
+          setPhoto(result);
+          setLoading(false);
+          return;
+        }
+
+        // 2. KorService2 firstimage when the gallery has no match
         const tourInfo = await getTourInfo(placeName, city ?? '');
         if (!cancelled && tourInfo.imageUrl) {
           setPhoto({ imageUrl: tourInfo.imageUrl, source: 'KTO_PHOTO_API' });
@@ -45,18 +53,20 @@ export function usePlacePhoto(
           return;
         }
 
-        // 2. Photo gallery by contentId (if tour info found a contentId)
-        if (tourInfo.contentId) {
-          const { getPlacePhotoByContentId } = await import('../services/ktoPhotoApi');
-          const result = await getPlacePhotoByContentId(tourInfo.contentId);
-          if (!cancelled && result?.imageUrl) {
-            setPhoto(result);
-            setLoading(false);
-            return;
-          }
+        // 3. Local curated image for places that do not have KTO photos
+        const localPhoto = getLocalPlacePhoto(placeName);
+        if (!cancelled && (localPhoto?.imageUrl || localPhoto?.imageSource)) {
+          setPhoto(localPhoto);
+          setLoading(false);
+          return;
         }
       } catch {
-        // fall through to null
+        const localPhoto = getLocalPlacePhoto(placeName);
+        if (!cancelled && (localPhoto?.imageUrl || localPhoto?.imageSource)) {
+          setPhoto(localPhoto);
+          setLoading(false);
+          return;
+        }
       }
 
       if (!cancelled) {

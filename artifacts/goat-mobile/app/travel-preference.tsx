@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, ScrollView, StyleSheet, Text, TouchableOpacity,
-  Platform, ActivityIndicator,
+  Platform, ActivityIndicator, Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
@@ -11,7 +11,7 @@ import { Header } from '@/src/components/Header';
 import { BottomCTA } from '@/src/components/BottomCTA';
 import { StepIndicator } from '@/src/components/StepIndicator';
 import { useApp } from '@/src/context/AppContext';
-import { getRecommendations } from '@/src/services/recommendationService';
+import { recommendFromTags } from '@workspace/api-client-react';
 import { useColors } from '@/hooks/useColors';
 import {
   Companion,
@@ -72,6 +72,7 @@ export default function TravelPreferenceScreen() {
   const [origin, setLocalOrigin] = useState<TravelOrigin | null>(null);
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
   const [showRegions, setShowRegions] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const requiredSelected = companion && transport && purpose;
   const count = [companion, transport, purpose].filter(Boolean).length;
@@ -124,8 +125,8 @@ export default function TravelPreferenceScreen() {
     setLocationStatus('idle');
   }
 
-  function handleConfirm() {
-    if (!requiredSelected || !selectedMood) return;
+  async function handleConfirm() {
+    if (!requiredSelected || !selectedMood || isSubmitting) return;
     const prefs: TravelPreferences = {
       companion: companion!,
       transport: transport!,
@@ -133,11 +134,25 @@ export default function TravelPreferenceScreen() {
       purpose: purpose!,
     };
     const finalOrigin = origin ?? { type: 'skip' as const };
-    setTravelPreferences(prefs);
-    setOrigin(finalOrigin);
-    const cards = getRecommendations(selectedMood.id, prefs, undefined, finalOrigin);
-    setRecommendations(cards);
-    router.push('/results');
+    setIsSubmitting(true);
+    try {
+      const result = await recommendFromTags({
+        moodId: selectedMood.id,
+        preferences: prefs,
+        origin: finalOrigin,
+      });
+      setTravelPreferences(prefs);
+      setOrigin(finalOrigin);
+      setRecommendations(result.data.recommendations);
+      router.push('/results');
+    } catch {
+      Alert.alert(
+        '추천을 불러오지 못했어요',
+        '백엔드 서버 주소와 네트워크 상태를 확인한 뒤 다시 시도해주세요.',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const subtitleParts = [companion, transport, visitTime, purpose].filter(Boolean) as string[];
@@ -341,9 +356,9 @@ export default function TravelPreferenceScreen() {
       </ScrollView>
 
       <BottomCTA
-        label={requiredSelected ? '추천 카드 보기' : `${count}/3 필수 선택`}
+        label={isSubmitting ? '추천 장소를 불러오는 중…' : requiredSelected ? '추천 카드 보기' : `${count}/3 필수 선택`}
         onPress={handleConfirm}
-        disabled={!requiredSelected}
+        disabled={!requiredSelected || isSubmitting}
         subtitle={requiredSelected ? subtitleParts.join(' · ') : undefined}
       />
     </View>

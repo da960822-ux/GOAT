@@ -21,8 +21,12 @@ const CROWD_CHIP: Record<string, { label: string; bg: string; border: string; te
   high:   { label: '방문 집중 예상',  bg: '#FFF1F2', border: '#FECDD3', text: '#9F1239' },
 };
 
+function getPhotoSource(photo: NonNullable<ReturnType<typeof usePlacePhoto>['photo']>) {
+  return photo.imageSource ?? { uri: photo.imageUrl! };
+}
+
 export function PlaceCard({ card, onPress }: PlaceCardProps) {
-  const { place, role, reason, distanceKm } = card;
+  const { place, role, reason } = card;
   const colors = useColors();
   const region = getRegionPalette(place.region_group);
 
@@ -33,7 +37,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
     place.city
   );
 
-  const { concentration } = useVisitConcentration(place.place_name);
+  const { concentration } = useVisitConcentration(place.place_name, place.city);
   const crowdChip = concentration?.concentrationLevel
     ? CROWD_CHIP[concentration.concentrationLevel]
     : null;
@@ -49,7 +53,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
   const timeShort =
     place.best_time.length > 14 ? place.best_time.slice(0, 14) + '…' : place.best_time;
 
-  const hasPhoto = !photoLoading && !!photo?.imageUrl;
+  const hasPhoto = !photoLoading && !!(photo?.imageUrl || photo?.imageSource);
 
   return (
     <View style={[styles.card, { backgroundColor: '#FAFAF9', borderColor: colors.border }]}>
@@ -59,7 +63,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
         <View style={[styles.thumbWrap, { backgroundColor: region.bg }]}>
           {hasPhoto && (
             <Image
-              source={{ uri: photo!.imageUrl! }}
+              source={getPhotoSource(photo!)}
               style={styles.thumb}
               contentFit="cover"
               transition={300}
@@ -69,9 +73,11 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
             <View style={[styles.thumbSkeleton, { backgroundColor: region.bg }]} />
           )}
           <View style={styles.thumbFade} />
-          {hasPhoto && photo?.source === 'KTO_PHOTO_API' && (
+          {hasPhoto && (photo?.source === 'KTO_PHOTO_API' || photo?.source === 'LOCAL_PLACE_IMAGE') && (
             <View style={styles.photoSourceBadge}>
-              <Text style={styles.photoSourceText}>관광사진 기반</Text>
+              <Text style={styles.photoSourceText}>
+                {photo.source === 'LOCAL_PLACE_IMAGE' ? '보조 이미지' : '관광사진 기반'}
+              </Text>
             </View>
           )}
         </View>
@@ -89,12 +95,6 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
             {crowdChip && (
               <View style={[styles.chip, { backgroundColor: crowdChip.bg, borderColor: crowdChip.border }]}>
                 <Text style={[styles.chipText, { color: crowdChip.text }]}>{crowdChip.label}</Text>
-              </View>
-            )}
-            {distanceKm != null && (
-              <View style={[styles.chip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
-                <Feather name="navigation" size={10} color="#5B21B6" />
-                <Text style={[styles.chipText, { color: '#5B21B6' }]}>약 {distanceKm}km</Text>
               </View>
             )}
             <View style={[styles.regionBadge, { backgroundColor: region.bg, borderColor: region.border }]}>

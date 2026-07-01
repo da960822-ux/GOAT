@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { MoodCategory, RecommendationCard } from '../types/place';
+import type { Mood } from '@workspace/api-client-react';
+import { RecommendationCard } from '../types/place';
 import { TravelPreferences, TravelOrigin } from '../types/preferences';
 
 interface AppContextValue {
-  selectedMood: MoodCategory | null;
+  selectedMood: Mood | null;
   travelPreferences: TravelPreferences | null;
   recommendations: RecommendationCard[];
   origin: TravelOrigin | null;
-  setSelectedMood: (mood: MoodCategory) => void;
+  setSelectedMood: (mood: Mood) => void;
   setTravelPreferences: (prefs: TravelPreferences) => void;
   setRecommendations: (cards: RecommendationCard[]) => void;
   setOrigin: (origin: TravelOrigin | null) => void;
@@ -16,7 +17,7 @@ interface AppContextValue {
 const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [selectedMood, setSelectedMood] = useState<MoodCategory | null>(null);
+  const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
   const [travelPreferences, setTravelPreferences] = useState<TravelPreferences | null>(null);
   const [recommendations, setRecommendations] = useState<RecommendationCard[]>([]);
   const [origin, setOrigin] = useState<TravelOrigin | null>(null);

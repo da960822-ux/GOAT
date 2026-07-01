@@ -6,10 +6,11 @@
 /** 1. 관광사진 정보_GW — tourism photo gallery */
 export interface KTOPhotoResult {
   imageUrl: string | null;
+  imageSource?: unknown;
   title?: string;
   location?: string;
   keywords?: string[];
-  source: 'KTO_PHOTO_API' | 'KTO_AWARD_PHOTO_API' | 'fallback';
+  source: 'KTO_PHOTO_API' | 'KTO_AWARD_PHOTO_API' | 'LOCAL_PLACE_IMAGE' | 'fallback';
 }
 
 /** 2. 국문 관광정보 서비스_GW — official tourism info */
@@ -35,6 +36,8 @@ export interface KTOTourInfo {
 export interface KTOVisitConcentration {
   concentrationLevel: 'low' | 'medium' | 'high' | 'unknown';
   trendLabel?: string;
+  /** 가장 붐비는 시기를 100으로 본 상대 집중률 */
+  concentrationRate?: number;
   predictedVisitors?: number;
   baseDate?: string;
   source: 'KTO_VISIT_CONCENTRATION' | 'fallback';
