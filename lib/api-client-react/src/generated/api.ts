@@ -20,6 +20,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AnalyzeImageRequest,
+  AnalyzeImageSuccessResponse,
   ErrorResponse,
   HealthStatus,
   KtoProxyError,
@@ -266,6 +268,79 @@ export const useRecommendFromTags = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getRecommendFromTagsMutationOptions(options));
+    }
+
+export const getAnalyzeImageUrl = () => {
+
+
+
+
+  return `/api/analyze-image`
+}
+
+/**
+ * Accepts one image from an authenticated client. The server should derive the user id from the JWT/session if persisted data is needed; clients must not submit user_id in the request body.
+
+ * @summary Analyze an uploaded travel photo and map it to GOAT mood tags
+ */
+export const analyzeImage = async (analyzeImageRequest: AnalyzeImageRequest, options?: RequestInit): Promise<AnalyzeImageSuccessResponse> => {
+
+  return customFetch<AnalyzeImageSuccessResponse>(getAnalyzeImageUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      analyzeImageRequest,)
+  }
+);}
+
+
+
+
+export const getAnalyzeImageMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof analyzeImage>>, TError,{data: BodyType<AnalyzeImageRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof analyzeImage>>, TError,{data: BodyType<AnalyzeImageRequest>}, TContext> => {
+
+const mutationKey = ['analyzeImage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof analyzeImage>>, {data: BodyType<AnalyzeImageRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  analyzeImage(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AnalyzeImageMutationResult = NonNullable<Awaited<ReturnType<typeof analyzeImage>>>
+    export type AnalyzeImageMutationBody = BodyType<AnalyzeImageRequest>
+    export type AnalyzeImageMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Analyze an uploaded travel photo and map it to GOAT mood tags
+ */
+export const useAnalyzeImage = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof analyzeImage>>, TError,{data: BodyType<AnalyzeImageRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof analyzeImage>>,
+        TError,
+        {data: BodyType<AnalyzeImageRequest>},
+        TContext
+      > => {
+      return useMutation(getAnalyzeImageMutationOptions(options));
     }
 
 export const getGetPlaceUrl = (id: string,) => {

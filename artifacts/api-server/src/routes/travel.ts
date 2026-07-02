@@ -1,4 +1,4 @@
-import { Router, type IRouter } from "express";
+import { Router, type IRouter, type NextFunction, type Request, type Response } from "express";
 import {
   getPlaceById,
   getRecommendations,
@@ -9,6 +9,47 @@ import { z } from "zod";
 import { ApiError } from "../lib/api-response";
 
 const router: IRouter = Router();
+
+const readPositiveInt = (value: string | undefined, fallback: number) => {
+  const parsed = Number.parseInt(value ?? "", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+};
+
+const RECOMMEND_RATE_LIMIT_WINDOW_MS =
+  readPositiveInt(process.env.RECOMMEND_RATE_LIMIT_WINDOW_SECONDS, 60) * 1000;
+const RECOMMEND_RATE_LIMIT_MAX = readPositiveInt(process.env.RECOMMEND_RATE_LIMIT_MAX, 30);
+const recommendRateLimitStore = new Map<string, { count: number; resetAt: number }>();
+
+const recommendRateLimit = (req: Request, res: Response, next: NextFunction) => {
+  const now = Date.now();
+  const key = req.ip || "unknown";
+  const existing = recommendRateLimitStore.get(key);
+
+  if (!existing || existing.resetAt <= now) {
+    recommendRateLimitStore.set(key, {
+      count: 1,
+      resetAt: now + RECOMMEND_RATE_LIMIT_WINDOW_MS,
+    });
+    next();
+    return;
+  }
+
+  existing.count += 1;
+
+  if (existing.count > RECOMMEND_RATE_LIMIT_MAX) {
+    res.setHeader("Retry-After", Math.ceil((existing.resetAt - now) / 1000).toString());
+    next(
+      new ApiError(
+        429,
+        "RATE_LIMITED",
+        "Too many recommendation requests. Please try again later.",
+      ),
+    );
+    return;
+  }
+
+  next();
+};
 
 const requestSchema = z
   .object({
@@ -72,7 +113,7 @@ router.get("/moods", (_req, res) => {
   });
 });
 
-router.post("/recommend-from-tags", (req, res, next) => {
+router.post("/recommend-from-tags", recommendRateLimit, (req, res, next) => {
   const parsed = requestSchema.safeParse(req.body);
   if (!parsed.success) {
     next(

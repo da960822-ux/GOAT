@@ -6,6 +6,10 @@
  * OpenAPI spec version: 0.3.0
  */
 
+export * from './analyzeImageData';
+export * from './analyzeImageRequest';
+export * from './analyzeImageRequestMimeType';
+export * from './analyzeImageSuccessResponse';
 export * from './apiSuccessBase';
 export * from './errorResponse';
 export * from './healthStatus';

@@ -277,6 +277,43 @@ export type RecommendationsSuccessResponse = ApiSuccessBase & {
   data: RecommendationsData;
 };
 
+export type AnalyzeImageRequestMimeType = typeof AnalyzeImageRequestMimeType[keyof typeof AnalyzeImageRequestMimeType];
+
+
+export const AnalyzeImageRequestMimeType = {
+  'image/jpeg': 'image/jpeg',
+  'image/png': 'image/png',
+  'image/webp': 'image/webp',
+} as const;
+
+export interface AnalyzeImageRequest {
+  /**
+     * Base64-encoded JPEG, PNG, or WebP image. Recommended max decoded size is 10MB.
+     * @minLength 1
+     */
+  imageBase64: string;
+  mimeType: AnalyzeImageRequestMimeType;
+  debug?: boolean;
+}
+
+export interface AnalyzeImageData {
+  primaryMood: string;
+  moodTags: string[];
+  matchedSceneTags: string[];
+  /**
+     * @minimum 0
+     * @maximum 1
+     */
+  confidence?: number;
+  recommendedMoodId?: string;
+  isEstimated: boolean;
+  warnings?: string[];
+}
+
+export type AnalyzeImageSuccessResponse = ApiSuccessBase & {
+  data: AnalyzeImageData;
+};
+
 export interface PlaceData {
   place: Place;
 }

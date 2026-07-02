@@ -7,8 +7,10 @@ import type {
   GoatPlaceDataset,
   GoatReferenceCardDataset,
   RecommendRequest,
+  RecommendResult,
   RecommendationCard as GoatRecommendationCard,
 } from "./goatRecommendationTypes";
+import type { RecommendationExposureRepository } from "./recommendationExposureRepository";
 import type {
   MoodCategory,
   Place,
@@ -31,6 +33,34 @@ export type RecommendationRequestOptions = {
   excludeIds?: string[];
   debug?: boolean;
 };
+
+export interface RecommendationServiceBody
+  extends Omit<
+    RecommendRequest,
+    "recentExposureByPlaceId" | "totalExposureByPlaceId" | "themeAverageExposure" | "excludePlaceIds"
+  > {
+  /** 다시 추천 버튼을 눌렀을 때 직전 추천 requestId. 이 요청의 카드 3개는 excludePlaceIds로 강제 제외된다. */
+  rerollOfRequestId?: string;
+  /** 프론트/백엔드가 이미 제외해야 할 장소를 알고 있을 때 추가로 전달한다. */
+  excludePlaceIds?: string[];
+}
+
+export interface RecommendationServiceContext {
+  requestId?: string;
+  userId?: string;
+  sessionId?: string;
+  /** 최근 몇 개의 노출 카드 row를 recentExposureByPlaceId 계산에 쓸지. 기본 20. */
+  recentLimit?: number;
+  now?: Date;
+}
+
+export interface CreateGoatRecommendationParams {
+  body: RecommendationServiceBody;
+  context?: RecommendationServiceContext;
+  placesDataset: GoatPlaceDataset;
+  referenceDataset?: GoatReferenceCardDataset;
+  exposureRepository: RecommendationExposureRepository;
+}
 
 const MOOD_TO_REFERENCE_CARD: Record<string, string> = {
   "california-coast": "REF_SEA_02",
@@ -58,6 +88,95 @@ const TIME_MAP: Record<string, string> = {
   "일몰": "저녁",
   "밤/새벽": "야간",
 };
+
+function uniq(values: string[]): string[] {
+  return Array.from(new Set(values.filter(Boolean)));
+}
+
+function createRequestId(now: Date): string {
+  const random = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `REQ_${now.getTime()}_${random}`;
+}
+
+function pickPrimaryThemeForExposure(body: RecommendationServiceBody, result: RecommendResult): string | undefined {
+  return result.resultData?.request.primaryTheme ?? (body.primaryTheme ? String(body.primaryTheme) : undefined);
+}
+
+function toExposureCards(cards: GoatRecommendationCard[]) {
+  return cards.map((card) => ({
+    placeId: card.placeId,
+    rankNo: card.rank,
+    cardRole: card.role,
+  }));
+}
+
+/**
+ * 실제 백엔드 API에서 호출할 서비스 레이어.
+ *
+ * 추천 전 노출 통계를 조회해 엔진에 넘기고, 추천 결과 카드 3개를 저장해
+ * 다음 추천과 다시 추천에서 재노출 방지 보정이 실제로 작동하게 한다.
+ */
+export async function createGoatRecommendation(params: CreateGoatRecommendationParams): Promise<RecommendResult> {
+  const now = params.context?.now ?? new Date();
+  const requestId = params.context?.requestId ?? createRequestId(now);
+
+  const previousPlaceIds = params.body.rerollOfRequestId
+    ? await params.exposureRepository.findPlaceIdsByRequestId(params.body.rerollOfRequestId)
+    : [];
+
+  const exposureStats = await params.exposureRepository.getExposureStats({
+    userId: params.context?.userId,
+    sessionId: params.context?.sessionId,
+    referenceCardId: params.body.referenceCardId,
+    primaryTheme: params.body.primaryTheme ? String(params.body.primaryTheme) : undefined,
+    recentLimit: params.context?.recentLimit ?? 20,
+  });
+
+  const excludePlaceIds = uniq([
+    ...(params.body.excludePlaceIds ?? []),
+    ...previousPlaceIds,
+  ]);
+
+  const result = recommendGoatPlaces(
+    {
+      ...params.body,
+      currentMonth: params.body.currentMonth ?? now.getMonth() + 1,
+      excludePlaceIds,
+      recentExposureByPlaceId: exposureStats.recentExposureByPlaceId,
+      totalExposureByPlaceId: exposureStats.totalExposureByPlaceId,
+      themeAverageExposure: exposureStats.themeAverageExposure,
+      logContext: {
+        ...(params.body.logContext ?? {}),
+        requestId,
+        userId: params.context?.userId,
+        sessionId: params.context?.sessionId,
+        rerollOfRequestId: params.body.rerollOfRequestId,
+        excludePlaceIds,
+      },
+    },
+    params.placesDataset,
+    params.referenceDataset,
+  );
+
+  if (result.resultData) {
+    result.resultData.requestId = requestId;
+  }
+
+  if (result.status === "DONE" && result.resultData?.cards.length) {
+    await params.exposureRepository.saveExposures({
+      requestId,
+      userId: params.context?.userId,
+      sessionId: params.context?.sessionId,
+      referenceCardId: params.body.referenceCardId,
+      primaryTheme: pickPrimaryThemeForExposure(params.body, result),
+      travelPurpose: params.body.travelPurpose ? String(params.body.travelPurpose) : undefined,
+      cards: toExposureCards(result.resultData.cards),
+      createdAt: now,
+    });
+  }
+
+  return result;
+}
 
 function validateData(): void {
   if (sourcePlaces.length !== 58) {
@@ -143,7 +262,7 @@ function toLegacyRecommendation(card: GoatRecommendationCard): RecommendationCar
       region: 0,
       lodgingIntent: 0,
       season: card.score.conditionScore.season.score,
-      time: card.score.conditionScore.bestTime.score,
+      time: 0,
       weather: 0,
       companion: 0,
       travelPurpose: card.score.conditionScore.purpose.score,
@@ -214,7 +333,7 @@ export function getRecommendations(
     recommendations: result.resultData.cards.map(toLegacyRecommendation),
     cards: result.resultData.cards,
     alternatives: result.resultData.alternatives,
-    warnings: result.resultData.warnings,
+    warnings: result.resultData.warnings.map((warning) => warning.code),
   };
 }
 

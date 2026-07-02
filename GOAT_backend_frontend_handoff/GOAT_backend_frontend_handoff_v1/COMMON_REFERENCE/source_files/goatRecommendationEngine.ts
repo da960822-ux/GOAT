@@ -21,11 +21,8 @@ import {
   TransportType,
 } from "./goatRecommendationTypes";
 
-declare const process: {
-  env?: Record<string, string | undefined>;
-  getBuiltinModule?: (moduleName: string) => unknown;
-} | undefined;
-declare const console: { warn: (...data: unknown[]) => void };
+declare const require: ((moduleName: string) => unknown) | undefined;
+declare const process: { env?: Record<string, string | undefined> } | undefined;
 
 const WARNING_LOG_EVENT = "GOAT_RECOMMENDATION_WARNING" as const;
 const WARNING_LOG_LABEL = "[GOAT_RECOMMENDATION_WARNING]";
@@ -46,20 +43,18 @@ function getEnvValue(key: string): string | undefined {
   return typeof value === "string" && value.trim() !== "" ? value : undefined;
 }
 
-function loadNodeBuiltin<T>(moduleName: string): T | null {
+function loadNodeModule<T>(moduleName: string): T | null {
   try {
-    if (typeof process === "undefined" || typeof process.getBuiltinModule !== "function") {
-      return null;
-    }
-    return process.getBuiltinModule(moduleName) as T;
+    if (typeof require !== "function") return null;
+    return require(moduleName) as T;
   } catch {
     return null;
   }
 }
 
 function appendWarningLogFile(filePath: string, payload: RecommendationWarningLogPayload): void {
-  const fs = loadNodeBuiltin<FsLike>("node:fs");
-  const path = loadNodeBuiltin<PathLike>("node:path");
+  const fs = loadNodeModule<FsLike>("node:fs");
+  const path = loadNodeModule<PathLike>("node:path");
   if (!fs || !path) return;
 
   try {

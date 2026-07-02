@@ -31,9 +31,29 @@ const corsOrigins = (process.env.CORS_ORIGINS ?? "")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
+const isProduction = process.env.NODE_ENV === "production";
+const developmentCorsOrigins = [
+  "http://localhost:19006",
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:8083",
+  "http://127.0.0.1:19006",
+  "http://127.0.0.1:3000",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:8083",
+];
+
+if (isProduction && corsOrigins.length === 0) {
+  throw new Error("CORS_ORIGINS must be set in production");
+}
+
+if (isProduction && corsOrigins.includes("*")) {
+  throw new Error('CORS_ORIGINS cannot include "*" in production');
+}
+
 app.use(
   cors({
-    origin: corsOrigins.length === 0 ? "*" : corsOrigins,
+    origin: corsOrigins.length === 0 ? developmentCorsOrigins : corsOrigins,
   }),
 );
 app.use(express.json());

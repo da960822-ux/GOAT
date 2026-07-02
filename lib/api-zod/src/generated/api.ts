@@ -147,6 +147,42 @@ export const RecommendFromTagsResponse = zod.object({
 
 
 /**
+ * Accepts one image from an authenticated client. The server should derive the user id from the JWT/session if persisted data is needed; clients must not submit user_id in the request body.
+
+ * @summary Analyze an uploaded travel photo and map it to GOAT mood tags
+ */
+
+export const analyzeImageBodyDebugDefault = false;
+
+export const AnalyzeImageBody = zod.object({
+  "imageBase64": zod.string().min(1).describe('Base64-encoded JPEG, PNG, or WebP image. Recommended max decoded size is 10MB.'),
+  "mimeType": zod.enum(['image/jpeg', 'image/png', 'image/webp']),
+  "debug": zod.boolean().default(analyzeImageBodyDebugDefault)
+})
+
+export const analyzeImageResponseTwoDataConfidenceMin = 0;
+export const analyzeImageResponseTwoDataConfidenceMax = 1;
+
+
+
+export const AnalyzeImageResponse = zod.object({
+  "success": zod.boolean(),
+  "code": zod.literal("SUCCESS"),
+  "message": zod.string()
+}).and(zod.object({
+  "data": zod.object({
+  "primaryMood": zod.string(),
+  "moodTags": zod.array(zod.string()),
+  "matchedSceneTags": zod.array(zod.string()),
+  "confidence": zod.number().min(analyzeImageResponseTwoDataConfidenceMin).max(analyzeImageResponseTwoDataConfidenceMax).optional(),
+  "recommendedMoodId": zod.string().optional(),
+  "isEstimated": zod.boolean(),
+  "warnings": zod.array(zod.string()).optional()
+})
+}))
+
+
+/**
  * @summary Get a place by ID
  */
 

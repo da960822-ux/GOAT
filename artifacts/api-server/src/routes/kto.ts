@@ -4,7 +4,7 @@
  * Proxies requests to apis.data.go.kr server-side to avoid CORS restrictions
  * in the browser-based Expo web build.
  *
- * Route: GET /api/kto?path=<KTO_endpoint_path>&<KTO_params>
+ * Route: GET /api/kto?path=<allowed_KTO_endpoint_path>&<KTO_params>
  *   e.g. /api/kto?path=PhotoGalleryService1/galleryList1&keyword=춘천&numOfRows=5&...
  *
  * The serviceKey is never exposed to the client — it is read from the server
@@ -21,6 +21,17 @@ const DEFAULT_CACHE_MAX_ENTRIES = 500;
 const DEFAULT_CACHE_TTL_SECONDS = 21_600;
 const DEFAULT_STATIC_CACHE_TTL_SECONDS = 86_400;
 const DEFAULT_VISIT_CACHE_TTL_SECONDS = 3_600;
+
+const ALLOWED_KTO_PATHS = new Set([
+  "PhotoGalleryService1/gallerySearchList1",
+  "PhotoGalleryService1/galleryList1",
+  "PhotoContestService1/getPhotoContestList1",
+  "KorService2/searchKeyword2",
+  "KorService2/detailCommon2",
+  "KorService2/detailIntro2",
+  "LocalGovTourInfoService1/getLocalGovTourInfo1",
+  "TatsCnctrRateService/tatsCnctrRatedList",
+]);
 
 type QueryValue = string | string[];
 type KtoCacheEntry = {
@@ -61,6 +72,10 @@ const normalizeQueryValue = (value: unknown): string[] => {
 };
 
 const getFirstQueryValue = (value: unknown) => normalizeQueryValue(value)[0];
+
+const normalizeKtoPath = (path: string) => path.replace(/^\/+/, "").replace(/\/+$/, "");
+
+const isAllowedKtoPath = (ktoPath: string) => ALLOWED_KTO_PATHS.has(ktoPath);
 
 const getCacheTtlSeconds = (ktoPath: string) => {
   if (ktoPath.includes("TatsCnctrRateService")) {
@@ -140,12 +155,19 @@ const trimCache = () => {
 router.get("/kto", async (req: Request, res: Response) => {
   try {
     const rawQuery = req.query as Record<string, QueryValue | undefined>;
-    const ktoPath = getFirstQueryValue(rawQuery.path);
+    const ktoPath = normalizeKtoPath(getFirstQueryValue(rawQuery.path) ?? "");
 
     if (!ktoPath) {
       res.setHeader("X-KTO-Cache", "MISS");
       res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
       res.status(400).json({ error: "path query param is required" });
+      return;
+    }
+
+    if (!isAllowedKtoPath(ktoPath)) {
+      res.setHeader("X-KTO-Cache", "MISS");
+      res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
+      res.status(403).json({ error: "KTO path is not allowed" });
       return;
     }
 

@@ -1,5 +1,7 @@
 # API server
 
+배포 전 보안, DB, 북마크, 이미지 분석 API 체크는 [`../../docs/deployment-security-data-design.md`](../../docs/deployment-security-data-design.md)를 확인하세요.
+
 기존 Express + TypeScript 백엔드입니다.
 
 추천 API는 팀원 v1.3+의 58개 장소와 검증된 12개 감성 조합을 사용합니다.
@@ -11,7 +13,9 @@
 ## 환경 변수
 
 - `PORT`: 서버 포트
-- `CORS_ORIGINS`: 허용할 Origin의 쉼표 구분 목록. 비어 있으면 기존처럼 요청 Origin을 허용합니다.
+- `CORS_ORIGINS`: 허용할 Origin의 쉼표 구분 목록. production에서는 필수이며 `*`는 허용하지 않습니다.
+- `RECOMMEND_RATE_LIMIT_WINDOW_SECONDS`: `POST /recommend-from-tags` rate-limit 윈도우(기본값: `60`).
+- `RECOMMEND_RATE_LIMIT_MAX`: 윈도우 안에서 client IP별 허용할 추천 요청 수(기본값: `30`).
 - `KTO_SERVICE_KEY`: 한국관광공사 API 서버 전용 키
 
 비밀키 값은 저장소에 기록하지 않습니다.
