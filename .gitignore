@@ -1,9 +1,28 @@
-node_modules
+# dependencies
+node_modules/
+
+# build outputs
+dist/
+build/
+coverage/
+
+# runtime logs / temp files
+logs/
+tmp/
+*.log
+*.jsonl
+
+# environment variables / secrets
 .env
-.env.local
-.expo
-dist
-build
+.env.*
+!.env.example
+
+# OS / editor
 .DS_Store
-npm-debug.log
-yarn-error.log
+Thumbs.db
+.vscode/
+.idea/
+
+# package managers
+.pnpm-store/
+.yarn/
