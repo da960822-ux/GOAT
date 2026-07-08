@@ -11,7 +11,7 @@ import { Header } from '@/src/components/Header';
 import { TagBadge } from '@/src/components/TagBadge';
 import { RecommendationRoleBadge } from '@/src/components/RecommendationRoleBadge';
 import { EmptyState } from '@/src/components/EmptyState';
-import { useGetPlace } from '@workspace/api-client-react';
+import { recommendCourse, RecommendCourseData, useGetPlace } from '@workspace/api-client-react';
 import { useApp } from '@/src/context/AppContext';
 import { openKakaoMap } from '@/src/services/mapLink';
 import { getRegionPalette } from '@/src/utils/regionColors';
@@ -22,11 +22,28 @@ import { useVisitConcentration } from '@/src/hooks/useVisitConcentration';
 import { VISIT_NOTE } from '@/src/services/ktoVisitApi';
 import { useColors } from '@/hooks/useColors';
 import { Place, RecommendationRole } from '@/src/types/place';
+import { resolveApiUrl } from '@/src/config/api';
 
 const HERO_PHOTO_HEIGHT = 240;
 
 function getPhotoSource(photo: NonNullable<ReturnType<typeof usePlacePhoto>['photo']>) {
   return photo.imageSource ?? { uri: photo.imageUrl! };
+}
+
+function normalizeCoursePurpose(purpose?: string | null) {
+  if (!purpose) return undefined;
+  if (purpose.includes('사진')) return '사진·포토스팟';
+  if (purpose.includes('산책') || purpose.includes('휴식')) return '산책·힐링';
+  if (purpose.includes('액티비티') || purpose.includes('체험')) return '체험·액티비티';
+  if (purpose.includes('카페')) return '카페·실내휴식';
+  return '사진·포토스팟';
+}
+
+function normalizeTransport(transport?: string | null) {
+  if (!transport) return undefined;
+  if (transport.includes('대중')) return '대중교통';
+  if (transport.includes('도보') || transport.includes('뚜벅')) return '도보중심';
+  return '자차';
 }
 
 export default function DetailScreen() {
@@ -35,7 +52,7 @@ export default function DetailScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const bottomPad = Platform.OS === 'web' ? 34 : insets.bottom;
-  const { recommendations } = useApp();
+  const { recommendations, travelPreferences } = useApp();
   const { data, isLoading, isError, refetch } = useGetPlace(id ?? '');
 
   const place = data?.data.place as Place | undefined;
@@ -48,6 +65,9 @@ export default function DetailScreen() {
   const region = place ? getRegionPalette(place.region_group) : null;
 
   const [bookmarked, setBookmarked] = useState(false);
+  const [course, setCourse] = useState<RecommendCourseData | null>(null);
+  const [courseLoading, setCourseLoading] = useState(false);
+  const [courseError, setCourseError] = useState<string | null>(null);
 
   const { photo } = usePlacePhoto(
     place?.place_name ?? '',
@@ -65,6 +85,39 @@ export default function DetailScreen() {
     if (!place) return;
     isBookmarked(place.place_id).then(setBookmarked);
   }, [place?.place_id]);
+
+  async function loadCourseForPlace(targetPlace: Place) {
+    setCourseLoading(true);
+    setCourseError(null);
+    try {
+      const result = await recommendCourse({
+        selectedPlaceId: targetPlace.place_id,
+        primaryTheme: targetPlace.primary_mood as any,
+        userMoodTags: targetPlace.mood_tags.slice(0, 5),
+        userSceneTags: targetPlace.mood_tags.slice(0, 3),
+        companionType: travelPreferences?.companion as any,
+        travelPurpose: normalizeCoursePurpose(travelPreferences?.purpose) as any,
+        transportType: normalizeTransport(travelPreferences?.transport) as any,
+      });
+      setCourse(result.data);
+    } catch {
+      setCourse(null);
+      setCourseError('하루 코스를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.');
+    } finally {
+      setCourseLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!place) return;
+    setCourse(null);
+    loadCourseForPlace(place);
+  }, [
+    place?.place_id,
+    travelPreferences?.companion,
+    travelPreferences?.purpose,
+    travelPreferences?.transport,
+  ]);
 
   if (isLoading) {
     return (
@@ -238,6 +291,15 @@ export default function DetailScreen() {
           </View>
         </InfoCard>
 
+        <CourseRecommendationSection
+          colors={colors}
+          accentColor={accentColor}
+          course={course}
+          loading={courseLoading}
+          error={courseError}
+          onRetry={() => loadCourseForPlace(place)}
+        />
+
         {/* ── Visit tips ── */}
         <InfoCard colors={colors} icon="sun" title="방문 팁">
           <InfoRow label="추천 시간" value={place.best_time} colors={colors} />
@@ -372,6 +434,277 @@ function InfoRow({ label, value, colors }: { label: string; value: string; color
   );
 }
 
+function KakaoCourseMap({ course, colors }: { course: RecommendCourseData; colors: any }) {
+  const config = course.staticMap.staticMapConfig as any;
+  const markers = Array.isArray(config?.markers) ? config.markers : [];
+  const center = config?.center;
+  const iframeMapUrl = center && markers.length > 0
+    ? resolveApiUrl(`/api/course-map?${new URLSearchParams({
+        centerLat: String(center.lat),
+        centerLng: String(center.lng),
+        level: String(config?.level ?? 7),
+        markers: JSON.stringify(markers.map((marker: any) => ({
+          order: marker.order,
+          title: marker.title,
+          lat: marker.lat,
+          lng: marker.lng,
+        }))),
+      }).toString()}`)
+    : null;
+  const containerId = `goat-course-map-${course.stops
+    .map((stop) => stop.id)
+    .join('-')
+    .replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+  const [mapError, setMapError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (Platform.OS !== 'web' || !config?.sdkScriptUrl || !center || markers.length === 0) return;
+
+    const win = globalThis as any;
+    const maybeDoc = win.document as Document | undefined;
+    if (!maybeDoc) return;
+    const doc = maybeDoc;
+
+    function renderMap() {
+      const kakao = win.kakao;
+      const container = doc.getElementById(containerId);
+      if (!kakao?.maps) {
+        setMapError('카카오 지도를 불러오지 못했어요.');
+        return;
+      }
+      if (!container) return;
+
+      const centerLat = Number(center.lat);
+      const centerLng = Number(center.lng);
+      if (!Number.isFinite(centerLat) || !Number.isFinite(centerLng)) {
+        setMapError('지도 중심 좌표가 올바르지 않아요.');
+        return;
+      }
+
+      container.innerHTML = '';
+      const map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(centerLat, centerLng),
+        level: Number(config.level ?? 7),
+      });
+      const bounds = new kakao.maps.LatLngBounds();
+      const path: unknown[] = [];
+
+      markers.forEach((marker: any) => {
+        const lat = Number(marker.lat);
+        const lng = Number(marker.lng);
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+        const position = new kakao.maps.LatLng(lat, lng);
+        bounds.extend(position);
+        path.push(position);
+
+        new kakao.maps.Marker({
+          map,
+          position,
+          title: String(marker.title ?? ''),
+        });
+
+        new kakao.maps.CustomOverlay({
+          map,
+          position,
+          yAnchor: 1.55,
+          content: `<div style="min-width:22px;height:22px;border-radius:999px;background:#0ea5e9;color:#fff;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">${marker.order ?? ''}</div>`,
+        });
+      });
+
+      if (path.length > 1) {
+        new kakao.maps.Polyline({
+          map,
+          path,
+          strokeWeight: 4,
+          strokeColor: '#0EA5E9',
+          strokeOpacity: 0.85,
+          strokeStyle: 'solid',
+        });
+        map.setBounds(bounds);
+      }
+      setMapError(null);
+    }
+
+    function renderWhenReady() {
+      const kakao = win.kakao;
+      if (kakao?.maps?.load) {
+        kakao.maps.load(renderMap);
+        return;
+      }
+      renderMap();
+    }
+
+    if (win.kakao?.maps) {
+      renderWhenReady();
+      return;
+    }
+
+    const scriptId = 'goat-kakao-map-sdk';
+    const existingScript = doc.getElementById(scriptId) as HTMLScriptElement | null;
+    if (existingScript) {
+      existingScript.addEventListener('load', renderWhenReady, { once: true });
+      return () => existingScript.removeEventListener('load', renderWhenReady);
+    }
+
+    const rawSdkScriptUrl = String(config.sdkScriptUrl);
+    const sdkScriptUrl = rawSdkScriptUrl.includes('autoload=')
+      ? rawSdkScriptUrl
+      : `${rawSdkScriptUrl}${rawSdkScriptUrl.includes('?') ? '&' : '?'}autoload=false`;
+    const script = doc.createElement('script');
+    script.id = scriptId;
+    script.async = true;
+    script.src = sdkScriptUrl;
+    script.onload = renderWhenReady;
+    script.onerror = () => setMapError('카카오 지도를 불러오지 못했어요.');
+    doc.head.appendChild(script);
+  }, [center, config, containerId, markers]);
+
+  if (Platform.OS !== 'web' || !config || markers.length === 0) return null;
+
+  return (
+    <View style={[styles.courseMapWrap, { borderColor: colors.border }]}>
+      {mapError && iframeMapUrl
+        ? React.createElement('iframe', {
+            src: iframeMapUrl,
+            title: 'GOAT course map',
+            style: {
+              width: '100%',
+              height: 240,
+              border: 0,
+              borderRadius: 12,
+              overflow: 'hidden',
+              background: '#E5E7EB',
+            },
+          })
+        : React.createElement('div', {
+            id: containerId,
+            style: {
+              width: '100%',
+              height: 240,
+              borderRadius: 12,
+              overflow: 'hidden',
+              background: '#E5E7EB',
+            },
+          })}
+      {!!mapError && !iframeMapUrl && (
+        <Text style={[styles.courseMapErrorText, { color: colors.mutedForeground }]}>
+          {mapError}
+        </Text>
+      )}
+    </View>
+  );
+}
+
+function CourseRecommendationSection({
+  colors,
+  accentColor,
+  course,
+  loading,
+  error,
+  onRetry,
+}: {
+  colors: any;
+  accentColor: string;
+  course: RecommendCourseData | null;
+  loading: boolean;
+  error: string | null;
+  onRetry: () => void;
+}) {
+  const modeLabel = course?.mode === 'LLM_OPENROUTER' ? 'AI 코스' : '기본 코스';
+  const mapUrl = course?.staticMap.fallbackMapSearchUrl;
+
+  return (
+    <InfoCard colors={colors} icon="map" title="선택 장소 중심 하루 코스">
+      {loading && (
+        <View style={styles.courseLoadingRow}>
+          <ActivityIndicator size="small" color={colors.primary} />
+          <Text style={[styles.courseHintText, { color: colors.mutedForeground }]}>
+            동행자와 여행 조건에 맞춰 코스를 만드는 중이에요.
+          </Text>
+        </View>
+      )}
+
+      {!loading && error && (
+        <View style={[styles.courseNoticeBox, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
+          <Text style={[styles.courseHintText, { color: colors.mutedForeground }]}>{error}</Text>
+          <TouchableOpacity style={[styles.courseRetryBtn, { borderColor: colors.border }]} onPress={onRetry}>
+            <Text style={[styles.courseRetryText, { color: colors.primary }]}>다시 생성</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {!loading && course && (
+        <View>
+          <View style={styles.courseTitleRow}>
+            <View style={[styles.courseModeBadge, { backgroundColor: accentColor + '18', borderColor: accentColor + '35' }]}>
+              <Text style={[styles.courseModeText, { color: accentColor }]}>{modeLabel}</Text>
+            </View>
+            <Text style={[styles.courseCandidateText, { color: colors.mutedForeground }]}>
+              후보 {course.nearbyCandidateCount}곳 반영
+            </Text>
+          </View>
+
+          {!!course.courseTitle && (
+            <Text style={[styles.courseTitle, { color: colors.foreground }]}>{course.courseTitle}</Text>
+          )}
+          {!!course.summary && (
+            <Text style={[styles.courseSummary, { color: colors.mutedForeground }]}>{course.summary}</Text>
+          )}
+
+          <KakaoCourseMap course={course} colors={colors} />
+
+          <View style={styles.courseStopList}>
+            {course.stops.map((stop, index) => (
+              <View key={`${stop.id}-${stop.order}`} style={styles.courseStopRow}>
+                <View style={styles.courseTimeline}>
+                  <View style={[styles.courseOrderDot, { backgroundColor: accentColor }]}>
+                    <Text style={styles.courseOrderText}>{stop.order}</Text>
+                  </View>
+                  {index < course.stops.length - 1 && (
+                    <View style={[styles.courseTimelineLine, { backgroundColor: colors.border }]} />
+                  )}
+                </View>
+                <View style={styles.courseStopContent}>
+                  <View style={styles.courseStopHeader}>
+                    <Text style={[styles.courseStopTitle, { color: colors.foreground }]}>{stop.title}</Text>
+                    <Text style={[styles.courseStayText, { color: colors.mutedForeground }]}>
+                      {stop.stayMinutes}분
+                    </Text>
+                  </View>
+                  {!!stop.address && (
+                    <Text style={[styles.courseAddressText, { color: colors.mutedForeground }]} numberOfLines={1}>
+                      {stop.address}
+                    </Text>
+                  )}
+                  <Text style={[styles.courseReasonText, { color: colors.foreground }]}>{stop.reason}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+
+          {!!mapUrl && (
+            <TouchableOpacity
+              style={[styles.courseMapBtn, { backgroundColor: colors.primary + '12', borderColor: colors.primary + '35' }]}
+              onPress={() => Linking.openURL(mapUrl)}
+              activeOpacity={0.75}
+            >
+              <Feather name="map-pin" size={14} color={colors.primary} />
+              <Text style={[styles.courseMapBtnText, { color: colors.primary }]}>카카오맵에서 코스 기준 장소 보기</Text>
+            </TouchableOpacity>
+          )}
+
+          {course.warnings.length > 0 && (
+            <Text style={[styles.courseWarningText, { color: colors.mutedForeground }]}>
+              {course.warnings[0]}
+            </Text>
+          )}
+        </View>
+      )}
+    </InfoCard>
+  );
+}
+
 function AlternativeCard({ place, colors, onPress }: {
   place: Place; colors: any; onPress: () => void;
 }) {
@@ -453,6 +786,38 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 7,
   },
   contactBtnText: { fontSize: 13, fontFamily: 'Inter_500Medium' },
+
+  courseLoadingRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  courseHintText: { flex: 1, fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
+  courseNoticeBox: { borderWidth: 1, borderRadius: 12, padding: 12, gap: 10 },
+  courseRetryBtn: { alignSelf: 'flex-start', borderWidth: 1, borderRadius: 8, paddingHorizontal: 12, paddingVertical: 7 },
+  courseRetryText: { fontSize: 13, fontFamily: 'Inter_600SemiBold' },
+  courseTitleRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 8 },
+  courseModeBadge: { borderWidth: 1, borderRadius: 7, paddingHorizontal: 9, paddingVertical: 4 },
+  courseModeText: { fontSize: 12, fontFamily: 'Inter_600SemiBold' },
+  courseCandidateText: { fontSize: 12, fontFamily: 'Inter_400Regular' },
+  courseTitle: { fontSize: 17, fontWeight: '700', fontFamily: 'Inter_700Bold', lineHeight: 23, marginBottom: 5 },
+  courseSummary: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19, marginBottom: 14 },
+  courseMapWrap: { borderWidth: 1, borderRadius: 14, overflow: 'hidden', marginBottom: 14 },
+  courseMapErrorText: { fontSize: 12, fontFamily: 'Inter_400Regular', lineHeight: 18, padding: 10 },
+  courseStopList: { gap: 0 },
+  courseStopRow: { flexDirection: 'row', gap: 10 },
+  courseTimeline: { width: 24, alignItems: 'center' },
+  courseOrderDot: { width: 22, height: 22, borderRadius: 11, alignItems: 'center', justifyContent: 'center' },
+  courseOrderText: { fontSize: 11, fontFamily: 'Inter_700Bold', color: '#FFF' },
+  courseTimelineLine: { width: 1, flex: 1, minHeight: 52, marginVertical: 4 },
+  courseStopContent: { flex: 1, paddingBottom: 14 },
+  courseStopHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 3 },
+  courseStopTitle: { flex: 1, fontSize: 15, fontWeight: '600', fontFamily: 'Inter_600SemiBold' },
+  courseStayText: { fontSize: 12, fontFamily: 'Inter_500Medium' },
+  courseAddressText: { fontSize: 12, fontFamily: 'Inter_400Regular', marginBottom: 4 },
+  courseReasonText: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
+  courseMapBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6,
+    borderWidth: 1, borderRadius: 12, paddingVertical: 12, marginTop: 2,
+  },
+  courseMapBtnText: { fontSize: 13, fontFamily: 'Inter_600SemiBold' },
+  courseWarningText: { fontSize: 11, fontFamily: 'Inter_400Regular', lineHeight: 16, marginTop: 8 },
 
   cautionCard: { marginHorizontal: 20, marginVertical: 4, borderRadius: 14, borderWidth: 1, padding: 14 },
   cautionHeader: { flexDirection: 'row', alignItems: 'center', gap: 7, marginBottom: 8 },

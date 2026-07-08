@@ -30,7 +30,7 @@ paths:
     get:
       operationId: getMoods
       tags: [moods]
-      summary: Get the 12 validated GOAT mood combinations
+      summary: Get the 7 GOAT primary mood themes
       responses:
         "200":
           description: Mood inventory
@@ -58,6 +58,36 @@ paths:
                 $ref: "#/components/schemas/RecommendationsSuccessResponse"
         "400":
           description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too many recommendation requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /recommend-course:
+    post:
+      operationId: recommendCourse
+      tags: [recommendations]
+      summary: Build a day course from one selected GOAT recommendation card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecommendCourseRequest"
+      responses:
+        "200":
+          description: Day course
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecommendCourseSuccessResponse"
+        "400":
+          description: Invalid request or selected place not found
           content:
             application/json:
               schema:
@@ -339,6 +369,54 @@ components:
             type: string
             minLength: 1
       additionalProperties: false
+    RecommendCourseRequest:
+      type: object
+      properties:
+        selectedPlaceId:
+          type: string
+          minLength: 1
+        primaryTheme:
+          type: string
+          enum: [바다·해안 무드, 일본 소도시·골목 무드, 알프스·고원·목장 무드, 숲·정원·자연휴식 무드, 레트로·시장·항구 무드, 건축·전시·랜드마크 무드, 휴양·카페·이국공간 무드]
+        userMoodTags:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            minLength: 1
+        userSceneTags:
+          type: array
+          maxItems: 10
+          items:
+            type: string
+            minLength: 1
+        companionType:
+          type: string
+          enum: [혼자, 친구, 연인, 가족]
+        travelPurpose:
+          type: string
+          enum: [사진·포토스팟, 산책·힐링, 카페·실내휴식, 전시·건축관람, 체험·액티비티, 먹거리·야간탐방, 숙소·리조트]
+        transportType:
+          type: string
+          enum: [자차, 대중교통, 도보중심]
+        radiusMeters:
+          type: integer
+          minimum: 100
+          maximum: 20000
+        maxCandidatesForLlm:
+          type: integer
+          minimum: 1
+          maximum: 20
+        forceRuleBasedFallback:
+          type: boolean
+        llmModel:
+          type: string
+          minLength: 1
+          maxLength: 120
+        debug:
+          type: boolean
+      required: [selectedPlaceId, primaryTheme]
+      additionalProperties: false
     Place:
       type: object
       properties:
@@ -473,6 +551,88 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/RecommendationsData"
+          required: [data]
+    CourseStop:
+      type: object
+      properties:
+        order: { type: integer }
+        id: { type: string }
+        title: { type: string }
+        type:
+          type: string
+          enum: [START_PLACE, TOUR, CAFE, RESTAURANT, WALK, PHOTO, ETC]
+        category:
+          type: string
+          enum: [START_PLACE, TOUR, CAFE, RESTAURANT, MARKET, WALK, PHOTO, ETC]
+        address: { type: string }
+        lat: { type: number }
+        lng: { type: number }
+        stayMinutes: { type: integer }
+        reason: { type: string }
+        source: { type: string }
+      required: [order, id, title, type, category, stayMinutes, reason]
+    StaticMapResult:
+      type: object
+      properties:
+        provider:
+          type: string
+          enum: [KAKAO_JS_SDK_STATIC_MAP, KAKAO_MAP_SEARCH, NONE]
+        staticMapConfig:
+          type: object
+          additionalProperties: true
+        fallbackMapSearchUrl:
+          type: string
+        reason:
+          type: string
+      required: [provider]
+    RecommendCourseData:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [DONE, FAILED]
+        resultType:
+          type: string
+          enum: [COURSE, UNKNOWN]
+        mode:
+          type: string
+          enum: [LLM_OPENROUTER, RULE_BASED_FALLBACK]
+        message:
+          type: string
+        selectedPlace:
+          type: object
+          additionalProperties: true
+        conditions:
+          type: object
+          additionalProperties: true
+        nearbyCandidateCount:
+          type: integer
+        courseTitle:
+          type: string
+        summary:
+          type: string
+        stops:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseStop"
+        staticMap:
+          $ref: "#/components/schemas/StaticMapResult"
+        llmPromptUsed:
+          type: boolean
+        failReason:
+          type: [string, "null"]
+        warnings:
+          type: array
+          items:
+            type: string
+      required: [status, resultType, mode, message, selectedPlace, conditions, nearbyCandidateCount, stops, staticMap, warnings]
+    RecommendCourseSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/RecommendCourseData"
           required: [data]
     AnalyzeImageRequest:
       type: object

@@ -19,6 +19,7 @@ export type PurposeTag =
 export type SeasonTag = "봄" | "여름" | "가을" | "겨울" | "사계절";
 export type BestTime = "새벽" | "오전" | "한낮" | "오후" | "저녁" | "야간";
 export type TransportType = "자차" | "대중교통" | "도보중심";
+export type CompanionType = "혼자" | "친구" | "연인" | "가족";
 export type AccessGrade = "상" | "중" | "하";
 
 export type RecommendationWarningCode =
@@ -210,6 +211,8 @@ export interface RecommendRequest extends ExposureStats, RouteDistanceInput {
   userSceneTags?: string[];
   travelPurpose?: PurposeTag | string;
   transportType?: TransportType | string;
+  /** 동행 여부는 1차 카드 점수에는 직접 반영하지 않고, 선택 장소 이후 하루 코스 큐레이션에 사용한다. */
+  companionType?: CompanionType | string;
   /** @deprecated best_time/visitTime은 점수 계산에서 제외되었습니다. 과거 요청 호환용으로만 받으며 엔진에서는 무시합니다. */
   visitTime?: BestTime | string;
   /** 직접 계절을 넘기면 currentMonth보다 우선한다. */

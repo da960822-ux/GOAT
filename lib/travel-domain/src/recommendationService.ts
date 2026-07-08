@@ -1,7 +1,9 @@
 import moodCategoryData from "./data/mood-categories.json";
 import placesDatasetData from "./data/goat_simplified_scoring_tags_v10_accessibility_merged.json";
 import referenceDatasetData from "./data/goat_reference_cards_v2_balanced.json";
+import { createGoatDayCourse } from "./courseRecommendationService";
 import { recommendGoatPlaces } from "./goatRecommendationEngine";
+import type { GoatDayCourseRequest, GoatDayCourseResult } from "./courseRecommendationTypes";
 import type {
   GoatPlace,
   GoatPlaceDataset,
@@ -63,18 +65,13 @@ export interface CreateGoatRecommendationParams {
 }
 
 const MOOD_TO_REFERENCE_CARD: Record<string, string> = {
-  "california-coast": "REF_SEA_02",
-  "japan-small-town": "REF_JP_02",
-  "alps-meadow": "REF_ALPS_01",
-  "ryokan-lodging": "REF_JP_01",
-  "rainy-canyon": "REF_ARCH_03",
-  "nordic-winter": "REF_NATURE_01",
-  "retro-night-market": "REF_RETRO_01",
-  "plateau-stars": "REF_ALPS_03",
-  "bali-surf": "REF_RESORT_02",
-  "europe-garden": "REF_NATURE_02",
-  "lake-reflection": "REF_NATURE_03",
-  "japan-retro-cafe": "REF_RETRO_02",
+  "sea-coast": "REF_SEA_02",
+  "japan-alley": "REF_JP_02",
+  "alps-ranch": "REF_ALPS_01",
+  "forest-garden-rest": "REF_NATURE_01",
+  "retro-market-harbor": "REF_RETRO_01",
+  "architecture-exhibit-landmark": "REF_ARCH_01",
+  "resort-cafe-exotic": "REF_RESORT_02",
 };
 
 const PURPOSE_MAP: Record<string, string> = {
@@ -178,6 +175,12 @@ export async function createGoatRecommendation(params: CreateGoatRecommendationP
   return result;
 }
 
+export async function createGoatCourseRecommendation(
+  request: GoatDayCourseRequest,
+): Promise<GoatDayCourseResult> {
+  return createGoatDayCourse(request, placesDataset);
+}
+
 function validateData(): void {
   if (sourcePlaces.length !== 58) {
     throw new Error(`GOAT 장소 데이터는 58개여야 합니다. 현재: ${sourcePlaces.length}`);
@@ -188,7 +191,7 @@ function validateData(): void {
   if (!sourcePlaces.some(({ place_id, place_name }) => place_id === "GOAT-002" && place_name.includes("레고랜드"))) {
     throw new Error("레고랜드가 추천 후보 데이터에 없습니다.");
   }
-  if (moodCategories.length !== 12 || new Set(moodCategories.map(({ id }) => id)).size !== 12) {
+  if (moodCategories.length !== 7 || new Set(moodCategories.map(({ id }) => id)).size !== 7) {
     throw new Error("사용자 감성 데이터는 중복 없는 12개여야 합니다.");
   }
   if (referenceDataset.reference_cards.length !== 21) {

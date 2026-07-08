@@ -133,7 +133,7 @@ function emitRecommendationWarningLog(params: {
   appendWarningLogFile(logFilePath, payload);
 }
 
-const ACCESS_SCORE: Record<AccessGrade, number> = { 상: 15, 중: 9, 하: 1 };
+const ACCESS_SCORE: Record<AccessGrade, number> = { 상: 12, 중: 7, 하: 1 };
 const MAX_SWAP_GAP = 8;
 const CARD_LIMIT = 3;
 
@@ -317,7 +317,7 @@ function calculateMoodScore(place: GoatPlace, request: NormalizedRequest): MoodS
 
 function calculateConditionScore(place: GoatPlace, request: NormalizedRequest): ConditionScoreBreakdown {
   const purposeMatched = Boolean(request.travelPurpose && place.purpose_tags?.includes(request.travelPurpose));
-  const purposeScore = purposeMatched ? 18 : 0;
+  const purposeScore = purposeMatched ? 20 : 0;
 
   const access = getAccessGrade(place, request.transportType);
   const accessScore = access.grade && ACCESS_SCORE[access.grade as AccessGrade] ? ACCESS_SCORE[access.grade as AccessGrade] : 0;
@@ -327,7 +327,7 @@ function calculateConditionScore(place: GoatPlace, request: NormalizedRequest): 
   if (request.currentSeason) {
     if (place.season_tags?.includes(request.currentSeason)) {
       seasonMatchType = "current";
-      seasonScore = 12;
+      seasonScore = 13;
     } else if (place.season_tags?.includes("사계절")) {
       seasonMatchType = "all_season";
       seasonScore = 10;

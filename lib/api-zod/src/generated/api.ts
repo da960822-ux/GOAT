@@ -17,7 +17,7 @@ export const HealthCheckResponse = zod.object({
 
 
 /**
- * @summary Get the 12 validated GOAT mood combinations
+ * @summary Get the 7 GOAT primary mood themes
  */
 export const GetMoodsResponse = zod.object({
   "success": zod.boolean(),
@@ -147,6 +147,81 @@ export const RecommendFromTagsResponse = zod.object({
 
 
 /**
+ * @summary Build a day course from one selected GOAT recommendation card
+ */
+
+
+export const recommendCourseBodyUserMoodTagsMax = 10;
+
+
+export const recommendCourseBodyUserSceneTagsMax = 10;
+
+export const recommendCourseBodyRadiusMetersMin = 100;
+export const recommendCourseBodyRadiusMetersMax = 20000;
+
+export const recommendCourseBodyMaxCandidatesForLlmMax = 20;
+
+export const recommendCourseBodyLlmModelMax = 120;
+
+
+
+export const RecommendCourseBody = zod.object({
+  "selectedPlaceId": zod.string().min(1),
+  "primaryTheme": zod.enum(['바다·해안 무드', '일본 소도시·골목 무드', '알프스·고원·목장 무드', '숲·정원·자연휴식 무드', '레트로·시장·항구 무드', '건축·전시·랜드마크 무드', '휴양·카페·이국공간 무드']),
+  "userMoodTags": zod.array(zod.string().min(1)).max(recommendCourseBodyUserMoodTagsMax).optional(),
+  "userSceneTags": zod.array(zod.string().min(1)).max(recommendCourseBodyUserSceneTagsMax).optional(),
+  "companionType": zod.enum(['혼자', '친구', '연인', '가족']).optional(),
+  "travelPurpose": zod.enum(['사진·포토스팟', '산책·힐링', '카페·실내휴식', '전시·건축관람', '체험·액티비티', '먹거리·야간탐방', '숙소·리조트']).optional(),
+  "transportType": zod.enum(['자차', '대중교통', '도보중심']).optional(),
+  "radiusMeters": zod.number().min(recommendCourseBodyRadiusMetersMin).max(recommendCourseBodyRadiusMetersMax).optional(),
+  "maxCandidatesForLlm": zod.number().min(1).max(recommendCourseBodyMaxCandidatesForLlmMax).optional(),
+  "forceRuleBasedFallback": zod.boolean().optional(),
+  "llmModel": zod.string().min(1).max(recommendCourseBodyLlmModelMax).optional(),
+  "debug": zod.boolean().optional()
+})
+
+export const RecommendCourseResponse = zod.object({
+  "success": zod.boolean(),
+  "code": zod.literal("SUCCESS"),
+  "message": zod.string()
+}).and(zod.object({
+  "data": zod.object({
+  "status": zod.enum(['DONE', 'FAILED']),
+  "resultType": zod.enum(['COURSE', 'UNKNOWN']),
+  "mode": zod.enum(['LLM_OPENROUTER', 'RULE_BASED_FALLBACK']),
+  "message": zod.string(),
+  "selectedPlace": zod.record(zod.string(), zod.unknown()),
+  "conditions": zod.record(zod.string(), zod.unknown()),
+  "nearbyCandidateCount": zod.number(),
+  "courseTitle": zod.string().optional(),
+  "summary": zod.string().optional(),
+  "stops": zod.array(zod.object({
+  "order": zod.number(),
+  "id": zod.string(),
+  "title": zod.string(),
+  "type": zod.enum(['START_PLACE', 'TOUR', 'CAFE', 'RESTAURANT', 'WALK', 'PHOTO', 'ETC']),
+  "category": zod.enum(['START_PLACE', 'TOUR', 'CAFE', 'RESTAURANT', 'MARKET', 'WALK', 'PHOTO', 'ETC']),
+  "address": zod.string().optional(),
+  "lat": zod.number().optional(),
+  "lng": zod.number().optional(),
+  "stayMinutes": zod.number(),
+  "reason": zod.string(),
+  "source": zod.string().optional()
+})),
+  "staticMap": zod.object({
+  "provider": zod.enum(['KAKAO_JS_SDK_STATIC_MAP', 'KAKAO_MAP_SEARCH', 'NONE']),
+  "staticMapConfig": zod.record(zod.string(), zod.unknown()).optional(),
+  "fallbackMapSearchUrl": zod.string().optional(),
+  "reason": zod.string().optional()
+}),
+  "llmPromptUsed": zod.boolean().optional(),
+  "failReason": zod.string().nullish(),
+  "warnings": zod.array(zod.string())
+})
+}))
+
+
+/**
  * Accepts one image from an authenticated client. The server should derive the user id from the JWT/session if persisted data is needed; clients must not submit user_id in the request body.
 
  * @summary Analyze an uploaded travel photo and map it to GOAT mood tags
@@ -250,5 +325,4 @@ export const ProxyKtoQueryParams = zod.object({
 })
 
 export const ProxyKtoResponse = zod.record(zod.string(), zod.unknown())
-
 

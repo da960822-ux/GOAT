@@ -5,18 +5,13 @@ import { readFile } from "node:fs/promises";
 const port = 43129;
 const baseUrl = `http://127.0.0.1:${port}/api`;
 const expectedMoodIds = [
-  "california-coast",
-  "japan-small-town",
-  "alps-meadow",
-  "ryokan-lodging",
-  "rainy-canyon",
-  "nordic-winter",
-  "retro-night-market",
-  "plateau-stars",
-  "bali-surf",
-  "europe-garden",
-  "lake-reflection",
-  "japan-retro-cafe",
+  "sea-coast",
+  "japan-alley",
+  "alps-ranch",
+  "forest-garden-rest",
+  "retro-market-harbor",
+  "architecture-exhibit-landmark",
+  "resort-cafe-exotic",
 ];
 
 const server = spawn(process.execPath, ["--enable-source-maps", "./dist/index.mjs"], {
@@ -64,7 +59,7 @@ try {
 
   const moodsResult = await request("/moods");
   assert.equal(moodsResult.response.status, 200);
-  assert.equal(moodsResult.body.data.moods.length, 12);
+  assert.equal(moodsResult.body.data.moods.length, 7);
   assert.deepEqual(
     moodsResult.body.data.moods.map(({ id }) => id),
     expectedMoodIds,
@@ -99,7 +94,7 @@ try {
   }
 
   const conditioned = await recommend({
-    moodId: "alps-meadow",
+    moodId: "alps-ranch",
     preferences: {
       companion: "가족",
       transport: "대중교통",
@@ -138,9 +133,9 @@ try {
   assert.equal(referenceCardRequest.body.data.referenceCardId, "REF_SEA_02");
   assert.equal(referenceCardRequest.body.data.cards.length, 3);
 
-  const firstAlps = await recommend({ moodId: "alps-meadow" });
+  const firstAlps = await recommend({ moodId: "alps-ranch" });
   const excludedIds = firstAlps.body.data.recommendations.map(({ place }) => place.place_id);
-  const secondAlps = await recommend({ moodId: "alps-meadow", excludeIds: excludedIds });
+  const secondAlps = await recommend({ moodId: "alps-ranch", excludeIds: excludedIds });
   assert.equal(secondAlps.response.status, 200);
   assert.equal(secondAlps.body.data.recommendations.length, 3);
   assert.ok(
@@ -156,7 +151,7 @@ try {
   assert.equal(badMood.body.success, false);
 
   const badRequest = await recommend({
-    moodId: "alps-meadow",
+    moodId: "alps-ranch",
     preferences: { transport: "도보" },
   });
   assert.equal(badRequest.response.status, 400);
@@ -169,7 +164,7 @@ try {
   assert.equal(ktoWithoutKey.response.status, 500);
   assert.match(ktoWithoutKey.body.error, /service key not configured/i);
 
-  console.log("API verification passed: 58 places, 12 moods, GOAT reference-card scoring engine.");
+  console.log("API verification passed: 58 places, 7 moods, GOAT reference-card scoring engine.");
 } finally {
   server.kill();
 }

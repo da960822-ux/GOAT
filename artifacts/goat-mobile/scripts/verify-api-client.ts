@@ -38,9 +38,9 @@ try {
   await waitForServer();
 
   const moods = await getMoods();
-  assert.equal(moods.data.moods.length, 12);
+  assert.equal(moods.data.moods.length, 7);
 
-  const first = await recommendFromTags({ moodId: "alps-meadow" });
+  const first = await recommendFromTags({ moodId: "alps-ranch" });
   assert.equal(first.data.recommendations.length, 3);
   assert.equal(first.data.seedPoolSize, 58);
   assert.deepEqual(
@@ -56,7 +56,7 @@ try {
   assert.equal(place.data.place.place_id, first.data.recommendations[0].place.place_id);
 
   const second = await recommendFromTags({
-    moodId: "alps-meadow",
+    moodId: "alps-ranch",
     excludeIds: first.data.recommendations.map(({ place: item }) => item.place_id),
   });
   assert.equal(second.data.recommendations.length, 3);

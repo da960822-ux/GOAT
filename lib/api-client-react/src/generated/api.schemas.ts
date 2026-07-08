@@ -174,6 +174,81 @@ export interface RecommendFromTagsRequest {
   excludeIds?: string[];
 }
 
+export type RecommendCourseRequestPrimaryTheme = typeof RecommendCourseRequestPrimaryTheme[keyof typeof RecommendCourseRequestPrimaryTheme];
+
+
+export const RecommendCourseRequestPrimaryTheme = {
+  '바다·해안_무드': '바다·해안 무드',
+  '일본_소도시·골목_무드': '일본 소도시·골목 무드',
+  '알프스·고원·목장_무드': '알프스·고원·목장 무드',
+  '숲·정원·자연휴식_무드': '숲·정원·자연휴식 무드',
+  '레트로·시장·항구_무드': '레트로·시장·항구 무드',
+  '건축·전시·랜드마크_무드': '건축·전시·랜드마크 무드',
+  '휴양·카페·이국공간_무드': '휴양·카페·이국공간 무드',
+} as const;
+
+export type RecommendCourseRequestCompanionType = typeof RecommendCourseRequestCompanionType[keyof typeof RecommendCourseRequestCompanionType];
+
+
+export const RecommendCourseRequestCompanionType = {
+  혼자: '혼자',
+  친구: '친구',
+  연인: '연인',
+  가족: '가족',
+} as const;
+
+export type RecommendCourseRequestTravelPurpose = typeof RecommendCourseRequestTravelPurpose[keyof typeof RecommendCourseRequestTravelPurpose];
+
+
+export const RecommendCourseRequestTravelPurpose = {
+  '사진·포토스팟': '사진·포토스팟',
+  '산책·힐링': '산책·힐링',
+  '카페·실내휴식': '카페·실내휴식',
+  '전시·건축관람': '전시·건축관람',
+  '체험·액티비티': '체험·액티비티',
+  '먹거리·야간탐방': '먹거리·야간탐방',
+  '숙소·리조트': '숙소·리조트',
+} as const;
+
+export type RecommendCourseRequestTransportType = typeof RecommendCourseRequestTransportType[keyof typeof RecommendCourseRequestTransportType];
+
+
+export const RecommendCourseRequestTransportType = {
+  자차: '자차',
+  대중교통: '대중교통',
+  도보중심: '도보중심',
+} as const;
+
+export interface RecommendCourseRequest {
+  /** @minLength 1 */
+  selectedPlaceId: string;
+  primaryTheme: RecommendCourseRequestPrimaryTheme;
+  /** @maxItems 10 */
+  userMoodTags?: string[];
+  /** @maxItems 10 */
+  userSceneTags?: string[];
+  companionType?: RecommendCourseRequestCompanionType;
+  travelPurpose?: RecommendCourseRequestTravelPurpose;
+  transportType?: RecommendCourseRequestTransportType;
+  /**
+     * @minimum 100
+     * @maximum 20000
+     */
+  radiusMeters?: number;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  maxCandidatesForLlm?: number;
+  forceRuleBasedFallback?: boolean;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  llmModel?: string;
+  debug?: boolean;
+}
+
 export type PlaceDataStatus = typeof PlaceDataStatus[keyof typeof PlaceDataStatus];
 
 
@@ -275,6 +350,115 @@ export interface RecommendationsData {
 
 export type RecommendationsSuccessResponse = ApiSuccessBase & {
   data: RecommendationsData;
+};
+
+export type CourseStopType = typeof CourseStopType[keyof typeof CourseStopType];
+
+
+export const CourseStopType = {
+  START_PLACE: 'START_PLACE',
+  TOUR: 'TOUR',
+  CAFE: 'CAFE',
+  RESTAURANT: 'RESTAURANT',
+  WALK: 'WALK',
+  PHOTO: 'PHOTO',
+  ETC: 'ETC',
+} as const;
+
+export type CourseStopCategory = typeof CourseStopCategory[keyof typeof CourseStopCategory];
+
+
+export const CourseStopCategory = {
+  START_PLACE: 'START_PLACE',
+  TOUR: 'TOUR',
+  CAFE: 'CAFE',
+  RESTAURANT: 'RESTAURANT',
+  MARKET: 'MARKET',
+  WALK: 'WALK',
+  PHOTO: 'PHOTO',
+  ETC: 'ETC',
+} as const;
+
+export interface CourseStop {
+  order: number;
+  id: string;
+  title: string;
+  type: CourseStopType;
+  category: CourseStopCategory;
+  address?: string;
+  lat?: number;
+  lng?: number;
+  stayMinutes: number;
+  reason: string;
+  source?: string;
+}
+
+export type StaticMapResultProvider = typeof StaticMapResultProvider[keyof typeof StaticMapResultProvider];
+
+
+export const StaticMapResultProvider = {
+  KAKAO_JS_SDK_STATIC_MAP: 'KAKAO_JS_SDK_STATIC_MAP',
+  KAKAO_MAP_SEARCH: 'KAKAO_MAP_SEARCH',
+  NONE: 'NONE',
+} as const;
+
+export type StaticMapResultStaticMapConfig = { [key: string]: unknown };
+
+export interface StaticMapResult {
+  provider: StaticMapResultProvider;
+  staticMapConfig?: StaticMapResultStaticMapConfig;
+  fallbackMapSearchUrl?: string;
+  reason?: string;
+}
+
+export type RecommendCourseDataStatus = typeof RecommendCourseDataStatus[keyof typeof RecommendCourseDataStatus];
+
+
+export const RecommendCourseDataStatus = {
+  DONE: 'DONE',
+  FAILED: 'FAILED',
+} as const;
+
+export type RecommendCourseDataResultType = typeof RecommendCourseDataResultType[keyof typeof RecommendCourseDataResultType];
+
+
+export const RecommendCourseDataResultType = {
+  COURSE: 'COURSE',
+  UNKNOWN: 'UNKNOWN',
+} as const;
+
+export type RecommendCourseDataMode = typeof RecommendCourseDataMode[keyof typeof RecommendCourseDataMode];
+
+
+export const RecommendCourseDataMode = {
+  LLM_OPENROUTER: 'LLM_OPENROUTER',
+  RULE_BASED_FALLBACK: 'RULE_BASED_FALLBACK',
+} as const;
+
+export type RecommendCourseDataSelectedPlace = { [key: string]: unknown };
+
+export type RecommendCourseDataConditions = { [key: string]: unknown };
+
+export interface RecommendCourseData {
+  status: RecommendCourseDataStatus;
+  resultType: RecommendCourseDataResultType;
+  mode: RecommendCourseDataMode;
+  message: string;
+  selectedPlace: RecommendCourseDataSelectedPlace;
+  conditions: RecommendCourseDataConditions;
+  nearbyCandidateCount: number;
+  courseTitle?: string;
+  summary?: string;
+  stops: CourseStop[];
+  staticMap: StaticMapResult;
+  llmPromptUsed?: boolean;
+  /** @nullable */
+  failReason?: string | null;
+  warnings: string[];
+}
+
+export type RecommendCourseSuccessResponse = ApiSuccessBase & {
+  data: RecommendCourseData;
 };
 
 export type AnalyzeImageRequestMimeType = typeof AnalyzeImageRequestMimeType[keyof typeof AnalyzeImageRequestMimeType];

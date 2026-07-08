@@ -602,7 +602,85 @@ type RecommendFromTagsRequest = {
 
 제한에 걸리면 응답 헤더에 `Retry-After`가 포함됩니다.
 
-## 11. 장소 상세 조회
+## 11. 선택 카드 기반 하루 코스 추천
+
+```http
+POST /api/recommend-course
+Content-Type: application/json
+```
+
+추천카드 3개 중 사용자가 1개를 선택한 뒤 호출합니다. 백엔드는 선택 장소 좌표 기준으로 한국관광공사 주변 후보를 조회하고, OpenRouter LLM으로 동행자/테마/목적 조건에 맞는 하루 코스를 구성합니다. LLM 또는 외부 API가 실패하면 규칙 기반 fallback 코스를 반환합니다.
+
+요청 body:
+
+```ts
+type RecommendCourseRequest = {
+  selectedPlaceId: string;
+  primaryTheme: string;
+  userMoodTags?: string[];
+  userSceneTags?: string[];
+  companionType?: "혼자" | "친구" | "연인" | "가족";
+  travelPurpose?: string;
+  transportType?: "자차" | "대중교통" | "도보중심";
+  radiusMeters?: number;
+  maxCandidatesForLlm?: number;
+  forceRuleBasedFallback?: boolean;
+  debug?: boolean;
+};
+```
+
+예시:
+
+```json
+{
+  "selectedPlaceId": "GOAT-048",
+  "primaryTheme": "바다·해안 무드",
+  "userMoodTags": ["청량함", "로드트립감성"],
+  "userSceneTags": ["바다", "해안도로"],
+  "companionType": "친구",
+  "travelPurpose": "사진·포토스팟",
+  "transportType": "자차"
+}
+```
+
+성공 응답:
+
+```json
+{
+  "success": true,
+  "code": "SUCCESS",
+  "message": "하루 코스를 생성했습니다.",
+  "data": {
+    "status": "DONE",
+    "resultType": "COURSE",
+    "mode": "LLM_OPENROUTER",
+    "courseTitle": "아야진해수욕장 중심 하루 코스",
+    "summary": "선택 장소와 주변 후보를 묶은 하루 코스입니다.",
+    "stops": [
+      {
+        "order": 1,
+        "id": "GOAT-048",
+        "title": "아야진해수욕장",
+        "type": "START_PLACE",
+        "category": "START_PLACE",
+        "stayMinutes": 60,
+        "reason": "사용자가 선택한 기준 장소입니다."
+      }
+    ],
+    "staticMap": {
+      "provider": "KAKAO_JS_SDK_STATIC_MAP",
+      "staticMapConfig": {}
+    },
+    "warnings": []
+  }
+}
+```
+
+`data.mode`가 `RULE_BASED_FALLBACK`이면 LLM 또는 한국관광공사 주변 후보 조회가 실패해 백엔드가 로컬 데이터 기반 백업 코스를 만든 상태입니다. 프론트는 실패 화면 대신 같은 코스 화면을 보여주되, 필요하면 `warnings`를 참고해 “기본 코스” 라벨을 붙이면 됩니다.
+
+서버는 루트 폴더의 한 단계 상위에 있는 `GOAT.env`를 자동으로 읽습니다. 로컬 실행 시 `KTO_SERVICE_KEY`, `OPENROUTER_API_KEY`, `KAKAO_JAVASCRIPT_KEY`가 그 파일에 들어 있으면 됩니다.
+
+## 12. 장소 상세 조회
 
 ```http
 GET /api/places/{id}
@@ -657,7 +735,7 @@ GET /api/places/GOAT-001
 }
 ```
 
-## 12. 이미지 URL 상태 확인
+## 13. 이미지 URL 상태 확인
 
 ```http
 GET /api/image-status?url={encodedImageUrl}
@@ -707,7 +785,7 @@ const res = await fetch(`http://localhost:3000/api/image-status?url=${url}`);
 X-Image-Status-Cache: HIT | MISS
 ```
 
-## 13. 한국관광공사 KTO 프록시
+## 14. 한국관광공사 KTO 프록시
 
 ```http
 GET /api/kto?path={allowedKtoPath}&...
@@ -766,7 +844,7 @@ X-KTO-Cache: HIT | MISS
 X-KTO-Cache-TTL-Seconds: number
 ```
 
-## 14. 서버 상태 확인
+## 15. 서버 상태 확인
 
 ```http
 GET /api/healthz
@@ -785,7 +863,7 @@ GET /api/healthz
 - 서버 실행 여부 확인
 - 배포 환경 health check
 
-## 15. 현재 서버에 없는 API
+## 16. 현재 서버에 없는 API
 
 현재 OpenAPI 파일에는 `/api/analyze-image`가 남아 있지만, Express 서버에는 아직 연결된 라우트가 없습니다.
 
@@ -795,7 +873,7 @@ GET /api/healthz
 POST /api/analyze-image
 ```
 
-## 16. 프론트 우선 연동 체크리스트
+## 17. 프론트 우선 연동 체크리스트
 
 로그인:
 
@@ -811,6 +889,7 @@ POST /api/auth/logout
 ```text
 GET  /api/moods
 POST /api/recommend-from-tags
+POST /api/recommend-course
 GET  /api/places/:id
 ```
 

@@ -4,6 +4,7 @@ export {
   getPlaceById,
   moodCategories,
   createGoatRecommendation,
+  createGoatCourseRecommendation,
 } from "./recommendationService";
 export type {
   CreateGoatRecommendationParams,
@@ -13,6 +14,11 @@ export type {
 export { recommendGoatPlaces, getRecommendedPlaceIds } from "./goatRecommendationEngine";
 export * from "./recommendationExposureRepository";
 export * from "./photoRecommendationAdapter";
+export * from "./courseRecommendationTypes";
+export { createGoatDayCourse } from "./courseRecommendationService";
+export { buildGoatCoursePlannerPrompt, callOpenRouterCoursePlanner } from "./openRouterCourseLlm";
+export { fetchVisitKoreaContentLabNearbyCandidates, fetchTourApiNearbyCandidates } from "./tourApiClient";
+export { buildKakaoMapSearchUrl, buildKakaoStaticMapResult } from "./kakaoStaticMap";
 export type {
   Companion,
   DataStatus,
