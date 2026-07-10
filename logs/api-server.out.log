@@ -1,0 +1,25 @@
+[14:27:40.493] [32mINFO[39m (3860): [36mServer listening[39m
+    [35mport[39m: 3000
+[14:27:54.044] [32mINFO[39m (3860): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 1,
+      "method": "GET",
+      "url": "/api/healthz"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 5
+[14:28:08.441] [32mINFO[39m (3860): [36mrequest completed[39m
+    [35mreq[39m: {
+      "id": 2,
+      "method": "GET",
+      "url": "/api/kto"
+    }
+    [35mres[39m: {
+      "statusCode": 200
+    }
+    [35mresponseTime[39m: 1771
+C:\Users\SMHRD\OneDrive\Desktop\GOAT_공모전\Korean-Travel-Guide\Korean-Travel-Guide\artifacts\api-server:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @workspace/api-server@0.0.0 start: `node --enable-source-maps ./dist/index.mjs`
+Exit status 4294967295

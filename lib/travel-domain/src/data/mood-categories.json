@@ -1,0 +1,93 @@
+[
+  {
+    "id": "sea-coast",
+    "name": "바다·해안 무드",
+    "description": "바다, 해안도로, 항구와 산책로가 어울리는 청량한 해안 감성",
+    "keywords": ["바다", "해안도로", "청량함"],
+    "engineInput": {
+      "extractedTags": ["바다", "해안도로", "해변", "항구", "로드트립"],
+      "sceneTags": ["바다", "해안도로", "해변"],
+      "moodTags": ["청량함", "로드트립감성", "탁트임"],
+      "preferredSeason": "여름",
+      "preferredTime": "오후",
+      "regionGroup": "동해안권"
+    }
+  },
+  {
+    "id": "japan-alley",
+    "name": "일본 소도시·골목 무드",
+    "description": "철길, 정원, 골목과 작은 가게가 만드는 조용한 일본 소도시 감성",
+    "keywords": ["일본감성", "철길", "골목"],
+    "engineInput": {
+      "extractedTags": ["일본감성", "골목", "철길", "정원", "소도시"],
+      "sceneTags": ["골목", "철길", "정원"],
+      "moodTags": ["조용함", "감성적", "아기자기함"],
+      "preferredTime": "오후"
+    }
+  },
+  {
+    "id": "alps-ranch",
+    "name": "알프스·고원·목장 무드",
+    "description": "초원, 고원, 목장과 풍력발전기가 어울리는 탁 트인 자연 감성",
+    "keywords": ["초원", "목장", "고원"],
+    "engineInput": {
+      "extractedTags": ["초원", "목장", "고원", "알프스", "풍력발전기"],
+      "sceneTags": ["초원", "목장", "고원"],
+      "moodTags": ["탁트임", "자연친화", "이국적"],
+      "preferredSeason": "여름",
+      "preferredTime": "오전",
+      "regionGroup": "고원권"
+    }
+  },
+  {
+    "id": "forest-garden-rest",
+    "name": "숲·정원·자연휴식 무드",
+    "description": "숲길, 정원, 호수와 조용한 산책이 어울리는 자연 휴식 감성",
+    "keywords": ["숲", "정원", "휴식"],
+    "engineInput": {
+      "extractedTags": ["숲", "정원", "호수", "산책", "휴식"],
+      "sceneTags": ["숲길", "정원", "호수"],
+      "moodTags": ["조용함", "힐링", "자연친화"],
+      "preferredSeason": "사계절",
+      "preferredTime": "오전"
+    }
+  },
+  {
+    "id": "retro-market-harbor",
+    "name": "레트로·시장·항구 무드",
+    "description": "시장, 항구, 오래된 거리와 로컬 분위기가 살아 있는 레트로 감성",
+    "keywords": ["레트로", "시장", "항구"],
+    "engineInput": {
+      "extractedTags": ["레트로", "시장", "항구", "골목", "먹거리"],
+      "sceneTags": ["시장", "항구", "골목"],
+      "moodTags": ["빈티지", "로컬감성", "활기"],
+      "preferredTime": "저녁"
+    }
+  },
+  {
+    "id": "architecture-exhibit-landmark",
+    "name": "건축·전시·랜드마크 무드",
+    "description": "미술관, 전시, 전망대와 독특한 건축물이 중심이 되는 랜드마크 감성",
+    "keywords": ["건축", "전시", "랜드마크"],
+    "engineInput": {
+      "extractedTags": ["건축", "전시", "미술관", "랜드마크", "전망"],
+      "sceneTags": ["미술관", "전망대", "건축물"],
+      "moodTags": ["세련됨", "이색적", "감각적"],
+      "preferredSeason": "사계절",
+      "preferredTime": "오후"
+    }
+  },
+  {
+    "id": "resort-cafe-exotic",
+    "name": "휴양·카페·이국공간 무드",
+    "description": "카페, 휴양지, 이국적인 숙소와 감성 공간이 어울리는 여유로운 무드",
+    "keywords": ["휴양", "카페", "이국공간"],
+    "engineInput": {
+      "extractedTags": ["휴양", "카페", "이국공간", "풀빌라", "리조트"],
+      "sceneTags": ["카페", "숙소", "휴양공간"],
+      "moodTags": ["여유로움", "이국적", "감성적"],
+      "preferredSeason": "사계절",
+      "preferredTime": "오후"
+    }
+  }
+]

@@ -1,0 +1,151 @@
+Act as a strict product manager for the GOAT app.
+
+Do not write code.
+Do not implement anything yet.
+Do not praise the app unless it is genuinely strong.
+
+Your job:
+Coldly evaluate the current GOAT app and recommend additional features or usability improvements that would make the product more useful, more complete, and more convincing as a real mobile travel app.
+
+Project context:
+GOAT is a Gangwon-specialized travel decision app.
+It helps users find overseas-vibe places in Gangwon-do.
+The core value is reducing decision fatigue when choosing the next place to visit.
+
+Core flow:
+Landing
+→ Mood Selection
+→ Travel Preference
+→ Recommendation Result with exactly 3 cards
+→ Place Detail
+→ KakaoMap link
+
+Current constraints:
+- Expo mobile app
+- KakaoMap only
+- No Naver Map
+- No Tmap
+- No backend for now
+- No route planning
+- No itinerary builder
+- No community
+- No payment
+- No admin dashboard
+- Recommendation logic, tourism API, and photo API can be improved later
+- Focus now on product usefulness, usability, and app completeness
+
+Evaluate possible improvements in these categories:
+
+1. Must-have usability fixes
+Find anything that makes the app confusing, cluttered, slow to understand, or awkward to use.
+
+Check:
+- Is the home screen too crowded?
+- Are there too many chips, badges, links, or labels?
+- Are the CTAs obvious?
+- Can users understand what to do within 3 seconds?
+- Are there dead-end screens?
+- Are back buttons, bottom CTAs, and screen transitions clear?
+
+2. High-value feature additions
+Recommend features only if they clearly improve the core GOAT value:
+“Help users choose the next Gangwon travel spot quickly.”
+
+Possible areas to evaluate:
+- local saved places without login
+- recently viewed places
+- recently selected mood history
+- one-tap “recommend again”
+- condition reset / edit preferences
+- compare 3 cards more clearly
+- stronger recommendation reason summary
+- safety/caution summary
+- KakaoMap handoff improvement
+- photo mood matching entry point
+- app onboarding or no onboarding
+- data source / trust layer
+- empty and fallback states
+
+3. Features to reject
+Be strict.
+Reject features that sound nice but weaken the product.
+
+Evaluate and reject if needed:
+- login
+- route planning
+- multi-stop itinerary
+- community
+- reviews
+- real-time chat
+- group voting
+- admin dashboard
+- complicated weather dashboard
+- too many map options
+- excessive badges
+- too much “Gangwon” copy
+- logo overuse
+
+4. Product depth
+The current app may look like a generated UI shell.
+Find what would make it feel like a real app that users could actually use during a trip.
+
+Focus on:
+- fewer decisions
+- faster start
+- clearer recommendation confidence
+- better place detail
+- better map action
+- better trust and safety explanation
+- less clutter
+- more emotional travel curation
+
+5. Scoring method
+For every recommended idea, evaluate:
+
+- User value: 1~5
+- Development effort: 1~5
+- Product risk: 1~5
+- Does it strengthen the core GOAT value? Yes/No
+- Build timing: Now / Later / Do not build
+- Priority: P0 / P1 / P2
+- Reason
+
+6. Output format
+
+Return the answer in this exact structure:
+
+A. Brutal product diagnosis
+- What currently feels weak?
+- What feels shallow?
+- What may confuse users?
+- What makes it look like a prototype?
+
+B. P0 must-fix items
+Only include things that should be fixed before showing the app to judges or mentors.
+
+C. P1 high-value improvements
+Include useful features or UX improvements that are worth building soon.
+
+D. P2 later improvements
+Good ideas, but not needed now.
+
+E. Features we should NOT build now
+Explain why.
+
+F. Top 5 recommended next actions
+Rank them in order.
+
+G. One Replit implementation prompt
+Write a practical prompt that can be sent to Replit to implement only the selected P0/P1 improvements.
+
+
+Important:
+Be harsh.
+Do not be a yes-man.
+Do not recommend features just because they are common.
+Every recommendation must protect GOAT’s core identity:
+fast, emotional, data-informed place decision.
+
+
+마지막으로 goat 설명중에 우리는 greatest of all time 이 아니라 Gangwon Of All Time 
+GOAT는 해외여행 같은 이색 장면을 원하는 사용자가 강원도 안에서 비슷한 분위기의 장소를 빠르게 고를 수 있게 돕는 강원 특화 관광 의사결정 서비스. 이게 우리 서비스야 
