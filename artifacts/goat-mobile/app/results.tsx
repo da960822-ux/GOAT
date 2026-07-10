@@ -1,78 +1,136 @@
-import React, { useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 import {
-  View, ScrollView, StyleSheet, Text, TouchableOpacity, Alert
+  View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Share,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
+import {
+  recommendFromTags,
+} from '@workspace/api-client-react';
+
 import { Header } from '@/src/components/Header';
 import { PlaceCard } from '@/src/components/PlaceCard';
 import { EmptyState } from '@/src/components/EmptyState';
 import { StepIndicator } from '@/src/components/StepIndicator';
 import { useApp } from '@/src/context/AppContext';
 import { useColors } from '@/hooks/useColors';
-import { recommendFromTags } from '@workspace/api-client-react';
-import { RecommendationCard } from '@/src/types/place';
+import type {
+  RecommendationCard,
+} from '@/src/types/place';
+import {
+  saveRecentRecommendation,
+} from '@/src/services/recentRecommendationService';
 
 export default function ResultsScreen() {
   const router = useRouter();
   const colors = useColors();
-  const { selectedMood, travelPreferences, recommendations, setRecommendations, origin } = useApp();
-  const [isRecommending, setIsRecommending] = useState(false);
 
-  /**
-   * 추천 결과 안전 처리
-   *
-   * 기존 문제:
-   * - recommendations가 비어 있거나
-   * - 추천 카드 안에 place/place_id가 없거나
-   * - 3개보다 적게 들어오면 화면에서 오류가 날 수 있음
-   *
-   * 수정:
-   * - 배열인지 확인
-   * - place_id가 있는 카드만 사용
-   * - 최대 3개까지만 화면에 표시
-   */
-  const safeRecommendations = Array.isArray(recommendations)
-    ? recommendations.filter((card) => card?.place?.place_id).slice(0, 3)
-    : [];
+  const {
+    selectedMood,
+    travelPreferences,
+    recommendations,
+    setRecommendations,
+    origin,
+  } = useApp();
 
-  if (!selectedMood || safeRecommendations.length === 0) {
-    return (
-      <View style={[styles.root, { backgroundColor: colors.background }]}>
-        <Header title="추천 결과" onBack={() => router.back()} />
-        <EmptyState
-          title="감성을 먼저 선택해주세요"
-          description="이런 장면을 찾고 있나요?{'\n'}감성을 고르면 3곳으로 압축해드려요."
-          actionLabel="감성 선택하러 가기"
-          onAction={() => router.replace('/mood-selection')}
-        />
-      </View>
-    );
-  }
+  const [isRecommending, setIsRecommending] =
+    useState(false);
 
-  if (safeRecommendations.length < 3) {
-    return (
-      <View style={[styles.root, { backgroundColor: colors.background }]}>
-        <Header title="추천 결과" onBack={() => router.back()} />
-        <EmptyState
-          title="추천 결과가 부족해요"
-          description="조건에 맞는 장소가 3개보다 적게 나왔어요.{'\n'}감성이나 여행 조건을 조금 넓혀 다시 추천받아보세요."
-          actionLabel="감성 다시 선택하기"
-          onAction={() => router.replace('/mood-selection')}
-        />
-      </View>
-    );
-  }
-
-  function handleCardPress(card: RecommendationCard) {
-    if (!card?.place?.place_id) {
-      Alert.alert('상세 화면으로 이동할 수 없어요', '장소 정보가 올바르지 않습니다.');
+  useEffect(() => {
+    if (
+      !selectedMood ||
+      recommendations.length < 3
+    ) {
       return;
     }
 
+    void saveRecentRecommendation({
+      mood: selectedMood,
+      preferences: travelPreferences,
+      recommendations: recommendations.slice(0, 3),
+      origin,
+    });
+  }, [
+    selectedMood,
+    travelPreferences,
+    recommendations,
+    origin,
+  ]);
+
+  if (
+    !selectedMood ||
+    recommendations.length === 0
+  ) {
+    return (
+      <View
+        style={[
+          styles.root,
+          { backgroundColor: colors.background },
+        ]}
+      >
+        <Header
+          title="추천 결과"
+          onBack={() => router.back()}
+        />
+
+        <EmptyState
+          title="감성을 먼저 선택해주세요"
+          description={
+            "이런 장면을 찾고 있나요?\n감성을 고르면 3곳으로 압축해드려요."
+          }
+          actionLabel="감성 선택하러 가기"
+          onAction={() =>
+            router.replace('/mood-selection')
+          }
+        />
+      </View>
+    );
+  }
+
+  if (recommendations.length < 3) {
+    return (
+      <View
+        style={[
+          styles.root,
+          { backgroundColor: colors.background },
+        ]}
+      >
+        <Header
+          title="추천 결과"
+          onBack={() => router.back()}
+        />
+
+        <EmptyState
+          title="추천 결과가 부족해요"
+          description="조건을 조금 넓혀 다시 추천해볼게요."
+          actionLabel="감성 다시 선택하기"
+          onAction={() =>
+            router.replace('/mood-selection')
+          }
+        />
+      </View>
+    );
+  }
+
+  function handleCardPress(
+    card: RecommendationCard
+  ) {
     router.push({
       pathname: '/detail/[id]',
-      params: { id: card.place.place_id, role: card.role, reason: card.reason },
+      params: {
+        id: card.place.place_id,
+        role: card.role,
+        reason: card.reason,
+      },
     });
   }
 
@@ -80,113 +138,280 @@ export default function ResultsScreen() {
     router.push('/travel-preference');
   }
 
-  async function handleReRecommend() {
-    if (!selectedMood || isRecommending) return;
+  async function handleShare() {
+    const lines = recommendations
+      .slice(0, 3)
+      .map((card, index) => {
+        const reason =
+          card.reason ||
+          '선택한 여행 조건과 잘 맞는 장소예요.';
 
-    const currentIds = safeRecommendations.map((card) => card.place.place_id);
+        return (
+          `${index + 1}. ` +
+          `${card.place.place_name} ` +
+          `(${card.place.city})\n` +
+          reason
+        );
+      });
+
+    try {
+      await Share.share({
+        title: 'GOAT 강원 여행 추천',
+        message: [
+          'GOAT가 추천한 강원 여행지 🐐',
+          '',
+          `선택 감성: ${
+            selectedMood?.name ?? '-'
+          }`,
+          travelPreferences?.companion
+            ? `동행: ${travelPreferences.companion}`
+            : '',
+          travelPreferences?.transport
+            ? `교통: ${travelPreferences.transport}`
+            : '',
+          '',
+          ...lines,
+        ]
+          .filter(Boolean)
+          .join('\n'),
+      });
+    } catch {
+      Alert.alert(
+        '공유할 수 없어요',
+        '잠시 후 다시 시도해주세요.'
+      );
+    }
+  }
+
+  async function handleReRecommend() {
+    if (
+      !selectedMood ||
+      isRecommending
+    ) {
+      return;
+    }
+
+    const currentIds =
+      recommendations.map(
+        (card) =>
+          card.place.place_id
+      );
 
     setIsRecommending(true);
 
     try {
-      const result = await recommendFromTags({
-        moodId: selectedMood.id,
-        preferences: travelPreferences ?? undefined,
-        origin: origin ?? undefined,
-        excludeIds: currentIds,
-      });
+      const result =
+        await recommendFromTags({
+          moodId: selectedMood.id,
+          preferences:
+            travelPreferences ?? undefined,
+          origin: origin ?? undefined,
+          excludeIds: currentIds,
+        });
 
-      const nextRecommendations = Array.isArray(result?.data?.recommendations)
-        ? result.data.recommendations
-            .filter((card: RecommendationCard) => card?.place?.place_id)
-            .slice(0, 3)
-        : [];
-
-      if (nextRecommendations.length < 3) {
-        Alert.alert(
-          '추천 결과가 부족해요',
-          '조건에 맞는 장소가 3개보다 적게 나왔어요. 감성이나 여행 조건을 조금 넓혀 다시 시도해주세요.'
-        );
-        return;
-      }
-
-      setRecommendations(nextRecommendations);
+      setRecommendations(
+        result.data.recommendations
+      );
     } catch {
-      Alert.alert('다시 추천하지 못했어요', '잠시 후 다시 시도해주세요.');
+      Alert.alert(
+        '다시 추천하지 못했어요',
+        '잠시 후 다시 시도해주세요.'
+      );
     } finally {
       setIsRecommending(false);
     }
   }
 
   const conditionParts = [
-    selectedMood.name.split('·')[0].trim() + ' 감성',
+    selectedMood.name
+      .split('·')[0]
+      .trim() + ' 감성',
     travelPreferences?.companion,
     travelPreferences?.transport,
     travelPreferences?.visitTime ?? null,
     travelPreferences?.purpose,
   ].filter(Boolean) as string[];
 
-  const showLocationChip = origin?.type === 'current' || origin?.type === 'region';
+  const showLocationChip =
+    origin?.type === 'current' ||
+    origin?.type === 'region';
+
   const locationChipLabel =
     origin?.type === 'current'
       ? '현재 위치 기준'
       : origin?.regionName
-      ? `${origin.regionName} 기준`
-      : null;
+        ? `${origin.regionName} 기준`
+        : null;
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
+    <View
+      style={[
+        styles.root,
+        { backgroundColor: colors.background },
+      ]}
+    >
       <Header
         title="추천 결과"
         onBack={() => router.back()}
         right={
-          <TouchableOpacity onPress={() => router.replace('/mood-selection')} style={styles.refreshBtn}>
-            <Feather name="refresh-cw" size={18} color={colors.primary} />
-          </TouchableOpacity>
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              onPress={handleShare}
+              style={styles.refreshBtn}
+              accessibilityLabel="추천 결과 공유"
+            >
+              <Feather
+                name="share-2"
+                size={18}
+                color={colors.primary}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() =>
+                router.replace('/mood-selection')
+              }
+              style={styles.refreshBtn}
+              accessibilityLabel="감성 다시 선택"
+            >
+              <Feather
+                name="refresh-cw"
+                size={18}
+                color={colors.primary}
+              />
+            </TouchableOpacity>
+          </View>
         }
       />
 
       <StepIndicator currentStep={3} />
 
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={[styles.conditionBanner, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
-          <View style={styles.conditionBannerTop}>
-            <Text style={[styles.conditionLabel, { color: colors.mutedForeground }]}>선택한 조건</Text>
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        showsVerticalScrollIndicator={false}
+      >
+        <View
+          style={[
+            styles.conditionBanner,
+            {
+              backgroundColor:
+                colors.secondary,
+              borderColor:
+                colors.border,
+            },
+          ]}
+        >
+          <View
+            style={styles.conditionBannerTop}
+          >
+            <Text
+              style={[
+                styles.conditionLabel,
+                {
+                  color:
+                    colors.mutedForeground,
+                },
+              ]}
+            >
+              선택한 조건
+            </Text>
 
-            <TouchableOpacity onPress={handleEditConditions} style={styles.editBtn}>
-              <Feather name="sliders" size={12} color={colors.primary} />
-              <Text style={[styles.editBtnText, { color: colors.primary }]}>조건 수정</Text>
+            <TouchableOpacity
+              onPress={handleEditConditions}
+              style={styles.editBtn}
+            >
+              <Feather
+                name="sliders"
+                size={12}
+                color={colors.primary}
+              />
+
+              <Text
+                style={[
+                  styles.editBtnText,
+                  { color: colors.primary },
+                ]}
+              >
+                조건 수정
+              </Text>
             </TouchableOpacity>
           </View>
 
-          <Text style={[styles.conditionText, { color: colors.foreground }]} numberOfLines={2}>
-            {conditionParts.length > 0 ? conditionParts.join(' · ') : '선택한 조건 없음'}
+          <Text
+            style={[
+              styles.conditionText,
+              { color: colors.foreground },
+            ]}
+            numberOfLines={2}
+          >
+            {conditionParts.join(' · ')}
           </Text>
 
-          {showLocationChip && locationChipLabel && (
-            <View style={styles.locationChipRow}>
-              <View style={[styles.locationChip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
-                <Feather name="navigation" size={11} color="#5B21B6" />
-                <Text style={styles.locationChipText}>{locationChipLabel}</Text>
+          {showLocationChip &&
+            locationChipLabel && (
+              <View
+                style={styles.locationChipRow}
+              >
+                <View
+                  style={[
+                    styles.locationChip,
+                    {
+                      backgroundColor:
+                        '#EDE9FE',
+                      borderColor:
+                        '#C4B5FD',
+                    },
+                  ]}
+                >
+                  <Feather
+                    name="navigation"
+                    size={11}
+                    color="#5B21B6"
+                  />
+
+                  <Text
+                    style={
+                      styles.locationChipText
+                    }
+                  >
+                    {locationChipLabel}
+                  </Text>
+                </View>
               </View>
-            </View>
-          )}
+            )}
         </View>
 
         <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
+          <Text
+            style={[
+              styles.sectionTitle,
+              { color: colors.foreground },
+            ]}
+          >
             오늘을 위한 장소를 세 곳 골랐어요
           </Text>
 
-          <Text style={[styles.sectionSub, { color: colors.mutedForeground }]}>
-            가장 닮은 장면 · 비슷한 대안 · 오늘 가기 편한 곳
+          <Text
+            style={[
+              styles.sectionSub,
+              {
+                color:
+                  colors.mutedForeground,
+              },
+            ]}
+          >
+            가장 닮은 장면 · 비슷한 대안 ·
+            오늘 가기 편한 곳
           </Text>
         </View>
 
-        {safeRecommendations.map((card) => (
+        {recommendations.map((card) => (
           <PlaceCard
             key={card.place.place_id}
             card={card}
-            onPress={() => handleCardPress(card)}
+            onPress={() =>
+              handleCardPress(card)
+            }
           />
         ))}
 
@@ -194,26 +419,52 @@ export default function ResultsScreen() {
           style={[
             styles.reRecommendBtn,
             {
-              backgroundColor: colors.primary + '12',
-              borderColor: colors.primary + '40',
-              opacity: isRecommending ? 0.6 : 1,
+              backgroundColor:
+                colors.primary + '12',
+              borderColor:
+                colors.primary + '40',
             },
           ]}
           onPress={handleReRecommend}
           disabled={isRecommending}
           activeOpacity={0.75}
         >
-          <Feather name="zap" size={14} color={colors.primary} />
-          <Text style={[styles.reRecommendText, { color: colors.primary }]}>
-            {isRecommending ? '다른 장소를 찾는 중…' : '이 감성으로 다시 추천'}
+          <Feather
+            name="zap"
+            size={14}
+            color={colors.primary}
+          />
+
+          <Text
+            style={[
+              styles.reRecommendText,
+              { color: colors.primary },
+            ]}
+          >
+            {isRecommending
+              ? '다른 장소를 찾는 중…'
+              : '이 감성으로 다시 추천'}
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.retryBtn, { borderColor: colors.border }]}
-          onPress={() => router.replace('/mood-selection')}
+          style={[
+            styles.retryBtn,
+            { borderColor: colors.border },
+          ]}
+          onPress={() =>
+            router.replace('/mood-selection')
+          }
         >
-          <Text style={[styles.retryText, { color: colors.mutedForeground }]}>
+          <Text
+            style={[
+              styles.retryText,
+              {
+                color:
+                  colors.mutedForeground,
+              },
+            ]}
+          >
             다른 감성으로 다시 찾기
           </Text>
         </TouchableOpacity>
@@ -225,7 +476,15 @@ export default function ResultsScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
+  root: {
+    flex: 1,
+  },
+
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
 
   scroll: {
     paddingHorizontal: 20,
