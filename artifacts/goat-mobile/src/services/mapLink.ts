@@ -1,71 +1,138 @@
 /**
  * MAP LINK SERVICE
  *
- * KakaoMap deep link strategy:
- *   - If lat/lng coordinates are available (from KTO 국문 관광정보 서비스_GW),
- *     use coordinate-based look link for pinpoint accuracy.
- *   - Otherwise fall back to city + place_name text search.
+ * 지도 연결 안정화 버전
  *
- * UI uses KakaoMap only (app deeplink → web fallback).
- * Naver/Tmap functions are retained here for future use
- * but are NOT exposed in any UI component.
+ * 처리 순서:
+ * 1. 카카오맵 앱 딥링크 먼저 시도
+ * 2. 실패하면 카카오맵 웹 링크로 fallback
+ * 3. 웹 링크도 실패하면 Alert 안내
  *
- * TODO: Replace placeholder bundle IDs with real values before production build.
+ * 추천 로직/API 구조는 건드리지 않고,
+ * 지도 연결 실패 상황에서 앱이 멈추지 않도록 방어 처리만 강화한다.
  */
+import { Alert, Linking, Platform } from 'react-native';
 import { Place } from '../types/place';
-import { Linking, Platform } from 'react-native';
 
 const ANDROID_PACKAGE_NAME = 'com.goattravel.app';
 const IOS_BUNDLE_IDENTIFIER = 'com.goattravel.app';
 const NAVER_APP_NAME = ANDROID_PACKAGE_NAME;
 
+type MapCoords = {
+  lat: number;
+  lng: number;
+};
+
+function safeText(value: unknown, fallback: string): string {
+  if (typeof value !== 'string') return fallback;
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : fallback;
+}
+
+function isValidCoords(coords?: MapCoords): coords is MapCoords {
+  return (
+    !!coords &&
+    typeof coords.lat === 'number' &&
+    typeof coords.lng === 'number' &&
+    Number.isFinite(coords.lat) &&
+    Number.isFinite(coords.lng)
+  );
+}
+
+function getPlaceName(place: Place): string {
+  return safeText(place.place_name, '강원 관광지');
+}
+
+function getPlaceCity(place: Place): string {
+  return safeText(place.city, '강원');
+}
+
 function buildSearchQuery(place: Place): string {
-  return encodeURIComponent(`${place.city} ${place.place_name}`);
+  const city = getPlaceCity(place);
+  const name = getPlaceName(place);
+
+  return encodeURIComponent(`${city} ${name}`);
+}
+
+async function tryOpenUrl(url: string): Promise<boolean> {
+  try {
+    await Linking.openURL(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function openUrlWithFallback(
+  appUrl: string,
+  webUrl: string,
+  failTitle: string,
+  failMessage: string
+): Promise<void> {
+  /**
+   * 웹에서는 kakaomap://, nmap://, tmap:// 같은 앱 스킴을 열면
+   * 빈 탭이 뜨거나 실패할 수 있으므로 바로 웹 URL로 연결한다.
+   */
+  if (Platform.OS === 'web') {
+    const opened = await tryOpenUrl(webUrl);
+
+    if (!opened) {
+      Alert.alert(failTitle, failMessage);
+    }
+
+    return;
+  }
+
+  /**
+   * Android/iOS:
+   * 1차: 앱 딥링크 시도
+   * 2차: 웹 지도 링크 시도
+   */
+  const openedApp = await tryOpenUrl(appUrl);
+
+  if (openedApp) return;
+
+  const openedWeb = await tryOpenUrl(webUrl);
+
+  if (openedWeb) return;
+
+  Alert.alert(failTitle, failMessage);
 }
 
 // ─── KakaoMap ──────────────────────────────────────────────────────────────
 
-export function createKakaoMapLink(place: Place, coords?: { lat: number; lng: number }): string {
-  if (coords) {
+export function createKakaoMapLink(place: Place, coords?: MapCoords): string {
+  if (isValidCoords(coords)) {
     return `kakaomap://look?p=${coords.lat},${coords.lng}`;
   }
+
   return `kakaomap://search?q=${buildSearchQuery(place)}`;
 }
 
-export function createKakaoMapWebLink(place: Place, coords?: { lat: number; lng: number }): string {
-  if (coords) {
-    return `https://map.kakao.com/link/map/${encodeURIComponent(place.place_name)},${coords.lat},${coords.lng}`;
+export function createKakaoMapWebLink(place: Place, coords?: MapCoords): string {
+  const placeName = getPlaceName(place);
+
+  if (isValidCoords(coords)) {
+    return `https://map.kakao.com/link/map/${encodeURIComponent(placeName)},${coords.lat},${coords.lng}`;
   }
+
   return `https://map.kakao.com/?q=${buildSearchQuery(place)}`;
 }
 
 export async function openKakaoMap(
   place: Place,
-  coords?: { lat: number; lng: number }
+  coords?: MapCoords
 ): Promise<void> {
   const appUrl = createKakaoMapLink(place, coords);
   const webUrl = createKakaoMapWebLink(place, coords);
 
-  // Browsers cannot reliably detect or launch a native custom scheme. Opening
-  // kakaomap:// on desktop web can leave an empty about:blank tab, so web must
-  // go directly to KakaoMap's public map/search URL.
-  if (Platform.OS === 'web') {
-    await Linking.openURL(webUrl);
-    return;
-  }
-
-  // On Android/iOS, try the KakaoMap app first. React Native rejects openURL
-  // when no app handles the scheme, which lets us fall back to the web map.
-  try {
-    await Linking.openURL(appUrl);
-  } catch {
-    try {
-      await Linking.openURL(webUrl);
-    } catch {
-      const { Alert } = await import('react-native');
-      Alert.alert('카카오맵을 열 수 없어요. 잠시 후 다시 시도해주세요.');
-    }
-  }
+  await openUrlWithFallback(
+    appUrl,
+    webUrl,
+    '지도를 열 수 없어요',
+    '카카오맵 앱과 웹 지도를 모두 열 수 없습니다. 네트워크 상태를 확인한 뒤 다시 시도해주세요.'
+  );
 }
 
 // ─── Naver Map ─────────────────────────────────────────────────────────────
@@ -81,8 +148,13 @@ export function createNaverMapWebLink(place: Place): string {
 export async function openNaverMap(place: Place): Promise<void> {
   const appUrl = createNaverMapLink(place);
   const webUrl = createNaverMapWebLink(place);
-  const canOpen = await Linking.canOpenURL(appUrl);
-  await Linking.openURL(canOpen ? appUrl : webUrl);
+
+  await openUrlWithFallback(
+    appUrl,
+    webUrl,
+    '지도를 열 수 없어요',
+    '네이버지도 앱과 웹 지도를 모두 열 수 없습니다. 네트워크 상태를 확인한 뒤 다시 시도해주세요.'
+  );
 }
 
 // ─── Tmap ──────────────────────────────────────────────────────────────────
@@ -98,8 +170,13 @@ export function createTmapWebLink(place: Place): string {
 export async function openTmap(place: Place): Promise<void> {
   const appUrl = createTmapLink(place);
   const webUrl = createTmapWebLink(place);
-  const canOpen = await Linking.canOpenURL(appUrl);
-  await Linking.openURL(canOpen ? appUrl : webUrl);
+
+  await openUrlWithFallback(
+    appUrl,
+    webUrl,
+    '지도를 열 수 없어요',
+    '티맵 앱과 웹 지도를 모두 열 수 없습니다. 네트워크 상태를 확인한 뒤 다시 시도해주세요.'
+  );
 }
 
 void IOS_BUNDLE_IDENTIFIER;

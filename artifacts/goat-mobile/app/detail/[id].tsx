@@ -46,6 +46,33 @@ function normalizeTransport(transport?: string | null) {
   return '자차';
 }
 
+function safeText(value: unknown, fallback: string) {
+  if (typeof value !== 'string') return fallback;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : fallback;
+}
+
+function safeTags(value: unknown) {
+  return Array.isArray(value)
+    ? value.filter((tag): tag is string => typeof tag === 'string' && tag.trim().length > 0)
+    : [];
+}
+
+async function openExternalUrl(url: string, failMessage = '링크를 열 수 없어요.') {
+  try {
+    const supported = await Linking.canOpenURL(url);
+
+    if (!supported && Platform.OS !== 'web') {
+      Alert.alert('연결 실패', failMessage);
+      return;
+    }
+
+    await Linking.openURL(url);
+  } catch {
+    Alert.alert('연결 실패', failMessage);
+  }
+}
+
 export default function DetailScreen() {
   const router = useRouter();
   const { id, role, reason } = useLocalSearchParams<{ id: string; role?: string; reason?: string }>();
@@ -56,12 +83,14 @@ export default function DetailScreen() {
   const { data, isLoading, isError, refetch } = useGetPlace(id ?? '');
 
   const place = data?.data.place as Place | undefined;
-  const alternatives = place
+
+  const alternatives = place && Array.isArray(recommendations)
     ? recommendations
-        .map((card) => card.place)
-        .filter((candidate) => candidate.place_id !== place.place_id)
+        .map((card) => card?.place)
+        .filter((candidate): candidate is Place => !!candidate?.place_id && candidate.place_id !== place.place_id)
         .slice(0, 3)
     : [];
+
   const region = place ? getRegionPalette(place.region_group) : null;
 
   const [bookmarked, setBookmarked] = useState(false);
@@ -72,33 +101,42 @@ export default function DetailScreen() {
   const { photo } = usePlacePhoto(
     place?.place_name ?? '',
     place?.primary_mood ?? '',
-    place?.mood_tags ?? [],
+    safeTags(place?.mood_tags),
     place?.city
   );
+
   const { info: tourInfo } = useTourInfo(place?.place_name ?? '', place?.city ?? '');
+
   const { concentration } = useVisitConcentration(
     place?.place_name ?? '',
     place?.city ?? ''
   );
 
   useEffect(() => {
-    if (!place) return;
-    isBookmarked(place.place_id).then(setBookmarked);
+    if (!place?.place_id) return;
+
+    isBookmarked(place.place_id)
+      .then(setBookmarked)
+      .catch(() => setBookmarked(false));
   }, [place?.place_id]);
 
   async function loadCourseForPlace(targetPlace: Place) {
+    const targetMoodTags = safeTags(targetPlace.mood_tags);
+
     setCourseLoading(true);
     setCourseError(null);
+
     try {
       const result = await recommendCourse({
         selectedPlaceId: targetPlace.place_id,
-        primaryTheme: targetPlace.primary_mood as any,
-        userMoodTags: targetPlace.mood_tags.slice(0, 5),
-        userSceneTags: targetPlace.mood_tags.slice(0, 3),
+        primaryTheme: safeText(targetPlace.primary_mood, '강원 감성 여행지') as any,
+        userMoodTags: targetMoodTags.slice(0, 5),
+        userSceneTags: targetMoodTags.slice(0, 3),
         companionType: travelPreferences?.companion as any,
         travelPurpose: normalizeCoursePurpose(travelPreferences?.purpose) as any,
         transportType: normalizeTransport(travelPreferences?.transport) as any,
       });
+
       setCourse(result.data);
     } catch {
       setCourse(null);
@@ -110,6 +148,7 @@ export default function DetailScreen() {
 
   useEffect(() => {
     if (!place) return;
+
     setCourse(null);
     loadCourseForPlace(place);
   }, [
@@ -123,27 +162,42 @@ export default function DetailScreen() {
     return (
       <View style={[styles.root, styles.loadingState, { backgroundColor: colors.background }]}>
         <ActivityIndicator size="large" color={colors.primary} />
-        <Text style={[styles.loadingText, { color: colors.mutedForeground }]}>장소 정보를 불러오는 중이에요</Text>
+        <Text style={[styles.loadingText, { color: colors.mutedForeground }]}>
+          장소 정보를 불러오는 중이에요
+        </Text>
       </View>
     );
   }
 
   async function handleBookmark() {
     if (!place) return;
-    const saved = await toggleBookmark(place);
-    setBookmarked(saved);
+
+    try {
+      const saved = await toggleBookmark(place);
+      setBookmarked(saved);
+    } catch {
+      Alert.alert('저장 실패', '북마크 상태를 변경하지 못했어요.');
+    }
   }
 
   async function handleKakaoMap() {
-    if (!place) return;
+    if (!place) {
+      Alert.alert('지도 연결 불가', '장소 정보가 없어 지도를 열 수 없어요.');
+      return;
+    }
+
     const coords =
-      tourInfo?.latitude && tourInfo?.longitude
+      typeof tourInfo?.latitude === 'number' && typeof tourInfo?.longitude === 'number'
         ? { lat: tourInfo.latitude, lng: tourInfo.longitude }
         : undefined;
+
     try {
       await openKakaoMap(place, coords);
     } catch {
-      Alert.alert('지도 앱 열기', '카카오맵을 열 수 없어 웹 지도로 연결할게요.', [{ text: '확인' }]);
+      Alert.alert(
+        '지도 연결 실패',
+        '지도 앱 또는 웹 지도를 열 수 없습니다. 잠시 후 다시 시도해주세요.'
+      );
     }
   }
 
@@ -167,19 +221,36 @@ export default function DetailScreen() {
   const heroBorder = region?.border ?? colors.border;
   const hasPhoto = !!(photo?.imageUrl || photo?.imageSource);
 
+  const safePlaceName = safeText(place.place_name, '이름 없는 장소');
+  const safePlaceType = safeText(place.place_type, '관광지');
+  const safeCity = safeText(place.city, '강원');
+  const safeRegionGroup = safeText(place.region_group, '강원');
+  const safePrimaryMood = safeText(place.primary_mood, '강원 감성 여행지');
+  const safeMoodTags = safeTags(place.mood_tags);
+  const safePhotoPoint = safeText(place.photo_point, '');
+  const safeBestTime = safeText(place.best_time, '방문 전 확인 필요');
+  const safeBestSeason = safeText(place.best_season, '사계절');
+  const safeAccessibility = safeText(place.accessibility, '접근 정보 확인 필요');
+  const safeRecommendationUse = safeText(
+    place.recommendation_use,
+    '사진 촬영과 가벼운 여행 코스로 추천해요.'
+  );
+  const safeNote = safeText(place.note, '');
+
   const crowdLevel = concentration?.concentrationLevel ?? 'unknown';
   const crowdNote = crowdLevel !== 'unknown' ? VISIT_NOTE[crowdLevel] : null;
 
   const hasOfficialInfo =
     tourInfo?.source === 'KTO_TOUR_INFO' &&
     (tourInfo.address || tourInfo.usageTime || tourInfo.parking || tourInfo.restDate);
+
   const hasOverview = !!tourInfo?.overview;
   const hasContact = !!(tourInfo?.phone || tourInfo?.homepage);
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header
-        title={place.place_name}
+        title={safePlaceName}
         onBack={() => router.back()}
         right={
           <TouchableOpacity onPress={handleBookmark} style={styles.bookmarkBtn} activeOpacity={0.7}>
@@ -197,7 +268,6 @@ export default function DetailScreen() {
         contentContainerStyle={[styles.scroll, { paddingBottom: bottomPad + 90 }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* ── Hero photo ── */}
         {hasPhoto ? (
           <View style={styles.photoHeroWrap}>
             <Image
@@ -209,12 +279,12 @@ export default function DetailScreen() {
             <View style={styles.photoHeroScrim} />
             <View style={styles.photoHeroOverlay}>
               <View style={styles.typeBadgeDark}>
-                <Text style={styles.typeBadgeDarkText}>{place.place_type}</Text>
+                <Text style={styles.typeBadgeDarkText}>{safePlaceType}</Text>
               </View>
               <View style={styles.regionPillDark}>
                 <View style={[styles.regionDot, { backgroundColor: '#FFF' }]} />
                 <Text style={styles.regionPillDarkText}>
-                  {place.city} · {region?.label ?? place.region_group}
+                  {safeCity} · {region?.label ?? safeRegionGroup}
                 </Text>
               </View>
             </View>
@@ -223,35 +293,43 @@ export default function DetailScreen() {
           <View style={[styles.colorHero, { backgroundColor: heroBg, borderBottomColor: heroBorder }]}>
             <View style={styles.heroTopRow}>
               <View style={[styles.typeBadge, { backgroundColor: accentColor + '22', borderColor: accentColor + '44' }]}>
-                <Text style={[styles.typeBadgeText, { color: accentColor }]}>{place.place_type}</Text>
+                <Text style={[styles.typeBadgeText, { color: accentColor }]}>{safePlaceType}</Text>
               </View>
               <View style={[styles.regionPill, { backgroundColor: heroBg, borderColor: heroBorder }]}>
                 <View style={[styles.regionDot, { backgroundColor: accentColor }]} />
                 <Text style={[styles.regionPillText, { color: accentColor }]}>
-                  {place.city} · {region?.label ?? place.region_group}
+                  {safeCity} · {region?.label ?? safeRegionGroup}
                 </Text>
               </View>
             </View>
           </View>
         )}
 
-        {/* ── Identity ── */}
         <View style={[styles.identityBlock, { borderBottomColor: heroBorder, borderBottomWidth: 1 }]}>
-          <Text style={[styles.placeName, { color: colors.foreground }]}>{place.place_name}</Text>
-          <Text style={[styles.moodSubtitle, { color: accentColor }]}>{place.primary_mood}</Text>
+          <Text style={[styles.placeName, { color: colors.foreground }]}>{safePlaceName}</Text>
+          <Text style={[styles.moodSubtitle, { color: accentColor }]}>{safePrimaryMood}</Text>
 
           <View style={styles.heroTagRow}>
-            {place.mood_tags.slice(0, 5).map((tag) => (
-              <View key={tag} style={[styles.heroTag, { backgroundColor: accentColor + '18', borderColor: accentColor + '35' }]}>
-                <Text style={[styles.heroTagText, { color: accentColor }]}>#{tag}</Text>
+            {safeMoodTags.length > 0 ? (
+              safeMoodTags.slice(0, 5).map((tag) => (
+                <View
+                  key={tag}
+                  style={[styles.heroTag, { backgroundColor: accentColor + '18', borderColor: accentColor + '35' }]}
+                >
+                  <Text style={[styles.heroTagText, { color: accentColor }]}>#{tag}</Text>
+                </View>
+              ))
+            ) : (
+              <View style={[styles.heroTag, { backgroundColor: accentColor + '18', borderColor: accentColor + '35' }]}>
+                <Text style={[styles.heroTagText, { color: accentColor }]}>#강원여행</Text>
               </View>
-            ))}
+            )}
           </View>
 
-          {!!place.photo_point && (
+          {!!safePhotoPoint && (
             <View style={[styles.photoQuote, { backgroundColor: accentColor + '14', borderLeftColor: accentColor }]}>
               <Feather name="camera" size={12} color={accentColor} style={{ marginTop: 1 }} />
-              <Text style={[styles.photoQuoteText, { color: colors.foreground }]}>{place.photo_point}</Text>
+              <Text style={[styles.photoQuoteText, { color: colors.foreground }]}>{safePhotoPoint}</Text>
             </View>
           )}
 
@@ -268,14 +346,14 @@ export default function DetailScreen() {
           )}
         </View>
 
-        {/* ── Reason ── */}
         {!!reason && (
           <InfoCard colors={colors} icon="zap" title="추천 이유">
-            <Text style={[styles.bodyText, { color: colors.primary }]}>{reason}</Text>
+            <Text style={[styles.bodyText, { color: colors.primary }]}>
+              {safeText(reason, '선택한 감성과 잘 어울리는 장소예요.')}
+            </Text>
           </InfoCard>
         )}
 
-        {/* ── Overview (장소 소개) ── */}
         {hasOverview && (
           <InfoCard colors={colors} icon="book-open" title="장소 소개">
             <Text style={[styles.bodyText, { color: colors.foreground }]} numberOfLines={4}>
@@ -284,10 +362,15 @@ export default function DetailScreen() {
           </InfoCard>
         )}
 
-        {/* ── Mood tags ── */}
         <InfoCard colors={colors} icon="tag" title="분위기 태그">
           <View style={styles.tagRow}>
-            {place.mood_tags.map((tag) => <TagBadge key={tag} label={`#${tag}`} />)}
+            {safeMoodTags.length > 0 ? (
+              safeMoodTags.map((tag) => <TagBadge key={tag} label={`#${tag}`} />)
+            ) : (
+              <Text style={[styles.bodyText, { color: colors.mutedForeground }]}>
+                등록된 분위기 태그가 없습니다.
+              </Text>
+            )}
           </View>
         </InfoCard>
 
@@ -300,11 +383,11 @@ export default function DetailScreen() {
           onRetry={() => loadCourseForPlace(place)}
         />
 
-        {/* ── Visit tips ── */}
         <InfoCard colors={colors} icon="sun" title="방문 팁">
-          <InfoRow label="추천 시간" value={place.best_time} colors={colors} />
-          <InfoRow label="추천 계절" value={place.best_season} colors={colors} />
-          <InfoRow label="접근성" value={place.accessibility} colors={colors} />
+          <InfoRow label="추천 시간" value={safeBestTime} colors={colors} />
+          <InfoRow label="추천 계절" value={safeBestSeason} colors={colors} />
+          <InfoRow label="접근성" value={safeAccessibility} colors={colors} />
+
           {crowdNote && (
             <View style={[styles.crowdNote, { backgroundColor: accentColor + '10', borderColor: accentColor + '30' }]}>
               <Feather name="users" size={12} color={accentColor} style={{ marginTop: 1 }} />
@@ -313,7 +396,6 @@ export default function DetailScreen() {
           )}
         </InfoCard>
 
-        {/* ── Official info (기본 정보) ── */}
         {hasOfficialInfo && (
           <InfoCard colors={colors} icon="info" title="기본 정보">
             {!!tourInfo?.address && (
@@ -328,22 +410,33 @@ export default function DetailScreen() {
             {!!tourInfo?.parking && (
               <InfoRow label="주차" value={tourInfo.parking} colors={colors} />
             )}
+
             {hasContact && (
               <View style={styles.contactRow}>
                 {!!tourInfo?.phone && (
                   <TouchableOpacity
                     style={[styles.contactBtn, { borderColor: colors.border }]}
-                    onPress={() => Linking.openURL(`tel:${tourInfo.phone!.replace(/[^0-9]/g, '')}`)}
+                    onPress={() => {
+                      const phoneNumber = tourInfo.phone?.replace(/[^0-9]/g, '');
+
+                      if (!phoneNumber) {
+                        Alert.alert('전화 연결 불가', '등록된 전화번호가 올바르지 않아요.');
+                        return;
+                      }
+
+                      openExternalUrl(`tel:${phoneNumber}`, '전화 앱을 열 수 없어요.');
+                    }}
                     activeOpacity={0.7}
                   >
                     <Feather name="phone" size={12} color={colors.primary} />
                     <Text style={[styles.contactBtnText, { color: colors.primary }]}>전화 연결</Text>
                   </TouchableOpacity>
                 )}
+
                 {!!tourInfo?.homepage && (
                   <TouchableOpacity
                     style={[styles.contactBtn, { borderColor: colors.border }]}
-                    onPress={() => Linking.openURL(tourInfo.homepage!)}
+                    onPress={() => openExternalUrl(tourInfo.homepage!, '홈페이지를 열 수 없어요.')}
                     activeOpacity={0.7}
                   >
                     <Feather name="external-link" size={12} color={colors.primary} />
@@ -355,28 +448,28 @@ export default function DetailScreen() {
           </InfoCard>
         )}
 
-        {/* ── Purpose ── */}
         <InfoCard colors={colors} icon="star" title="추천 용도">
-          <Text style={[styles.bodyText, { color: colors.foreground }]}>{place.recommendation_use}</Text>
+          <Text style={[styles.bodyText, { color: colors.foreground }]}>
+            {safeRecommendationUse}
+          </Text>
         </InfoCard>
 
-        {/* ── Caution ── */}
-        {!!place.note && (
+        {!!safeNote && (
           <View style={[styles.cautionCard, { backgroundColor: '#FFFBEB', borderColor: '#FDE68A' }]}>
             <View style={styles.cautionHeader}>
               <Feather name="alert-triangle" size={14} color="#D97706" />
               <Text style={styles.cautionTitle}>방문 전 확인해주세요</Text>
             </View>
-            <Text style={styles.cautionBody}>{place.note}</Text>
+            <Text style={styles.cautionBody}>{safeNote}</Text>
           </View>
         )}
 
-        {/* ── Same-mood alternatives ── */}
         {alternatives.length > 0 && (
           <InfoCard colors={colors} icon="compass" title="같은 감성 대안">
             <Text style={[styles.altHint, { color: colors.mutedForeground }]}>
               비슷한 감성을 더 여유롭게 즐길 수 있어요
             </Text>
+
             {alternatives.map((alt) => (
               <AlternativeCard
                 key={alt.place_id}
@@ -391,7 +484,6 @@ export default function DetailScreen() {
         )}
       </ScrollView>
 
-      {/* ── Sticky bottom CTA ── */}
       <View style={[styles.stickyBottom, {
         backgroundColor: colors.background,
         borderTopColor: colors.border,
@@ -400,7 +492,8 @@ export default function DetailScreen() {
         <TouchableOpacity style={styles.kakaoBtn} onPress={handleKakaoMap} activeOpacity={0.85}>
           <Feather name="navigation" size={16} color="#3A1D00" />
           <Text style={styles.kakaoBtnText}>카카오맵에서 보기</Text>
-          {tourInfo?.latitude && (
+
+          {typeof tourInfo?.latitude === 'number' && (
             <View style={styles.coordsBadge}>
               <Text style={styles.coordsBadgeText}>좌표 기반</Text>
             </View>
@@ -412,7 +505,10 @@ export default function DetailScreen() {
 }
 
 function InfoCard({ title, icon, colors, children }: {
-  title: string; icon: string; colors: any; children: React.ReactNode;
+  title: string;
+  icon: string;
+  colors: any;
+  children: React.ReactNode;
 }) {
   return (
     <View style={[styles.infoCard, { borderBottomColor: colors.border }]}>
@@ -425,11 +521,13 @@ function InfoCard({ title, icon, colors, children }: {
   );
 }
 
-function InfoRow({ label, value, colors }: { label: string; value: string; colors: any }) {
+function InfoRow({ label, value, colors }: { label: string; value?: string | null; colors: any }) {
   return (
     <View style={styles.infoRow}>
       <Text style={[styles.infoLabel, { color: colors.mutedForeground }]}>{label}</Text>
-      <Text style={[styles.infoValue, { color: colors.foreground }]}>{value}</Text>
+      <Text style={[styles.infoValue, { color: colors.foreground }]}>
+        {safeText(value, '정보 없음')}
+      </Text>
     </View>
   );
 }
@@ -438,6 +536,7 @@ function KakaoCourseMap({ course, colors }: { course: RecommendCourseData; color
   const config = course.staticMap.staticMapConfig as any;
   const markers = Array.isArray(config?.markers) ? config.markers : [];
   const center = config?.center;
+
   const iframeMapUrl = center && markers.length > 0
     ? resolveApiUrl(`/api/course-map?${new URLSearchParams({
         centerLat: String(center.lat),
@@ -451,10 +550,12 @@ function KakaoCourseMap({ course, colors }: { course: RecommendCourseData; color
         }))),
       }).toString()}`)
     : null;
+
   const containerId = `goat-course-map-${course.stops
     .map((stop) => stop.id)
     .join('-')
     .replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+
   const [mapError, setMapError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -463,35 +564,42 @@ function KakaoCourseMap({ course, colors }: { course: RecommendCourseData; color
     const win = globalThis as any;
     const maybeDoc = win.document as Document | undefined;
     if (!maybeDoc) return;
+
     const doc = maybeDoc;
 
     function renderMap() {
       const kakao = win.kakao;
       const container = doc.getElementById(containerId);
+
       if (!kakao?.maps) {
         setMapError('카카오 지도를 불러오지 못했어요.');
         return;
       }
+
       if (!container) return;
 
       const centerLat = Number(center.lat);
       const centerLng = Number(center.lng);
+
       if (!Number.isFinite(centerLat) || !Number.isFinite(centerLng)) {
         setMapError('지도 중심 좌표가 올바르지 않아요.');
         return;
       }
 
       container.innerHTML = '';
+
       const map = new kakao.maps.Map(container, {
         center: new kakao.maps.LatLng(centerLat, centerLng),
         level: Number(config.level ?? 7),
       });
+
       const bounds = new kakao.maps.LatLngBounds();
       const path: unknown[] = [];
 
       markers.forEach((marker: any) => {
         const lat = Number(marker.lat);
         const lng = Number(marker.lng);
+
         if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
 
         const position = new kakao.maps.LatLng(lat, lng);
@@ -521,17 +629,21 @@ function KakaoCourseMap({ course, colors }: { course: RecommendCourseData; color
           strokeOpacity: 0.85,
           strokeStyle: 'solid',
         });
+
         map.setBounds(bounds);
       }
+
       setMapError(null);
     }
 
     function renderWhenReady() {
       const kakao = win.kakao;
+
       if (kakao?.maps?.load) {
         kakao.maps.load(renderMap);
         return;
       }
+
       renderMap();
     }
 
@@ -542,6 +654,7 @@ function KakaoCourseMap({ course, colors }: { course: RecommendCourseData; color
 
     const scriptId = 'goat-kakao-map-sdk';
     const existingScript = doc.getElementById(scriptId) as HTMLScriptElement | null;
+
     if (existingScript) {
       existingScript.addEventListener('load', renderWhenReady, { once: true });
       return () => existingScript.removeEventListener('load', renderWhenReady);
@@ -551,6 +664,7 @@ function KakaoCourseMap({ course, colors }: { course: RecommendCourseData; color
     const sdkScriptUrl = rawSdkScriptUrl.includes('autoload=')
       ? rawSdkScriptUrl
       : `${rawSdkScriptUrl}${rawSdkScriptUrl.includes('?') ? '&' : '?'}autoload=false`;
+
     const script = doc.createElement('script');
     script.id = scriptId;
     script.async = true;
@@ -587,6 +701,7 @@ function KakaoCourseMap({ course, colors }: { course: RecommendCourseData; color
               background: '#E5E7EB',
             },
           })}
+
       {!!mapError && !iframeMapUrl && (
         <Text style={[styles.courseMapErrorText, { color: colors.mutedForeground }]}>
           {mapError}
@@ -613,6 +728,8 @@ function CourseRecommendationSection({
 }) {
   const modeLabel = course?.mode === 'LLM_OPENROUTER' ? 'AI 코스' : '기본 코스';
   const mapUrl = course?.staticMap.fallbackMapSearchUrl;
+  const stops = Array.isArray(course?.stops) ? course!.stops : [];
+  const warnings = Array.isArray(course?.warnings) ? course!.warnings : [];
 
   return (
     <InfoCard colors={colors} icon="map" title="선택 장소 중심 하루 코스">
@@ -641,62 +758,83 @@ function CourseRecommendationSection({
               <Text style={[styles.courseModeText, { color: accentColor }]}>{modeLabel}</Text>
             </View>
             <Text style={[styles.courseCandidateText, { color: colors.mutedForeground }]}>
-              후보 {course.nearbyCandidateCount}곳 반영
+              후보 {course.nearbyCandidateCount ?? 0}곳 반영
             </Text>
           </View>
 
           {!!course.courseTitle && (
-            <Text style={[styles.courseTitle, { color: colors.foreground }]}>{course.courseTitle}</Text>
+            <Text style={[styles.courseTitle, { color: colors.foreground }]}>
+              {course.courseTitle}
+            </Text>
           )}
+
           {!!course.summary && (
-            <Text style={[styles.courseSummary, { color: colors.mutedForeground }]}>{course.summary}</Text>
+            <Text style={[styles.courseSummary, { color: colors.mutedForeground }]}>
+              {course.summary}
+            </Text>
           )}
 
           <KakaoCourseMap course={course} colors={colors} />
 
-          <View style={styles.courseStopList}>
-            {course.stops.map((stop, index) => (
-              <View key={`${stop.id}-${stop.order}`} style={styles.courseStopRow}>
-                <View style={styles.courseTimeline}>
-                  <View style={[styles.courseOrderDot, { backgroundColor: accentColor }]}>
-                    <Text style={styles.courseOrderText}>{stop.order}</Text>
+          {stops.length > 0 ? (
+            <View style={styles.courseStopList}>
+              {stops.map((stop, index) => (
+                <View key={`${stop.id}-${stop.order}`} style={styles.courseStopRow}>
+                  <View style={styles.courseTimeline}>
+                    <View style={[styles.courseOrderDot, { backgroundColor: accentColor }]}>
+                      <Text style={styles.courseOrderText}>{stop.order}</Text>
+                    </View>
+
+                    {index < stops.length - 1 && (
+                      <View style={[styles.courseTimelineLine, { backgroundColor: colors.border }]} />
+                    )}
                   </View>
-                  {index < course.stops.length - 1 && (
-                    <View style={[styles.courseTimelineLine, { backgroundColor: colors.border }]} />
-                  )}
-                </View>
-                <View style={styles.courseStopContent}>
-                  <View style={styles.courseStopHeader}>
-                    <Text style={[styles.courseStopTitle, { color: colors.foreground }]}>{stop.title}</Text>
-                    <Text style={[styles.courseStayText, { color: colors.mutedForeground }]}>
-                      {stop.stayMinutes}분
+
+                  <View style={styles.courseStopContent}>
+                    <View style={styles.courseStopHeader}>
+                      <Text style={[styles.courseStopTitle, { color: colors.foreground }]}>
+                        {safeText(stop.title, '이름 없는 코스')}
+                      </Text>
+                      <Text style={[styles.courseStayText, { color: colors.mutedForeground }]}>
+                        {stop.stayMinutes ?? 0}분
+                      </Text>
+                    </View>
+
+                    {!!stop.address && (
+                      <Text style={[styles.courseAddressText, { color: colors.mutedForeground }]} numberOfLines={1}>
+                        {stop.address}
+                      </Text>
+                    )}
+
+                    <Text style={[styles.courseReasonText, { color: colors.foreground }]}>
+                      {safeText(stop.reason, '이 장소와 함께 둘러보기 좋은 코스예요.')}
                     </Text>
                   </View>
-                  {!!stop.address && (
-                    <Text style={[styles.courseAddressText, { color: colors.mutedForeground }]} numberOfLines={1}>
-                      {stop.address}
-                    </Text>
-                  )}
-                  <Text style={[styles.courseReasonText, { color: colors.foreground }]}>{stop.reason}</Text>
                 </View>
-              </View>
-            ))}
-          </View>
+              ))}
+            </View>
+          ) : (
+            <Text style={[styles.courseHintText, { color: colors.mutedForeground }]}>
+              표시할 코스 정보가 아직 없습니다.
+            </Text>
+          )}
 
           {!!mapUrl && (
             <TouchableOpacity
               style={[styles.courseMapBtn, { backgroundColor: colors.primary + '12', borderColor: colors.primary + '35' }]}
-              onPress={() => Linking.openURL(mapUrl)}
+              onPress={() => openExternalUrl(mapUrl, '코스 지도를 열 수 없어요.')}
               activeOpacity={0.75}
             >
               <Feather name="map-pin" size={14} color={colors.primary} />
-              <Text style={[styles.courseMapBtnText, { color: colors.primary }]}>카카오맵에서 코스 기준 장소 보기</Text>
+              <Text style={[styles.courseMapBtnText, { color: colors.primary }]}>
+                카카오맵에서 코스 기준 장소 보기
+              </Text>
             </TouchableOpacity>
           )}
 
-          {course.warnings.length > 0 && (
+          {warnings.length > 0 && (
             <Text style={[styles.courseWarningText, { color: colors.mutedForeground }]}>
-              {course.warnings[0]}
+              {warnings[0]}
             </Text>
           )}
         </View>
@@ -706,8 +844,12 @@ function CourseRecommendationSection({
 }
 
 function AlternativeCard({ place, colors, onPress }: {
-  place: Place; colors: any; onPress: () => void;
+  place: Place;
+  colors: any;
+  onPress: () => void;
 }) {
+  const altTags = safeTags(place.mood_tags);
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -715,16 +857,28 @@ function AlternativeCard({ place, colors, onPress }: {
       activeOpacity={0.8}
     >
       <View style={styles.altContent}>
-        <Text style={[styles.altName, { color: colors.foreground }]}>{place.place_name}</Text>
-        <Text style={[styles.altMeta, { color: colors.mutedForeground }]}>{place.city} · {place.place_type}</Text>
+        <Text style={[styles.altName, { color: colors.foreground }]}>
+          {safeText(place.place_name, '이름 없는 장소')}
+        </Text>
+        <Text style={[styles.altMeta, { color: colors.mutedForeground }]}>
+          {safeText(place.city, '강원')} · {safeText(place.place_type, '관광지')}
+        </Text>
+
         <View style={styles.altTags}>
-          {place.mood_tags.slice(0, 3).map((tag) => (
-            <View key={tag} style={[styles.altTag, { backgroundColor: colors.muted }]}>
-              <Text style={[styles.altTagText, { color: colors.mutedForeground }]}>{tag}</Text>
+          {altTags.length > 0 ? (
+            altTags.slice(0, 3).map((tag) => (
+              <View key={tag} style={[styles.altTag, { backgroundColor: colors.muted }]}>
+                <Text style={[styles.altTagText, { color: colors.mutedForeground }]}>{tag}</Text>
+              </View>
+            ))
+          ) : (
+            <View style={[styles.altTag, { backgroundColor: colors.muted }]}>
+              <Text style={[styles.altTagText, { color: colors.mutedForeground }]}>강원여행</Text>
             </View>
-          ))}
+          )}
         </View>
       </View>
+
       <Feather name="chevron-right" size={16} color={colors.mutedForeground} />
     </TouchableOpacity>
   );

@@ -19,7 +19,24 @@ export default function ResultsScreen() {
   const { selectedMood, travelPreferences, recommendations, setRecommendations, origin } = useApp();
   const [isRecommending, setIsRecommending] = useState(false);
 
-  if (!selectedMood || recommendations.length === 0) {
+  /**
+   * 추천 결과 안전 처리
+   *
+   * 기존 문제:
+   * - recommendations가 비어 있거나
+   * - 추천 카드 안에 place/place_id가 없거나
+   * - 3개보다 적게 들어오면 화면에서 오류가 날 수 있음
+   *
+   * 수정:
+   * - 배열인지 확인
+   * - place_id가 있는 카드만 사용
+   * - 최대 3개까지만 화면에 표시
+   */
+  const safeRecommendations = Array.isArray(recommendations)
+    ? recommendations.filter((card) => card?.place?.place_id).slice(0, 3)
+    : [];
+
+  if (!selectedMood || safeRecommendations.length === 0) {
     return (
       <View style={[styles.root, { backgroundColor: colors.background }]}>
         <Header title="추천 결과" onBack={() => router.back()} />
@@ -33,13 +50,13 @@ export default function ResultsScreen() {
     );
   }
 
-  if (recommendations.length < 3) {
+  if (safeRecommendations.length < 3) {
     return (
       <View style={[styles.root, { backgroundColor: colors.background }]}>
         <Header title="추천 결과" onBack={() => router.back()} />
         <EmptyState
           title="추천 결과가 부족해요"
-          description="조건을 조금 넓혀 다시 추천해볼게요."
+          description="조건에 맞는 장소가 3개보다 적게 나왔어요.{'\n'}감성이나 여행 조건을 조금 넓혀 다시 추천받아보세요."
           actionLabel="감성 다시 선택하기"
           onAction={() => router.replace('/mood-selection')}
         />
@@ -48,6 +65,11 @@ export default function ResultsScreen() {
   }
 
   function handleCardPress(card: RecommendationCard) {
+    if (!card?.place?.place_id) {
+      Alert.alert('상세 화면으로 이동할 수 없어요', '장소 정보가 올바르지 않습니다.');
+      return;
+    }
+
     router.push({
       pathname: '/detail/[id]',
       params: { id: card.place.place_id, role: card.role, reason: card.reason },
@@ -60,8 +82,11 @@ export default function ResultsScreen() {
 
   async function handleReRecommend() {
     if (!selectedMood || isRecommending) return;
-    const currentIds = recommendations.map((c) => c.place.place_id);
+
+    const currentIds = safeRecommendations.map((card) => card.place.place_id);
+
     setIsRecommending(true);
+
     try {
       const result = await recommendFromTags({
         moodId: selectedMood.id,
@@ -69,7 +94,22 @@ export default function ResultsScreen() {
         origin: origin ?? undefined,
         excludeIds: currentIds,
       });
-      setRecommendations(result.data.recommendations);
+
+      const nextRecommendations = Array.isArray(result?.data?.recommendations)
+        ? result.data.recommendations
+            .filter((card: RecommendationCard) => card?.place?.place_id)
+            .slice(0, 3)
+        : [];
+
+      if (nextRecommendations.length < 3) {
+        Alert.alert(
+          '추천 결과가 부족해요',
+          '조건에 맞는 장소가 3개보다 적게 나왔어요. 감성이나 여행 조건을 조금 넓혀 다시 시도해주세요.'
+        );
+        return;
+      }
+
+      setRecommendations(nextRecommendations);
     } catch {
       Alert.alert('다시 추천하지 못했어요', '잠시 후 다시 시도해주세요.');
     } finally {
@@ -104,21 +144,24 @@ export default function ResultsScreen() {
           </TouchableOpacity>
         }
       />
+
       <StepIndicator currentStep={3} />
 
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-
         <View style={[styles.conditionBanner, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
           <View style={styles.conditionBannerTop}>
             <Text style={[styles.conditionLabel, { color: colors.mutedForeground }]}>선택한 조건</Text>
+
             <TouchableOpacity onPress={handleEditConditions} style={styles.editBtn}>
               <Feather name="sliders" size={12} color={colors.primary} />
               <Text style={[styles.editBtnText, { color: colors.primary }]}>조건 수정</Text>
             </TouchableOpacity>
           </View>
+
           <Text style={[styles.conditionText, { color: colors.foreground }]} numberOfLines={2}>
-            {conditionParts.join(' · ')}
+            {conditionParts.length > 0 ? conditionParts.join(' · ') : '선택한 조건 없음'}
           </Text>
+
           {showLocationChip && locationChipLabel && (
             <View style={styles.locationChipRow}>
               <View style={[styles.locationChip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
@@ -133,12 +176,13 @@ export default function ResultsScreen() {
           <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
             오늘을 위한 장소를 세 곳 골랐어요
           </Text>
+
           <Text style={[styles.sectionSub, { color: colors.mutedForeground }]}>
             가장 닮은 장면 · 비슷한 대안 · 오늘 가기 편한 곳
           </Text>
         </View>
 
-        {recommendations.map((card) => (
+        {safeRecommendations.map((card) => (
           <PlaceCard
             key={card.place.place_id}
             card={card}
@@ -147,7 +191,14 @@ export default function ResultsScreen() {
         ))}
 
         <TouchableOpacity
-          style={[styles.reRecommendBtn, { backgroundColor: colors.primary + '12', borderColor: colors.primary + '40' }]}
+          style={[
+            styles.reRecommendBtn,
+            {
+              backgroundColor: colors.primary + '12',
+              borderColor: colors.primary + '40',
+              opacity: isRecommending ? 0.6 : 1,
+            },
+          ]}
           onPress={handleReRecommend}
           disabled={isRecommending}
           activeOpacity={0.75}
@@ -162,7 +213,9 @@ export default function ResultsScreen() {
           style={[styles.retryBtn, { borderColor: colors.border }]}
           onPress={() => router.replace('/mood-selection')}
         >
-          <Text style={[styles.retryText, { color: colors.mutedForeground }]}>다른 감성으로 다시 찾기</Text>
+          <Text style={[styles.retryText, { color: colors.mutedForeground }]}>
+            다른 감성으로 다시 찾기
+          </Text>
         </TouchableOpacity>
 
         <View style={styles.spacer} />
@@ -173,7 +226,12 @@ export default function ResultsScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  scroll: { paddingHorizontal: 20, paddingTop: 0, paddingBottom: 32 },
+
+  scroll: {
+    paddingHorizontal: 20,
+    paddingTop: 0,
+    paddingBottom: 32,
+  },
 
   conditionBanner: {
     borderRadius: 14,
@@ -183,18 +241,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     gap: 4,
   },
+
   conditionBannerTop: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 2,
   },
+
   conditionLabel: {
     fontSize: 11,
     fontFamily: 'Inter_500Medium',
     letterSpacing: 0.5,
     textTransform: 'uppercase',
   },
+
   editBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -202,13 +263,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
   },
-  editBtnText: { fontSize: 12, fontFamily: 'Inter_600SemiBold' },
+
+  editBtnText: {
+    fontSize: 12,
+    fontFamily: 'Inter_600SemiBold',
+  },
+
   conditionText: {
     fontSize: 14,
     fontFamily: 'Inter_600SemiBold',
     lineHeight: 20,
   },
-  locationChipRow: { flexDirection: 'row', marginTop: 6 },
+
+  locationChipRow: {
+    flexDirection: 'row',
+    marginTop: 6,
+  },
+
   locationChip: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -218,15 +289,29 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderWidth: 1,
   },
+
   locationChipText: {
     fontSize: 11,
     fontFamily: 'Inter_600SemiBold',
     color: '#5B21B6',
   },
 
-  sectionHeader: { marginBottom: 16 },
-  sectionTitle: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 4 },
-  sectionSub: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
+  sectionHeader: {
+    marginBottom: 16,
+  },
+
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    fontFamily: 'Inter_700Bold',
+    marginBottom: 4,
+  },
+
+  sectionSub: {
+    fontSize: 13,
+    fontFamily: 'Inter_400Regular',
+    lineHeight: 19,
+  },
 
   reRecommendBtn: {
     flexDirection: 'row',
@@ -239,7 +324,11 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 8,
   },
-  reRecommendText: { fontSize: 14, fontFamily: 'Inter_600SemiBold' },
+
+  reRecommendText: {
+    fontSize: 14,
+    fontFamily: 'Inter_600SemiBold',
+  },
 
   retryBtn: {
     flexDirection: 'row',
@@ -251,7 +340,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 0,
   },
-  retryText: { fontSize: 14, fontFamily: 'Inter_500Medium' },
-  refreshBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
-  spacer: { height: 20 },
+
+  retryText: {
+    fontSize: 14,
+    fontFamily: 'Inter_500Medium',
+  },
+
+  refreshBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  spacer: {
+    height: 20,
+  },
 });
