@@ -16,7 +16,13 @@ const expectedMoodIds = [
 
 const server = spawn(process.execPath, ["--enable-source-maps", "./dist/index.mjs"], {
   cwd: new URL("..", import.meta.url),
-  env: { ...process.env, PORT: String(port), KTO_SERVICE_KEY: "" },
+  env: {
+    ...process.env,
+    PORT: String(port),
+    KTO_SERVICE_KEY: "",
+    KAKAO_JAVASCRIPT_KEY: "test-key",
+    ALLOW_RECOMMENDATION_DEBUG: "false",
+  },
   stdio: ["ignore", "pipe", "pipe"],
 });
 
@@ -24,6 +30,11 @@ async function request(path, init) {
   const response = await fetch(`${baseUrl}${path}`, init);
   const body = await response.json();
   return { response, body };
+}
+
+async function requestText(path, init) {
+  const response = await fetch(`${baseUrl}${path}`, init);
+  return { response, body: await response.text() };
 }
 
 async function recommend(body) {
@@ -156,6 +167,32 @@ try {
   });
   assert.equal(badRequest.response.status, 400);
 
+  const forbiddenDebug = await recommend({ moodId: "alps-ranch", debug: true });
+  assert.equal(forbiddenDebug.response.status, 403);
+  assert.equal(forbiddenDebug.body.code, "DEBUG_NOT_ALLOWED");
+
+  const disallowedModel = await request("/recommend-course", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      selectedPlaceId: "GOAT-001",
+      primaryTheme: "알프스·고원·목장 무드",
+      llmModel: "unapproved-expensive-model",
+    }),
+  });
+  assert.equal(disallowedModel.response.status, 400);
+  assert.equal(disallowedModel.body.code, "LLM_MODEL_NOT_ALLOWED");
+
+  const maliciousMarkers = encodeURIComponent(JSON.stringify([
+    { order: 1, title: "</script><script>window.xss=true</script>", lat: 37.8, lng: 128.8 },
+  ]));
+  const courseMap = await requestText(
+    `/course-map?centerLat=37.8&centerLng=128.8&markers=${maliciousMarkers}`,
+  );
+  assert.equal(courseMap.response.status, 200);
+  assert.ok(!courseMap.body.includes("</script><script>window.xss=true</script>"));
+  assert.ok(courseMap.body.includes("\\u003c/script\\u003e"));
+
   const missingPlace = await request("/places/not-found");
   assert.equal(missingPlace.response.status, 404);
   assert.equal(missingPlace.body.success, false);
@@ -163,6 +200,9 @@ try {
   const ktoWithoutKey = await request("/kto?path=KorService2/searchKeyword2");
   assert.equal(ktoWithoutKey.response.status, 500);
   assert.match(ktoWithoutKey.body.error, /service key not configured/i);
+
+  const invalidKtoPageSize = await request("/kto?path=KorService2/searchKeyword2&numOfRows=51");
+  assert.equal(invalidKtoPageSize.response.status, 400);
 
   console.log("API verification passed: 58 places, 7 moods, GOAT reference-card scoring engine.");
 } finally {

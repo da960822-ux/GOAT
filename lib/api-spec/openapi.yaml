@@ -68,6 +68,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Debug responses are disabled by the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /recommend-course:
     post:
       operationId: recommendCourse
@@ -94,6 +100,12 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "429":
           description: Too many recommendation requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Debug responses are disabled by the server
           content:
             application/json:
               schema:
@@ -467,8 +479,10 @@ components:
           type: string
           minLength: 1
           maxLength: 120
+          description: Optional model from the server-side OPENROUTER_ALLOWED_MODELS allowlist.
         debug:
           type: boolean
+          description: Available only when ALLOW_RECOMMENDATION_DEBUG=true on the server.
       required: [selectedPlaceId, primaryTheme]
       additionalProperties: false
     Place:

@@ -12,6 +12,7 @@
  */
 
 import { Router, Request, Response } from "express";
+import { createRateLimiter } from "../lib/rate-limit";
 
 const router = Router();
 
@@ -31,6 +32,27 @@ const ALLOWED_KTO_PATHS = new Set([
   "KorService2/detailIntro2",
   "LocalGovTourInfoService1/getLocalGovTourInfo1",
   "TatsCnctrRateService/tatsCnctrRatedList",
+]);
+const ALLOWED_KTO_QUERY_KEYS = new Set([
+  "path",
+  "MobileOS",
+  "MobileApp",
+  "_type",
+  "keyword",
+  "contentId",
+  "contentTypeId",
+  "defaultYN",
+  "firstImageYN",
+  "areacodeYN",
+  "catcodeYN",
+  "addrinfoYN",
+  "mapinfoYN",
+  "overviewYN",
+  "areaCd",
+  "signguCd",
+  "tAtsNm",
+  "numOfRows",
+  "pageNo",
 ]);
 
 type QueryValue = string | string[];
@@ -59,6 +81,10 @@ const CACHE_VISIT_TTL_SECONDS = readPositiveInt(
   process.env.KTO_CACHE_VISIT_TTL_SECONDS,
   DEFAULT_VISIT_CACHE_TTL_SECONDS,
 );
+const ktoRateLimit = createRateLimiter({
+  windowMs: readPositiveInt(process.env.KTO_RATE_LIMIT_WINDOW_SECONDS, 60) * 1000,
+  max: readPositiveInt(process.env.KTO_RATE_LIMIT_MAX, 120),
+});
 
 const normalizeQueryValue = (value: unknown): string[] => {
   if (value === undefined) {
@@ -76,6 +102,30 @@ const getFirstQueryValue = (value: unknown) => normalizeQueryValue(value)[0];
 const normalizeKtoPath = (path: string) => path.replace(/^\/+/, "").replace(/\/+$/, "");
 
 const isAllowedKtoPath = (ktoPath: string) => ALLOWED_KTO_PATHS.has(ktoPath);
+
+function validateKtoQuery(query: Record<string, QueryValue | undefined>): string | null {
+  for (const [key, value] of Object.entries(query)) {
+    if (key === "serviceKey" || !ALLOWED_KTO_QUERY_KEYS.has(key)) {
+      return `query parameter is not allowed: ${key}`;
+    }
+
+    if (Array.isArray(value) || (value !== undefined && String(value).length > 500)) {
+      return `invalid query parameter: ${key}`;
+    }
+  }
+
+  const numOfRows = getFirstQueryValue(query.numOfRows);
+  if (numOfRows !== undefined && (!/^\d+$/.test(numOfRows) || Number(numOfRows) < 1 || Number(numOfRows) > 50)) {
+    return "numOfRows must be an integer from 1 to 50";
+  }
+
+  const pageNo = getFirstQueryValue(query.pageNo);
+  if (pageNo !== undefined && (!/^\d+$/.test(pageNo) || Number(pageNo) < 1 || Number(pageNo) > 100)) {
+    return "pageNo must be an integer from 1 to 100";
+  }
+
+  return null;
+}
 
 const getCacheTtlSeconds = (ktoPath: string) => {
   if (ktoPath.includes("TatsCnctrRateService")) {
@@ -152,9 +202,16 @@ const trimCache = () => {
   }
 };
 
-router.get("/kto", async (req: Request, res: Response) => {
+router.get("/kto", ktoRateLimit, async (req: Request, res: Response) => {
   try {
     const rawQuery = req.query as Record<string, QueryValue | undefined>;
+    const queryError = validateKtoQuery(rawQuery);
+    if (queryError) {
+      res.setHeader("X-KTO-Cache", "MISS");
+      res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
+      res.status(400).json({ error: queryError });
+      return;
+    }
     const ktoPath = normalizeKtoPath(getFirstQueryValue(rawQuery.path) ?? "");
 
     if (!ktoPath) {

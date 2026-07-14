@@ -1,4 +1,4 @@
-import { Router, type IRouter, type NextFunction, type Request, type Response } from "express";
+import { Router, type IRouter } from "express";
 import {
   createGoatCourseRecommendation,
   getPlaceById,
@@ -9,6 +9,7 @@ import {
 } from "@workspace/travel-domain";
 import { z } from "zod";
 import { ApiError } from "../lib/api-response";
+import { createRateLimiter } from "../lib/rate-limit";
 
 const router: IRouter = Router();
 
@@ -17,41 +18,27 @@ const readPositiveInt = (value: string | undefined, fallback: number) => {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 };
 
-const RECOMMEND_RATE_LIMIT_WINDOW_MS =
-  readPositiveInt(process.env.RECOMMEND_RATE_LIMIT_WINDOW_SECONDS, 60) * 1000;
-const RECOMMEND_RATE_LIMIT_MAX = readPositiveInt(process.env.RECOMMEND_RATE_LIMIT_MAX, 30);
-const recommendRateLimitStore = new Map<string, { count: number; resetAt: number }>();
+const RECOMMEND_RATE_LIMIT_WINDOW_MS = readPositiveInt(
+  process.env.RECOMMEND_RATE_LIMIT_WINDOW_SECONDS,
+  60,
+) * 1000;
+const recommendRateLimit = createRateLimiter({
+  windowMs: RECOMMEND_RATE_LIMIT_WINDOW_MS,
+  max: readPositiveInt(process.env.RECOMMEND_RATE_LIMIT_MAX, 30),
+});
+const courseRateLimit = createRateLimiter({
+  windowMs: RECOMMEND_RATE_LIMIT_WINDOW_MS,
+  max: readPositiveInt(process.env.COURSE_RATE_LIMIT_MAX, 8),
+});
 
-const recommendRateLimit = (req: Request, res: Response, next: NextFunction) => {
-  const now = Date.now();
-  const key = req.ip || "unknown";
-  const existing = recommendRateLimitStore.get(key);
-
-  if (!existing || existing.resetAt <= now) {
-    recommendRateLimitStore.set(key, {
-      count: 1,
-      resetAt: now + RECOMMEND_RATE_LIMIT_WINDOW_MS,
-    });
-    next();
-    return;
-  }
-
-  existing.count += 1;
-
-  if (existing.count > RECOMMEND_RATE_LIMIT_MAX) {
-    res.setHeader("Retry-After", Math.ceil((existing.resetAt - now) / 1000).toString());
-    next(
-      new ApiError(
-        429,
-        "RATE_LIMITED",
-        "Too many recommendation requests. Please try again later.",
-      ),
-    );
-    return;
-  }
-
-  next();
-};
+const defaultLlmModel = process.env.OPENROUTER_DEFAULT_MODEL?.trim() || "openai/gpt-4o-mini";
+const allowedLlmModels = new Set(
+  (process.env.OPENROUTER_ALLOWED_MODELS ?? defaultLlmModel)
+    .split(",")
+    .map((model) => model.trim())
+    .filter(Boolean),
+);
+const isDebugEnabled = process.env.ALLOW_RECOMMENDATION_DEBUG === "true";
 
 const requestSchema = z
   .object({
@@ -148,6 +135,15 @@ function escapeHtml(value: unknown): string {
     .replace(/'/g, "&#39;");
 }
 
+function serializeForInlineScript(value: unknown): string {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
 function parseCourseMapMarkers(value: string) {
   const parsed = JSON.parse(value) as unknown;
   if (!Array.isArray(parsed)) throw new Error("markers must be an array");
@@ -159,7 +155,7 @@ function parseCourseMapMarkers(value: string) {
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) throw new Error("invalid marker coordinates");
     return {
       order: Number.isFinite(Number(record.order)) ? Number(record.order) : undefined,
-      title: String(record.title ?? ""),
+      title: String(record.title ?? "").slice(0, 120),
       lat,
       lng,
     };
@@ -205,7 +201,7 @@ router.get("/course-map", (req, res, next) => {
     return;
   }
 
-  const markerJson = JSON.stringify(markers);
+  const markerJson = serializeForInlineScript(markers);
   const markerHtml = markers
     .map((marker) => `<li><strong>${escapeHtml(marker.order ?? "")}</strong> ${escapeHtml(marker.title)}</li>`)
     .join("");
@@ -305,6 +301,11 @@ router.post("/recommend-from-tags", recommendRateLimit, (req, res, next) => {
     return;
   }
 
+  if (parsed.data.debug && !isDebugEnabled) {
+    next(new ApiError(403, "DEBUG_NOT_ALLOWED", "Debug responses are disabled."));
+    return;
+  }
+
   const mood = parsed.data.moodId
     ? moodCategories.find(({ id }) => id === parsed.data.moodId)
     : undefined;
@@ -342,7 +343,7 @@ router.post("/recommend-from-tags", recommendRateLimit, (req, res, next) => {
   });
 });
 
-router.post("/recommend-course", recommendRateLimit, async (req, res, next) => {
+router.post("/recommend-course", courseRateLimit, async (req, res, next) => {
   const parsed = courseRequestSchema.safeParse(req.body);
   if (!parsed.success) {
     next(
@@ -356,8 +357,21 @@ router.post("/recommend-course", recommendRateLimit, async (req, res, next) => {
     return;
   }
 
+  if (parsed.data.debug && !isDebugEnabled) {
+    next(new ApiError(403, "DEBUG_NOT_ALLOWED", "Debug responses are disabled."));
+    return;
+  }
+
+  if (parsed.data.llmModel && !allowedLlmModels.has(parsed.data.llmModel)) {
+    next(new ApiError(400, "LLM_MODEL_NOT_ALLOWED", "The requested LLM model is not allowed."));
+    return;
+  }
+
   try {
-    const result = await createGoatCourseRecommendation(parsed.data);
+    const result = await createGoatCourseRecommendation({
+      ...parsed.data,
+      llmModel: parsed.data.llmModel ?? defaultLlmModel,
+    });
     if (result.status === "FAILED") {
       next(new ApiError(400, result.failReason ?? "COURSE_RECOMMENDATION_FAILED", result.message));
       return;

@@ -1,4 +1,5 @@
 import { Router, type Request, type Response } from "express";
+import { createRateLimiter } from "../lib/rate-limit";
 
 const router = Router();
 
@@ -6,6 +7,7 @@ const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
 const CACHE_MAX_ENTRIES = 500;
 const MAX_REDIRECTS = 3;
 const imageStatusCache = new Map<string, { data: ImageStatusResponse; expiresAt: number }>();
+const imageStatusRateLimit = createRateLimiter({ windowMs: 60_000, max: 120 });
 
 type ImageStatusResponse = {
   ok: boolean;
@@ -93,9 +95,9 @@ async function checkImageUrl(rawUrl: string): Promise<ImageStatusResponse> {
   }
 }
 
-router.get("/image-status", async (req: Request, res: Response) => {
+router.get("/image-status", imageStatusRateLimit, async (req: Request, res: Response) => {
   const rawUrl = typeof req.query.url === "string" ? req.query.url : "";
-  if (!rawUrl) {
+  if (!rawUrl || rawUrl.length > 2048) {
     res.status(400).json({ ok: false, error: "url query param is required" });
     return;
   }

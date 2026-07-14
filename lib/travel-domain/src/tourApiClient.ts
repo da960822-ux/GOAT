@@ -1,11 +1,12 @@
 import { TourApiNearbyCandidate, TourCandidateCategory } from "./courseRecommendationTypes";
 
 declare const process: { env: Record<string, string | undefined> };
-declare const fetch: (input: string) => Promise<{
+declare const fetch: (input: string, init?: { signal?: unknown }) => Promise<{
   ok: boolean;
   status: number;
   json(): Promise<unknown>;
 }>;
+declare const AbortSignal: { timeout(ms: number): unknown };
 declare const URL: {
   new(input: string): {
     searchParams: { set(name: string, value: string): void };
@@ -19,6 +20,7 @@ const LOCATION_BASED_LIST_URL =
   "https://apis.data.go.kr/B551011/KorService2/locationBasedList2";
 const DEFAULT_MOBILE_APP_NAME = "GOAT";
 const DEFAULT_MOBILE_OS = "ETC";
+const REQUEST_TIMEOUT_MS = 10_000;
 
 function getEnv(key: string): string | undefined {
   const value = process.env[key];
@@ -80,7 +82,7 @@ export async function fetchVisitKoreaContentLabNearbyCandidates(params: {
     url.searchParams.set("numOfRows", String(params.maxResults ?? 10));
     url.searchParams.set("pageNo", "1");
 
-    const response = await fetch(url.toString());
+    const response = await fetch(url.toString(), { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
     if (!response.ok) throw new Error(`VISITKOREA_OPENAPI_HTTP_${response.status}`);
 
     const data = await response.json() as {
