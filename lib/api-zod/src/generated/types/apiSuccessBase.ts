@@ -8,6 +8,7 @@
 
 export interface ApiSuccessBase {
   success: true;
-  code: 'SUCCESS';
+  code: string;
   message: string;
+  requestId?: string;
 }

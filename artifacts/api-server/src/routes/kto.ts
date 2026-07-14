@@ -46,7 +46,10 @@ const readPositiveInt = (value: string | undefined, fallback: number) => {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 };
 
-const CACHE_MAX_ENTRIES = readPositiveInt(process.env.KTO_CACHE_MAX_ENTRIES, DEFAULT_CACHE_MAX_ENTRIES);
+const CACHE_MAX_ENTRIES = readPositiveInt(
+  process.env.KTO_CACHE_MAX_ENTRIES,
+  DEFAULT_CACHE_MAX_ENTRIES,
+);
 const CACHE_DEFAULT_TTL_SECONDS = readPositiveInt(
   process.env.KTO_CACHE_DEFAULT_TTL_SECONDS,
   DEFAULT_CACHE_TTL_SECONDS,
@@ -73,7 +76,8 @@ const normalizeQueryValue = (value: unknown): string[] => {
 
 const getFirstQueryValue = (value: unknown) => normalizeQueryValue(value)[0];
 
-const normalizeKtoPath = (path: string) => path.replace(/^\/+/, "").replace(/\/+$/, "");
+const normalizeKtoPath = (path: string) =>
+  path.replace(/^\/+/, "").replace(/\/+$/, "");
 
 const isAllowedKtoPath = (ktoPath: string) => ALLOWED_KTO_PATHS.has(ktoPath);
 
@@ -102,16 +106,25 @@ const buildCacheKey = (ktoPath: string, query: Record<string, unknown>) => {
         .sort()
         .map((item) => [key, item] as const),
     )
-    .sort(([keyA, valueA], [keyB, valueB]) => keyA.localeCompare(keyB) || valueA.localeCompare(valueB));
+    .sort(
+      ([keyA, valueA], [keyB, valueB]) =>
+        keyA.localeCompare(keyB) || valueA.localeCompare(valueB),
+    );
 
   const paramStr = entries
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+    )
     .join("&");
 
   return paramStr ? `${ktoPath}?${paramStr}` : ktoPath;
 };
 
-const appendQueryParams = (params: URLSearchParams, query: Record<string, unknown>) => {
+const appendQueryParams = (
+  params: URLSearchParams,
+  query: Record<string, unknown>,
+) => {
   for (const [key, value] of Object.entries(query)) {
     if (key === "path" || key === "serviceKey") {
       continue;
@@ -132,7 +145,8 @@ const getKtoResultCode = (data: unknown): string | undefined => {
     header?: { resultCode?: unknown };
     response?: { header?: { resultCode?: unknown } };
   };
-  const resultCode = root.response?.header?.resultCode ?? root.header?.resultCode;
+  const resultCode =
+    root.response?.header?.resultCode ?? root.header?.resultCode;
 
   return resultCode === undefined ? undefined : String(resultCode);
 };
@@ -151,6 +165,24 @@ const trimCache = () => {
     ktoCache.delete(oldestKey);
   }
 };
+
+async function fetchKtoWithRetry(url: string) {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        headers: { Accept: "application/json" },
+        signal: AbortSignal.timeout(10_000),
+      });
+      if (response.status < 500 || attempt === 1) return response;
+      await response.body?.cancel().catch(() => undefined);
+    } catch (error) {
+      lastError = error;
+      if (attempt === 1) throw error;
+    }
+  }
+  throw lastError ?? new Error("KTO_FETCH_FAILED");
+}
 
 router.get("/kto", async (req: Request, res: Response) => {
   try {
@@ -174,7 +206,9 @@ router.get("/kto", async (req: Request, res: Response) => {
     if (!SERVICE_KEY) {
       res.setHeader("X-KTO-Cache", "MISS");
       res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
-      res.status(500).json({ error: "KTO service key not configured on server" });
+      res
+        .status(500)
+        .json({ error: "KTO service key not configured on server" });
       return;
     }
 
@@ -186,7 +220,10 @@ router.get("/kto", async (req: Request, res: Response) => {
     if (cached) {
       if (cached.expiresAt > now) {
         res.setHeader("X-KTO-Cache", "HIT");
-        res.setHeader("X-KTO-Cache-TTL-Seconds", Math.ceil((cached.expiresAt - now) / 1000).toString());
+        res.setHeader(
+          "X-KTO-Cache-TTL-Seconds",
+          Math.ceil((cached.expiresAt - now) / 1000).toString(),
+        );
         res.json(cached.data);
         return;
       }
@@ -202,13 +239,12 @@ router.get("/kto", async (req: Request, res: Response) => {
 
     const url = `${KTO_BASE}/${ktoPath}?${params.toString()}`;
 
-    const response = await fetch(url, {
-      headers: { Accept: "application/json" },
-      signal: AbortSignal.timeout(10_000),
-    });
+    const response = await fetchKtoWithRetry(url);
 
     if (!response.ok) {
-      res.status(response.status).json({ error: `KTO returned ${response.status}` });
+      res
+        .status(response.status)
+        .json({ error: `KTO returned ${response.status}` });
       return;
     }
 

@@ -6,4 +6,7 @@
  * OpenAPI spec version: 0.3.0
  */
 
-export type RecommendationsDataAlternativesItem = { [key: string]: unknown };
+export type BookmarkStatusSuccessResponseData = {
+  placeId: string;
+  bookmarked: boolean;
+};

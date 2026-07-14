@@ -863,15 +863,9 @@ GET /api/healthz
 - 서버 실행 여부 확인
 - 배포 환경 health check
 
-## 16. 현재 서버에 없는 API
+## 16. 사진 분석 제거 정책
 
-현재 OpenAPI 파일에는 `/api/analyze-image`가 남아 있지만, Express 서버에는 아직 연결된 라우트가 없습니다.
-
-프론트는 아래 API를 아직 사용하면 안 됩니다.
-
-```text
-POST /api/analyze-image
-```
+사용자 사진 업로드 및 AI 이미지 분석 API는 제품 흐름에서 제거되었습니다. `/api/image-status`는 KTO 이미지 URL이 실제 이미지인지 검사해 로컬 이미지 fallback을 돕는 별도 기능이므로 유지합니다.
 
 ## 17. 프론트 우선 연동 체크리스트
 

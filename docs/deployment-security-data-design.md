@@ -1,6 +1,6 @@
 # 배포 전 보안 및 데이터 설계 체크
 
-이 문서는 GOAT API 서버를 배포하기 전에 반드시 확인해야 하는 보안 설정, KTO 프록시 정책, 추천 API rate limit, DB 스키마, 북마크 저장 방식, 이미지 분석 API 계약을 정리합니다.
+이 문서는 GOAT API 서버를 배포하기 전에 반드시 확인해야 하는 보안 설정, KTO 프록시 정책, 추천 API rate limit, DB 스키마, 북마크 저장 방식과 KTO 이미지 검증 정책을 정리합니다.
 
 ## 요약
 
@@ -12,7 +12,7 @@
 | DB 스키마 | `users`, `bookmarks`, `recommendation_logs` 테이블 정의 | 코드 반영 |
 | 북마크 | 클라이언트 로컬 저장은 임시, 서버 저장 API 필요 | 설계 확정 필요 |
 | 사용자 식별 | API body의 `user_id`는 신뢰하지 않고 JWT/session에서 추출 | 원칙 확정 |
-| 이미지 분석 | `POST /api/analyze-image` 계약을 OpenAPI에 추가 | 문서/타입 반영 |
+| 이미지 처리 | 사용자 사진 분석은 제거하고 `/api/image-status` KTO URL 검증은 유지 | 코드 반영 |
 
 ## 1. CORS 정책
 
@@ -202,61 +202,12 @@ Authorization: Bearer <token>
 | 최근 N일 | 사용자가 시간이 지나면 다시 볼 수 있음 | 방문 주기가 짧으면 재노출될 수 있음 |
 | 최근 N회 | 추천 세션 기준으로 제어 쉬움 | 오래 전 추천도 계속 제외될 수 있음 |
 
-## 7. 이미지 분석 API 계약
+## 7. 이미지 처리 정책
 
-사진 기능을 붙일 때 사용할 API 계약은 OpenAPI에 정의되어 있습니다.
-
-```http
-POST /api/analyze-image
-Content-Type: application/json
-```
-
-Request:
-
-```json
-{
-  "imageBase64": "<base64-encoded-image>",
-  "mimeType": "image/jpeg",
-  "debug": false
-}
-```
-
-`mimeType` 허용값:
-
-- `image/jpeg`
-- `image/png`
-- `image/webp`
-
-Response:
-
-```json
-{
-  "success": true,
-  "code": "SUCCESS",
-  "message": "이미지 분위기를 분석했습니다.",
-  "data": {
-    "primaryMood": "유럽 골목 감성",
-    "moodTags": ["골목", "이국적", "산책"],
-    "matchedSceneTags": ["stone_alley", "warm_light"],
-    "confidence": 0.82,
-    "recommendedMoodId": "mood-europe-street",
-    "isEstimated": true,
-    "warnings": []
-  }
-}
-```
-
-설계 메모:
-
-- 이미지 저장 또는 분석 이력 저장이 필요하면 사용자 식별은 JWT/session에서 추출합니다.
-- 요청 body에 `user_id`를 넣지 않습니다.
-- 현재 문서는 API 계약을 확정한 상태이며, 실제 이미지 분석 route 구현은 모델/스토리지 결정 후 붙이면 됩니다.
-
-관련 파일:
-
-- `lib/api-spec/openapi.yaml`
-- `lib/api-client-react/src/generated/api.ts`
-- `lib/api-zod/src/generated/api.ts`
+- 사용자 사진 업로드와 AI 이미지 분석 API는 제공하지 않습니다.
+- `/api/image-status`는 `visitkorea.or.kr` 이미지 URL의 상태와 MIME type을 검사합니다.
+- 검사에 실패하거나 KTO 이미지가 없으면 모바일은 로컬 장소 이미지 또는 placeholder를 사용합니다.
+- `/api/image-status`는 사진 분석 기능이 아니므로 유지합니다.
 
 ## 배포 전 체크리스트
 
@@ -268,4 +219,4 @@ Response:
 - [ ] DB migration 또는 `drizzle-kit push` 적용 계획이 있다.
 - [ ] 북마크 API 구현 시 `user_id`를 body에서 받지 않는다.
 - [ ] 추천 로그 저장 시 개인정보/민감정보를 `request` JSON에 넣지 않는다.
-- [ ] 이미지 분석 구현 시 이미지 크기 제한과 mime type 검증을 적용한다.
+- [ ] `/api/image-status`의 허용 호스트와 redirect 검증을 유지한다.

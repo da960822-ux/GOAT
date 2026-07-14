@@ -8,7 +8,8 @@
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "verify": "node ./scripts/verify-api.mjs"
+    "verify": "node ./scripts/verify-api.mjs && node ./scripts/verify-recommendation-audit.mjs && node ./scripts/verify-persistence-contract.mjs",
+    "verify:live": "node ./scripts/verify-live-recommendation-persistence.mjs"
   },
   "dependencies": {
     "@workspace/api-zod": "workspace:*",

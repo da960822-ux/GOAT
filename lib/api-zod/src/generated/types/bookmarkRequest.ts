@@ -6,4 +6,7 @@
  * OpenAPI spec version: 0.3.0
  */
 
-export type RecommendationsDataCardsItem = { [key: string]: unknown };
+export interface BookmarkRequest {
+  /** @pattern ^GOAT-\\d{3}$ */
+  placeId: string;
+}

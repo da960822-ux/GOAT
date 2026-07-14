@@ -11,8 +11,22 @@ export class ApiError extends Error {
   }
 }
 
-export function notFoundHandler(req: Request, _res: Response, next: NextFunction) {
-  next(new ApiError(404, "NOT_FOUND", `${req.method} ${req.originalUrl} 경로를 찾을 수 없습니다.`));
+export function getRequestId(req: Request): string {
+  return String(req.id ?? req.headers["x-request-id"] ?? "unknown");
+}
+
+export function notFoundHandler(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
+  next(
+    new ApiError(
+      404,
+      "NOT_FOUND",
+      `${req.method} ${req.originalUrl} 경로를 찾을 수 없습니다.`,
+    ),
+  );
 }
 
 export function errorHandler(
@@ -27,6 +41,7 @@ export function errorHandler(
       code: error.code,
       message: error.message,
       data: error.data,
+      requestId: getRequestId(req),
     });
     return;
   }
@@ -43,7 +58,10 @@ export function errorHandler(
   res.status(isMalformedJson ? 400 : 500).json({
     success: false,
     code: isMalformedJson ? "INVALID_REQUEST" : "INTERNAL_SERVER_ERROR",
-    message: isMalformedJson ? "요청 JSON 형식이 올바르지 않습니다." : "서버 오류가 발생했습니다.",
+    message: isMalformedJson
+      ? "요청 JSON 형식이 올바르지 않습니다."
+      : "서버 오류가 발생했습니다.",
     data: null,
+    requestId: getRequestId(req),
   });
 }

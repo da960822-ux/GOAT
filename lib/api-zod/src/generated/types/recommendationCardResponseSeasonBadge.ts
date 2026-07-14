@@ -6,4 +6,7 @@
  * OpenAPI spec version: 0.3.0
  */
 
-export type RecommendationScoreBreakdown = {[key: string]: number};
+/**
+ * @nullable
+ */
+export type RecommendationCardResponseSeasonBadge = { [key: string]: unknown } | null;

@@ -25,6 +25,26 @@ export function hasServiceKey(): boolean {
   return Platform.OS === "web" || Boolean(API_BASE_URL);
 }
 
+/**
+ * KTO still returns some public image URLs with an http scheme. The official
+ * image host supports HTTPS, so upgrade only that known host to avoid mixed
+ * content blocking in HTTPS web deployments.
+ */
+export function normalizeKtoImageUrl(imageUrl: string): string {
+  try {
+    const url = new URL(imageUrl);
+    if (
+      url.protocol === "http:" &&
+      url.hostname.toLowerCase() === "tong.visitkorea.or.kr"
+    ) {
+      url.protocol = "https:";
+    }
+    return url.toString();
+  } catch {
+    return imageUrl;
+  }
+}
+
 /** Returns the common auth/identity params (excluding serviceKey) */
 export function getAuthParams(): Record<string, string> {
   return {

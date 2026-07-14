@@ -11,4 +11,5 @@ export interface ErrorResponse {
   code: string;
   message: string;
   data: unknown | null;
+  requestId?: string;
 }

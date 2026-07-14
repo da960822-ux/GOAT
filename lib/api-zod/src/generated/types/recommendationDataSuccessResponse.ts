@@ -5,9 +5,9 @@
  * Korean Travel Guide API
  * OpenAPI spec version: 0.3.0
  */
-import type { AnalyzeImageData } from './analyzeImageData';
 import type { ApiSuccessBase } from './apiSuccessBase';
+import type { RecommendationData } from './recommendationData';
 
-export type AnalyzeImageSuccessResponse = ApiSuccessBase & {
-  data: AnalyzeImageData;
+export type RecommendationDataSuccessResponse = ApiSuccessBase & {
+  data: RecommendationData;
 };

@@ -11,7 +11,14 @@
  *   3. detailIntro2   → parking, usage time, rest day (by contentTypeId)
  */
 
-import { ktoFetch, getAuthParams, extractItems, stripHtml, isRemoteImageAvailable } from "./ktoApi";
+import {
+  ktoFetch,
+  getAuthParams,
+  extractItems,
+  stripHtml,
+  isRemoteImageAvailable,
+  normalizeKtoImageUrl,
+} from "./ktoApi";
 import { KTOTourInfo } from "./ktoTypes";
 import { getKtoSearchTerms, isRelevantKtoResult } from "./ktoPlaceSearch";
 
@@ -44,8 +51,11 @@ interface RawSearchItem {
 
 async function findFirstAvailableImageUrl(items: RawSearchItem[]): Promise<string | undefined> {
   for (const item of items) {
-    if (item.firstimage && (await isRemoteImageAvailable(item.firstimage))) {
-      return item.firstimage;
+    if (item.firstimage) {
+      const imageUrl = normalizeKtoImageUrl(item.firstimage);
+      if (await isRemoteImageAvailable(imageUrl)) {
+        return imageUrl;
+      }
     }
   }
 

@@ -5,40 +5,43 @@
  * Korean Travel Guide API
  * OpenAPI spec version: 0.3.0
  */
-import * as zod from 'zod';
-
+import * as zod from "zod";
 
 /**
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
-  "status": zod.string()
-})
-
+  status: zod.string(),
+});
 
 /**
  * @summary Get the 7 GOAT primary mood themes
  */
-export const GetMoodsResponse = zod.object({
-  "success": zod.boolean(),
-  "code": zod.literal("SUCCESS"),
-  "message": zod.string()
-}).and(zod.object({
-  "data": zod.object({
-  "moods": zod.array(zod.object({
-  "id": zod.string(),
-  "name": zod.string(),
-  "description": zod.string(),
-  "keywords": zod.array(zod.string())
-}))
-})
-}))
-
+export const GetMoodsResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        moods: zod.array(
+          zod.object({
+            id: zod.string(),
+            name: zod.string(),
+            description: zod.string(),
+            keywords: zod.array(zod.string()),
+          }),
+        ),
+      }),
+    }),
+  );
 
 /**
  * @summary Recommend three places using the GOAT v1.3+ scoring engine
  */
-
 
 export const recommendFromTagsBodyCurrentMonthMax = 12;
 
@@ -48,34 +51,78 @@ export const recommendFromTagsBodyOriginLatitudeMax = 90;
 export const recommendFromTagsBodyOriginLongitudeMin = -180;
 export const recommendFromTagsBodyOriginLongitudeMax = 180;
 
-
-
 export const recommendFromTagsBodyExcludeIdsMax = 58;
 
-
-
 export const RecommendFromTagsBody = zod.object({
-  "moodId": zod.string().min(1).optional(),
-  "referenceCardId": zod.string().min(1).optional(),
-  "travelPurpose": zod.enum(['사진·포토스팟', '산책·힐링', '카페·실내휴식', '전시·건축관람', '체험·액티비티', '먹거리·야간탐방', '숙소·리조트']).optional(),
-  "transportType": zod.enum(['자차', '대중교통', '도보중심']).optional(),
-  "visitTime": zod.enum(['새벽', '오전', '한낮', '오후', '저녁', '야간']).optional(),
-  "currentMonth": zod.number().min(1).max(recommendFromTagsBodyCurrentMonthMax).optional(),
-  "debug": zod.boolean().optional(),
-  "preferences": zod.object({
-  "companion": zod.enum(['혼자', '연인', '친구', '가족']),
-  "transport": zod.enum(['자차', '대중교통', '도보중심']),
-  "visitTime": zod.union([zod.literal('새벽'),zod.literal('오전'),zod.literal('한낮'),zod.literal('오후'),zod.literal('일몰'),zod.literal('저녁'),zod.literal('야간'),zod.literal('밤/새벽'),zod.literal(null)]).nullish(),
-  "purpose": zod.enum(['가볍게 산책', '사진 위주', '액티비티', '조용한 휴식'])
-}).optional(),
-  "origin": zod.object({
-  "type": zod.enum(['current', 'region', 'skip']),
-  "latitude": zod.number().min(recommendFromTagsBodyOriginLatitudeMin).max(recommendFromTagsBodyOriginLatitudeMax).optional(),
-  "longitude": zod.number().min(recommendFromTagsBodyOriginLongitudeMin).max(recommendFromTagsBodyOriginLongitudeMax).optional(),
-  "regionName": zod.string().min(1).optional()
-}).optional(),
-  "excludeIds": zod.array(zod.string().min(1)).max(recommendFromTagsBodyExcludeIdsMax).optional()
-})
+  moodId: zod.string().min(1).optional(),
+  referenceCardId: zod.string().min(1).optional(),
+  travelPurpose: zod
+    .enum([
+      "사진·포토스팟",
+      "산책·힐링",
+      "카페·실내휴식",
+      "전시·건축관람",
+      "체험·액티비티",
+      "먹거리·야간탐방",
+      "숙소·리조트",
+    ])
+    .optional(),
+  transportType: zod.enum(["자차", "대중교통", "도보중심"]).optional(),
+  visitTime: zod
+    .enum(["새벽", "오전", "한낮", "오후", "저녁", "야간"])
+    .optional(),
+  currentMonth: zod
+    .number()
+    .min(1)
+    .max(recommendFromTagsBodyCurrentMonthMax)
+    .optional(),
+  debug: zod.boolean().optional(),
+  preferences: zod
+    .object({
+      companion: zod.enum(["혼자", "연인", "친구", "가족"]),
+      transport: zod.enum(["자차", "대중교통", "도보중심"]),
+      visitTime: zod
+        .union([
+          zod.literal("새벽"),
+          zod.literal("오전"),
+          zod.literal("한낮"),
+          zod.literal("오후"),
+          zod.literal("일몰"),
+          zod.literal("저녁"),
+          zod.literal("야간"),
+          zod.literal("밤/새벽"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      purpose: zod.enum([
+        "가볍게 산책",
+        "사진 위주",
+        "액티비티",
+        "조용한 휴식",
+      ]),
+    })
+    .optional(),
+  origin: zod
+    .object({
+      type: zod.enum(["current", "region", "skip"]),
+      latitude: zod
+        .number()
+        .min(recommendFromTagsBodyOriginLatitudeMin)
+        .max(recommendFromTagsBodyOriginLatitudeMax)
+        .optional(),
+      longitude: zod
+        .number()
+        .min(recommendFromTagsBodyOriginLongitudeMin)
+        .max(recommendFromTagsBodyOriginLongitudeMax)
+        .optional(),
+      regionName: zod.string().min(1).optional(),
+    })
+    .optional(),
+  excludeIds: zod
+    .array(zod.string().min(1))
+    .max(recommendFromTagsBodyExcludeIdsMax)
+    .optional(),
+});
 
 export const recommendFromTagsResponseTwoDataCandidatePoolSizeMin = 0;
 export const recommendFromTagsResponseTwoDataCandidatePoolSizeMax = 58;
@@ -83,76 +130,660 @@ export const recommendFromTagsResponseTwoDataCandidatePoolSizeMax = 58;
 export const recommendFromTagsResponseTwoDataRecommendationsMin = 3;
 export const recommendFromTagsResponseTwoDataRecommendationsMax = 3;
 
+export const recommendFromTagsResponseTwoDataCardsItemRankMax = 3;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreTotalMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreTotalMax = 45;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreThemeScoreMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreThemeScoreMax = 18;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreMoodTagsCountMin = 0;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreMoodTagsScoreMin = 0;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreSceneTagsCountMin = 0;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreSceneTagsScoreMin = 0;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScorePlaceTypeHintScoreMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreMoodScorePlaceTypeHintScoreMax = 3;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreTotalMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreTotalMax = 45;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreConditionScorePurposeScoreMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreConditionScorePurposeScoreMax = 20;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreAccessibilityScoreMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreAccessibilityScoreMax = 12;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreSeasonScoreMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreSeasonScoreMax = 13;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreBaseScoreMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreBaseScoreMax = 90;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreRouteDistanceBonusMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreRouteDistanceBonusMax = 10;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreDuplicatePenaltyMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreDuplicatePenaltyMax = 6;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreExposurePenaltyMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreExposurePenaltyMax = 5;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreCoverageBoostMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreCoverageBoostMax = 3;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreLowExposureBoostMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreLowExposureBoostMax = 3;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreSelectionScoreMin =
+  -11;
+export const recommendFromTagsResponseTwoDataCardsItemScoreSelectionScoreMax = 106;
+
+export const recommendFromTagsResponseTwoDataCardsItemScoreDisplayScoreMin = 0;
+export const recommendFromTagsResponseTwoDataCardsItemScoreDisplayScoreMax = 100;
+
 export const recommendFromTagsResponseTwoDataCardsMin = 3;
 export const recommendFromTagsResponseTwoDataCardsMax = 3;
 
+export const recommendFromTagsResponseTwoDataAlternativesItemRankMax = 3;
 
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreTotalMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreTotalMax = 45;
 
-export const RecommendFromTagsResponse = zod.object({
-  "success": zod.boolean(),
-  "code": zod.literal("SUCCESS"),
-  "message": zod.string()
-}).and(zod.object({
-  "data": zod.object({
-  "moodId": zod.string(),
-  "referenceCardId": zod.string().optional(),
-  "appliedTags": zod.array(zod.string()),
-  "seedPoolSize": zod.number(),
-  "candidatePoolSize": zod.number().min(recommendFromTagsResponseTwoDataCandidatePoolSizeMin).max(recommendFromTagsResponseTwoDataCandidatePoolSizeMax),
-  "poolPolicy": zod.enum(['ALL58', 'PRIMARY43']),
-  "poolReason": zod.string(),
-  "fallbackUsed": zod.boolean(),
-  "adaptivePoolRetryUsed": zod.boolean(),
-  "recommendations": zod.array(zod.object({
-  "place": zod.object({
-  "place_id": zod.string(),
-  "city": zod.string(),
-  "region_group": zod.string(),
-  "place_name": zod.string(),
-  "place_type": zod.string(),
-  "primary_mood": zod.string(),
-  "mood_tags": zod.array(zod.string()),
-  "photo_point": zod.string(),
-  "best_time": zod.string(),
-  "best_season": zod.string(),
-  "accessibility": zod.string(),
-  "data_status": zod.enum(['confirmed', 'needs_verification', 'future_candidate']),
-  "recommendation_use": zod.string(),
-  "note": zod.string(),
-  "address": zod.string().optional(),
-  "lat": zod.number().optional(),
-  "lng": zod.number().optional(),
-  "imageUrl": zod.string().optional(),
-  "parking": zod.string().optional(),
-  "travelTime": zod.string().optional(),
-  "weatherFit": zod.string().optional(),
-  "crowdLevel": zod.string().optional(),
-  "contactInfo": zod.string().optional(),
-  "description": zod.string().optional()
-}),
-  "role": zod.enum(['장면 최적', '같은 분위기 대안', '조건 맞춤']),
-  "score": zod.number(),
-  "reason": zod.string(),
-  "matchedTags": zod.array(zod.string()),
-  "scoreBreakdown": zod.record(zod.string(), zod.number()),
-  "safetyNotes": zod.array(zod.string()),
-  "weatherFit": zod.string(),
-  "parkingInfo": zod.string()
-})).min(recommendFromTagsResponseTwoDataRecommendationsMin).max(recommendFromTagsResponseTwoDataRecommendationsMax),
-  "cards": zod.array(zod.record(zod.string(), zod.unknown())).min(recommendFromTagsResponseTwoDataCardsMin).max(recommendFromTagsResponseTwoDataCardsMax).optional(),
-  "alternatives": zod.array(zod.record(zod.string(), zod.unknown())).optional(),
-  "warnings": zod.array(zod.string()).optional()
-})
-}))
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreThemeScoreMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreThemeScoreMax = 18;
 
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreMoodTagsCountMin = 0;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreMoodTagsScoreMin = 0;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreSceneTagsCountMin = 0;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreSceneTagsScoreMin = 0;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScorePlaceTypeHintScoreMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScorePlaceTypeHintScoreMax = 3;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreTotalMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreTotalMax = 45;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScorePurposeScoreMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScorePurposeScoreMax = 20;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreAccessibilityScoreMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreAccessibilityScoreMax = 12;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreSeasonScoreMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreSeasonScoreMax = 13;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreBaseScoreMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreBaseScoreMax = 90;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreRouteDistanceBonusMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreRouteDistanceBonusMax = 10;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreDuplicatePenaltyMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreDuplicatePenaltyMax = 6;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreExposurePenaltyMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreExposurePenaltyMax = 5;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreCoverageBoostMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreCoverageBoostMax = 3;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreLowExposureBoostMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreLowExposureBoostMax = 3;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreSelectionScoreMin =
+  -11;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreSelectionScoreMax = 106;
+
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreDisplayScoreMin = 0;
+export const recommendFromTagsResponseTwoDataAlternativesItemScoreDisplayScoreMax = 100;
+
+export const RecommendFromTagsResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        moodId: zod.string(),
+        referenceCardId: zod.string().optional(),
+        appliedTags: zod.array(zod.string()),
+        seedPoolSize: zod.number(),
+        candidatePoolSize: zod
+          .number()
+          .min(recommendFromTagsResponseTwoDataCandidatePoolSizeMin)
+          .max(recommendFromTagsResponseTwoDataCandidatePoolSizeMax),
+        poolPolicy: zod.enum(["ALL58", "PRIMARY43"]),
+        poolReason: zod.string(),
+        fallbackUsed: zod.boolean(),
+        adaptivePoolRetryUsed: zod.boolean(),
+        recommendations: zod
+          .array(
+            zod.object({
+              place: zod.object({
+                place_id: zod.string(),
+                city: zod.string(),
+                region_group: zod.string(),
+                place_name: zod.string(),
+                place_type: zod.string(),
+                primary_mood: zod.string(),
+                mood_tags: zod.array(zod.string()),
+                photo_point: zod.string(),
+                best_time: zod.string(),
+                best_season: zod.string(),
+                accessibility: zod.string(),
+                data_status: zod.enum([
+                  "confirmed",
+                  "needs_verification",
+                  "future_candidate",
+                ]),
+                recommendation_use: zod.string(),
+                note: zod.string(),
+                address: zod.string().optional(),
+                lat: zod.number().optional(),
+                lng: zod.number().optional(),
+                imageUrl: zod.string().optional(),
+                parking: zod.string().optional(),
+                travelTime: zod.string().optional(),
+                weatherFit: zod.string().optional(),
+                crowdLevel: zod.string().optional(),
+                contactInfo: zod.string().optional(),
+                description: zod.string().optional(),
+              }),
+              role: zod.enum(["장면 최적", "같은 분위기 대안", "조건 맞춤"]),
+              score: zod.number(),
+              reason: zod.string(),
+              matchedTags: zod.array(zod.string()),
+              scoreBreakdown: zod.object({
+                tag: zod.number(),
+                sceneSpecific: zod.number(),
+                region: zod.number(),
+                lodgingIntent: zod.number(),
+                season: zod.number(),
+                time: zod.number(),
+                weather: zod.number(),
+                companion: zod.number(),
+                travelPurpose: zod.number(),
+                transport: zod.number(),
+                dataStatus: zod.number(),
+                directMatchCount: zod.number(),
+                baseScore: zod.number(),
+                routeDistanceBonus: zod.number(),
+                duplicatePenalty: zod.number(),
+                selectionScore: zod.number(),
+                displayScore: zod.number(),
+              }),
+              safetyNotes: zod.array(zod.string()),
+              weatherFit: zod.string(),
+              parkingInfo: zod.string(),
+            }),
+          )
+          .min(recommendFromTagsResponseTwoDataRecommendationsMin)
+          .max(recommendFromTagsResponseTwoDataRecommendationsMax),
+        cards: zod
+          .array(
+            zod.object({
+              rank: zod
+                .number()
+                .min(1)
+                .max(recommendFromTagsResponseTwoDataCardsItemRankMax),
+              role: zod.enum([
+                "BEST_SCENE",
+                "SAME_MOOD_ALTERNATIVE",
+                "CONDITION_FIT_ALTERNATIVE",
+              ]),
+              roleLabel: zod.string(),
+              placeId: zod.string(),
+              placeName: zod.string(),
+              city: zod.string(),
+              regionGroup: zod.string(),
+              primaryTheme: zod.string(),
+              placeType: zod.string(),
+              photoPoint: zod.string(),
+              recommendationUse: zod.string(),
+              bestTime: zod.string(),
+              seasonTags: zod.array(zod.string()),
+              purposeTags: zod.array(zod.string()),
+              accessibility: zod.object({
+                public_transport: zod.string().optional(),
+                car: zod.string().optional(),
+                walk: zod.string().optional(),
+              }),
+              note: zod.string().optional(),
+              imageUrl: zod.string().nullish(),
+              address: zod.string().nullish(),
+              score: zod.object({
+                moodScore: zod.object({
+                  total: zod
+                    .number()
+                    .min(
+                      recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreTotalMin,
+                    )
+                    .max(
+                      recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreTotalMax,
+                    ),
+                  theme: zod.object({
+                    requested: zod.string().optional(),
+                    placeTheme: zod.string(),
+                    matched: zod.boolean(),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreThemeScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreThemeScoreMax,
+                      ),
+                  }),
+                  moodTags: zod.object({
+                    requested: zod.array(zod.string()),
+                    matched: zod.array(zod.string()),
+                    count: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreMoodTagsCountMin,
+                      ),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreMoodTagsScoreMin,
+                      ),
+                  }),
+                  sceneTags: zod.object({
+                    requested: zod.array(zod.string()),
+                    matched: zod.array(zod.string()),
+                    count: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreSceneTagsCountMin,
+                      ),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreMoodScoreSceneTagsScoreMin,
+                      ),
+                  }),
+                  placeTypeHint: zod.object({
+                    matchedHints: zod.array(zod.string()),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreMoodScorePlaceTypeHintScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataCardsItemScoreMoodScorePlaceTypeHintScoreMax,
+                      ),
+                    note: zod.string(),
+                  }),
+                }),
+                conditionScore: zod.object({
+                  total: zod
+                    .number()
+                    .min(
+                      recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreTotalMin,
+                    )
+                    .max(
+                      recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreTotalMax,
+                    ),
+                  purpose: zod.object({
+                    requested: zod.string().optional(),
+                    placePurposeTags: zod.array(zod.string()),
+                    matched: zod.boolean(),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreConditionScorePurposeScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataCardsItemScoreConditionScorePurposeScoreMax,
+                      ),
+                  }),
+                  accessibility: zod.object({
+                    transportType: zod.string().optional(),
+                    grade: zod.string().optional(),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreAccessibilityScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreAccessibilityScoreMax,
+                      ),
+                    inferred: zod.boolean().optional(),
+                    note: zod.string().optional(),
+                  }),
+                  season: zod.object({
+                    requested: zod.string().optional(),
+                    placeSeasonTags: zod.array(zod.string()),
+                    matchType: zod.enum([
+                      "current",
+                      "all_season",
+                      "none",
+                      "not_requested",
+                    ]),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreSeasonScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataCardsItemScoreConditionScoreSeasonScoreMax,
+                      ),
+                  }),
+                }),
+                baseScore: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataCardsItemScoreBaseScoreMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataCardsItemScoreBaseScoreMax,
+                  ),
+                routeDistanceBonus: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataCardsItemScoreRouteDistanceBonusMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataCardsItemScoreRouteDistanceBonusMax,
+                  ),
+                duplicatePenalty: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataCardsItemScoreDuplicatePenaltyMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataCardsItemScoreDuplicatePenaltyMax,
+                  ),
+                exposurePenalty: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataCardsItemScoreExposurePenaltyMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataCardsItemScoreExposurePenaltyMax,
+                  ),
+                coverageBoost: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataCardsItemScoreCoverageBoostMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataCardsItemScoreCoverageBoostMax,
+                  ),
+                lowExposureBoost: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataCardsItemScoreLowExposureBoostMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataCardsItemScoreLowExposureBoostMax,
+                  ),
+                selectionScore: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataCardsItemScoreSelectionScoreMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataCardsItemScoreSelectionScoreMax,
+                  ),
+                displayScore: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataCardsItemScoreDisplayScoreMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataCardsItemScoreDisplayScoreMax,
+                  ),
+              }),
+              reasons: zod.array(zod.string()),
+              cautions: zod.array(zod.string()),
+            }),
+          )
+          .min(recommendFromTagsResponseTwoDataCardsMin)
+          .max(recommendFromTagsResponseTwoDataCardsMax)
+          .optional(),
+        alternatives: zod
+          .array(
+            zod.object({
+              rank: zod
+                .number()
+                .min(1)
+                .max(recommendFromTagsResponseTwoDataAlternativesItemRankMax),
+              role: zod.enum([
+                "BEST_SCENE",
+                "SAME_MOOD_ALTERNATIVE",
+                "CONDITION_FIT_ALTERNATIVE",
+              ]),
+              roleLabel: zod.string(),
+              placeId: zod.string(),
+              placeName: zod.string(),
+              city: zod.string(),
+              regionGroup: zod.string(),
+              primaryTheme: zod.string(),
+              placeType: zod.string(),
+              photoPoint: zod.string(),
+              recommendationUse: zod.string(),
+              bestTime: zod.string(),
+              seasonTags: zod.array(zod.string()),
+              purposeTags: zod.array(zod.string()),
+              accessibility: zod.object({
+                public_transport: zod.string().optional(),
+                car: zod.string().optional(),
+                walk: zod.string().optional(),
+              }),
+              note: zod.string().optional(),
+              imageUrl: zod.string().nullish(),
+              address: zod.string().nullish(),
+              score: zod.object({
+                moodScore: zod.object({
+                  total: zod
+                    .number()
+                    .min(
+                      recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreTotalMin,
+                    )
+                    .max(
+                      recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreTotalMax,
+                    ),
+                  theme: zod.object({
+                    requested: zod.string().optional(),
+                    placeTheme: zod.string(),
+                    matched: zod.boolean(),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreThemeScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreThemeScoreMax,
+                      ),
+                  }),
+                  moodTags: zod.object({
+                    requested: zod.array(zod.string()),
+                    matched: zod.array(zod.string()),
+                    count: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreMoodTagsCountMin,
+                      ),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreMoodTagsScoreMin,
+                      ),
+                  }),
+                  sceneTags: zod.object({
+                    requested: zod.array(zod.string()),
+                    matched: zod.array(zod.string()),
+                    count: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreSceneTagsCountMin,
+                      ),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScoreSceneTagsScoreMin,
+                      ),
+                  }),
+                  placeTypeHint: zod.object({
+                    matchedHints: zod.array(zod.string()),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScorePlaceTypeHintScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreMoodScorePlaceTypeHintScoreMax,
+                      ),
+                    note: zod.string(),
+                  }),
+                }),
+                conditionScore: zod.object({
+                  total: zod
+                    .number()
+                    .min(
+                      recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreTotalMin,
+                    )
+                    .max(
+                      recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreTotalMax,
+                    ),
+                  purpose: zod.object({
+                    requested: zod.string().optional(),
+                    placePurposeTags: zod.array(zod.string()),
+                    matched: zod.boolean(),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScorePurposeScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScorePurposeScoreMax,
+                      ),
+                  }),
+                  accessibility: zod.object({
+                    transportType: zod.string().optional(),
+                    grade: zod.string().optional(),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreAccessibilityScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreAccessibilityScoreMax,
+                      ),
+                    inferred: zod.boolean().optional(),
+                    note: zod.string().optional(),
+                  }),
+                  season: zod.object({
+                    requested: zod.string().optional(),
+                    placeSeasonTags: zod.array(zod.string()),
+                    matchType: zod.enum([
+                      "current",
+                      "all_season",
+                      "none",
+                      "not_requested",
+                    ]),
+                    score: zod
+                      .number()
+                      .min(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreSeasonScoreMin,
+                      )
+                      .max(
+                        recommendFromTagsResponseTwoDataAlternativesItemScoreConditionScoreSeasonScoreMax,
+                      ),
+                  }),
+                }),
+                baseScore: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreBaseScoreMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreBaseScoreMax,
+                  ),
+                routeDistanceBonus: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreRouteDistanceBonusMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreRouteDistanceBonusMax,
+                  ),
+                duplicatePenalty: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreDuplicatePenaltyMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreDuplicatePenaltyMax,
+                  ),
+                exposurePenalty: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreExposurePenaltyMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreExposurePenaltyMax,
+                  ),
+                coverageBoost: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreCoverageBoostMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreCoverageBoostMax,
+                  ),
+                lowExposureBoost: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreLowExposureBoostMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreLowExposureBoostMax,
+                  ),
+                selectionScore: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreSelectionScoreMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreSelectionScoreMax,
+                  ),
+                displayScore: zod
+                  .number()
+                  .min(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreDisplayScoreMin,
+                  )
+                  .max(
+                    recommendFromTagsResponseTwoDataAlternativesItemScoreDisplayScoreMax,
+                  ),
+              }),
+              reasons: zod.array(zod.string()),
+              cautions: zod.array(zod.string()),
+            }),
+          )
+          .optional(),
+        warnings: zod.array(zod.string()).optional(),
+      }),
+    }),
+  );
 
 /**
  * @summary Build a day course from one selected GOAT recommendation card
  */
 
-
 export const recommendCourseBodyUserMoodTagsMax = 10;
-
 
 export const recommendCourseBodyUserSceneTagsMax = 10;
 
@@ -163,145 +794,1154 @@ export const recommendCourseBodyMaxCandidatesForLlmMax = 20;
 
 export const recommendCourseBodyLlmModelMax = 120;
 
-
-
 export const RecommendCourseBody = zod.object({
-  "selectedPlaceId": zod.string().min(1),
-  "primaryTheme": zod.enum(['바다·해안 무드', '일본 소도시·골목 무드', '알프스·고원·목장 무드', '숲·정원·자연휴식 무드', '레트로·시장·항구 무드', '건축·전시·랜드마크 무드', '휴양·카페·이국공간 무드']),
-  "userMoodTags": zod.array(zod.string().min(1)).max(recommendCourseBodyUserMoodTagsMax).optional(),
-  "userSceneTags": zod.array(zod.string().min(1)).max(recommendCourseBodyUserSceneTagsMax).optional(),
-  "companionType": zod.enum(['혼자', '친구', '연인', '가족']).optional(),
-  "travelPurpose": zod.enum(['사진·포토스팟', '산책·힐링', '카페·실내휴식', '전시·건축관람', '체험·액티비티', '먹거리·야간탐방', '숙소·리조트']).optional(),
-  "transportType": zod.enum(['자차', '대중교통', '도보중심']).optional(),
-  "radiusMeters": zod.number().min(recommendCourseBodyRadiusMetersMin).max(recommendCourseBodyRadiusMetersMax).optional(),
-  "maxCandidatesForLlm": zod.number().min(1).max(recommendCourseBodyMaxCandidatesForLlmMax).optional(),
-  "forceRuleBasedFallback": zod.boolean().optional(),
-  "llmModel": zod.string().min(1).max(recommendCourseBodyLlmModelMax).optional(),
-  "debug": zod.boolean().optional()
-})
+  recommendationId: zod.string().uuid().optional(),
+  selectedPlaceId: zod.string().min(1),
+  primaryTheme: zod.enum([
+    "바다·해안 무드",
+    "일본 소도시·골목 무드",
+    "알프스·고원·목장 무드",
+    "숲·정원·자연휴식 무드",
+    "레트로·시장·항구 무드",
+    "건축·전시·랜드마크 무드",
+    "휴양·카페·이국공간 무드",
+  ]),
+  userMoodTags: zod
+    .array(zod.string().min(1))
+    .max(recommendCourseBodyUserMoodTagsMax)
+    .optional(),
+  userSceneTags: zod
+    .array(zod.string().min(1))
+    .max(recommendCourseBodyUserSceneTagsMax)
+    .optional(),
+  companionType: zod.enum(["혼자", "친구", "연인", "가족"]).optional(),
+  travelPurpose: zod
+    .enum([
+      "사진·포토스팟",
+      "산책·힐링",
+      "카페·실내휴식",
+      "전시·건축관람",
+      "체험·액티비티",
+      "먹거리·야간탐방",
+      "숙소·리조트",
+    ])
+    .optional(),
+  transportType: zod.enum(["자차", "대중교통", "도보중심"]).optional(),
+  radiusMeters: zod
+    .number()
+    .min(recommendCourseBodyRadiusMetersMin)
+    .max(recommendCourseBodyRadiusMetersMax)
+    .optional(),
+  maxCandidatesForLlm: zod
+    .number()
+    .min(1)
+    .max(recommendCourseBodyMaxCandidatesForLlmMax)
+    .optional(),
+  forceRuleBasedFallback: zod.boolean().optional(),
+  llmModel: zod.string().min(1).max(recommendCourseBodyLlmModelMax).optional(),
+  debug: zod.boolean().optional(),
+});
 
-export const RecommendCourseResponse = zod.object({
-  "success": zod.boolean(),
-  "code": zod.literal("SUCCESS"),
-  "message": zod.string()
-}).and(zod.object({
-  "data": zod.object({
-  "status": zod.enum(['DONE', 'FAILED']),
-  "resultType": zod.enum(['COURSE', 'UNKNOWN']),
-  "mode": zod.enum(['LLM_OPENROUTER', 'RULE_BASED_FALLBACK']),
-  "message": zod.string(),
-  "selectedPlace": zod.record(zod.string(), zod.unknown()),
-  "conditions": zod.record(zod.string(), zod.unknown()),
-  "nearbyCandidateCount": zod.number(),
-  "courseTitle": zod.string().optional(),
-  "summary": zod.string().optional(),
-  "stops": zod.array(zod.object({
-  "order": zod.number(),
-  "id": zod.string(),
-  "title": zod.string(),
-  "type": zod.enum(['START_PLACE', 'TOUR', 'CAFE', 'RESTAURANT', 'WALK', 'PHOTO', 'ETC']),
-  "category": zod.enum(['START_PLACE', 'TOUR', 'CAFE', 'RESTAURANT', 'MARKET', 'WALK', 'PHOTO', 'ETC']),
-  "address": zod.string().optional(),
-  "lat": zod.number().optional(),
-  "lng": zod.number().optional(),
-  "stayMinutes": zod.number(),
-  "reason": zod.string(),
-  "source": zod.string().optional()
-})),
-  "staticMap": zod.object({
-  "provider": zod.enum(['KAKAO_JS_SDK_STATIC_MAP', 'KAKAO_MAP_SEARCH', 'NONE']),
-  "staticMapConfig": zod.record(zod.string(), zod.unknown()).optional(),
-  "fallbackMapSearchUrl": zod.string().optional(),
-  "reason": zod.string().optional()
-}),
-  "llmPromptUsed": zod.boolean().optional(),
-  "failReason": zod.string().nullish(),
-  "warnings": zod.array(zod.string())
-})
-}))
-
+export const RecommendCourseResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        status: zod.enum(["DONE", "FAILED"]),
+        resultType: zod.enum(["COURSE", "UNKNOWN"]),
+        mode: zod.enum(["LLM_OPENROUTER", "RULE_BASED_FALLBACK"]),
+        message: zod.string(),
+        selectedPlace: zod.record(zod.string(), zod.unknown()),
+        conditions: zod.record(zod.string(), zod.unknown()),
+        nearbyCandidateCount: zod.number(),
+        courseTitle: zod.string().optional(),
+        summary: zod.string().optional(),
+        stops: zod.array(
+          zod.object({
+            order: zod.number(),
+            id: zod.string(),
+            title: zod.string(),
+            type: zod.enum([
+              "START_PLACE",
+              "TOUR",
+              "CAFE",
+              "RESTAURANT",
+              "WALK",
+              "PHOTO",
+              "ETC",
+            ]),
+            category: zod.enum([
+              "START_PLACE",
+              "TOUR",
+              "CAFE",
+              "RESTAURANT",
+              "MARKET",
+              "WALK",
+              "PHOTO",
+              "ETC",
+            ]),
+            address: zod.string().optional(),
+            lat: zod.number().optional(),
+            lng: zod.number().optional(),
+            stayMinutes: zod.number(),
+            reason: zod.string(),
+            source: zod.string().optional(),
+          }),
+        ),
+        staticMap: zod.object({
+          provider: zod.enum([
+            "KAKAO_JS_SDK_STATIC_MAP",
+            "KAKAO_MAP_SEARCH",
+            "NONE",
+          ]),
+          staticMapConfig: zod.record(zod.string(), zod.unknown()).optional(),
+          fallbackMapSearchUrl: zod.string().optional(),
+          reason: zod.string().optional(),
+        }),
+        llmPromptUsed: zod.boolean().optional(),
+        failReason: zod.string().nullish(),
+        warnings: zod.array(zod.string()),
+      }),
+    }),
+  );
 
 /**
- * Accepts one image from an authenticated client. The server should derive the user id from the JWT/session if persisted data is needed; clients must not submit user_id in the request body.
-
- * @summary Analyze an uploaded travel photo and map it to GOAT mood tags
+ * @summary Create and persist a recommendation for the authenticated user
  */
+export const CreateRecommendationHeader = zod.object({
+  "Idempotency-Key": zod.string().uuid(),
+});
 
-export const analyzeImageBodyDebugDefault = false;
+export const createRecommendationBodyCurrentMonthMax = 12;
 
-export const AnalyzeImageBody = zod.object({
-  "imageBase64": zod.string().min(1).describe('Base64-encoded JPEG, PNG, or WebP image. Recommended max decoded size is 10MB.'),
-  "mimeType": zod.enum(['image/jpeg', 'image/png', 'image/webp']),
-  "debug": zod.boolean().default(analyzeImageBodyDebugDefault)
-})
+export const createRecommendationBodyOriginLatitudeMin = -90;
+export const createRecommendationBodyOriginLatitudeMax = 90;
 
-export const analyzeImageResponseTwoDataConfidenceMin = 0;
-export const analyzeImageResponseTwoDataConfidenceMax = 1;
+export const createRecommendationBodyOriginLongitudeMin = -180;
+export const createRecommendationBodyOriginLongitudeMax = 180;
 
+export const createRecommendationBodyExcludeIdsMax = 58;
 
+export const CreateRecommendationBody = zod.object({
+  moodId: zod.string().min(1).optional(),
+  referenceCardId: zod.string().min(1).optional(),
+  travelPurpose: zod
+    .enum([
+      "사진·포토스팟",
+      "산책·힐링",
+      "카페·실내휴식",
+      "전시·건축관람",
+      "체험·액티비티",
+      "먹거리·야간탐방",
+      "숙소·리조트",
+    ])
+    .optional(),
+  transportType: zod.enum(["자차", "대중교통", "도보중심"]).optional(),
+  visitTime: zod
+    .enum(["새벽", "오전", "한낮", "오후", "저녁", "야간"])
+    .optional(),
+  currentMonth: zod
+    .number()
+    .min(1)
+    .max(createRecommendationBodyCurrentMonthMax)
+    .optional(),
+  debug: zod.boolean().optional(),
+  preferences: zod
+    .object({
+      companion: zod.enum(["혼자", "연인", "친구", "가족"]),
+      transport: zod.enum(["자차", "대중교통", "도보중심"]),
+      visitTime: zod
+        .union([
+          zod.literal("새벽"),
+          zod.literal("오전"),
+          zod.literal("한낮"),
+          zod.literal("오후"),
+          zod.literal("일몰"),
+          zod.literal("저녁"),
+          zod.literal("야간"),
+          zod.literal("밤/새벽"),
+          zod.literal(null),
+        ])
+        .nullish(),
+      purpose: zod.enum([
+        "가볍게 산책",
+        "사진 위주",
+        "액티비티",
+        "조용한 휴식",
+      ]),
+    })
+    .optional(),
+  origin: zod
+    .object({
+      type: zod.enum(["current", "region", "skip"]),
+      latitude: zod
+        .number()
+        .min(createRecommendationBodyOriginLatitudeMin)
+        .max(createRecommendationBodyOriginLatitudeMax)
+        .optional(),
+      longitude: zod
+        .number()
+        .min(createRecommendationBodyOriginLongitudeMin)
+        .max(createRecommendationBodyOriginLongitudeMax)
+        .optional(),
+      regionName: zod.string().min(1).optional(),
+    })
+    .optional(),
+  excludeIds: zod
+    .array(zod.string().min(1))
+    .max(createRecommendationBodyExcludeIdsMax)
+    .optional(),
+});
 
-export const AnalyzeImageResponse = zod.object({
-  "success": zod.boolean(),
-  "code": zod.literal("SUCCESS"),
-  "message": zod.string()
-}).and(zod.object({
-  "data": zod.object({
-  "primaryMood": zod.string(),
-  "moodTags": zod.array(zod.string()),
-  "matchedSceneTags": zod.array(zod.string()),
-  "confidence": zod.number().min(analyzeImageResponseTwoDataConfidenceMin).max(analyzeImageResponseTwoDataConfidenceMax).optional(),
-  "recommendedMoodId": zod.string().optional(),
-  "isEstimated": zod.boolean(),
-  "warnings": zod.array(zod.string()).optional()
-})
-}))
+export const createRecommendationResponseTwoDataCardsItemRankMax = 3;
 
+export const createRecommendationResponseTwoDataCardsItemScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreMax = 100;
+
+export const createRecommendationResponseTwoDataCardsItemScoreSummaryOneMoodScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreSummaryOneMoodScoreMax = 45;
+
+export const createRecommendationResponseTwoDataCardsItemScoreSummaryOneConditionScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreSummaryOneConditionScoreMax = 45;
+
+export const createRecommendationResponseTwoDataCardsItemScoreSummaryOneBaseScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreSummaryOneBaseScoreMax = 90;
+
+export const createRecommendationResponseTwoDataCardsItemScoreSummaryOneDisplayScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreSummaryOneDisplayScoreMax = 100;
+
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneThemeScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneThemeScoreMax = 18;
+
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneMoodTagsCountMin = 0;
+
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneMoodTagsScoreMin = 0;
+
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneSceneTagsCountMin = 0;
+
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneSceneTagsScoreMin = 0;
+
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOnePurposeScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOnePurposeScoreMax = 20;
+
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneAccessibilityScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneAccessibilityScoreMax = 12;
+
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneSeasonScoreMin = 0;
+export const createRecommendationResponseTwoDataCardsItemScoreDetailsOneSeasonScoreMax = 13;
+
+export const createRecommendationResponseTwoDataCardsMin = 3;
+export const createRecommendationResponseTwoDataCardsMax = 3;
+
+export const CreateRecommendationResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        recommendationId: zod.string().uuid(),
+        conditions: zod.record(zod.string(), zod.unknown()),
+        cards: zod
+          .array(
+            zod.object({
+              placeId: zod.string(),
+              name: zod.string(),
+              region: zod.string(),
+              imageUrl: zod.string().nullable(),
+              rank: zod
+                .number()
+                .min(1)
+                .max(createRecommendationResponseTwoDataCardsItemRankMax),
+              role: zod.enum([
+                "BEST_SCENE",
+                "SAME_MOOD_ALTERNATIVE",
+                "CONDITION_FIT_ALTERNATIVE",
+              ]),
+              score: zod
+                .number()
+                .min(createRecommendationResponseTwoDataCardsItemScoreMin)
+                .max(createRecommendationResponseTwoDataCardsItemScoreMax),
+              scoreSummary: zod.union([
+                zod
+                  .object({
+                    moodScore: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreSummaryOneMoodScoreMin,
+                      )
+                      .max(
+                        createRecommendationResponseTwoDataCardsItemScoreSummaryOneMoodScoreMax,
+                      ),
+                    conditionScore: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreSummaryOneConditionScoreMin,
+                      )
+                      .max(
+                        createRecommendationResponseTwoDataCardsItemScoreSummaryOneConditionScoreMax,
+                      ),
+                    baseScore: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreSummaryOneBaseScoreMin,
+                      )
+                      .max(
+                        createRecommendationResponseTwoDataCardsItemScoreSummaryOneBaseScoreMax,
+                      ),
+                    displayScore: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreSummaryOneDisplayScoreMin,
+                      )
+                      .max(
+                        createRecommendationResponseTwoDataCardsItemScoreSummaryOneDisplayScoreMax,
+                      ),
+                  })
+                  .describe(
+                    "User-safe summary. Internal exposure and candidate-selection adjustments are not exposed here.",
+                  ),
+                zod.null(),
+              ]),
+              scoreDetails: zod.union([
+                zod.object({
+                  theme: zod.object({
+                    requested: zod.string().optional(),
+                    placeTheme: zod.string(),
+                    matched: zod.boolean(),
+                    score: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneThemeScoreMin,
+                      )
+                      .max(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneThemeScoreMax,
+                      ),
+                  }),
+                  moodTags: zod.object({
+                    requested: zod.array(zod.string()),
+                    matched: zod.array(zod.string()),
+                    count: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneMoodTagsCountMin,
+                      ),
+                    score: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneMoodTagsScoreMin,
+                      ),
+                  }),
+                  sceneTags: zod.object({
+                    requested: zod.array(zod.string()),
+                    matched: zod.array(zod.string()),
+                    count: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneSceneTagsCountMin,
+                      ),
+                    score: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneSceneTagsScoreMin,
+                      ),
+                  }),
+                  purpose: zod.object({
+                    requested: zod.string().optional(),
+                    placePurposeTags: zod.array(zod.string()),
+                    matched: zod.boolean(),
+                    score: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOnePurposeScoreMin,
+                      )
+                      .max(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOnePurposeScoreMax,
+                      ),
+                  }),
+                  accessibility: zod.object({
+                    transportType: zod.string().optional(),
+                    grade: zod.string().optional(),
+                    score: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneAccessibilityScoreMin,
+                      )
+                      .max(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneAccessibilityScoreMax,
+                      ),
+                    inferred: zod.boolean().optional(),
+                    note: zod.string().optional(),
+                  }),
+                  season: zod.object({
+                    requested: zod.string().optional(),
+                    placeSeasonTags: zod.array(zod.string()),
+                    matchType: zod.enum([
+                      "current",
+                      "all_season",
+                      "none",
+                      "not_requested",
+                    ]),
+                    score: zod
+                      .number()
+                      .min(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneSeasonScoreMin,
+                      )
+                      .max(
+                        createRecommendationResponseTwoDataCardsItemScoreDetailsOneSeasonScoreMax,
+                      ),
+                  }),
+                }),
+                zod.null(),
+              ]),
+              reason: zod.string(),
+              reasons: zod.array(zod.string()),
+              cautions: zod.array(zod.string()),
+              bestSeasons: zod.array(zod.string()),
+              seasonBadge: zod.record(zod.string(), zod.unknown()).nullable(),
+              crowd: zod.object({
+                level: zod.enum(["low", "medium", "high", "unknown"]),
+                label: zod.string().nullable(),
+                concentrationRate: zod.number().nullable(),
+                baseDate: zod.string().nullable(),
+                source: zod.enum(["KTO_VISIT_CONCENTRATION", "fallback"]),
+              }),
+              bookmarked: zod.boolean(),
+              feedback: zod
+                .union([
+                  zod.literal("LIKE"),
+                  zod.literal("DISLIKE"),
+                  zod.literal(null),
+                ])
+                .nullable(),
+            }),
+          )
+          .min(createRecommendationResponseTwoDataCardsMin)
+          .max(createRecommendationResponseTwoDataCardsMax),
+        course: zod.record(zod.string(), zod.unknown()).nullable(),
+        createdAt: zod.coerce.date(),
+      }),
+    }),
+  );
+
+export const getRecentRecommendationsQueryLimitDefault = 1;
+export const getRecentRecommendationsQueryLimitMax = 20;
+
+export const GetRecentRecommendationsQueryParams = zod.object({
+  limit: zod.coerce
+    .number()
+    .min(1)
+    .max(getRecentRecommendationsQueryLimitMax)
+    .default(getRecentRecommendationsQueryLimitDefault),
+});
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemRankMax = 3;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreMax = 100;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneMoodScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneMoodScoreMax = 45;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneConditionScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneConditionScoreMax = 45;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneBaseScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneBaseScoreMax = 90;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneDisplayScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneDisplayScoreMax = 100;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneThemeScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneThemeScoreMax = 18;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneMoodTagsCountMin = 0;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneMoodTagsScoreMin = 0;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneSceneTagsCountMin = 0;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneSceneTagsScoreMin = 0;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOnePurposeScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOnePurposeScoreMax = 20;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneAccessibilityScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneAccessibilityScoreMax = 12;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneSeasonScoreMin = 0;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneSeasonScoreMax = 13;
+
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsMin = 3;
+export const getRecentRecommendationsResponseTwoDataItemsItemCardsMax = 3;
+
+export const GetRecentRecommendationsResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        items: zod.array(
+          zod.object({
+            recommendationId: zod.string().uuid(),
+            conditions: zod.record(zod.string(), zod.unknown()),
+            cards: zod
+              .array(
+                zod.object({
+                  placeId: zod.string(),
+                  name: zod.string(),
+                  region: zod.string(),
+                  imageUrl: zod.string().nullable(),
+                  rank: zod
+                    .number()
+                    .min(1)
+                    .max(
+                      getRecentRecommendationsResponseTwoDataItemsItemCardsItemRankMax,
+                    ),
+                  role: zod.enum([
+                    "BEST_SCENE",
+                    "SAME_MOOD_ALTERNATIVE",
+                    "CONDITION_FIT_ALTERNATIVE",
+                  ]),
+                  score: zod
+                    .number()
+                    .min(
+                      getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreMin,
+                    )
+                    .max(
+                      getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreMax,
+                    ),
+                  scoreSummary: zod.union([
+                    zod
+                      .object({
+                        moodScore: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneMoodScoreMin,
+                          )
+                          .max(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneMoodScoreMax,
+                          ),
+                        conditionScore: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneConditionScoreMin,
+                          )
+                          .max(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneConditionScoreMax,
+                          ),
+                        baseScore: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneBaseScoreMin,
+                          )
+                          .max(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneBaseScoreMax,
+                          ),
+                        displayScore: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneDisplayScoreMin,
+                          )
+                          .max(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreSummaryOneDisplayScoreMax,
+                          ),
+                      })
+                      .describe(
+                        "User-safe summary. Internal exposure and candidate-selection adjustments are not exposed here.",
+                      ),
+                    zod.null(),
+                  ]),
+                  scoreDetails: zod.union([
+                    zod.object({
+                      theme: zod.object({
+                        requested: zod.string().optional(),
+                        placeTheme: zod.string(),
+                        matched: zod.boolean(),
+                        score: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneThemeScoreMin,
+                          )
+                          .max(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneThemeScoreMax,
+                          ),
+                      }),
+                      moodTags: zod.object({
+                        requested: zod.array(zod.string()),
+                        matched: zod.array(zod.string()),
+                        count: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneMoodTagsCountMin,
+                          ),
+                        score: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneMoodTagsScoreMin,
+                          ),
+                      }),
+                      sceneTags: zod.object({
+                        requested: zod.array(zod.string()),
+                        matched: zod.array(zod.string()),
+                        count: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneSceneTagsCountMin,
+                          ),
+                        score: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneSceneTagsScoreMin,
+                          ),
+                      }),
+                      purpose: zod.object({
+                        requested: zod.string().optional(),
+                        placePurposeTags: zod.array(zod.string()),
+                        matched: zod.boolean(),
+                        score: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOnePurposeScoreMin,
+                          )
+                          .max(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOnePurposeScoreMax,
+                          ),
+                      }),
+                      accessibility: zod.object({
+                        transportType: zod.string().optional(),
+                        grade: zod.string().optional(),
+                        score: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneAccessibilityScoreMin,
+                          )
+                          .max(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneAccessibilityScoreMax,
+                          ),
+                        inferred: zod.boolean().optional(),
+                        note: zod.string().optional(),
+                      }),
+                      season: zod.object({
+                        requested: zod.string().optional(),
+                        placeSeasonTags: zod.array(zod.string()),
+                        matchType: zod.enum([
+                          "current",
+                          "all_season",
+                          "none",
+                          "not_requested",
+                        ]),
+                        score: zod
+                          .number()
+                          .min(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneSeasonScoreMin,
+                          )
+                          .max(
+                            getRecentRecommendationsResponseTwoDataItemsItemCardsItemScoreDetailsOneSeasonScoreMax,
+                          ),
+                      }),
+                    }),
+                    zod.null(),
+                  ]),
+                  reason: zod.string(),
+                  reasons: zod.array(zod.string()),
+                  cautions: zod.array(zod.string()),
+                  bestSeasons: zod.array(zod.string()),
+                  seasonBadge: zod
+                    .record(zod.string(), zod.unknown())
+                    .nullable(),
+                  crowd: zod.object({
+                    level: zod.enum(["low", "medium", "high", "unknown"]),
+                    label: zod.string().nullable(),
+                    concentrationRate: zod.number().nullable(),
+                    baseDate: zod.string().nullable(),
+                    source: zod.enum(["KTO_VISIT_CONCENTRATION", "fallback"]),
+                  }),
+                  bookmarked: zod.boolean(),
+                  feedback: zod
+                    .union([
+                      zod.literal("LIKE"),
+                      zod.literal("DISLIKE"),
+                      zod.literal(null),
+                    ])
+                    .nullable(),
+                }),
+              )
+              .min(getRecentRecommendationsResponseTwoDataItemsItemCardsMin)
+              .max(getRecentRecommendationsResponseTwoDataItemsItemCardsMax),
+            course: zod.record(zod.string(), zod.unknown()).nullable(),
+            createdAt: zod.coerce.date(),
+          }),
+        ),
+        nextCursor: zod.string().nullable(),
+      }),
+    }),
+  );
+
+export const GetRecommendationParams = zod.object({
+  recommendationId: zod.coerce.string().uuid(),
+});
+
+export const getRecommendationResponseTwoDataCardsItemRankMax = 3;
+
+export const getRecommendationResponseTwoDataCardsItemScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreMax = 100;
+
+export const getRecommendationResponseTwoDataCardsItemScoreSummaryOneMoodScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreSummaryOneMoodScoreMax = 45;
+
+export const getRecommendationResponseTwoDataCardsItemScoreSummaryOneConditionScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreSummaryOneConditionScoreMax = 45;
+
+export const getRecommendationResponseTwoDataCardsItemScoreSummaryOneBaseScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreSummaryOneBaseScoreMax = 90;
+
+export const getRecommendationResponseTwoDataCardsItemScoreSummaryOneDisplayScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreSummaryOneDisplayScoreMax = 100;
+
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneThemeScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneThemeScoreMax = 18;
+
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneMoodTagsCountMin = 0;
+
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneMoodTagsScoreMin = 0;
+
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneSceneTagsCountMin = 0;
+
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneSceneTagsScoreMin = 0;
+
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOnePurposeScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOnePurposeScoreMax = 20;
+
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneAccessibilityScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneAccessibilityScoreMax = 12;
+
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneSeasonScoreMin = 0;
+export const getRecommendationResponseTwoDataCardsItemScoreDetailsOneSeasonScoreMax = 13;
+
+export const getRecommendationResponseTwoDataCardsMin = 3;
+export const getRecommendationResponseTwoDataCardsMax = 3;
+
+export const GetRecommendationResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        recommendationId: zod.string().uuid(),
+        conditions: zod.record(zod.string(), zod.unknown()),
+        cards: zod
+          .array(
+            zod.object({
+              placeId: zod.string(),
+              name: zod.string(),
+              region: zod.string(),
+              imageUrl: zod.string().nullable(),
+              rank: zod
+                .number()
+                .min(1)
+                .max(getRecommendationResponseTwoDataCardsItemRankMax),
+              role: zod.enum([
+                "BEST_SCENE",
+                "SAME_MOOD_ALTERNATIVE",
+                "CONDITION_FIT_ALTERNATIVE",
+              ]),
+              score: zod
+                .number()
+                .min(getRecommendationResponseTwoDataCardsItemScoreMin)
+                .max(getRecommendationResponseTwoDataCardsItemScoreMax),
+              scoreSummary: zod.union([
+                zod
+                  .object({
+                    moodScore: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreSummaryOneMoodScoreMin,
+                      )
+                      .max(
+                        getRecommendationResponseTwoDataCardsItemScoreSummaryOneMoodScoreMax,
+                      ),
+                    conditionScore: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreSummaryOneConditionScoreMin,
+                      )
+                      .max(
+                        getRecommendationResponseTwoDataCardsItemScoreSummaryOneConditionScoreMax,
+                      ),
+                    baseScore: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreSummaryOneBaseScoreMin,
+                      )
+                      .max(
+                        getRecommendationResponseTwoDataCardsItemScoreSummaryOneBaseScoreMax,
+                      ),
+                    displayScore: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreSummaryOneDisplayScoreMin,
+                      )
+                      .max(
+                        getRecommendationResponseTwoDataCardsItemScoreSummaryOneDisplayScoreMax,
+                      ),
+                  })
+                  .describe(
+                    "User-safe summary. Internal exposure and candidate-selection adjustments are not exposed here.",
+                  ),
+                zod.null(),
+              ]),
+              scoreDetails: zod.union([
+                zod.object({
+                  theme: zod.object({
+                    requested: zod.string().optional(),
+                    placeTheme: zod.string(),
+                    matched: zod.boolean(),
+                    score: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneThemeScoreMin,
+                      )
+                      .max(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneThemeScoreMax,
+                      ),
+                  }),
+                  moodTags: zod.object({
+                    requested: zod.array(zod.string()),
+                    matched: zod.array(zod.string()),
+                    count: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneMoodTagsCountMin,
+                      ),
+                    score: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneMoodTagsScoreMin,
+                      ),
+                  }),
+                  sceneTags: zod.object({
+                    requested: zod.array(zod.string()),
+                    matched: zod.array(zod.string()),
+                    count: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneSceneTagsCountMin,
+                      ),
+                    score: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneSceneTagsScoreMin,
+                      ),
+                  }),
+                  purpose: zod.object({
+                    requested: zod.string().optional(),
+                    placePurposeTags: zod.array(zod.string()),
+                    matched: zod.boolean(),
+                    score: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOnePurposeScoreMin,
+                      )
+                      .max(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOnePurposeScoreMax,
+                      ),
+                  }),
+                  accessibility: zod.object({
+                    transportType: zod.string().optional(),
+                    grade: zod.string().optional(),
+                    score: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneAccessibilityScoreMin,
+                      )
+                      .max(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneAccessibilityScoreMax,
+                      ),
+                    inferred: zod.boolean().optional(),
+                    note: zod.string().optional(),
+                  }),
+                  season: zod.object({
+                    requested: zod.string().optional(),
+                    placeSeasonTags: zod.array(zod.string()),
+                    matchType: zod.enum([
+                      "current",
+                      "all_season",
+                      "none",
+                      "not_requested",
+                    ]),
+                    score: zod
+                      .number()
+                      .min(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneSeasonScoreMin,
+                      )
+                      .max(
+                        getRecommendationResponseTwoDataCardsItemScoreDetailsOneSeasonScoreMax,
+                      ),
+                  }),
+                }),
+                zod.null(),
+              ]),
+              reason: zod.string(),
+              reasons: zod.array(zod.string()),
+              cautions: zod.array(zod.string()),
+              bestSeasons: zod.array(zod.string()),
+              seasonBadge: zod.record(zod.string(), zod.unknown()).nullable(),
+              crowd: zod.object({
+                level: zod.enum(["low", "medium", "high", "unknown"]),
+                label: zod.string().nullable(),
+                concentrationRate: zod.number().nullable(),
+                baseDate: zod.string().nullable(),
+                source: zod.enum(["KTO_VISIT_CONCENTRATION", "fallback"]),
+              }),
+              bookmarked: zod.boolean(),
+              feedback: zod
+                .union([
+                  zod.literal("LIKE"),
+                  zod.literal("DISLIKE"),
+                  zod.literal(null),
+                ])
+                .nullable(),
+            }),
+          )
+          .min(getRecommendationResponseTwoDataCardsMin)
+          .max(getRecommendationResponseTwoDataCardsMax),
+        course: zod.record(zod.string(), zod.unknown()).nullable(),
+        createdAt: zod.coerce.date(),
+      }),
+    }),
+  );
+
+export const DeleteRecommendationParams = zod.object({
+  recommendationId: zod.coerce.string().uuid(),
+});
+
+export const DeleteRecommendationResponse = zod.object({
+  success: zod.boolean(),
+  code: zod.string(),
+  message: zod.string(),
+  requestId: zod.string().optional(),
+});
+
+export const GetBookmarksResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        items: zod.array(zod.record(zod.string(), zod.unknown())),
+      }),
+    }),
+  );
+
+export const saveBookmarkBodyPlaceIdRegExp = new RegExp("^GOAT-\\\\d{3}$");
+
+export const SaveBookmarkBody = zod.object({
+  placeId: zod.string().regex(saveBookmarkBodyPlaceIdRegExp),
+});
+
+export const SaveBookmarkResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        placeId: zod.string(),
+        bookmarked: zod.boolean(),
+      }),
+    }),
+  );
+
+export const DeleteBookmarkParams = zod.object({
+  placeId: zod.coerce.string(),
+});
+
+export const DeleteBookmarkResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        placeId: zod.string(),
+        bookmarked: zod.boolean(),
+      }),
+    }),
+  );
+
+export const GetBookmarkStatusParams = zod.object({
+  placeId: zod.coerce.string(),
+});
+
+export const GetBookmarkStatusResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        placeId: zod.string(),
+        bookmarked: zod.boolean(),
+      }),
+    }),
+  );
+
+export const GetRecommendationFeedbackParams = zod.object({
+  recommendationId: zod.coerce.string().uuid(),
+  placeId: zod.coerce.string(),
+});
+
+export const GetRecommendationFeedbackResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.record(zod.string(), zod.unknown()),
+    }),
+  );
+
+export const PutRecommendationFeedbackParams = zod.object({
+  recommendationId: zod.coerce.string().uuid(),
+  placeId: zod.coerce.string(),
+});
+
+export const putRecommendationFeedbackBodyReasonTextMax = 500;
+
+export const PutRecommendationFeedbackBody = zod.object({
+  type: zod.enum(["LIKE", "DISLIKE"]),
+  reasonCode: zod
+    .union([
+      zod.literal("TOO_FAR"),
+      zod.literal("NOT_MY_MOOD"),
+      zod.literal("TRANSPORT_DIFFICULT"),
+      zod.literal("ALREADY_VISITED"),
+      zod.literal("TOO_CROWDED"),
+      zod.literal("OTHER"),
+      zod.literal(null),
+    ])
+    .nullish(),
+  reasonText: zod
+    .string()
+    .max(putRecommendationFeedbackBodyReasonTextMax)
+    .nullish(),
+});
+
+export const PutRecommendationFeedbackResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.record(zod.string(), zod.unknown()),
+    }),
+  );
+
+export const DeleteRecommendationFeedbackParams = zod.object({
+  recommendationId: zod.coerce.string().uuid(),
+  placeId: zod.coerce.string(),
+});
+
+export const DeleteRecommendationFeedbackResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.record(zod.string(), zod.unknown()),
+    }),
+  );
 
 /**
  * @summary Get a place by ID
  */
 
-
-
 export const GetPlaceParams = zod.object({
-  "id": zod.coerce.string().min(1)
-})
+  id: zod.coerce.string().min(1),
+});
 
-export const GetPlaceResponse = zod.object({
-  "success": zod.boolean(),
-  "code": zod.literal("SUCCESS"),
-  "message": zod.string()
-}).and(zod.object({
-  "data": zod.object({
-  "place": zod.object({
-  "place_id": zod.string(),
-  "city": zod.string(),
-  "region_group": zod.string(),
-  "place_name": zod.string(),
-  "place_type": zod.string(),
-  "primary_mood": zod.string(),
-  "mood_tags": zod.array(zod.string()),
-  "photo_point": zod.string(),
-  "best_time": zod.string(),
-  "best_season": zod.string(),
-  "accessibility": zod.string(),
-  "data_status": zod.enum(['confirmed', 'needs_verification', 'future_candidate']),
-  "recommendation_use": zod.string(),
-  "note": zod.string(),
-  "address": zod.string().optional(),
-  "lat": zod.number().optional(),
-  "lng": zod.number().optional(),
-  "imageUrl": zod.string().optional(),
-  "parking": zod.string().optional(),
-  "travelTime": zod.string().optional(),
-  "weatherFit": zod.string().optional(),
-  "crowdLevel": zod.string().optional(),
-  "contactInfo": zod.string().optional(),
-  "description": zod.string().optional()
-})
-})
-}))
-
+export const GetPlaceResponse = zod
+  .object({
+    success: zod.boolean(),
+    code: zod.string(),
+    message: zod.string(),
+    requestId: zod.string().optional(),
+  })
+  .and(
+    zod.object({
+      data: zod.object({
+        place: zod.object({
+          place_id: zod.string(),
+          city: zod.string(),
+          region_group: zod.string(),
+          place_name: zod.string(),
+          place_type: zod.string(),
+          primary_mood: zod.string(),
+          mood_tags: zod.array(zod.string()),
+          photo_point: zod.string(),
+          best_time: zod.string(),
+          best_season: zod.string(),
+          accessibility: zod.string(),
+          data_status: zod.enum([
+            "confirmed",
+            "needs_verification",
+            "future_candidate",
+          ]),
+          recommendation_use: zod.string(),
+          note: zod.string(),
+          address: zod.string().optional(),
+          lat: zod.number().optional(),
+          lng: zod.number().optional(),
+          imageUrl: zod.string().optional(),
+          parking: zod.string().optional(),
+          travelTime: zod.string().optional(),
+          weatherFit: zod.string().optional(),
+          crowdLevel: zod.string().optional(),
+          contactInfo: zod.string().optional(),
+          description: zod.string().optional(),
+        }),
+      }),
+    }),
+  );
 
 /**
  * @summary Proxy a Korea Tourism Organization API request
@@ -309,20 +1949,19 @@ export const GetPlaceResponse = zod.object({
 export const proxyKtoQueryMobileOSDefault = `ETC`;
 export const proxyKtoQueryMobileAppDefault = `GOAT`;
 
-
-
 export const ProxyKtoQueryParams = zod.object({
-  "path": zod.coerce.string().describe('KTO path below https:\/\/apis.data.go.kr\/B551011\/'),
-  "MobileOS": zod.coerce.string().default(proxyKtoQueryMobileOSDefault),
-  "MobileApp": zod.coerce.string().default(proxyKtoQueryMobileAppDefault),
-  "_type": zod.enum(['json']).optional(),
-  "keyword": zod.coerce.string().optional(),
-  "contentId": zod.coerce.string().optional(),
-  "contentTypeId": zod.coerce.string().optional(),
-  "areaCode": zod.coerce.string().optional(),
-  "numOfRows": zod.coerce.number().min(1).optional(),
-  "pageNo": zod.coerce.number().min(1).optional()
-})
+  path: zod.coerce
+    .string()
+    .describe("KTO path below https:\/\/apis.data.go.kr\/B551011\/"),
+  MobileOS: zod.coerce.string().default(proxyKtoQueryMobileOSDefault),
+  MobileApp: zod.coerce.string().default(proxyKtoQueryMobileAppDefault),
+  _type: zod.enum(["json"]).optional(),
+  keyword: zod.coerce.string().optional(),
+  contentId: zod.coerce.string().optional(),
+  contentTypeId: zod.coerce.string().optional(),
+  areaCode: zod.coerce.string().optional(),
+  numOfRows: zod.coerce.number().min(1).optional(),
+  pageNo: zod.coerce.number().min(1).optional(),
+});
 
-export const ProxyKtoResponse = zod.record(zod.string(), zod.unknown())
-
+export const ProxyKtoResponse = zod.record(zod.string(), zod.unknown());

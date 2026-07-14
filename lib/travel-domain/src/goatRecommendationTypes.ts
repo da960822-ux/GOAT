@@ -86,6 +86,9 @@ export interface RecommendationCardSelectionAudit {
 }
 
 export interface RecommendationDecisionAudit {
+  schemaVersion: 1;
+  policyVersion: "goat-score-v1";
+  candidateCount: number;
   fallback: {
     card3PurposeFallbackUsed: boolean;
     reason?: string;
@@ -376,17 +379,6 @@ export interface RecommendResult {
         displayScore: number;
       }>;
       /** 사진으로 찾기 모드에서 AI 분석값이 추천 입력으로 어떻게 변환됐는지 확인하는 디버그 정보. */
-      photoAnalysis?: {
-        status: string;
-        confidence?: number;
-        selectedPrimaryTheme?: string;
-        candidateThemes: Array<{
-          primaryTheme: string;
-          confidence?: number;
-          reason?: string;
-        }>;
-        summary?: string;
-      };
     };
   } | null;
   failReason: string | null;
