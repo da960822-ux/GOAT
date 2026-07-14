@@ -28,7 +28,7 @@
 3. 사용자가 레퍼런스 카드 1개 선택
 4. 사용자가 여행 목적/이동수단/시간대 선택
 5. 백엔드에 referenceCardId + 조건값 전송
-6. 백엔드 응답 resultData.cards 3개 표시
+6. 백엔드 응답 data.resultData.cards 3개 표시
 ```
 
 ---
@@ -82,6 +82,7 @@
 | `travelPurpose` | 목적 선택 버튼/셀렉트 |
 | `transportType` | 자차/대중교통/도보중심 선택 |
 | `visitTime` | 새벽/오전/한낮/오후/저녁/야간 선택 |
+| `excludeIds` | 다시 추천 시 현재 화면에 나온 placeId 배열 |
 
 `currentMonth`는 백엔드가 서버 시간으로 계산해도 됩니다.
 
@@ -89,7 +90,7 @@
 
 ## 5. 추천 결과 화면에서 쓰는 값
 
-백엔드 응답의 `resultData.cards` 배열을 사용합니다.
+백엔드 응답의 `data.resultData.cards` 배열을 사용합니다.
 
 | 응답 필드 | UI 사용 방법 |
 |---|---|
@@ -108,8 +109,8 @@
 | `seasonTags` | 추천 계절 |
 | `purposeTags` | 어울리는 여행 목적 |
 | `accessibility` | 자차/대중교통 접근성 표시 |
-| `imageUrl` | 대표 이미지. 현재 없으면 placeholder 사용 |
-| `address` | 주소. 현재 없으면 지도 검색은 placeName 중심으로 처리 |
+| `imageUrl` | 대표 이미지. 없으면 placeholder 사용 |
+| `address` | 주소. 지도앱 연결과 상세 표시 |
 
 ---
 
@@ -143,7 +144,7 @@
 | 상황 | 처리 방법 |
 |---|---|
 | `imageUrl`이 없음 | 기본 placeholder 이미지 사용 |
-| `address`가 없음 | 지도앱 연결 시 장소명 + city로 검색 |
+| `address`가 없음 | 지도앱 연결 시 좌표 또는 장소명 + city로 검색 |
 | `status === FAILED` | “추천을 만들지 못했어요. 다시 시도해주세요.” 표시 |
 | `warnings`가 있음 | 개발 중에는 console 표시, 운영 화면에는 숨겨도 됨 |
 | `score.displayScore`와 `selectionScore`가 다름 | 화면에는 `displayScore`만 표시 |
@@ -157,7 +158,7 @@
 | 레퍼런스 카드 선택 화면 | 가능 | `goat_reference_cards_v2_balanced.json` |
 | 조건 선택 화면 | 가능 | 타입 파일의 `PurposeTag`, `TransportType`, `BestTime` |
 | 추천 결과 카드 3개 화면 | 가능 | `recommendation_result_sample.json`로 Mock 가능 |
-| 지도앱 연결 | 일부 가능 | 지금은 `placeName + city` 검색. `address` 채우면 더 정확해짐 |
+| 지도앱 연결 | 가능 | 좌표/주소 우선, 없으면 `placeName + city` 검색 |
 
 ---
 
@@ -167,11 +168,14 @@
 
 ```ts
 {
-  status: "DONE",
-  resultType: "RECOMMEND",
-  score: number,
-  resultData: {
-    cards: RecommendationCardForUI[]
+  success: true,
+  data: {
+    status: "DONE",
+    resultType: "RECOMMEND",
+    score: number,
+    resultData: {
+      cards: RecommendationCardForUI[]
+    }
   }
 }
 ```

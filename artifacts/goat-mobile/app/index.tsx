@@ -19,7 +19,6 @@ export default function LandingScreen() {
     <View style={styles.root}>
       <StatusBar barStyle="light-content" />
 
-      {/* Hero */}
       <ImageBackground
         source={require('@/assets/images/hero-landing.png')}
         style={styles.hero}
@@ -32,19 +31,16 @@ export default function LandingScreen() {
           </View>
           <View style={styles.heroTextBlock}>
             <Text style={styles.heroTagline}>
-              해외여행 같은 장면을{'\n'}강원에서 찾아보세요
+              해외여행 같은 장면을{'\n'}강원도에서 찾아보세요
             </Text>
-            <Text style={styles.heroSub}>
-              오늘 끌리는 감성 하나면 충분해요
-            </Text>
+            <Text style={styles.heroSub}>오늘 끌리는 감성 하나면 충분해요</Text>
           </View>
         </View>
       </ImageBackground>
 
-      {/* Bottom content */}
       <View style={[styles.bottom, { paddingBottom: bottomPad + 28 }]}>
         <Text style={[styles.subcopy, { color: colors.mutedForeground }]}>
-          감성을 고르면 그 장면을 가장 닮은{'\n'}강원 명소 3곳을 조용히 골라드려요.
+          7개 큰 무드에서 시작해, 그 장면을 가장 닮은{'\n'}강원 명소 3곳을 조용히 골라드려요.
         </Text>
 
         <TouchableOpacity
@@ -54,16 +50,6 @@ export default function LandingScreen() {
           testID="landing-cta"
         >
           <Text style={styles.ctaText}>오늘의 감성 찾기</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.ctaSecondary, { borderColor: colors.border }]}
-          onPress={() => router.push('/photo-mood')}
-          activeOpacity={0.8}
-        >
-          <Text style={[styles.ctaSecondaryText, { color: colors.mutedForeground }]}>
-            사진으로 감성 찾기
-          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -121,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 18,
     borderRadius: 16,
-    marginBottom: 12,
+    marginBottom: 20,
   },
   ctaText: {
     fontSize: 17,
@@ -130,15 +116,6 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     letterSpacing: 0.3,
   },
-  ctaSecondary: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 14,
-    borderRadius: 14,
-    borderWidth: 1,
-    marginBottom: 28,
-  },
-  ctaSecondaryText: { fontSize: 14, fontFamily: 'Inter_400Regular' },
   serviceLink: {
     alignItems: 'center',
     paddingVertical: 6,

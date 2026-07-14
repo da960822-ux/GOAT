@@ -91,7 +91,7 @@ recommendGoatPlaces(request, placesDataset, referenceDataset)
 2. 없으면 장소의 `latitude/longitude` 또는 `lat/lng`로 직선거리 계산
 3. 둘 다 없으면 0점
 
-현재 업로드된 장소 JSON에는 좌표가 없어서, 별도 거리값을 넘기지 않으면 모든 routeDistanceBonus는 0점입니다.
+현재 장소 JSON에는 `latitude`, `longitude`, `address`가 포함되어 있습니다. 별도 길찾기 거리값을 넘기지 않으면 엔진은 1번 카드 기준 직선거리를 계산해 2번/3번 카드의 routeDistanceBonus에 반영합니다.
 
 거리 보너스 기본값:
 
@@ -220,10 +220,9 @@ return result;
 
 ## 10. 실서비스 보강 권장
 
-현재 로직은 업로드된 JSON만으로 돌아가도록 만들었습니다. 실제 서비스 정확도를 더 올리려면 다음 데이터만 추가하면 됩니다.
+현재 로직은 업로드된 JSON만으로 돌아가도록 만들었습니다. 실제 서비스 정확도를 더 올리려면 다음 데이터를 추가/보강하면 됩니다.
 
-1. `latitude`, `longitude`: routeDistanceBonus 활성화
-2. `address`: 상세 카드/지도 연결 품질 개선
-3. `imageUrl`: 추천 카드 대표 이미지 표시
-4. `accessibility.walk`: 도보중심 추정값 제거
-5. 장소별 누적 노출 로그: 58개 장소 균등 노출 보정 강화
+1. `imageUrl`: 추천 카드 대표 이미지 표시
+2. `accessibility.walk`: 도보중심 추정값 제거
+3. 장소별 누적 노출 로그: 58개 장소 균등 노출 보정 강화
+4. KTO `contentId`: 상세 이미지·설명·방문자 통계 연동 품질 개선

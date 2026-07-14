@@ -74,6 +74,7 @@ return result;
 | `transportType` | 권장 | `자차` | 이동수단: 자차/대중교통/도보중심 |
 | `visitTime` | 권장 | `오후` | 방문 시간대: 새벽/오전/한낮/오후/저녁/야간 |
 | `currentMonth` | 백엔드 계산 | `7` | 현재 계절 계산용. 프론트가 안 보내도 됨 |
+| `excludeIds` | 선택 | `["GOAT-025"]` | 다시 추천 시 이미 노출한 장소 제외 |
 
 ---
 
@@ -141,18 +142,18 @@ final/displayScore = baseScore + routeDistanceBonus - duplicatePenalty
 
 ---
 
-## 9. 현재 비어 있어도 괜찮은 값
+## 9. 현재 데이터 보강 상태
 
-현재 장소 JSON에는 `imageUrl`, `address`, `latitude`, `longitude`가 없습니다.
+현재 장소 JSON은 58개 장소를 포함하며, `address`, `latitude`, `longitude`는 채워져 있습니다. `imageUrl`은 아직 비어 있을 수 있으므로 프론트에서 placeholder를 준비하면 됩니다.
 
 | 값 | 현재 영향 | 백엔드 처리 |
 |---|---|---|
 | `imageUrl` | 프론트 카드 이미지 표시 불가 | 없으면 `null`로 내려감 |
-| `address` | 지도앱 정확 연결 약함 | 없으면 `null`로 내려감 |
-| `latitude`, `longitude` | 거리 보정 불가 | 없으면 `routeDistanceBonus = 0` |
+| `address` | 지도앱 검색 품질 개선 | 있으면 카드 응답에 내려감 |
+| `latitude`, `longitude` | 거리 보정 가능 | 길찾기 거리값이 없으면 직선거리 계산에 사용 |
 
 지금 당장 추천 로직은 정상 작동합니다.  
-데이터 보강은 `imageUrl`, `address`부터 하면 됩니다.
+데이터 보강은 `imageUrl`, KTO `contentId`, 운영시간/주차정보 순서로 하면 됩니다.
 
 ---
 

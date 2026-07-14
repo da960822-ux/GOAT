@@ -6,7 +6,9 @@
  * OpenAPI spec version: 0.3.0
  */
 import type { Mood } from './mood';
+import type { ReferenceCard } from './referenceCard';
 
 export interface MoodsData {
   moods: Mood[];
+  referenceCards: ReferenceCard[];
 }

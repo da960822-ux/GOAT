@@ -646,7 +646,7 @@ export function recommendGoatPlaces(
       };
     }
 
-    const selectedIds = new Set<string>([first.place.place_id]);
+    const selectedIds = new Set<string>([first.place.place_id, ...request.excludePlaceIds]);
 
     // 2번 카드: 1번과 같은 primaryTheme 우선, 중복 장소 제외, 거리/노출/coverage 보정 적용.
     const sameThemePool = placesDataset.places.filter(

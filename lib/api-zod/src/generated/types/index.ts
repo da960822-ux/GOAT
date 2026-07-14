@@ -6,7 +6,14 @@
  * OpenAPI spec version: 0.3.0
  */
 
+export * from './analyzeImageData';
+export * from './analyzeImageRequest';
+export * from './analyzeImageRequestMimeType';
+export * from './analyzeImageSuccessResponse';
 export * from './apiSuccessBase';
+export * from './courseStop';
+export * from './courseStopCategory';
+export * from './courseStopType';
 export * from './errorResponse';
 export * from './healthStatus';
 export * from './ktoProxyError';
@@ -28,10 +35,26 @@ export * from './recommendationsDataAlternativesItem';
 export * from './recommendationsDataCardsItem';
 export * from './recommendationsDataPoolPolicy';
 export * from './recommendationsSuccessResponse';
+export * from './recommendCourseData';
+export * from './recommendCourseDataConditions';
+export * from './recommendCourseDataMode';
+export * from './recommendCourseDataResultType';
+export * from './recommendCourseDataSelectedPlace';
+export * from './recommendCourseDataStatus';
+export * from './recommendCourseRequest';
+export * from './recommendCourseRequestCompanionType';
+export * from './recommendCourseRequestPrimaryTheme';
+export * from './recommendCourseRequestTransportType';
+export * from './recommendCourseRequestTravelPurpose';
+export * from './recommendCourseSuccessResponse';
 export * from './recommendFromTagsRequest';
 export * from './recommendFromTagsRequestTransportType';
 export * from './recommendFromTagsRequestTravelPurpose';
 export * from './recommendFromTagsRequestVisitTime';
+export * from './referenceCard';
+export * from './staticMapResult';
+export * from './staticMapResultProvider';
+export * from './staticMapResultStaticMapConfig';
 export * from './travelOrigin';
 export * from './travelOriginType';
 export * from './travelPreferences';

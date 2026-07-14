@@ -375,7 +375,11 @@
         "car": "상"
       },
       "recommendation_use": "사진스팟 추천",
-      "note": "공식/위치 검증 후 좌표 입력"
+      "note": "공식/위치 검증 후 좌표 입력",
+      "latitude": 37.8324970437374,
+      "longitude": 127.541711544872,
+      "address": "강원특별자치도 춘천시 남산면 햇골길 80",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-002",
@@ -413,7 +417,11 @@
         "car": "상"
       },
       "recommendation_use": "가족·사진스팟 추천",
-      "note": "입장권/운영일 확인 필요"
+      "note": "입장권/운영일 확인 필요",
+      "latitude": 37.884728,
+      "longitude": 127.698461,
+      "address": "강원특별자치도 춘천시 하중도길 128",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-003",
@@ -451,7 +459,11 @@
         "car": "상"
       },
       "recommendation_use": "해외감성 사진스팟",
-      "note": "카페 운영 여부 확인 필요"
+      "note": "카페 운영 여부 확인 필요",
+      "latitude": 37.8914525,
+      "longitude": 127.77651329,
+      "address": "강원특별자치도 춘천시 동면 순환대로 1154-97",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-004",
@@ -489,7 +501,11 @@
         "car": "상"
       },
       "recommendation_use": "목장형 코스 추천",
-      "note": "평창 대관령 목장권역과 별도 장소로 관리"
+      "note": "평창 대관령 목장권역과 별도 장소로 관리",
+      "latitude": 37.9791931279,
+      "longitude": 127.6957282457,
+      "address": "강원특별자치도 춘천시 사북면 춘화로 330-48",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-005",
@@ -527,7 +543,11 @@
         "car": "상"
       },
       "recommendation_use": "숙박·포토존 추천",
-      "note": "숙박시설 성격 강함"
+      "note": "숙박시설 성격 강함",
+      "latitude": 37.7278562949,
+      "longitude": 127.511273424,
+      "address": "강원특별자치도 춘천시 남면 가옹개길 52-9",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-006",
@@ -564,7 +584,11 @@
         "car": "상"
       },
       "recommendation_use": "카페·감성공간 추천",
-      "note": "상업시설로 운영상태 확인 필요"
+      "note": "상업시설로 운영상태 확인 필요",
+      "latitude": 37.8806441,
+      "longitude": 127.73251308,
+      "address": "강원특별자치도 춘천시 서부대성로 98",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-007",
@@ -600,7 +624,11 @@
         "car": "상"
       },
       "recommendation_use": "숙소 추천",
-      "note": "이와림과 분리 저장"
+      "note": "이와림과 분리 저장",
+      "latitude": 37.78269974,
+      "longitude": 127.64692302,
+      "address": "강원특별자치도 춘천시 남산면 소주고개로 644",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-008",
@@ -636,7 +664,11 @@
         "car": "상"
       },
       "recommendation_use": "숙소 추천",
-      "note": "스테이 조각밤과 분리 저장"
+      "note": "스테이 조각밤과 분리 저장",
+      "latitude": 37.99227377,
+      "longitude": 127.73017249,
+      "address": "강원특별자치도 춘천시 사북면 춘화로 736",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-009",
@@ -673,7 +705,11 @@
         "car": "상"
       },
       "recommendation_use": "건축·사진스팟 추천",
-      "note": "입장권 확인 필요"
+      "note": "입장권 확인 필요",
+      "latitude": 37.4153325754,
+      "longitude": 127.8234091043,
+      "address": "강원특별자치도 원주시 지정면 오크밸리2길 260",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-010",
@@ -711,7 +747,11 @@
         "car": "상"
       },
       "recommendation_use": "액티비티·포토스팟 추천",
-      "note": "운영·안전 공지 확인 필요"
+      "note": "운영·안전 공지 확인 필요",
+      "latitude": 37.3650642476,
+      "longitude": 127.8216159344,
+      "address": "강원특별자치도 원주시 지정면 소금산길 165-1",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-011",
@@ -749,7 +789,11 @@
         "car": "상"
       },
       "recommendation_use": "가족·동물교감 추천",
-      "note": "입장권 확인 필요"
+      "note": "입장권 확인 필요",
+      "latitude": 37.8276988352,
+      "longitude": 127.8837032834,
+      "address": "강원특별자치도 홍천군 화촌면 덕밭재길 146-155",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-012",
@@ -787,7 +831,11 @@
         "car": "상"
       },
       "recommendation_use": "숲길·겨울 코스 추천",
-      "note": "계절·입산 통제 확인 필요"
+      "note": "계절·입산 통제 확인 필요",
+      "latitude": 37.98819079,
+      "longitude": 128.19898761,
+      "address": "강원특별자치도 인제군 인제읍 원대리 산 75-22",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-013",
@@ -824,7 +872,11 @@
         "car": "상"
       },
       "recommendation_use": "조용한 감성스팟 추천",
-      "note": "종교시설 예절 안내 필요"
+      "note": "종교시설 예절 안내 필요",
+      "latitude": 38.07164976991122,
+      "longitude": 128.17426421217405,
+      "address": "강원특별자치도 인제군 인제읍 인제로225번길 12",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-014",
@@ -858,7 +910,11 @@
         "car": "상"
       },
       "recommendation_use": "SNS 화제 스팟 추천",
-      "note": "해외감성보다는 화제성 중심"
+      "note": "해외감성보다는 화제성 중심",
+      "latitude": 38.1306932194,
+      "longitude": 127.9828295908,
+      "address": "강원특별자치도 양구군 양구읍 한반도섬길 76",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-015",
@@ -895,7 +951,11 @@
         "car": "상"
       },
       "recommendation_use": "겨울 리조트 코스 추천",
-      "note": "숙박/방문 목적 구분 필요"
+      "note": "숙박/방문 목적 구분 필요",
+      "latitude": 37.65823078,
+      "longitude": 128.66954487,
+      "address": "강원특별자치도 평창군 대관령면 솔봉로 325",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-016",
@@ -932,7 +992,11 @@
         "car": "상"
       },
       "recommendation_use": "새벽·고원 포토스팟 추천",
-      "note": "도로·기상 확인 필요"
+      "note": "도로·기상 확인 필요",
+      "latitude": 37.40684467,
+      "longitude": 128.51176961,
+      "address": "강원특별자치도 평창군 미탄면 회동리 1-75",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-017",
@@ -970,7 +1034,11 @@
         "car": "상"
       },
       "recommendation_use": "목장 코스 추천",
-      "note": "목장권역 중 개별 장소"
+      "note": "목장권역 중 개별 장소",
+      "latitude": 37.6875878490799,
+      "longitude": 128.753301155634,
+      "address": "강원특별자치도 평창군 대관령면 대관령마루길 483-32",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-018",
@@ -1007,7 +1075,11 @@
         "car": "상"
       },
       "recommendation_use": "목장 코스 추천",
-      "note": "목장권역 중 개별 장소"
+      "note": "목장권역 중 개별 장소",
+      "latitude": 37.7071731576,
+      "longitude": 128.7188396792,
+      "address": "강원특별자치도 평창군 대관령면 꽃밭양지길 458-23",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-019",
@@ -1046,7 +1118,11 @@
         "car": "상"
       },
       "recommendation_use": "목장·설원 코스 추천",
-      "note": "구 삼양목장 명칭 포함 검색 필요"
+      "note": "구 삼양목장 명칭 포함 검색 필요",
+      "latitude": 37.7239204647,
+      "longitude": 128.7196632708,
+      "address": "강원특별자치도 평창군 대관령면 꽃밭양지길 708-9",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-020",
@@ -1084,7 +1160,11 @@
         "car": "상"
       },
       "recommendation_use": "숲길·케이블카 연계 추천",
-      "note": "발왕산 케이블카와 연계 가능"
+      "note": "발왕산 케이블카와 연계 가능",
+      "latitude": 37.650944467525484,
+      "longitude": 128.70555684303434,
+      "address": "강원특별자치도 평창군 대관령면 올림픽로 715",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-021",
@@ -1120,7 +1200,11 @@
         "car": "상"
       },
       "recommendation_use": "비오는 날 대안 코스 추천",
-      "note": "운영일 확인 필요"
+      "note": "운영일 확인 필요",
+      "latitude": 37.1850539695,
+      "longitude": 128.8836151729,
+      "address": "강원특별자치도 정선군 고한읍 함백산로 1445-44",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-022",
@@ -1156,7 +1240,11 @@
         "car": "상"
       },
       "recommendation_use": "가을 트레킹 추천",
-      "note": "등산 난이도 정보 필요"
+      "note": "등산 난이도 정보 필요",
+      "latitude": 37.2709,
+      "longitude": 128.7749,
+      "address": "강원특별자치도 정선군 남면 무릉리",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-023",
@@ -1193,7 +1281,11 @@
         "car": "상"
       },
       "recommendation_use": "일출·고원 포토스팟 추천",
-      "note": "도로 통제·기상 확인 필요"
+      "note": "도로 통제·기상 확인 필요",
+      "latitude": 37.21511248,
+      "longitude": 128.96443181,
+      "address": "강원특별자치도 태백시 창죽동 9-384",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-024",
@@ -1228,7 +1320,11 @@
         "car": "상"
       },
       "recommendation_use": "겨울 설경 코스 추천",
-      "note": "겨울 도로상태 확인 필요"
+      "note": "겨울 도로상태 확인 필요",
+      "latitude": 37.6060632778332,
+      "longitude": 128.264539774299,
+      "address": "강원특별자치도 횡성군 둔내면 경강로",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-025",
@@ -1265,7 +1361,11 @@
         "car": "상"
       },
       "recommendation_use": "해변 카페 코스 추천",
-      "note": "대중교통 접근성 좋음"
+      "note": "대중교통 접근성 좋음",
+      "latitude": 37.7725952413582,
+      "longitude": 128.947321445483,
+      "address": "강원특별자치도 강릉시 창해로14번길 20-1",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-026",
@@ -1302,7 +1402,11 @@
         "car": "상"
       },
       "recommendation_use": "사진·전시 코스 추천",
-      "note": "입장권 확인 필요"
+      "note": "입장권 확인 필요",
+      "latitude": 37.7064767296551,
+      "longitude": 129.010203568499,
+      "address": "강원특별자치도 강릉시 강동면 율곡로 1441",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-027",
@@ -1340,7 +1444,11 @@
         "car": "상"
       },
       "recommendation_use": "일출·랜드마크 추천",
-      "note": "숙박/비숙박 방문 구분 필요"
+      "note": "숙박/비숙박 방문 구분 필요",
+      "latitude": 37.68344629,
+      "longitude": 129.04392894,
+      "address": "강원특별자치도 강릉시 강동면 헌화로 950-39",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-028",
@@ -1376,7 +1484,11 @@
         "car": "상"
       },
       "recommendation_use": "K팝 팬 코스 추천",
-      "note": "해외감성보다 글로벌 화제성 중심"
+      "note": "해외감성보다 글로벌 화제성 중심",
+      "latitude": 37.911392026850415,
+      "longitude": 128.81785576346607,
+      "address": "강원특별자치도 강릉시 주문진읍 주문북로 222-30",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-029",
@@ -1413,7 +1525,11 @@
         "car": "상"
       },
       "recommendation_use": "일본 소도시 감성 추천",
-      "note": "안전 촬영 안내 필요"
+      "note": "안전 촬영 안내 필요",
+      "latitude": 37.691360328107315,
+      "longitude": 129.0325745067553,
+      "address": "강원특별자치도 강릉시 강동면 정동역길 17",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-030",
@@ -1451,7 +1567,11 @@
         "car": "상"
       },
       "recommendation_use": "별보기·고원 코스 추천",
-      "note": "기상·도로 확인 필요"
+      "note": "기상·도로 확인 필요",
+      "latitude": 37.6225888951,
+      "longitude": 128.7396598347,
+      "address": "강원특별자치도 강릉시 왕산면 안반데기길 428",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-031",
@@ -1490,7 +1610,11 @@
         "car": "상"
       },
       "recommendation_use": "드라이브 코스 추천",
-      "note": "무드 브랜딩 후보군"
+      "note": "무드 브랜딩 후보군",
+      "latitude": 37.6395216152575,
+      "longitude": 129.043483017933,
+      "address": "강원특별자치도 강릉시 옥계면 헌화로 271",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-032",
@@ -1526,7 +1650,11 @@
         "car": "상"
       },
       "recommendation_use": "골목 산책 추천",
-      "note": "개별 매장 변동성 큼"
+      "note": "개별 매장 변동성 큼",
+      "latitude": 37.7589404,
+      "longitude": 128.89171791,
+      "address": "강원특별자치도 강릉시 임영로 197-1 일대",
+      "coordinateSource": "KAKAO_MAP_SEARCH_REPRESENTATIVE"
     },
     {
       "place_id": "GOAT-033",
@@ -1561,7 +1689,11 @@
         "car": "상"
       },
       "recommendation_use": "숙소 추천",
-      "note": "상업시설 운영상태 확인 필요"
+      "note": "상업시설 운영상태 확인 필요",
+      "latitude": 37.8926175,
+      "longitude": 128.80066902,
+      "address": "강원특별자치도 강릉시 주문진읍 거문동길 201",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-034",
@@ -1597,7 +1729,11 @@
         "car": "상"
       },
       "recommendation_use": "숙소 추천",
-      "note": "상업시설 운영상태 확인 필요"
+      "note": "상업시설 운영상태 확인 필요",
+      "latitude": 37.73746637,
+      "longitude": 128.7947151,
+      "address": "강원특별자치도 강릉시 성산면 보현길 125",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-035",
@@ -1632,7 +1768,11 @@
         "car": "상"
       },
       "recommendation_use": "야간 대안 코스 추천",
-      "note": "식당 중심 데이터와 분리 필요"
+      "note": "식당 중심 데이터와 분리 필요",
+      "latitude": 37.755846288051,
+      "longitude": 128.897418452855,
+      "address": "강원특별자치도 강릉시 금성로11번길 9",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-036",
@@ -1669,7 +1809,11 @@
         "car": "상"
       },
       "recommendation_use": "SNS·재생관광 추천",
-      "note": "운영시간 확인 필요"
+      "note": "운영시간 확인 필요",
+      "latitude": 37.4759555345,
+      "longitude": 129.0330428105,
+      "address": "강원특별자치도 동해시 이기로 97",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-037",
@@ -1706,7 +1850,11 @@
         "car": "상"
       },
       "recommendation_use": "일본 소도시 감성 추천",
-      "note": "도로 촬영 안전 안내 필요"
+      "note": "도로 촬영 안전 안내 필요",
+      "latitude": 37.5670832421,
+      "longitude": 129.1193024261,
+      "address": "강원특별자치도 동해시 일출로 284",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-038",
@@ -1743,7 +1891,11 @@
         "car": "상"
       },
       "recommendation_use": "야간 항구 코스 추천",
-      "note": "식당 중심 데이터와 분리 필요"
+      "note": "식당 중심 데이터와 분리 필요",
+      "latitude": 37.5503878118,
+      "longitude": 129.1125091063,
+      "address": "강원특별자치도 동해시 일출로 22",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-039",
@@ -1779,7 +1931,11 @@
         "car": "상"
       },
       "recommendation_use": "브랜딩 후보 코스 추천",
-      "note": "논골담길/묵호등대 중복 통합"
+      "note": "논골담길/묵호등대 중복 통합",
+      "latitude": 37.5548307473,
+      "longitude": 129.1184741143,
+      "address": "강원특별자치도 동해시 해맞이길 289",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-040",
@@ -1817,7 +1973,11 @@
         "car": "상"
       },
       "recommendation_use": "해안 산책 추천",
-      "note": "안전점검·통제 여부 확인 필요"
+      "note": "안전점검·통제 여부 확인 필요",
+      "latitude": 38.1828830781178,
+      "longitude": 128.609482918206,
+      "address": "강원특별자치도 속초시 대포동 585-5",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-041",
@@ -1854,7 +2014,11 @@
         "car": "중"
       },
       "recommendation_use": "조용한 실내 대안 코스 추천",
-      "note": "개별 서점 운영시간 확인 필요"
+      "note": "개별 서점 운영시간 확인 필요",
+      "latitude": 38.200360484,
+      "longitude": 128.581400751,
+      "address": "강원특별자치도 속초시 중앙로 45",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-042",
@@ -1890,7 +2054,11 @@
         "car": "상"
       },
       "recommendation_use": "카페 감성 추천",
-      "note": "상업시설 운영상태 확인 필요"
+      "note": "상업시설 운영상태 확인 필요",
+      "latitude": 38.2093651858,
+      "longitude": 128.591369009,
+      "address": "강원특별자치도 속초시 수복로 248",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-043",
@@ -1926,7 +2094,11 @@
         "car": "상"
       },
       "recommendation_use": "야간·먹거리 코스 추천",
-      "note": "식당 데이터와 분리 관리 필요"
+      "note": "식당 데이터와 분리 관리 필요",
+      "latitude": 38.2039356903525,
+      "longitude": 128.590522986422,
+      "address": "강원특별자치도 속초시 중앙로147번길 12",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-044",
@@ -1963,7 +2135,11 @@
         "car": "상"
       },
       "recommendation_use": "서핑·비치 포토스팟 추천",
-      "note": "성수기 혼잡도 반영 필요"
+      "note": "성수기 혼잡도 반영 필요",
+      "latitude": 38.0280442733,
+      "longitude": 128.7173076869,
+      "address": "강원특별자치도 양양군 현북면 하조대해안길 119",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-045",
@@ -2000,7 +2176,11 @@
         "car": "상"
       },
       "recommendation_use": "서프타운 권역 추천",
-      "note": "개별 업장보다 권역으로 관리"
+      "note": "개별 업장보다 권역으로 관리",
+      "latitude": 37.968899,
+      "longitude": 128.761971,
+      "address": "강원특별자치도 양양군 현남면 인구리",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-046",
@@ -2036,7 +2216,11 @@
         "car": "상"
       },
       "recommendation_use": "카페 감성 추천",
-      "note": "업장 운영상태와 식당 여부 확인 필요"
+      "note": "업장 운영상태와 식당 여부 확인 필요",
+      "latitude": 37.9695463,
+      "longitude": 128.75794028,
+      "address": "강원특별자치도 양양군 현남면 창리길 29",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-047",
@@ -2073,7 +2257,11 @@
         "car": "상"
       },
       "recommendation_use": "서프 감성 카페 추천",
-      "note": "상업시설 운영상태 확인 필요"
+      "note": "상업시설 운영상태 확인 필요",
+      "latitude": 38.3756413491,
+      "longitude": 128.5049494401,
+      "address": "강원특별자치도 고성군 죽왕면 가향길 20-1",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-048",
@@ -2110,7 +2298,11 @@
         "car": "상"
       },
       "recommendation_use": "해변 코스 추천",
-      "note": "기상·수질·주차 확인 필요"
+      "note": "기상·수질·주차 확인 필요",
+      "latitude": 38.276603,
+      "longitude": 128.553266,
+      "address": "강원특별자치도 고성군 토성면 아야진해변길 157",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-049",
@@ -2148,7 +2340,11 @@
         "car": "상"
       },
       "recommendation_use": "숙소·리조트 추천",
-      "note": "숙박 중심 데이터로 분류"
+      "note": "숙박 중심 데이터로 분류",
+      "latitude": 38.22819389,
+      "longitude": 128.49348328,
+      "address": "강원특별자치도 고성군 토성면 신평골길 8-25",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-050",
@@ -2184,7 +2380,11 @@
         "car": "상"
       },
       "recommendation_use": "꽃밭·정원 코스 추천",
-      "note": "개화시기 반영 필수"
+      "note": "개화시기 반영 필수",
+      "latitude": 38.3485617881548,
+      "longitude": 128.415024410583,
+      "address": "강원특별자치도 고성군 간성읍 꽃대마을길 175",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-051",
@@ -2220,7 +2420,11 @@
         "car": "상"
       },
       "recommendation_use": "지질·해안 포토스팟 추천",
-      "note": "안전 안내 필요"
+      "note": "안전 안내 필요",
+      "latitude": 38.2963874857519,
+      "longitude": 128.54993790158,
+      "address": "강원특별자치도 고성군 죽왕면 괘진길 65",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-052",
@@ -2255,7 +2459,11 @@
         "car": "상"
       },
       "recommendation_use": "숙소 추천",
-      "note": "숙박시설 성격 강함"
+      "note": "숙박시설 성격 강함",
+      "latitude": 37.46383941,
+      "longitude": 129.17352877,
+      "address": "강원특별자치도 삼척시 뒷나루길 276-5",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-053",
@@ -2292,7 +2500,11 @@
         "car": "상"
       },
       "recommendation_use": "리조트·사진스팟 추천",
-      "note": "쏠비치 삼척과 산토리니 광장 통합"
+      "note": "쏠비치 삼척과 산토리니 광장 통합",
+      "latitude": 37.4708194414505,
+      "longitude": 129.165137712528,
+      "address": "강원특별자치도 삼척시 수로부인길 453",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-054",
@@ -2329,7 +2541,11 @@
         "car": "상"
       },
       "recommendation_use": "카페 감성 추천",
-      "note": "상업시설 운영상태 확인 필요"
+      "note": "상업시설 운영상태 확인 필요",
+      "latitude": 37.46562209,
+      "longitude": 129.17010401,
+      "address": "강원특별자치도 삼척시 새천년도로 531",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-055",
@@ -2366,7 +2582,11 @@
         "car": "상"
       },
       "recommendation_use": "해양 액티비티·포토스팟 추천",
-      "note": "용화해변과 연계 가능"
+      "note": "용화해변과 연계 가능",
+      "latitude": 37.2885194659761,
+      "longitude": 129.317164944775,
+      "address": "강원특별자치도 삼척시 근덕면 장호항길",
+      "coordinateSource": "KTO_SEARCH"
     },
     {
       "place_id": "GOAT-056",
@@ -2403,7 +2623,11 @@
         "car": "상"
       },
       "recommendation_use": "장호항 연계 대안 코스 추천",
-      "note": "장호항과 별도 장소로 관리"
+      "note": "장호항과 별도 장소로 관리",
+      "latitude": 37.28967724,
+      "longitude": 129.30536812,
+      "address": "강원특별자치도 삼척시 근덕면 용화리 14-5",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-057",
@@ -2441,7 +2665,11 @@
         "car": "상"
       },
       "recommendation_use": "해안 트레킹 추천",
-      "note": "파도·기상 확인 필요"
+      "note": "파도·기상 확인 필요",
+      "latitude": 37.31127224,
+      "longitude": 129.29508334,
+      "address": "강원특별자치도 삼척시 근덕면 초곡리 산 1",
+      "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
       "place_id": "GOAT-058",
@@ -2480,7 +2708,11 @@
         "car": "상"
       },
       "recommendation_use": "비 오는 날 대안 코스 추천",
-      "note": "날씨 단점을 장점으로 활용 가능"
+      "note": "날씨 단점을 장점으로 활용 가능",
+      "latitude": 38.1745090367448,
+      "longitude": 127.299988912714,
+      "address": "강원특별자치도 철원군 갈말읍 군탄리 산 78-2",
+      "coordinateSource": "KTO_SEARCH"
     }
   ]
 }

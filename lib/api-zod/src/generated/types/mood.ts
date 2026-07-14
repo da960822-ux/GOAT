@@ -5,10 +5,12 @@
  * Korean Travel Guide API
  * OpenAPI spec version: 0.3.0
  */
+import type { ReferenceCard } from './referenceCard';
 
 export interface Mood {
   id: string;
   name: string;
   description: string;
   keywords: string[];
+  referenceCards?: ReferenceCard[];
 }

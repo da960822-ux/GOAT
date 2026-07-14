@@ -17,7 +17,7 @@ export function notFoundHandler(req: Request, _res: Response, next: NextFunction
 
 export function errorHandler(
   error: unknown,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction,
 ) {
@@ -35,6 +35,10 @@ export function errorHandler(
     error instanceof SyntaxError &&
     "status" in error &&
     (error as SyntaxError & { status: number }).status === 400;
+
+  if (!isMalformedJson) {
+    req.log?.error({ err: error }, "Unhandled API error");
+  }
 
   res.status(isMalformedJson ? 400 : 500).json({
     success: false,

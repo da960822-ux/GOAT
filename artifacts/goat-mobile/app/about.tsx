@@ -8,38 +8,35 @@ import { GoatLogo } from '@/src/components/GoatLogo';
 export default function AboutScreen() {
   const router = useRouter();
   const colors = useColors();
+
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="GOAT 소개" onBack={() => router.back()} />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-
-        {/* Brand hero */}
         <View style={[styles.hero, { backgroundColor: colors.primary }]}>
           <GoatLogo variant="stacked" size="lg" theme="dark" />
           <View style={[styles.brandSentenceBox, { borderTopColor: 'rgba(255,255,255,0.15)' }]}>
-            <Text style={styles.brandSentence}>
-              해외의 감성을, 강원도에서.
-            </Text>
+            <Text style={styles.brandSentence}>해외의 감성을, 강원도에서.</Text>
             <Text style={styles.brandDesc}>
-              GOAT는 강원도 안에서 발견하는 해외 여행 같은 순간을 제안하는 감성 여행 모바일 앱 브랜드입니다.
+              GOAT는 강원도 안에서 해외여행 같은 장면을 빠르게 고를 수 있게 돕는 감성 관광 큐레이션 서비스입니다.
             </Text>
           </View>
         </View>
 
-        <Section title="GOAT란?" colors={colors}>
+        <Section title="GOAT는?" colors={colors}>
           <Paragraph colors={colors}>
-            GOAT는 "Gangwon Of All Time"의 약자로, 강원도 안에서 해외여행 같은 이색 장면을 빠르게 고를 수 있게 돕는 감성 관광 큐레이션 서비스입니다.
+            GOAT는 Gangwon Of All Time의 약자로, 사용자가 고른 감성에 맞춰 강원도의 이색 장소를 3개 카드로 압축해 제안합니다.
           </Paragraph>
           <Paragraph colors={colors}>
-            흔히 유럽·일본·동남아시아 여행에서 느끼는 '그 장면 감성'을 강원도 안에서 30초 만에 찾아드립니다.
+            현재 추천은 7개 큰 무드와 21개 세부 레퍼런스 카드를 기반으로 동작하며, 58개 강원 장소 데이터에서 후보를 고릅니다.
           </Paragraph>
         </Section>
 
         <Section title="어떻게 작동하나요?" colors={colors}>
           {[
-            { step: '1', text: '9가지 해외 감성 카테고리 중 하나를 선택합니다.' },
-            { step: '2', text: '초기 MVP에서는 선별된 강원 이색 장면 후보를 중심으로 감성 추천을 제공합니다.' },
-            { step: '3', text: '장면 최적 · 상황 맞춤 · 안전한 대안, 3장의 카드를 추천받습니다.' },
+            { step: '1', text: '7개 큰 무드 중 하나를 고르고, 필요하면 21개 세부 레퍼런스 카드로 장면을 더 좁힙니다.' },
+            { step: '2', text: '여행 목적과 이동수단을 입력해 조건 점수를 반영합니다.' },
+            { step: '3', text: '장면 최적, 같은 분위기 대안, 조건 맞춤 3개 카드를 추천받습니다.' },
             { step: '4', text: '카드를 눌러 상세 정보와 카카오맵 링크를 확인합니다.' },
           ].map((item) => (
             <View key={item.step} style={styles.stepRow}>
@@ -53,9 +50,9 @@ export default function AboutScreen() {
 
         <Section title="추천 카드 유형" colors={colors}>
           {[
-            { role: '장면 최적', desc: '선택한 감성과 가장 점수가 높은 장소. 무드 태그·대표 무드·사진 포인트를 종합적으로 분석합니다.' },
-            { role: '내 상황 맞춤', desc: '이동 수단, 동행, 목적 조건에 가장 잘 맞는 장소.' },
-            { role: '안전한 대안', desc: '현재 계절과 접근성이 좋아 지금 방문하기 최적인 장소.' },
+            { role: '장면 최적', desc: '선택한 감성과 가장 정직하게 맞는 장소입니다.' },
+            { role: '같은 분위기 대안', desc: '같은 무드 안에서 비교할 수 있는 두 번째 선택지입니다.' },
+            { role: '조건 맞춤', desc: '여행 목적, 이동수단, 현재 계절 조건을 더 우선해 고른 장소입니다.' },
           ].map((item) => (
             <View key={item.role} style={[styles.roleRow, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
               <Text style={[styles.roleLabel, { color: colors.primary }]}>{item.role}</Text>
@@ -64,7 +61,6 @@ export default function AboutScreen() {
           ))}
         </Section>
 
-        {/* Brand colors swatch */}
         <Section title="브랜드 컬러" colors={colors}>
           <View style={styles.swatchRow}>
             {[
@@ -103,7 +99,6 @@ function Paragraph({ colors, children }: { colors: any; children: React.ReactNod
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-
   hero: { alignItems: 'center', paddingVertical: 36, paddingHorizontal: 24, marginBottom: 4, gap: 24 },
   brandSentenceBox: { width: '100%', paddingTop: 20, borderTopWidth: 1, alignItems: 'center', gap: 8 },
   brandSentence: {
@@ -121,7 +116,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'rgba(255,255,255,0.6)',
   },
-
   section: { paddingHorizontal: 20, paddingVertical: 20, borderBottomWidth: 1 },
   sectionTitle: { fontSize: 16, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 14 },
   para: { fontSize: 14, fontFamily: 'Inter_400Regular', lineHeight: 22, marginBottom: 10 },
@@ -132,12 +126,10 @@ const styles = StyleSheet.create({
   roleRow: { borderRadius: 12, borderWidth: 1, padding: 14, marginBottom: 8 },
   roleLabel: { fontSize: 14, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 5 },
   roleDesc: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
-
   swatchRow: { flexDirection: 'row', gap: 16 },
   swatchItem: { alignItems: 'center', gap: 6 },
   swatch: { width: 48, height: 48, borderRadius: 12 },
   swatchHex: { fontSize: 11, fontFamily: 'Inter_500Medium' },
   swatchLabel: { fontSize: 11, fontFamily: 'Inter_400Regular' },
-
   spacer: { height: 32 },
 });

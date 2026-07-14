@@ -8,13 +8,14 @@ import { useColors } from '@/hooks/useColors';
 export default function GuideScreen() {
   const router = useRouter();
   const colors = useColors();
+
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="이용 안내" onBack={() => router.back()} />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {GUIDE_STEPS.map((step, i) => (
           <View key={i} style={[styles.step, { borderBottomColor: colors.border }]}>
-            <View style={[styles.stepHeader]}>
+            <View style={styles.stepHeader}>
               <View style={[styles.stepIcon, { backgroundColor: colors.secondary }]}>
                 <Feather name={step.icon as any} size={20} color={colors.primary} />
               </View>
@@ -24,7 +25,7 @@ export default function GuideScreen() {
               </View>
             </View>
             <Text style={[styles.stepBody, { color: colors.mutedForeground }]}>{step.body}</Text>
-            {step.tips && step.tips.map((tip, j) => (
+            {step.tips.map((tip, j) => (
               <View key={j} style={[styles.tipRow, { backgroundColor: colors.secondary }]}>
                 <Feather name="check" size={12} color={colors.primary} />
                 <Text style={[styles.tipText, { color: colors.secondaryForeground }]}>{tip}</Text>
@@ -52,55 +53,55 @@ export default function GuideScreen() {
 const GUIDE_STEPS = [
   {
     icon: 'list',
-    title: '원하는 감성 선택',
-    body: '홈 화면에서 "내 감성으로 장소 찾기"를 누르면 9가지 감성 카테고리가 표시됩니다. 지금 가고 싶은 분위기와 가장 비슷한 감성 하나를 선택하세요.',
+    title: '감성 선택',
+    body: '먼저 7개 큰 무드 중 지금 끌리는 분위기를 고릅니다. 프론트 구현에서는 각 무드 안의 21개 세부 레퍼런스 카드로 더 좁혀 선택할 수 있습니다.',
     tips: [
-      '카드 아래 설명 문구와 키워드 태그를 참고하세요.',
-      '여러 번 바꿔서 결과를 비교해볼 수 있습니다.',
+      '큰 무드는 빠른 시작점이고, 세부 레퍼런스 카드는 실제 추천 정확도를 높이는 선택지입니다.',
+      '세부 카드를 고르면 referenceCardId 기준으로 추천을 요청할 수 있습니다.',
     ],
   },
   {
     icon: 'layers',
     title: '조건 입력 후 추천 카드 비교',
-    body: '동행, 이동 수단, 여행 목적을 선택하면 조건에 맞는 강원도 명소 3곳이 추천됩니다. 각 카드는 역할이 다릅니다.',
+    body: '여행 목적과 이동수단을 선택하면 조건에 맞는 강원 명소 3곳을 추천합니다. 동행자, 출발 위치, 방문 시간은 현재 추천 카드 점수에 직접 반영되지 않습니다.',
     tips: [
-      '장면 최적: 감성 점수가 가장 높은 장소',
-      '내 상황 맞춤: 선택한 동행·이동·목적에 최적화된 장소',
-      '안전한 대안: 현재 계절·접근성 최적 장소',
+      '장면 최적: 선택한 감성과 가장 잘 맞는 장소',
+      '같은 분위기 대안: 같은 무드 안에서 비교할 수 있는 장소',
+      '조건 맞춤: 목적, 이동수단, 계절 조건을 우선 반영한 장소',
     ],
   },
   {
     icon: 'map-pin',
-    title: '상세 정보 확인 및 장소 저장',
-    body: '카드를 누르면 해당 장소의 상세 정보를 볼 수 있습니다. 사진 포인트, 방문 시간, 유의사항을 확인하고, 북마크 버튼으로 장소를 저장할 수 있습니다.',
+    title: '상세 정보 확인',
+    body: '카드를 누르면 장소 설명, 사진 포인트, 접근성, 주의사항을 확인할 수 있습니다. 운영 여부나 통제 정보는 방문 전 공식 채널에서 한 번 더 확인하는 것을 권장합니다.',
     tips: [
-      '같은 감성 대안에서 비슷한 다른 장소로 이동할 수 있습니다.',
-      '저장한 장소는 로그인 없이 기기에 보관됩니다.',
+      '사진과 관광 정보는 한국관광공사 API 또는 자체 장소 데이터로 보완됩니다.',
+      '저장 기능은 로그인 없이 기기 안에서 먼저 사용할 수 있습니다.',
     ],
   },
   {
     icon: 'navigation',
-    title: '마음에 드는 장소를 카카오맵으로 연결',
-    body: '상세 화면 하단의 지도 버튼을 누르면 카카오맵으로 이동합니다. 장소명과 도시 정보로 검색이 연결됩니다.',
+    title: '지도 앱으로 이동',
+    body: '마음에 드는 장소는 카카오맵 링크로 열 수 있습니다. 추천은 감성 선택과 조건에 기반하며, 현재 출발 위치 기준 가까운 순 정렬은 아직 적용되지 않습니다.',
     tips: [
-      'Android·iOS에서는 카카오맵 앱을 먼저 실행합니다.',
-      '앱이 없거나 웹에서 이용 중이면 카카오맵 웹 버전이 열립니다.',
+      '위치 권한을 허용하지 않아도 감성 기반 추천은 이용할 수 있습니다.',
+      '지도 앱에서는 실제 경로, 이동 시간, 운영 상태를 다시 확인하세요.',
     ],
   },
 ];
 
 const FAQ = [
   {
-    q: '추천 결과가 항상 같은가요?',
-    a: '"이 감성으로 다시 추천" 버튼을 누르면 이전과 다른 3곳을 새로 추천합니다. 계절이 바뀌면 안전한 대안 카드도 달라질 수 있습니다.',
+    q: '추천 결과가 계속 비슷하면 어떻게 하나요?',
+    a: '"이 감성으로 다시 추천"을 누르면 이전에 본 장소를 제외하고 다른 3곳을 요청할 수 있습니다.',
   },
   {
-    q: '로그인이나 위치 정보가 필요한가요?',
-    a: '아니요. GOAT는 완전히 오프라인으로 작동합니다. 로그인, 위치 정보, 인터넷 연결이 필요하지 않습니다.',
+    q: '로그인이나 위치 정보가 꼭 필요한가요?',
+    a: '아니요. 기본 추천은 로그인 없이 사용할 수 있습니다. 위치 정보는 현재 추천 카드 점수에 직접 반영되지 않으므로 필수 입력이 아닙니다.',
   },
   {
-    q: '장소가 휴업 또는 폐업한 경우 어떻게 하나요?',
-    a: '앱 데이터는 주기적으로 업데이트되지만, 실시간 운영 정보는 제공하지 않습니다. 방문 전 공식 채널이나 지도 앱에서 운영 여부를 확인해주세요.',
+    q: '장소가 휴무이거나 통제 중이면 어떻게 하나요?',
+    a: 'GOAT는 정적 장소 데이터와 공공 API를 함께 사용합니다. 실시간 운영 상태를 보장하지 않으므로 방문 전 공식 채널이나 지도 앱에서 운영 여부를 확인하세요.',
   },
 ];
 

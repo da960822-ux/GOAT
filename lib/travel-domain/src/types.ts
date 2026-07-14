@@ -1,4 +1,3 @@
-import type { RecommendationInput } from "./v13Engine";
 import type { RecommendationCard as GoatRecommendationCard } from "./goatRecommendationTypes";
 
 export type DataStatus = "confirmed" | "needs_verification" | "future_candidate";
@@ -35,16 +34,17 @@ export interface MoodCategory {
   name: string;
   description: string;
   keywords: string[];
-  engineInput: Pick<
-    RecommendationInput,
-    | "extractedTags"
-    | "sceneTags"
-    | "moodTags"
-    | "preferredSeason"
-    | "preferredTime"
-    | "regionGroup"
-    | "weatherTag"
-  >;
+  engineInput: MoodEngineInput;
+}
+
+export interface MoodEngineInput {
+  extractedTags?: string[];
+  sceneTags?: string[];
+  moodTags?: string[];
+  preferredSeason?: string | string[];
+  preferredTime?: string | string[];
+  regionGroup?: string;
+  weatherTag?: string;
 }
 
 export type RecommendationRole = "장면 최적" | "같은 분위기 대안" | "조건 맞춤";

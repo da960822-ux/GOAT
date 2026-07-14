@@ -19,7 +19,109 @@ export type PurposeTag =
 export type SeasonTag = "봄" | "여름" | "가을" | "겨울" | "사계절";
 export type BestTime = "새벽" | "오전" | "한낮" | "오후" | "저녁" | "야간";
 export type TransportType = "자차" | "대중교통" | "도보중심";
+export type CompanionType = "혼자" | "친구" | "연인" | "가족";
 export type AccessGrade = "상" | "중" | "하";
+
+export type RecommendationWarningCode =
+  | "REFERENCE_CARD_NOT_FOUND"
+  | "INVALID_PRIMARY_THEME"
+  | "INVALID_TRAVEL_PURPOSE"
+  | "INVALID_TRANSPORT_TYPE"
+  | "INVALID_CURRENT_SEASON"
+  | "CARD3_PURPOSE_FALLBACK";
+
+export interface RecommendationWarning {
+  code: RecommendationWarningCode | string;
+  message: string;
+  details?: Record<string, unknown>;
+}
+
+
+export interface RecommendationScoreSummary {
+  moodScore: number;
+  conditionScore: number;
+  baseScore: number;
+  routeDistanceBonus: number;
+  duplicatePenalty: number;
+  exposurePenalty: number;
+  coverageBoost: number;
+  lowExposureBoost: number;
+  selectionScore: number;
+  displayScore: number;
+}
+
+export interface RecommendationScoreCalculationDetail {
+  theme: {
+    requested?: string;
+    placeTheme: string;
+    matched: boolean;
+    score: number;
+  };
+  moodTags: MatchDetail;
+  sceneTags: MatchDetail;
+  purpose: ConditionScoreBreakdown["purpose"];
+  accessibility: ConditionScoreBreakdown["accessibility"];
+  season: ConditionScoreBreakdown["season"];
+}
+
+export interface RecommendationCardSelectionAudit {
+  rank: 1 | 2 | 3;
+  role: RecommendationCardRole;
+  roleLabel: string;
+  placeId: string;
+  placeName: string;
+  whySelected: string;
+  candidatePool: {
+    name: string;
+    size: number;
+    totalCandidatePoolSize: number;
+    strictPurposePoolSize?: number;
+    fallbackUsed?: boolean;
+    fallbackReason?: string;
+  };
+  scoreSummary: RecommendationScoreSummary;
+  scoreDetails: RecommendationScoreCalculationDetail;
+  reasons: string[];
+  cautions: string[];
+}
+
+export interface RecommendationDecisionAudit {
+  fallback: {
+    card3PurposeFallbackUsed: boolean;
+    reason?: string;
+    travelPurpose?: string;
+    strictPurposePoolSize?: number;
+    fallbackPoolSize?: number;
+  };
+  cardSelections: RecommendationCardSelectionAudit[];
+}
+
+export interface RecommendationWarningLogPayload {
+  event: "GOAT_RECOMMENDATION_WARNING";
+  timestamp: string;
+  warningCodes: string[];
+  warnings: RecommendationWarning[];
+  request: {
+    referenceCardId?: string;
+    primaryTheme?: string;
+    travelPurpose?: string;
+    transportType?: string;
+      currentSeason?: string;
+    currentMonth?: number;
+    selectedPlaceIds?: string[];
+  };
+  result: {
+    status: "DONE" | "FAILED";
+    resultType: "RECOMMEND" | "UNKNOWN";
+    score: number | null;
+    cardCount: number;
+    cardPlaceIds: string[];
+  };
+  decisionAudit?: RecommendationDecisionAudit;
+  context?: Record<string, unknown>;
+}
+
+export type RecommendationWarningLogger = (payload: RecommendationWarningLogPayload) => void;
 
 export interface GoatPlace {
   place_id: string;
@@ -109,6 +211,9 @@ export interface RecommendRequest extends ExposureStats, RouteDistanceInput {
   userSceneTags?: string[];
   travelPurpose?: PurposeTag | string;
   transportType?: TransportType | string;
+  /** 동행 여부는 1차 카드 점수에는 직접 반영하지 않고, 선택 장소 이후 하루 코스 큐레이션에 사용한다. */
+  companionType?: CompanionType | string;
+  /** @deprecated best_time/visitTime은 점수 계산에서 제외되었습니다. 과거 요청 호환용으로만 받으며 엔진에서는 무시합니다. */
   visitTime?: BestTime | string;
   /** 직접 계절을 넘기면 currentMonth보다 우선한다. */
   currentSeason?: SeasonTag | string;
@@ -122,6 +227,20 @@ export interface RecommendRequest extends ExposureStats, RouteDistanceInput {
   limit?: 3;
   /** true면 후보와 점수 세부 내역을 resultData.debug에 포함한다. */
   debug?: boolean;
+  /**
+   * warning이 생겼을 때 서버 로그에 자동 출력할지 여부. 기본값은 true다.
+   * false로 두면 resultData.warnings에는 남기되 console/logger/file 로그는 찍지 않는다.
+   */
+  enableWarningLog?: boolean;
+  /**
+   * warning을 JSONL 파일로도 저장할 경로.
+   * 없으면 process.env.GOAT_RECOMMENDATION_LOG_FILE 값을 사용하고, 그것도 없으면 logs/goat-recommendation-warnings.jsonl에 저장한다.
+   */
+  warningLogFilePath?: string;
+  /** requestId, userId, sessionId 등 로그 추적에 필요한 값을 함께 남길 때 사용한다. */
+  logContext?: Record<string, unknown>;
+  /** Nest/Pino/Winston 등 서버 logger와 연결하고 싶을 때 사용한다. 없으면 console.warn을 사용한다. */
+  warningLogger?: RecommendationWarningLogger;
 }
 
 export interface MatchDetail {
@@ -162,12 +281,6 @@ export interface ConditionScoreBreakdown {
     score: number;
     inferred?: boolean;
     note?: string;
-  };
-  bestTime: {
-    requested?: string;
-    placeBestTime: string;
-    matchType: "exact" | "adjacent" | "none" | "not_requested";
-    score: number;
   };
   season: {
     requested?: string;
@@ -226,7 +339,6 @@ export interface NormalizedRequest {
   userSceneTags: string[];
   travelPurpose?: string;
   transportType?: string;
-  visitTime?: string;
   currentSeason?: string;
   candidatePlaceIds: string[];
   excludePlaceIds: string[];
@@ -245,10 +357,14 @@ export interface RecommendResult {
   score: number | null;
   message: string;
   resultData: {
+    /** 서비스 레이어에서 생성한 추천 요청 ID. 다시 추천 시 rerollOfRequestId로 프론트가 다시 보낸다. */
+    requestId?: string;
     request: NormalizedRequest;
     cards: RecommendationCard[];
     alternatives: RecommendationCard[];
-    warnings: string[];
+    warnings: RecommendationWarning[];
+    /** fallback 발생 이유와 각 카드 선택 이유/점수 계산 근거. 로그에도 동일 구조가 포함된다. */
+    decisionAudit?: RecommendationDecisionAudit;
     debug?: {
       candidatePoolSize: number;
       scoredCandidates: Array<{
@@ -259,6 +375,18 @@ export interface RecommendResult {
         selectionScore: number;
         displayScore: number;
       }>;
+      /** 사진으로 찾기 모드에서 AI 분석값이 추천 입력으로 어떻게 변환됐는지 확인하는 디버그 정보. */
+      photoAnalysis?: {
+        status: string;
+        confidence?: number;
+        selectedPrimaryTheme?: string;
+        candidateThemes: Array<{
+          primaryTheme: string;
+          confidence?: number;
+          reason?: string;
+        }>;
+        summary?: string;
+      };
     };
   } | null;
   failReason: string | null;

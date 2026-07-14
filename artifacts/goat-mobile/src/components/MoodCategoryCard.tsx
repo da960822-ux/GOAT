@@ -14,18 +14,13 @@ interface SceneTheme {
 }
 
 const SCENE_THEME: Record<string, SceneTheme> = {
-  'california-coast':   { icon: 'navigation', accent: '#0369A1', bg: '#F0F9FF', border: '#BAE6FD' },
-  'japan-small-town':   { icon: 'map', accent: '#B45309', bg: '#FEF3C7', border: '#FDE68A' },
-  'alps-meadow':        { icon: 'triangle', accent: '#15803D', bg: '#F0FDF4', border: '#BBF7D0' },
-  'ryokan-lodging':     { icon: 'home', accent: '#9F1239', bg: '#FFF1F2', border: '#FECDD3' },
-  'rainy-canyon':       { icon: 'layers', accent: '#475569', bg: '#F8FAFC', border: '#CBD5E1' },
-  'nordic-winter':      { icon: 'feather', accent: '#4338CA', bg: '#EEF2FF', border: '#C7D2FE' },
-  'retro-night-market': { icon: 'moon', accent: '#7C3AED', bg: '#F5F0FF', border: '#DDD6FE' },
-  'plateau-stars':      { icon: 'star', accent: '#1D4ED8', bg: '#EFF6FF', border: '#BFDBFE' },
-  'bali-surf':          { icon: 'anchor', accent: '#0284C7', bg: '#E0F2FE', border: '#7DD3FC' },
-  'europe-garden':      { icon: 'sun', accent: '#047857', bg: '#ECFDF5', border: '#A7F3D0' },
-  'lake-reflection':    { icon: 'camera', accent: '#0F766E', bg: '#F0FDFA', border: '#99F6E4' },
-  'japan-retro-cafe':   { icon: 'coffee', accent: '#A16207', bg: '#FFFBEB', border: '#FDE68A' },
+  'sea-coast': { icon: 'navigation', accent: '#0369A1', bg: '#F0F9FF', border: '#BAE6FD' },
+  'japan-alley': { icon: 'map', accent: '#B45309', bg: '#FEF3C7', border: '#FDE68A' },
+  'alps-ranch': { icon: 'triangle', accent: '#15803D', bg: '#F0FDF4', border: '#BBF7D0' },
+  'forest-garden-rest': { icon: 'feather', accent: '#047857', bg: '#ECFDF5', border: '#A7F3D0' },
+  'retro-market-harbor': { icon: 'anchor', accent: '#7C3AED', bg: '#F5F0FF', border: '#DDD6FE' },
+  'architecture-exhibit-landmark': { icon: 'layers', accent: '#475569', bg: '#F8FAFC', border: '#CBD5E1' },
+  'resort-cafe-exotic': { icon: 'coffee', accent: '#A16207', bg: '#FFFBEB', border: '#FDE68A' },
 };
 
 const FALLBACK_THEME: SceneTheme = {

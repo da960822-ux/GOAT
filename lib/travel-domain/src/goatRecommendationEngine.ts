@@ -1,6 +1,5 @@
 import {
   AccessGrade,
-  BestTime,
   CandidateScore,
   ConditionScoreBreakdown,
   GoatPlace,
@@ -12,13 +11,128 @@ import {
   RecommendRequest,
   RecommendResult,
   RecommendationCard,
+  RecommendationWarning,
+  RecommendationWarningLogPayload,
+  RecommendationDecisionAudit,
+  RecommendationCardSelectionAudit,
   RecommendationCardRole,
   ScoreBreakdown,
   SeasonTag,
   TransportType,
 } from "./goatRecommendationTypes";
 
-const BEST_TIME_ORDER: BestTime[] = ["새벽", "오전", "한낮", "오후", "저녁", "야간"];
+declare const process: {
+  env?: Record<string, string | undefined>;
+  getBuiltinModule?: (moduleName: string) => unknown;
+} | undefined;
+declare const console: { warn: (...data: unknown[]) => void };
+
+const WARNING_LOG_EVENT = "GOAT_RECOMMENDATION_WARNING" as const;
+const WARNING_LOG_LABEL = "[GOAT_RECOMMENDATION_WARNING]";
+const WARNING_LOG_WRITE_FAIL_LABEL = "[GOAT_RECOMMENDATION_LOG_WRITE_FAILED]";
+const DEFAULT_WARNING_LOG_FILE_PATH = "logs/goat-recommendation-warnings.jsonl";
+
+interface FsLike {
+  mkdirSync(path: string, options?: { recursive?: boolean }): void;
+  appendFileSync(path: string, data: string, encoding?: string): void;
+}
+
+interface PathLike {
+  dirname(path: string): string;
+}
+
+function getEnvValue(key: string): string | undefined {
+  const value = typeof process !== "undefined" ? process?.env?.[key] : undefined;
+  return typeof value === "string" && value.trim() !== "" ? value : undefined;
+}
+
+function loadNodeBuiltin<T>(moduleName: string): T | null {
+  try {
+    if (typeof process === "undefined" || typeof process.getBuiltinModule !== "function") {
+      return null;
+    }
+    return process.getBuiltinModule(moduleName) as T;
+  } catch {
+    return null;
+  }
+}
+
+function appendWarningLogFile(filePath: string, payload: RecommendationWarningLogPayload): void {
+  const fs = loadNodeBuiltin<FsLike>("node:fs");
+  const path = loadNodeBuiltin<PathLike>("node:path");
+  if (!fs || !path) return;
+
+  try {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.appendFileSync(filePath, `${JSON.stringify(payload)}\n`, "utf8");
+  } catch (error) {
+    console.warn(WARNING_LOG_WRITE_FAIL_LABEL, {
+      filePath,
+      failReason: error instanceof Error ? error.message : "UNKNOWN_ERROR",
+    });
+  }
+}
+
+function buildWarningLogPayload(params: {
+  rawRequest: RecommendRequest;
+  request: NormalizedRequest;
+  result: RecommendResult;
+  warnings: RecommendationWarning[];
+  decisionAudit?: RecommendationDecisionAudit;
+}): RecommendationWarningLogPayload {
+  return {
+    event: WARNING_LOG_EVENT,
+    timestamp: new Date().toISOString(),
+    warningCodes: params.warnings.map((warning) => String(warning.code)),
+    warnings: params.warnings,
+    request: {
+      referenceCardId: params.rawRequest.referenceCardId,
+      primaryTheme: params.request.primaryTheme ?? (params.rawRequest.primaryTheme ? String(params.rawRequest.primaryTheme) : undefined),
+      travelPurpose: params.request.travelPurpose ?? (params.rawRequest.travelPurpose ? String(params.rawRequest.travelPurpose) : undefined),
+      transportType: params.request.transportType ?? (params.rawRequest.transportType ? String(params.rawRequest.transportType) : undefined),
+      currentSeason: params.request.currentSeason ?? (params.rawRequest.currentSeason ? String(params.rawRequest.currentSeason) : undefined),
+      currentMonth: params.rawRequest.currentMonth,
+      selectedPlaceIds: params.result.resultData?.cards.map((card) => card.placeId) ?? [],
+    },
+    result: {
+      status: params.result.status,
+      resultType: params.result.resultType,
+      score: params.result.score,
+      cardCount: params.result.resultData?.cards.length ?? 0,
+      cardPlaceIds: params.result.resultData?.cards.map((card) => card.placeId) ?? [],
+    },
+    decisionAudit: params.decisionAudit,
+    context: params.rawRequest.logContext,
+  };
+}
+
+function emitRecommendationWarningLog(params: {
+  rawRequest: RecommendRequest;
+  request: NormalizedRequest;
+  result: RecommendResult;
+  warnings: RecommendationWarning[];
+  decisionAudit?: RecommendationDecisionAudit;
+}): void {
+  if (params.rawRequest.enableWarningLog === false || params.warnings.length === 0) return;
+
+  const payload = buildWarningLogPayload(params);
+  const logger = params.rawRequest.warningLogger ?? ((logPayload: RecommendationWarningLogPayload) => {
+    console.warn(WARNING_LOG_LABEL, logPayload);
+  });
+
+  try {
+    logger(payload);
+  } catch (error) {
+    console.warn(WARNING_LOG_WRITE_FAIL_LABEL, {
+      target: "warningLogger",
+      failReason: error instanceof Error ? error.message : "UNKNOWN_ERROR",
+    });
+  }
+
+  const logFilePath = params.rawRequest.warningLogFilePath ?? getEnvValue("GOAT_RECOMMENDATION_LOG_FILE") ?? DEFAULT_WARNING_LOG_FILE_PATH;
+  appendWarningLogFile(logFilePath, payload);
+}
+
 const ACCESS_SCORE: Record<AccessGrade, number> = { 상: 12, 중: 7, 하: 1 };
 const MAX_SWAP_GAP = 8;
 const CARD_LIMIT = 3;
@@ -96,14 +210,6 @@ function routeBonusFromKm(km: number | undefined): number {
   if (km <= 40) return 4;
   if (km <= 70) return 2;
   return 0;
-}
-
-function isAdjacentTime(requested: string, placeBestTime: string): boolean {
-  const reqIdx = BEST_TIME_ORDER.indexOf(requested as BestTime);
-  const placeIdx = BEST_TIME_ORDER.indexOf(placeBestTime as BestTime);
-  if (reqIdx === -1 || placeIdx === -1) return false;
-  const diff = Math.abs(reqIdx - placeIdx);
-  return diff === 1 || diff === BEST_TIME_ORDER.length - 1;
 }
 
 function seasonFromMonth(month?: number): SeasonTag | undefined {
@@ -211,41 +317,27 @@ function calculateMoodScore(place: GoatPlace, request: NormalizedRequest): MoodS
 
 function calculateConditionScore(place: GoatPlace, request: NormalizedRequest): ConditionScoreBreakdown {
   const purposeMatched = Boolean(request.travelPurpose && place.purpose_tags?.includes(request.travelPurpose));
-  const purposeScore = purposeMatched ? 16 : 0;
+  const purposeScore = purposeMatched ? 20 : 0;
 
   const access = getAccessGrade(place, request.transportType);
   const accessScore = access.grade && ACCESS_SCORE[access.grade as AccessGrade] ? ACCESS_SCORE[access.grade as AccessGrade] : 0;
-
-  let bestTimeMatchType: ConditionScoreBreakdown["bestTime"]["matchType"] = "not_requested";
-  let bestTimeScore = 0;
-  if (request.visitTime) {
-    if (place.best_time === request.visitTime) {
-      bestTimeMatchType = "exact";
-      bestTimeScore = 8;
-    } else if (isAdjacentTime(request.visitTime, String(place.best_time))) {
-      bestTimeMatchType = "adjacent";
-      bestTimeScore = 4;
-    } else {
-      bestTimeMatchType = "none";
-    }
-  }
 
   let seasonMatchType: ConditionScoreBreakdown["season"]["matchType"] = "not_requested";
   let seasonScore = 0;
   if (request.currentSeason) {
     if (place.season_tags?.includes(request.currentSeason)) {
       seasonMatchType = "current";
-      seasonScore = 9;
+      seasonScore = 13;
     } else if (place.season_tags?.includes("사계절")) {
       seasonMatchType = "all_season";
-      seasonScore = 7;
+      seasonScore = 10;
     } else {
       seasonMatchType = "none";
     }
   }
 
   return {
-    total: purposeScore + accessScore + bestTimeScore + seasonScore,
+    total: purposeScore + accessScore + seasonScore,
     purpose: {
       requested: request.travelPurpose,
       placePurposeTags: place.purpose_tags ?? [],
@@ -258,12 +350,6 @@ function calculateConditionScore(place: GoatPlace, request: NormalizedRequest): 
       score: accessScore,
       inferred: access.inferred,
       note: access.note,
-    },
-    bestTime: {
-      requested: request.visitTime,
-      placeBestTime: String(place.best_time),
-      matchType: bestTimeMatchType,
-      score: bestTimeScore,
     },
     season: {
       requested: request.currentSeason,
@@ -385,8 +471,6 @@ function buildReasons(place: GoatPlace, score: ScoreBreakdown, request: Normaliz
   if (score.conditionScore.accessibility.score > 0) {
     reasons.push(`${request.transportType} 접근성이 ${score.conditionScore.accessibility.grade} 등급입니다.`);
   }
-  if (score.conditionScore.bestTime.matchType === "exact") reasons.push(`방문 시간대(${request.visitTime})와 최적 시간대가 정확히 맞습니다.`);
-  if (score.conditionScore.bestTime.matchType === "adjacent") reasons.push(`방문 시간대와 인접한 시간대라 일정 조정이 쉽습니다.`);
   if (score.conditionScore.season.matchType === "current") reasons.push(`현재 계절(${request.currentSeason})에 적합한 장소입니다.`);
   if (score.conditionScore.season.matchType === "all_season") reasons.push("사계절 방문 가능한 장소입니다.");
   if (score.routeDistanceBonus > 0) reasons.push(`1번 카드와 가까워 연계 동선 보너스 ${score.routeDistanceBonus}점이 반영됐습니다.`);
@@ -439,6 +523,67 @@ function toRecommendationCard(candidate: CandidateScore, rank: 1 | 2 | 3, role: 
   };
 }
 
+function toScoreSummary(score: ScoreBreakdown): RecommendationCardSelectionAudit["scoreSummary"] {
+  return {
+    moodScore: Number(score.moodScore.total.toFixed(2)),
+    conditionScore: Number(score.conditionScore.total.toFixed(2)),
+    baseScore: Number(score.baseScore.toFixed(2)),
+    routeDistanceBonus: Number(score.routeDistanceBonus.toFixed(2)),
+    duplicatePenalty: Number(score.duplicatePenalty.toFixed(2)),
+    exposurePenalty: Number(score.exposurePenalty.toFixed(2)),
+    coverageBoost: Number(score.coverageBoost.toFixed(2)),
+    lowExposureBoost: Number(score.lowExposureBoost.toFixed(2)),
+    selectionScore: Number(score.selectionScore.toFixed(2)),
+    displayScore: Number(score.displayScore.toFixed(2)),
+  };
+}
+
+function toScoreDetails(score: ScoreBreakdown): RecommendationCardSelectionAudit["scoreDetails"] {
+  return {
+    theme: score.moodScore.theme,
+    moodTags: score.moodScore.moodTags,
+    sceneTags: score.moodScore.sceneTags,
+    purpose: score.conditionScore.purpose,
+    accessibility: score.conditionScore.accessibility,
+    season: score.conditionScore.season,
+  };
+}
+
+function labelForRole(role: RecommendationCardRole): string {
+  const labels: Record<RecommendationCardRole, string> = {
+    BEST_SCENE: "최적 장면 카드",
+    SAME_MOOD_ALTERNATIVE: "같은 무드 대안 카드",
+    CONDITION_FIT_ALTERNATIVE: "조건 맞춤 카드",
+  };
+  return labels[role];
+}
+
+function buildSelectionAudit(params: {
+  candidate: CandidateScore;
+  rank: 1 | 2 | 3;
+  role: RecommendationCardRole;
+  whySelected: string;
+  candidatePool: RecommendationCardSelectionAudit["candidatePool"];
+}): RecommendationCardSelectionAudit {
+  return {
+    rank: params.rank,
+    role: params.role,
+    roleLabel: labelForRole(params.role),
+    placeId: params.candidate.place.place_id,
+    placeName: params.candidate.place.place_name,
+    whySelected: params.whySelected,
+    candidatePool: params.candidatePool,
+    scoreSummary: toScoreSummary(params.candidate.score),
+    scoreDetails: toScoreDetails(params.candidate.score),
+    reasons: params.candidate.reasons,
+    cautions: params.candidate.cautions,
+  };
+}
+
+function buildCard3FallbackReason(request: NormalizedRequest): string {
+  return `travelPurpose(${request.travelPurpose})와 purpose_tags가 일치하는 카드3 조건맞춤 후보가 0개라서 카드 3개 보장을 위해 전체 후보로 fallback했습니다.`;
+}
+
 function sortCandidates(candidates: CandidateScore[]): CandidateScore[] {
   return [...candidates].sort((a, b) => {
     const bySelection = b.score.selectionScore - a.score.selectionScore;
@@ -469,27 +614,34 @@ function normalizeRequest(
   rawRequest: RecommendRequest,
   placesDataset: GoatPlaceDataset,
   referenceDataset?: GoatReferenceCardDataset,
-): { request: NormalizedRequest; warnings: string[] } {
-  const warnings: string[] = [];
+): { request: NormalizedRequest; warnings: RecommendationWarning[] } {
+  const warnings: RecommendationWarning[] = [];
   const referenceCard = rawRequest.referenceCardId
     ? referenceDataset?.reference_cards.find((card) => card.referenceCardId === rawRequest.referenceCardId && card.isActive !== false)
     : undefined;
 
   if (rawRequest.referenceCardId && !referenceCard) {
-    warnings.push(`referenceCardId ${rawRequest.referenceCardId}를 찾지 못해 직접 입력값 기준으로 추천합니다.`);
+    warnings.push({
+      code: "REFERENCE_CARD_NOT_FOUND",
+      message: `referenceCardId ${rawRequest.referenceCardId}를 찾지 못해 직접 입력값 기준으로 추천합니다.`,
+      details: { referenceCardId: rawRequest.referenceCardId },
+    });
   }
 
   const moodAllowed = getAllowedSet(placesDataset, "mood_tags");
   const sceneAllowed = getAllowedSet(placesDataset, "sceneTags");
   const purposeAllowed = getAllowedSet(placesDataset, "purpose_tags");
   const themeAllowed = getAllowedSet(placesDataset, "primaryTheme");
-  const timeAllowed = getAllowedSet(placesDataset, "best_time");
   const transportAllowed = getAllowedSet(placesDataset, "transportType");
   const seasonAllowed = getAllowedSet(placesDataset, "season_tags");
 
   const primaryTheme = rawRequest.primaryTheme ?? referenceCard?.primaryTheme;
   const validPrimaryTheme = primaryTheme && (themeAllowed.size === 0 || themeAllowed.has(String(primaryTheme))) ? String(primaryTheme) : undefined;
-  if (primaryTheme && !validPrimaryTheme) warnings.push(`허용되지 않은 primaryTheme(${primaryTheme})는 점수 계산에서 제외했습니다.`);
+  if (primaryTheme && !validPrimaryTheme) warnings.push({
+    code: "INVALID_PRIMARY_THEME",
+    message: `허용되지 않은 primaryTheme(${primaryTheme})는 점수 계산에서 제외했습니다.`,
+    details: { primaryTheme },
+  });
 
   const userMoodTags = filterAllowed([...(rawRequest.userMoodTags ?? []), ...(referenceCard?.mood_tags ?? [])], moodAllowed);
   const userSceneTags = filterAllowed([...(rawRequest.userSceneTags ?? []), ...(referenceCard?.sceneTags ?? [])], sceneAllowed);
@@ -497,21 +649,30 @@ function normalizeRequest(
   const travelPurpose = rawRequest.travelPurpose && (purposeAllowed.size === 0 || purposeAllowed.has(rawRequest.travelPurpose))
     ? rawRequest.travelPurpose
     : referenceCard?.recommendedPurpose?.find((purpose) => purposeAllowed.size === 0 || purposeAllowed.has(purpose));
-  if (rawRequest.travelPurpose && travelPurpose !== rawRequest.travelPurpose) warnings.push(`허용되지 않은 travelPurpose(${rawRequest.travelPurpose})는 제외했습니다.`);
+  if (rawRequest.travelPurpose && travelPurpose !== rawRequest.travelPurpose) warnings.push({
+    code: "INVALID_TRAVEL_PURPOSE",
+    message: `허용되지 않은 travelPurpose(${rawRequest.travelPurpose})는 제외했습니다.`,
+    details: { travelPurpose: rawRequest.travelPurpose },
+  });
 
   const transportType = rawRequest.transportType && (transportAllowed.size === 0 || transportAllowed.has(rawRequest.transportType))
     ? rawRequest.transportType
     : referenceCard?.recommendedTransport?.find((transport) => transportAllowed.size === 0 || transportAllowed.has(transport));
-  if (rawRequest.transportType && transportType !== rawRequest.transportType) warnings.push(`허용되지 않은 transportType(${rawRequest.transportType})는 제외했습니다.`);
+  if (rawRequest.transportType && transportType !== rawRequest.transportType) warnings.push({
+    code: "INVALID_TRANSPORT_TYPE",
+    message: `허용되지 않은 transportType(${rawRequest.transportType})는 제외했습니다.`,
+    details: { transportType: rawRequest.transportType },
+  });
 
-  const visitTime = rawRequest.visitTime && (timeAllowed.size === 0 || timeAllowed.has(rawRequest.visitTime))
-    ? rawRequest.visitTime
-    : referenceCard?.recommendedBestTime?.find((time) => timeAllowed.size === 0 || timeAllowed.has(time));
-  if (rawRequest.visitTime && visitTime !== rawRequest.visitTime) warnings.push(`허용되지 않은 visitTime(${rawRequest.visitTime})은 제외했습니다.`);
+  // visitTime/best_time은 더 이상 점수 계산에 사용하지 않습니다. 과거 프론트 요청 호환을 위해 rawRequest.visitTime은 무시합니다.
 
   const computedSeason = rawRequest.currentSeason ?? seasonFromMonth(rawRequest.currentMonth);
   const currentSeason = computedSeason && (seasonAllowed.size === 0 || seasonAllowed.has(String(computedSeason))) ? String(computedSeason) : undefined;
-  if (computedSeason && !currentSeason) warnings.push(`허용되지 않은 currentSeason(${computedSeason})은 제외했습니다.`);
+  if (computedSeason && !currentSeason) warnings.push({
+    code: "INVALID_CURRENT_SEASON",
+    message: `허용되지 않은 currentSeason(${computedSeason})은 제외했습니다.`,
+    details: { currentSeason: computedSeason },
+  });
 
   const candidatePlaceIds = uniq([
     ...(rawRequest.candidatePlaceIds ?? []),
@@ -526,7 +687,6 @@ function normalizeRequest(
       userSceneTags,
       travelPurpose,
       transportType,
-      visitTime,
       currentSeason,
       candidatePlaceIds,
       excludePlaceIds: uniq(rawRequest.excludePlaceIds ?? []),
@@ -624,6 +784,11 @@ export function recommendGoatPlaces(
       ? candidatePool.filter((place) => place.primaryTheme === request.primaryTheme)
       : candidatePool;
     const safeFirstPool = firstPool.length > 0 ? firstPool : candidatePool;
+    const firstPoolName = request.primaryTheme && firstPool.length > 0
+      ? "primaryTheme 일치 후보"
+      : request.primaryTheme
+        ? "primaryTheme 일치 후보 없음 → 전체 후보 fallback"
+        : "전체 후보";
     const firstCandidates = scorePool({
       pool: safeFirstPool,
       request,
@@ -646,14 +811,17 @@ export function recommendGoatPlaces(
       };
     }
 
-    const selectedIds = new Set<string>([first.place.place_id, ...request.excludePlaceIds]);
+    const selectedIds = new Set<string>([first.place.place_id]);
+    const blockedIds = new Set<string>([...request.excludePlaceIds, first.place.place_id]);
 
     // 2번 카드: 1번과 같은 primaryTheme 우선, 중복 장소 제외, 거리/노출/coverage 보정 적용.
     const sameThemePool = placesDataset.places.filter(
-      (place) => place.primaryTheme === first.place.primaryTheme && !selectedIds.has(place.place_id),
+      (place) => place.primaryTheme === first.place.primaryTheme && !blockedIds.has(place.place_id),
     );
+    const secondPool = sameThemePool.length > 0 ? sameThemePool : candidatePool.filter((place) => !blockedIds.has(place.place_id));
+    const secondPoolName = sameThemePool.length > 0 ? "1번 카드와 같은 primaryTheme 후보" : "같은 primaryTheme 후보 없음 → 전체 후보 fallback";
     const secondCandidates = scorePool({
-      pool: sameThemePool.length > 0 ? sameThemePool : candidatePool.filter((place) => !selectedIds.has(place.place_id)),
+      pool: secondPool,
       request,
       rawRequest,
       places: placesDataset.places,
@@ -667,16 +835,45 @@ export function recommendGoatPlaces(
       secondCandidates,
       (candidate) => candidate.score.routeDistanceBonus * 2 + candidate.score.lowExposureBoost + candidate.score.coverageBoost - candidate.score.exposurePenalty,
     );
-    if (second) selectedIds.add(second.place.place_id);
+    if (second) {
+      selectedIds.add(second.place.place_id);
+      blockedIds.add(second.place.place_id);
+    }
 
-    // 3번 카드: 조건 맞춤. travelPurpose가 있으면 purpose_tags 미일치 후보 제외.
-    const conditionPool = placesDataset.places.filter((place) => {
-      if (selectedIds.has(place.place_id)) return false;
+    // 3번 카드: 조건 맞춤. travelPurpose가 있으면 purpose_tags 일치 후보를 우선 사용한다.
+    // 단, 일치 후보가 0개면 카드 3개 보장을 위해 전체 후보로 fallback하고 warning을 남긴다.
+    const strictConditionPool = placesDataset.places.filter((place) => {
+      if (blockedIds.has(place.place_id)) return false;
       if (request.travelPurpose && !place.purpose_tags?.includes(request.travelPurpose)) return false;
       return true;
     });
+    const card3PurposeFallbackUsed = Boolean(request.travelPurpose) && strictConditionPool.length === 0;
+    const card3FallbackPoolSize = placesDataset.places.filter((place) => !blockedIds.has(place.place_id)).length;
+    const card3FallbackReason = card3PurposeFallbackUsed ? buildCard3FallbackReason(request) : undefined;
+    if (card3PurposeFallbackUsed) {
+      warnings.push({
+        code: "CARD3_PURPOSE_FALLBACK",
+        message: "카드3 조건맞춤 후보 중 travelPurpose와 purpose_tags가 일치하는 장소가 없어 전체 후보로 fallback했습니다.",
+        details: {
+          reason: card3FallbackReason,
+          travelPurpose: request.travelPurpose,
+          selectedPlaceIds: Array.from(selectedIds),
+          strictPurposePoolSize: strictConditionPool.length,
+          fallbackUsed: true,
+          fallbackPoolSize: card3FallbackPoolSize,
+        },
+      });
+    }
+    const conditionPool = card3PurposeFallbackUsed
+      ? placesDataset.places.filter((place) => !blockedIds.has(place.place_id))
+      : strictConditionPool;
+    const conditionPoolName = card3PurposeFallbackUsed
+      ? "카드3 travelPurpose 일치 후보 없음 → 전체 후보 fallback"
+      : request.travelPurpose
+        ? "카드3 travelPurpose 일치 후보"
+        : "카드3 전체 조건 후보";
     const thirdCandidates = scorePool({
-      pool: conditionPool.length > 0 ? conditionPool : placesDataset.places.filter((place) => !selectedIds.has(place.place_id)),
+      pool: conditionPool,
       request,
       rawRequest,
       places: placesDataset.places,
@@ -696,7 +893,10 @@ export function recommendGoatPlaces(
       thirdCandidates,
       (candidate) => candidate.score.conditionScore.total * 2 + candidate.score.routeDistanceBonus + candidate.score.lowExposureBoost,
     );
-    if (third) selectedIds.add(third.place.place_id);
+    if (third) {
+      selectedIds.add(third.place.place_id);
+      blockedIds.add(third.place.place_id);
+    }
 
     const picked = [first, second, third].filter((candidate): candidate is CandidateScore => Boolean(candidate));
     const cards = picked.slice(0, 3).map((candidate, index) => {
@@ -704,7 +904,62 @@ export function recommendGoatPlaces(
       return toRecommendationCard(candidate, (index + 1) as 1 | 2 | 3, role);
     });
 
-    const alternatives = buildAlternatives(placesDataset.places, selectedIds, request, rawRequest, first.place);
+    const cardSelections: RecommendationCardSelectionAudit[] = [];
+    cardSelections.push(buildSelectionAudit({
+      candidate: first,
+      rank: 1,
+      role: "BEST_SCENE",
+      whySelected: "1번 카드는 선택한 primaryTheme에 가장 정직하게 맞는 후보 중 baseScore 1위를 선택했습니다. 1번 카드에는 거리 보너스와 노출 보정을 적용하지 않습니다.",
+      candidatePool: {
+        name: firstPoolName,
+        size: safeFirstPool.length,
+        totalCandidatePoolSize: candidatePool.length,
+      },
+    }));
+    if (second) {
+      cardSelections.push(buildSelectionAudit({
+        candidate: second,
+        rank: 2,
+        role: "SAME_MOOD_ALTERNATIVE",
+        whySelected: "2번 카드는 1번 카드와 같은 primaryTheme 후보를 우선 사용하고, 1번 카드 기준 연계 거리 보너스·노출 보정·coverage 보정을 반영해 선택했습니다.",
+        candidatePool: {
+          name: secondPoolName,
+          size: secondPool.length,
+          totalCandidatePoolSize: candidatePool.length,
+        },
+      }));
+    }
+    if (third) {
+      cardSelections.push(buildSelectionAudit({
+        candidate: third,
+        rank: 3,
+        role: "CONDITION_FIT_ALTERNATIVE",
+        whySelected: card3PurposeFallbackUsed
+          ? "3번 카드는 travelPurpose와 purpose_tags가 일치하는 후보가 0개라 전체 후보로 fallback한 뒤, 조건 점수·연계 거리 보너스·노출 보정을 기준으로 선택했습니다."
+          : "3번 카드는 travelPurpose와 purpose_tags가 일치하는 후보를 우선 사용하고, 조건 점수(conditionScore)를 가장 우선해 선택했습니다.",
+        candidatePool: {
+          name: conditionPoolName,
+          size: conditionPool.length,
+          totalCandidatePoolSize: candidatePool.length,
+          strictPurposePoolSize: request.travelPurpose ? strictConditionPool.length : undefined,
+          fallbackUsed: card3PurposeFallbackUsed,
+          fallbackReason: card3FallbackReason,
+        },
+      }));
+    }
+
+    const decisionAudit: RecommendationDecisionAudit = {
+      fallback: {
+        card3PurposeFallbackUsed,
+        reason: card3FallbackReason,
+        travelPurpose: request.travelPurpose,
+        strictPurposePoolSize: request.travelPurpose ? strictConditionPool.length : undefined,
+        fallbackPoolSize: card3PurposeFallbackUsed ? card3FallbackPoolSize : undefined,
+      },
+      cardSelections,
+    };
+
+    const alternatives = buildAlternatives(placesDataset.places, blockedIds, request, rawRequest, first.place);
     const avgScore = cards.length > 0 ? Math.round(cards.reduce((sum, card) => sum + card.score.displayScore, 0) / cards.length) : null;
 
     const debugScored = rawRequest.debug
@@ -730,7 +985,7 @@ export function recommendGoatPlaces(
         }))
       : undefined;
 
-    return {
+    const result: RecommendResult = {
       status: "DONE",
       resultType: "RECOMMEND",
       score: avgScore,
@@ -740,6 +995,7 @@ export function recommendGoatPlaces(
         cards,
         alternatives,
         warnings,
+        decisionAudit,
         debug: rawRequest.debug
           ? {
               candidatePoolSize: candidatePool.length,
@@ -749,6 +1005,9 @@ export function recommendGoatPlaces(
       },
       failReason: null,
     };
+
+    emitRecommendationWarningLog({ rawRequest, request, result, warnings, decisionAudit });
+    return result;
   } catch (error) {
     return {
       status: "FAILED",

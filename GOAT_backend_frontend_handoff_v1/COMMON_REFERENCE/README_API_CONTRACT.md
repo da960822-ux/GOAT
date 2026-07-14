@@ -7,7 +7,7 @@
 ## 1. 추천 요청 API 예시
 
 ```http
-POST /api/recommendations/goat
+POST /api/recommend-from-tags
 Content-Type: application/json
 ```
 
@@ -28,6 +28,7 @@ Content-Type: application/json
 | `travelPurpose` | 권장 | 여행 목적 7가지 중 1개 |
 | `transportType` | 권장 | 자차/대중교통/도보중심 |
 | `visitTime` | 권장 | 새벽/오전/한낮/오후/저녁/야간 |
+| `excludeIds` | 선택 | 다시 추천 시 제외할 장소 ID 배열 |
 
 ---
 
@@ -46,37 +47,42 @@ Content-Type: application/json
 
 ```json
 {
-  "status": "DONE",
-  "resultType": "RECOMMEND",
-  "score": 83,
-  "message": "추천 카드 3개 생성 완료",
-  "resultData": {
-    "cards": [
-      {
-        "rank": 1,
-        "role": "BEST_SCENE",
-        "roleLabel": "최적 장면 카드",
-        "placeId": "GOAT-048",
-        "placeName": "아야진해수욕장",
-        "city": "고성군",
-        "primaryTheme": "바다·해안 무드",
-        "placeType": "해변",
-        "photoPoint": "에메랄드빛 바다, 백사장, 갯바위",
-        "score": {
-          "baseScore": 86,
-          "routeDistanceBonus": 0,
-          "displayScore": 86
-        },
-        "reasons": ["선택한 테마와 장소 테마가 일치합니다."],
-        "cautions": ["좌표 또는 길찾기 거리값이 없으면 연계 거리 보너스는 0점 처리됩니다."],
-        "imageUrl": null,
-        "address": null
-      }
-    ],
-    "alternatives": [],
-    "warnings": []
-  },
-  "failReason": null
+  "success": true,
+  "code": "SUCCESS",
+  "message": "추천 장소를 조회했습니다.",
+  "data": {
+    "status": "DONE",
+    "resultType": "RECOMMEND",
+    "score": 83,
+    "message": "추천 카드 3개 생성 완료",
+    "resultData": {
+      "cards": [
+        {
+          "rank": 1,
+          "role": "BEST_SCENE",
+          "roleLabel": "최적 장면 카드",
+          "placeId": "GOAT-048",
+          "placeName": "아야진해수욕장",
+          "city": "고성군",
+          "primaryTheme": "바다·해안 무드",
+          "placeType": "해변",
+          "photoPoint": "에메랄드빛 바다, 백사장, 갯바위",
+          "score": {
+            "baseScore": 86,
+            "routeDistanceBonus": 0,
+            "displayScore": 86
+          },
+          "reasons": ["선택한 테마와 장소 테마가 일치합니다."],
+          "cautions": [],
+          "imageUrl": null,
+          "address": "강원특별자치도 고성군 토성면 아야진해변길 157"
+        }
+      ],
+      "alternatives": [],
+      "warnings": []
+    },
+    "failReason": null
+  }
 }
 ```
 
@@ -86,19 +92,19 @@ Content-Type: application/json
 
 | 경로 | UI 사용 |
 |---|---|
-| `status` | 성공/실패 상태 분기 |
+| `success` | API 성공/실패 상태 분기 |
 | `message` | 처리 결과 메시지 |
-| `resultData.cards` | 추천 카드 3개 렌더링 |
-| `cards[].rank` | 카드 번호 |
-| `cards[].roleLabel` | 카드 역할 라벨 |
-| `cards[].placeName` | 장소명 |
-| `cards[].city` | 지역명 |
-| `cards[].photoPoint` | 사진 포인트 |
-| `cards[].score.displayScore` | 화면 표시 점수 |
-| `cards[].reasons` | 추천 이유 |
-| `cards[].cautions` | 주의사항 |
-| `cards[].imageUrl` | 대표 이미지. 없으면 placeholder |
-| `cards[].address` | 주소. 없으면 장소명 검색 |
+| `data.resultData.cards` | 추천 카드 3개 렌더링 |
+| `data.resultData.cards[].rank` | 카드 번호 |
+| `data.resultData.cards[].roleLabel` | 카드 역할 라벨 |
+| `data.resultData.cards[].placeName` | 장소명 |
+| `data.resultData.cards[].city` | 지역명 |
+| `data.resultData.cards[].photoPoint` | 사진 포인트 |
+| `data.resultData.cards[].score.displayScore` | 화면 표시 점수 |
+| `data.resultData.cards[].reasons` | 추천 이유 |
+| `data.resultData.cards[].cautions` | 주의사항 |
+| `data.resultData.cards[].imageUrl` | 대표 이미지. 없으면 placeholder |
+| `data.resultData.cards[].address` | 주소. 없으면 장소명 검색 |
 
 ---
 
@@ -106,12 +112,10 @@ Content-Type: application/json
 
 ```json
 {
-  "status": "FAILED",
-  "resultType": "UNKNOWN",
-  "score": null,
-  "message": "추천 로직 실행 중 오류가 발생했습니다.",
-  "resultData": null,
-  "failReason": "UNKNOWN_ERROR"
+  "success": false,
+  "code": "INVALID_REQUEST",
+  "message": "요청값이 올바르지 않습니다.",
+  "data": null
 }
 ```
 
@@ -130,7 +134,7 @@ Content-Type: application/json
 
 ## 7. 지도앱 연결 규칙
 
-현재 `address`, `latitude`, `longitude`가 없을 수 있습니다.
+현재 58개 장소 데이터에는 `address`, `latitude`, `longitude`가 있습니다. 그래도 운영 중 누락이나 검증 전 데이터가 섞일 수 있으므로 fallback은 유지합니다.
 
 | 데이터 상태 | 지도 연결 방식 |
 |---|---|
@@ -138,4 +142,4 @@ Content-Type: application/json
 | `address` 있음 | 주소 기반 검색 연결 |
 | 둘 다 없음 | `placeName + city` 문자열 검색 연결 |
 
-현재는 마지막 방식으로도 MVP 시연은 가능합니다.
+현재는 좌표/주소 기반 연결을 우선 사용하고, 누락 시 마지막 방식으로도 MVP 시연이 가능합니다.
