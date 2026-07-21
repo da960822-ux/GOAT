@@ -1,0 +1,292 @@
+You are working on the GOAT Expo mobile app.
+
+Goal:
+Fix credibility, UX flow, and recommendation quality issues without changing the product direction.
+Do not add unrelated large features. Keep the app focused on fast travel decision-making.
+
+Important:
+Do NOT remove the photo mood feature.
+The "사진으로 찾기" feature must stay because it will be completed.
+However, remove all fake/mock behavior and make the UI honest.
+
+Core product meaning:
+GOAT = Gangwon Of All Time.
+GOAT is a Gangwon-focused travel decision app that helps users quickly find places in Gangwon with overseas-travel-like moods and scenes.
+
+Tasks:
+
+1. PHOTO MOOD — Keep the feature, but remove fake/mock behavior
+
+Check app/photo-mood.tsx and any related service such as analyzeMoodFromImage.
+
+Current problem:
+photo-mood.tsx calls analyzeMoodFromImage('mock') and returns hardcoded results.
+This makes the feature look fake.
+
+Fix requirements:
+- Keep the "사진으로 찾기" CTA on the landing screen.
+- Tapping "사진 선택하기" must open the real device image picker.
+- Use expo-image-picker or the image picker library already used in the project.
+- If the dependency is missing, install and configure it properly.
+- After the user selects an image, show the selected image preview.
+- Pass the selected image URI to analyzeMoodFromImage(imageUri).
+- Never pass the string "mock".
+- Remove any fake timeout-only analysis result.
+- Remove hardcoded single-result behavior.
+- Loading/analyzing UI should appear only after a real image is selected.
+- Add proper handling for:
+  - user cancels image picking
+  - permission denied
+  - image selection failure
+  - analysis failure
+- If a real AI vision API is already configured in the project, connect analyzeMoodFromImage to it.
+- If no real AI vision API is configured yet, do not pretend exact AI analysis is complete.
+  Instead, keep the image selection and preview flow complete, and return an honest MVP result with wording like:
+  "선택한 사진을 기준으로 감성 태그를 추정합니다."
+- Do not show a confidence score unless the value is actually returned from the analysis result.
+- Do not show fake extracted tags as if they came from real AI.
+- The result object should follow this shape:
+
+{
+  primaryMood: string,
+  moodTags: string[],
+  matchedSceneTags: string[],
+  confidence?: number,
+  recommendedMoodId?: string
+}
+
+- If analysis is not available, show a clear message:
+  "사진 감성 분석 엔진을 연결하는 중입니다. 현재는 선택한 사진을 기준으로 감성 추천 흐름을 확인할 수 있습니다."
+- Keep the route /photo-mood working.
+
+2. GOAT ACRONYM — Fix brand text everywhere
+
+Search the entire codebase for:
+"Greatest Of All Time"
+
+Replace it everywhere with:
+"Gangwon Of All Time"
+
+Especially check:
+- app/about.tsx
+- landing screen copy
+- service/about sections
+- any constants or text files
+
+Correct Korean wording:
+GOAT는 "Gangwon Of All Time"의 약자로, 강원도 안에서 해외여행 같은 이색 장면을 빠르게 고를 수 있게 돕는 감성 관광 큐레이션 서비스입니다.
+
+3. TRAVEL PREFERENCE — Make visitTime optional
+
+Check travel-preference.tsx.
+
+Current problem:
+companion + transport + visitTime + purpose are all required.
+This makes the app feel like a form, not a fast decision app.
+
+Fix:
+- Required fields should be only:
+  - companion
+  - transport
+  - purpose
+- visitTime should be optional.
+- BottomCTA should unlock when the 3 required fields are selected.
+- Update CTA counter:
+  from "X/4 선택 중"
+  to "X/3 필수 선택"
+- visitTime should be nullable.
+- If visitTime is not selected, pass null to getRecommendations.
+- Update getRecommendations to handle visitTime = null gracefully.
+- Do not break existing recommendation flow.
+
+4. RESULTS FLOW — Add "조건 수정" shortcut
+
+Check results.tsx.
+
+Current problem:
+Users must go all the way back to mood selection to change conditions.
+This breaks the fast decision flow.
+
+Fix:
+- Add a small text button:
+  "조건 수정"
+- Place it below the condition banner and above the result section header.
+- When tapped, navigate to /travel-preference.
+- Preserve the current selectedMood.
+- Do not reset selectedMood.
+- Only allow the user to reselect preferences.
+- Use the existing state/context/route parameter pattern already used in the app.
+- If selectedMood is passed through route params, pass it again.
+- If selectedMood is stored in global context/store, keep it unchanged.
+
+5. RESULTS FLOW — Add one-tap re-recommend button
+
+Add a button on results.tsx:
+"이 감성으로 다시 추천"
+
+Behavior:
+- Re-run recommendation using the same selectedMood and same preferences.
+- Return a different card set/order when possible.
+- Do not navigate back to mood selection.
+- This should reduce the feeling that the 43-place dataset is too thin.
+- Avoid showing the exact same 3 cards in the exact same order repeatedly if alternatives exist.
+
+6. RECOMMENDATION COPY — Make each card role clear
+
+Current problem:
+Recommendation reasons feel generic.
+Users cannot clearly tell why card 1, 2, and 3 are different.
+
+Fix recommendation reason text so each of the 3 cards has a distinct role:
+
+Card 1: 장면 최적 카드
+- Explain why this place best matches the selected mood/scene.
+- Use fields like primary_mood, mood_tags, photo_point.
+
+Card 2: 같은 장면 대안 카드
+- Explain why this is a similar alternative.
+- Mention overlapping mood tags or similar photo points.
+
+Card 3: 날씨 맞춤 대안 카드
+- Explain why this place is safer or better for current/selected conditions.
+- Use best_time, best_season, accessibility, note, weather suitability if available.
+
+Avoid generic copy like:
+"선택한 조건과 잘 맞아요"
+"추천 조건에 부합합니다"
+
+Use specific copy examples:
+- "선택한 ‘지중해 감성’과 가장 가까운 흰 건물·오션뷰 장면을 가진 장소예요."
+- "비슷한 바다마을 분위기를 유지하면서도 이동 부담이 낮은 대안이에요."
+- "오늘처럼 바람이 강한 날에는 노출 해안보다 실내·카페형 포인트가 더 안정적이에요."
+
+7. PLACE DETAIL — Add visual trust layer
+
+Current problem:
+Place Detail is text-heavy and has no photos/visuals.
+A travel curation app without images feels weak.
+
+Fix:
+- Add a hero image area or visual block at the top of Place Detail.
+- If real place photos are available in the data, use them.
+- If not, use local mood/category-based placeholder images or clean visual cards.
+- Do not use broken external image URLs.
+- If no assets exist, create a clean fallback visual block using:
+  - primary_mood
+  - place_type
+  - mood_tags
+  - photo_point
+- The detail screen should not feel text-only.
+
+8. SERVICE SCREEN AUDIT — Remove empty-shell feeling
+
+Check these routes:
+- app/guide.tsx
+- app/data-source.tsx
+- app/privacy.tsx
+- app/contact.tsx
+
+If any screen is empty or placeholder-only, add minimal real content.
+
+guide.tsx:
+- Add 3-step usage flow:
+  1. 원하는 감성 선택
+  2. 조건 입력 후 추천 카드 비교
+  3. 마음에 드는 장소를 지도앱으로 연결
+
+data-source.tsx:
+Mention data sources:
+- 한국관광공사 국문 관광정보
+- 한국관광공사 관광사진 정보
+- 관광지 방문 집중률/방문자 추이 예측 정보
+- 기상청 단기예보
+- 자체 정리한 강원 이색 장면 후보 데이터
+
+privacy.tsx:
+Add simple privacy copy:
+- No login required.
+- Selected preferences are used only for recommendation flow.
+- Selected images are used only for photo mood analysis flow.
+- Images are not stored permanently unless the user explicitly saves them.
+- This is an MVP policy statement and should be written clearly.
+
+contact.tsx:
+Add simple contact content:
+- 서비스 문의
+- contact@goat-travel.app
+- "공모전 MVP 단계의 임시 문의 채널입니다."
+
+Do not leave blank pages.
+
+9. LOCAL BOOKMARKS — Add no-login save feature if low-risk
+
+If the app structure allows a quick implementation, add local bookmarks using AsyncStorage.
+
+Requirements:
+- No login.
+- Add "저장" or bookmark icon on Place Detail.
+- Saved places should persist locally.
+- If there is already a saved/bookmark screen, connect it.
+- If implementing this would require major refactoring, skip it and leave a clear TODO comment.
+- Do not add account/login features.
+
+10. ABOUT SCREEN — Reframe 43 places carefully
+
+Current problem:
+The About screen exposes "43개 명소" too directly, which can make the dataset feel small.
+
+Fix copy:
+Do not say:
+"43개 명소를 감성 점수로 분석합니다"
+
+Use safer wording:
+"검증된 강원 이색 장면 후보를 기반으로 추천 흐름을 검증합니다."
+
+Or:
+"초기 MVP에서는 선별된 강원 이색 장면 후보를 중심으로 감성 추천을 제공합니다."
+
+The number 43 can exist in internal data, but avoid making it a headline trust claim.
+
+11. DO NOT BUILD THESE FEATURES NOW
+
+Do not add:
+- login/accounts
+- route planning
+- multi-stop itinerary
+- community/reviews/ratings
+- weather dashboard
+- admin dashboard
+- multiple map selection modal
+- Naver Map/Tmap options
+- heavy backend
+- over-branded headers on every screen
+
+Keep KakaoMap-only for now if KakaoMap is already the current direction.
+GOAT should remain a fast decision app, not a full travel planner.
+
+12. GENERAL QUALITY RULES
+
+- Preserve the current visual style unless needed for the fixes.
+- Keep Korean UI copy natural and concise.
+- Do not create fake production-looking behavior.
+- Do not leave dead links or blank screens.
+- Do not break existing navigation.
+- After changes, test the main flows:
+
+Flow A:
+Landing → 감성 선택 → TravelPreference → Results → Detail → KakaoMap link
+
+Flow B:
+Landing → 사진으로 찾기 → image picker → selected image preview → analysis/result flow
+
+Flow C:
+Results → 조건 수정 → TravelPreference → Results
+
+Flow D:
+Service screen → guide/data-source/privacy/contact
+
+At the end, summarize:
+- files changed
+- what was fixed
+- any skipped item and why
+- any dependency installed

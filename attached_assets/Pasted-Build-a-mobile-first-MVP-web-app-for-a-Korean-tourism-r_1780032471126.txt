@@ -1,0 +1,314 @@
+Build a mobile-first MVP web app for a Korean tourism recommendation service.
+
+Service name: GOAT
+Full concept:
+GOAT is a Gangwon-do tourism decision service that recommends domestic places with overseas-travel vibes.
+The goal is not to show a long travel list.
+The goal is to help the user decide where to go within 30 seconds by showing 3 recommendation cards.
+
+Core service flow:
+1. User selects a mood/reference card.
+2. The selected mood is converted into scene tags.
+3. The app matches those scene tags with the local GOAT place database.
+4. The app shows 3 recommendation cards:
+   - 장면 최적 카드
+   - 같은 장면 대안 카드
+   - 날씨 맞춤 대안 카드
+5. The user can open KakaoMap, Naver Map, or Tmap.
+
+Tech stack:
+- React + Vite
+- TypeScript
+- Tailwind CSS
+- Mobile-first responsive design
+- Korean UI text
+- No backend yet
+- No login
+- No payment
+- No community
+- No admin dashboard
+- Use local JSON data first
+- Prepare service-layer files for future API integration
+
+Source of truth:
+Use the uploaded file:
+goat_places_clean_db_ready.json
+
+The current JSON fields are:
+- place_id
+- city
+- region_group
+- place_name
+- place_type
+- primary_mood
+- mood_tags
+- photo_point
+- best_time
+- best_season
+- accessibility
+- data_status
+- recommendation_use
+- note
+
+Important:
+Do not invent data fields that do not exist in the JSON.
+Fields like address, lat, lng, imageUrl, parking, travelTime, weatherFit, crowdLevel are optional future API-enriched fields.
+Create TypeScript types that support the current DB fields and optional future fields.
+
+Recommended project structure:
+src/
+  components/
+  data/
+  pages/
+  services/
+  types/
+  utils/
+
+Required files:
+src/data/goat_places_clean_db_ready.json
+src/types/place.ts
+src/data/moodCategories.ts
+src/services/recommendationService.ts
+src/services/tourInfoApi.ts
+src/services/tourPhotoApi.ts
+src/services/visitorPredictionApi.ts
+src/services/relatedPlaceApi.ts
+src/services/localTourApi.ts
+src/services/weatherApi.ts
+src/services/mapLink.ts
+
+MVP place filtering rules:
+- Use only data_status === "confirmed" by default.
+- Exclude lodging/resort-type places from the normal recommendation pool.
+- Exclude place_type containing:
+  숙소, 리조트, 풀빌라, 카라반, 숙박
+- These lodging/resort places can be kept in the data but should not appear in the default top 3.
+- future_candidate places should not appear in the normal top 3.
+- needs_verification places should be excluded by default.
+
+Mood selection:
+Do not show all 43 places as separate tags.
+Group similar places into 9 user-facing mood categories.
+
+Use these 9 mood categories:
+
+1. 지중해·유럽 정원 감성
+Places:
+제이드가든, 춘천 산토리니, 하슬라아트월드, 하늬라벤더팜, 라메종드마리
+Related feeling:
+산토리니, 프로방스, 유럽 정원, 오션뷰 미술관, 지중해
+
+2. 알프스·고원 목장 감성
+Places:
+해피초원목장, 대관령양떼목장, 하늘목장, 삼양라운드힐, 육백마지기, 매봉산 바람의 언덕, 민둥산, 태기산, 안반데기
+Related feeling:
+초원, 목장, 풍력발전기, 설원, 별보기, 고원, 알프스
+
+3. 북유럽·설국 숲 감성
+Places:
+원대리 자작나무숲, 발왕산 천년주목숲길·애니포레
+Related feeling:
+자작나무, 침엽수림, 겨울 숲, 핀란드, 비에이, 설국
+
+4. 일본 소도시·레트로 감성
+Places:
+교토정원, 정동진 철길 건널목, 교동 소품샵 거리, 어달삼거리, 카페 흰다정
+Related feeling:
+교토, 가마쿠라, 오노미치, 일본 골목, 레트로 카페, 조용한 산책
+
+5. 캘리포니아·서프비치 감성
+Places:
+안목해변 카페거리, 서피비치, 죽도해변·인구해변·양리단길, 에이프레임, 아야진해수욕장, 장호항, BTS 버스정류장
+Related feeling:
+서핑, 보드워크, 하와이, 나트랑, 해변 포토존, 바다 카페
+
+6. 야간 항구·시장 감성
+Places:
+묵호항 일대, 카페 흰다정, 장호항
+Related feeling:
+후쿠오카, 오사카, 항구, 시장, 먹거리, 밤 산책
+
+7. 절벽·협곡·지질 감성
+Places:
+소금산 그랜드밸리, 무릉별유천지, 외옹치 바다향기로, 능파대, 초곡용굴촛대바위길
+Related feeling:
+협곡, 스카이워크, 해안 절벽, 암반, 지질공원, 트레일
+
+8. 건축·미술관·산업유산 감성
+Places:
+뮤지엄 SAN, 삼탄아트마인, 인제성당
+Related feeling:
+미니멀 건축, 폐광 미술관, 유럽 성당, 산업유산
+
+9. 가족·체험·SNS 포토 감성
+Places:
+레고랜드 코리아 리조트, 알파카월드, 고석정 꽃밭
+Related feeling:
+컬러풀, 동물 교감, 가족여행, 가벼운 SNS 포토스팟
+
+Recommendation logic:
+Internally, still use each place's:
+- primary_mood
+- mood_tags
+- photo_point
+- best_time
+- best_season
+- accessibility
+- recommendation_use
+- note
+
+Scoring:
+- +5 if the place name belongs to the selected mood category place list.
+- +3 if primary_mood matches the selected mood category keywords.
+- +2 for each matching mood_tag.
+- +1 if recommendation_use matches the selected mood purpose.
+- +1 if best_season is 사계절 or matches the selected/current season.
+- +1 if accessibility contains 대중 상 or 자차 상.
+- Penalize places with risk-related note keywords, but do not remove them automatically.
+- Exclude data_status !== confirmed from the default result.
+
+The 3 recommendation cards must have different roles:
+
+1. 장면 최적 카드
+- Highest scene/mood match score.
+- Explain why it matches the selected mood.
+
+2. 같은 장면 대안 카드
+- Similar scene tag or mood category.
+- Useful when the first place is crowded, risky, too far, or not suitable.
+
+3. 날씨 맞춤 대안 카드
+- Better for season, weather, accessibility, or indoor/outdoor suitability.
+- Since real weather API is not connected yet, use best_time, best_season, place_type, and note as mock logic.
+
+UI pages:
+1. Landing page
+- Headline:
+  “해외여행 감성, 강원에서 30초 만에 찾기”
+- Subcopy:
+  “원하는 장면을 고르면 GOAT가 강원도 안의 비슷한 분위기 장소 3곳을 추천해드려요.”
+- CTA:
+  “내 감성으로 장소 찾기”
+
+2. Mood selection page
+- Show the 9 mood category cards.
+- Each card should include:
+  - Mood name
+  - Short description
+  - 3~5 representative keywords
+  - Example place names in small text
+- User can select one mood category.
+- Add CTA:
+  “추천 카드 보기”
+
+3. Recommendation result page
+- Show selected mood summary.
+- Show 3 recommendation cards with role labels:
+  - 장면 최적
+  - 같은 장면 대안
+  - 날씨 맞춤
+- Each card should include:
+  - place_name
+  - city
+  - region_group
+  - place_type
+  - primary_mood
+  - mood_tags
+  - photo_point
+  - best_time
+  - best_season
+  - accessibility
+  - recommendation reason
+  - caution text from note
+  - buttons:
+    - 카카오맵으로 길찾기
+    - 네이버지도에서 보기
+    - 티맵으로 이동
+
+4. Detail page
+- Show detailed information:
+  - place_name
+  - primary_mood
+  - photo_point
+  - best_time
+  - best_season
+  - accessibility
+  - recommendation_use
+  - note
+  - nearby/same mood alternative places
+
+Components:
+- Header
+- MoodCategoryCard
+- PlaceCard
+- RecommendationRoleBadge
+- TagBadge
+- CautionBox
+- MapButtonGroup
+- EmptyState
+- BottomCTA
+
+Design direction:
+- Clean Korean mobile app style
+- White background
+- Violet as primary color
+- Lime as accent color
+- Card-based layout
+- Rounded corners
+- Soft shadows
+- Large readable Korean text
+- Make it feel like a polished contest MVP, not a generic template
+
+API placeholder files:
+Create these files with placeholder functions and TODO comments only.
+Do not call real APIs yet.
+
+src/services/tourInfoApi.ts
+- For Korea Tourism Organization Korean tourism information service.
+- Future use: place overview, address, coordinates, image, parking, contact, description.
+
+src/services/tourPhotoApi.ts
+- For Korea Tourism Organization tourism photo API.
+- Future use: CutMatch image keyword matching, photo source, and card image.
+
+src/services/visitorPredictionApi.ts
+- For tourism visitor concentration / visitor trend prediction data.
+- Future use: relative crowd-risk indicator.
+- Do not describe it as real-time crowd detection.
+
+src/services/relatedPlaceApi.ts
+- For related tourism places.
+- Future use: same-cut alternatives and nearby route suggestions.
+
+src/services/localTourApi.ts
+- For local government tourism information.
+- Future use: fill gaps for Gangwon city/county places.
+
+src/services/weatherApi.ts
+- For KMA short-term weather forecast.
+- Future use: calculate weather suitability from rain, wind, temperature, and sky condition.
+
+src/services/mapLink.ts
+- Create placeholder link generator functions:
+  createKakaoMapLink(place)
+  createNaverMapLink(place)
+  createTmapLink(place)
+- Since coordinates are not in the current JSON, use place_name and city as fallback search query.
+
+MVP exclusions:
+Do not implement:
+- user photo upload analysis
+- real-time crowd detection
+- real-time parking availability
+- group voting
+- community
+- login
+- payment
+- admin dashboard
+
+Final goal:
+Implement a working MVP that matches this proposal flow:
+Mood/reference selection → scene tag conversion → 3 recommendation cards → alternative place → external map link.
+
+The app must run without TypeScript errors.
+Keep the code simple and easy to modify.

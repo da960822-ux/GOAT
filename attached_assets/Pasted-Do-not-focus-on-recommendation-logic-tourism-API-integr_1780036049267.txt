@@ -1,0 +1,101 @@
+Do not focus on recommendation logic, tourism API integration, or real photo API yet.
+Those will be refactored later.
+
+Now focus only on making the current Expo app feel complete and deployment-ready as an app shell.
+
+Audit and complete these areas:
+
+1. End-to-end user flow
+Confirm that this flow works:
+Landing
+→ Mood Selection
+→ Travel Preference Selection
+→ Recommendation Result with exactly 3 cards
+→ Place Detail
+→ Map app link
+→ Back / change selection
+
+2. Place Detail screen
+If missing or weak, add/improve it.
+
+The detail screen must show:
+- place_name
+- city
+- region_group
+- place_type
+- primary_mood
+- mood_tags
+- photo_point
+- best_time
+- best_season
+- accessibility
+- recommendation_use
+- note
+- same-mood alternatives
+- KakaoMap / Naver Map / Tmap buttons
+
+Do not call alternatives “nearby” because the current JSON has no lat/lng.
+Use “같은 감성 대안”.
+
+3. Photo mood entry point
+Add the screen flow only.
+Do not implement real AI image analysis yet.
+
+Add:
+Landing secondary CTA:
+“사진으로 감성 찾기”
+
+PhotoMoodScreen:
+- image upload placeholder
+- mock analyzing state
+- mock extracted tags
+- matched mood category
+- button: “이 감성으로 추천 받기”
+
+Use mock service:
+src/services/imageMoodService.ts
+
+Do not call real APIs yet.
+
+4. App support screens
+Add simple screens:
+- GOAT 소개
+- 이용 안내
+- 데이터 출처 안내
+- 개인정보처리방침
+- 문의하기
+
+5. Map link UX
+Keep existing KakaoMap and Tmap logic if it works.
+Add or confirm Naver Map.
+Use city + place_name fallback query.
+If native map app cannot open, fallback to web URL.
+
+6. App deployment readiness
+Check or add:
+- app.json
+- eas.json
+- app icon placeholder
+- splash screen placeholder
+- Android package placeholder
+- iOS bundle identifier placeholder
+- app version
+- Expo build-friendly configuration
+
+7. Navigation and UX polish
+Check:
+- all back buttons work
+- bottom buttons are not hidden by safe area
+- all scroll screens scroll properly
+- no dead-end screens
+- no broken buttons
+- no TypeScript errors
+
+Return a checklist:
+Complete / Missing / Needs fix.
+
+Do not redesign the whole UI.
+Do not add login.
+Do not add backend.
+Do not add route planning.
+Do not add community.

@@ -1,190 +1,107 @@
-# GOAT FINAL AI/API RECOMMENDATION — Git Safe Edition
+# GOAT — Gangwon Of All Time
 
-이 패키지는 GitHub push용으로 정리된 버전입니다. 실제 API 키가 들어간 `.env`, 빌드 결과물 `dist/`, 실행 로그 `logs/`, 임시 파일 `tmp/`는 제외했습니다.
+GOAT는 사용자가 선택한 감성 태그와 여행 조건을 바탕으로 강원도 장소 3곳을 추천하고, 선택한 장소 주변의 한국관광공사 정보를 OpenRouter LLM으로 재정렬해 하루 코스와 지도 정보를 제공하는 Expo + Express 서비스입니다.
 
-먼저 `README_GIT_PUSH_RECORD.md`와 `SECURITY_API_KEYS.md`를 확인하세요.
+## 현재 서비스 흐름
 
----
+1. 7개 감성 무드 중 하나를 선택합니다.
+2. 동행자, 이동수단, 방문 시간, 계절, 여행 목적, 출발지를 설정합니다.
+3. 추천 엔진이 역할이 다른 카드 3장을 반환합니다.
+   - 카드 1: 최적 장면
+   - 카드 2: 같은 무드 대안
+   - 카드 3: 조건 맞춤
+4. 장소를 선택하면 한국관광공사 OpenAPI에서 주변 후보를 가져옵니다.
+5. OpenRouter LLM은 전달된 후보 ID 안에서만 하루 코스를 구성합니다.
+6. 좌표와 실제 경로 또는 Haversine 대체값으로 코스를 정렬하고 Kakao 지도 정보를 제공합니다.
 
-# GOAT 백엔드·프론트엔드 전달 패키지 v1
+1차 장소 점수는 LLM이 계산하지 않습니다. 운영 추천 데이터는 정확히 61곳이며, `lib/travel-domain/src/data/goat_simplified_scoring_tags_v10_accessibility_merged.json` 한 파일을 기준으로 사용합니다.
 
-> 목적: 지금까지 만든 GOAT 추천 엔진과 JSON 데이터를 **백엔드/프론트엔드가 바로 이해하고 사용할 수 있게** 폴더별로 정리한 핸드오프 문서입니다.
+## 기술 스택
 
-![백엔드 프론트 데이터 흐름](./assets/01_backend_frontend_flow.png)
-
----
-
-## 0. 이 패키지에서 바로 보내면 되는 폴더
-
-| 보낼 대상 | 폴더 | 보내는 이유 |
-|---|---|---|
-| 백엔드 | `SEND_TO_BACKEND/` | 추천 점수 계산 엔진, 장소 데이터, 레퍼런스 카드 데이터, 테스트 코드 포함 |
-| 프론트엔드 | `SEND_TO_FRONTEND/` | 레퍼런스 카드 UI 데이터, 추천 결과 타입, 샘플 응답 포함 |
-| 공통 참고 | `COMMON_REFERENCE/` | 태그/필드 뜻, 점수 기준, API 계약, 원본 기준 파일 정리 |
-
----
-
-## 1. 최종 파일 구조
-
-```txt
-GOAT_FINAL_AI_API_RECOMMENDATION/
-├─ README.md
-├─ assets/
-│  ├─ 01_backend_frontend_flow.png
-│  ├─ 02_card_role_logic.png
-│  └─ 03_data_field_map.png
-├─ SEND_TO_BACKEND/
-│  ├─ README_BACKEND_HANDOFF.md
-│  ├─ package.json
-│  ├─ tsconfig.json
-│  ├─ src/
-│  │  ├─ goatRecommendationEngine.ts
-│  │  ├─ goatRecommendationTypes.ts
-│  │  └─ index.ts
-│  ├─ data/
-│  │  ├─ goat_simplified_scoring_tags_v10_accessibility_merged.json
-│  │  └─ goat_reference_cards_v2_balanced.json
-│  ├─ examples/
-│  │  ├─ demo.ts
-│  │  └─ sampleRequests.json
-│  └─ tests/
-│     └─ recommendationEngine.spec.ts
-├─ SEND_TO_FRONTEND/
-│  ├─ README_FRONTEND_HANDOFF.md
-│  ├─ data/
-│  │  └─ goat_reference_cards_v2_balanced.json
-│  ├─ types/
-│  │  └─ goatFrontendRecommendationTypes.ts
-│  └─ examples/
-│     ├─ recommendation_result_sample.json
-│     └─ reference_card_ui_sample.json
-└─ COMMON_REFERENCE/
-   ├─ README_DATA_DICTIONARY.md
-   ├─ README_SCORE_AND_CARD_POLICY.md
-   ├─ README_API_CONTRACT.md
-   └─ source_files/
-      └─ 원본 기준 파일들
-```
-
----
-
-## 2. 핵심 요약
-
-GOAT GOAT 추천은 사용자가 고른 **테마 + 무드/장면 태그 3개 + 이동수단**을 기준으로 강원 장소 58개 중 1차 추천 카드 3개를 뽑고, 사용자가 카드 1개를 선택하면 **한국관광콘텐츠랩 OpenAPI 주변 후보 + OpenRouter LLM**으로 하루 코스를 만듭니다.
-
-![추천 카드 역할](./assets/02_card_role_logic.png)
-
-| 카드 | 역할 | 핵심 기준 |
-|---|---|---|
-| 1번 카드 | 최적 장면 카드 | 사용자가 고른 무드/장면에 가장 정직하게 맞는 장소 |
-| 2번 카드 | 같은 무드 대안 카드 | 1번과 같은 무드 안에서 다른 대안 |
-| 3번 카드 | 조건 맞춤 카드 | 이동수단, 계절, 1번 카드와의 연계거리가 좋은 장소 |
-
-
-### 한국관광콘텐츠랩 OpenAPI 적용
-
-2차 주변 후보 조회는 아무 관광 사이트 데이터를 붙이는 방식이 아니라, `https://api.visitkorea.or.kr` 기준 한국관광콘텐츠랩 OpenAPI를 사용한다. 코드에서는 국문 관광정보 서비스_GW의 위치기반 관광정보 조회(`locationBasedList2`)를 호출하도록 `SEND_TO_BACKEND/src/tourApiClient.ts`에 구현했다.
-
-
----
-
-## 3. 현재 진짜 필요한 추가 데이터
-
-현재 추천 점수 계산 자체는 이미 가능합니다. 다만 실제 화면과 거리 보정을 위해 아래 4개만 추가하면 됩니다.
-
-| 우선순위 | 필드 | 지금 필요한 이유 |
-|---:|---|---|
-| 1 | `imageUrl` | 추천 카드 대표 이미지 표시 |
-| 2 | `address` | 상세 카드 주소 표시, 지도앱 검색 연결 |
-| 3 | `latitude` | 나중에 2번/3번 카드 거리 보정 |
-| 4 | `longitude` | 나중에 2번/3번 카드 거리 보정 |
-
-> 지금 당장 채울 값은 `imageUrl`, `address`입니다.  
-> 거리 보정까지 할 때 `latitude`, `longitude`를 나중에 채우면 됩니다.
-
----
-
-## 4. 백엔드가 봐야 할 문서
-
-백엔드는 아래 순서대로 보면 됩니다.
-
-1. `SEND_TO_BACKEND/README_BACKEND_HANDOFF.md`
-2. `COMMON_REFERENCE/README_API_CONTRACT.md`
-3. `COMMON_REFERENCE/README_SCORE_AND_CARD_POLICY.md`
-4. `COMMON_REFERENCE/README_DATA_DICTIONARY.md`
-
-백엔드 핵심 작업은 **프론트 요청값을 받아 `recommendGoatPlaces()`를 실행하고 결과를 그대로 API 응답으로 내려주는 것**입니다.
-
----
-
-## 5. 프론트엔드가 봐야 할 문서
-
-프론트엔드는 아래 순서대로 보면 됩니다.
-
-1. `SEND_TO_FRONTEND/README_FRONTEND_HANDOFF.md`
-2. `SEND_TO_FRONTEND/examples/reference_card_ui_sample.json`
-3. `SEND_TO_FRONTEND/examples/recommendation_result_sample.json`
-4. `COMMON_REFERENCE/README_DATA_DICTIONARY.md`
-
-프론트 핵심 작업은 **레퍼런스 카드 21개를 화면에 보여주고, 사용자가 고른 `referenceCardId`와 조건값을 백엔드로 보내는 것**입니다.
-
----
-
-## 6. 근거 파일
-
-이 패키지는 아래 파일 기준으로 정리했습니다.
-
-| 기준 파일 | 사용 목적 |
+| 영역 | 기술 |
 |---|---|
-| `goat_simplified_scoring_tags_v10_accessibility_merged.json` | 58개 장소와 점수 계산용 태그 기준 |
-| `goat_reference_cards_v2_balanced.json` | 프론트 레퍼런스 카드 21개와 후보 연결 기준 |
-| `점수 산정 방식(기준).txt` | 90점 baseScore + 10점 거리 보정 기준 |
-| `goatRecommendationEngine.ts` | 실제 추천 엔진 구현 코드 |
-| `README_GOAT_RECOMMENDATION_ENGINE.md` | 기존 추천 엔진 설명서 |
+| 프런트엔드 | React Native 0.81, Expo 54, Expo Router 6, React 19 |
+| 백엔드 | Node.js, Express 5, TypeScript |
+| 추천 도메인 | 공유 TypeScript 라이브러리 (`@workspace/travel-domain`) |
+| API 계약 | OpenAPI, Orval, Zod |
+| 외부 서비스 | 한국관광공사 KorService2, OpenRouter, Kakao Local/Mobility/Maps |
+| 패키지 관리 | pnpm 11 workspaces |
 
+## 요구 환경
 
-## 2026-07-02 추천 엔진 정리 사항
+- Node.js 24.16.0 권장 (`.nvmrc`), 지원 범위 `>=20.19.4 <25`
+- pnpm 11.8.0 (`corepack` 사용)
+- 프로젝트 루트의 `GOAT.env`
 
-- 실제 서비스 기준 추천 엔진은 `SEND_TO_BACKEND/src/goatRecommendationEngine.ts` 하나로 고정했습니다.
-- 사용하지 않는 legacy 엔진(`v13Engine.ts`)은 패키지에 포함하지 않고, `index.ts`에서도 export하지 않습니다.
-- 카드3 조건맞춤에서 `travelPurpose`와 `purpose_tags`가 일치하는 후보가 0개면 카드 3개 보장을 위해 fallback하되, `CARD3_PURPOSE_FALLBACK` warning을 응답에 포함하고, 추천 엔진이 기본적으로 `[GOAT_RECOMMENDATION_WARNING]` 서버 로그를 자동 출력하도록 했습니다. JSONL 로그 파일은 기본 `logs/goat-recommendation-warnings.jsonl`에 자동 기록됩니다. `warningLogFilePath` 또는 `GOAT_RECOMMENDATION_LOG_FILE`로 경로를 바꿀 수 있습니다.
+`GOAT.env`는 Git에서 제외됩니다. 팀 전달 시에는 보안 채널로 별도 공유하고, 배포 전에 개발용 키를 교체하세요. 값 이름과 선택/필수 여부는 `.env.example`에서 확인할 수 있습니다.
 
-## 2026-07-02 추가 수정: warning 로그 상세 추적
-
-`CARD3_PURPOSE_FALLBACK` 발생 시 로그에는 이제 단순 warning 코드만 남기지 않고, 아래 정보를 함께 기록한다.
-
-- `warnings[].details.reason`: fallback이 발생한 직접 이유
-- `warnings[].details.strictPurposePoolSize`: 카드3에서 여행 목적과 일치한 후보 수
-- `warnings[].details.fallbackPoolSize`: fallback 후 사용한 후보 수
-- `decisionAudit.fallback`: fallback 사용 여부, 이유, 목적값, 후보 수
-- `decisionAudit.cardSelections[]`: 1번/2번/3번 카드 각각의 선택 이유
-- `decisionAudit.cardSelections[].scoreSummary`: moodScore, conditionScore, baseScore, routeDistanceBonus, duplicatePenalty, exposurePenalty, coverageBoost, lowExposureBoost, selectionScore, displayScore
-- `decisionAudit.cardSelections[].scoreDetails`: 테마, mood_tags, sceneTags, purpose_tags, accessibility, season_tags 세부 매칭 결과와 점수
-- `decisionAudit.cardSelections[].reasons`: 프론트 카드에 표시 가능한 추천 이유 문장
-
-따라서 서버 로그 또는 `logs/goat-recommendation-warnings.jsonl`만 확인해도 “왜 fallback이 발생했는지”와 “각 카드가 왜 뽑혔는지”를 추적할 수 있다.
-
-
-## 2026-07-02 추가 수정: 재노출 방지 서비스 레이어 연결
-
-이번 버전은 엔진 내부에만 있던 재노출 방지 보정을 실제 서비스 흐름에 연결했다.
-
-- `src/recommendationService.ts` 추가
-- `src/recommendationExposureRepository.ts` 추가
-- `rerollOfRequestId` 기반 직전 카드 3개 강제 제외
-- `recentExposureByPlaceId`, `totalExposureByPlaceId`, `themeAverageExposure`를 엔진에 자동 전달
-- 추천 결과 카드 3개를 노출 로그로 저장
-- 테스트에서 다시 추천 제외와 exposurePenalty 반영 확인
-
-최종 ZIP 기준 테스트 명령:
+## 빠른 웹 시연
 
 ```bash
-cd SEND_TO_BACKEND
-npm test
+corepack pnpm install --frozen-lockfile
+corepack pnpm run dev:web
 ```
 
-결과:
+`dev:web`은 백엔드를 먼저 빌드·실행한 뒤 Expo Web을 연결합니다. 기본 주소는 다음과 같습니다.
 
-```txt
-All GOAT recommendation engine tests passed.
+- 웹: `http://localhost:8081`
+- API: `http://127.0.0.1:3000`
+
+물리 기기에서 Expo Go로 확인하려면 같은 네트워크에서 다음 명령을 실행합니다.
+
+```bash
+corepack pnpm --filter @workspace/goat-mobile run dev:device
 ```
+
+LAN 주소 자동 감지가 맞지 않으면 모바일 패키지에서 `node scripts/dev-full.js --lan --host 192.168.x.x`처럼 호스트를 지정합니다.
+
+## 개별 실행
+
+```bash
+# 백엔드: GOAT.env 자동 탐색, 기본 포트는 GOAT.env의 PORT
+corepack pnpm --filter @workspace/api-server run dev
+
+# Expo Web UI만 실행할 때는 API URL을 별도로 설정
+corepack pnpm --filter @workspace/goat-mobile run dev:web:ui
+```
+
+## 검증
+
+```bash
+corepack pnpm run typecheck
+corepack pnpm run build
+corepack pnpm run test:unit
+corepack pnpm run test:integration
+corepack pnpm run test:e2e
+corepack pnpm run test:place-coverage
+corepack pnpm run test:condition-sensitivity
+corepack pnpm run test:external-api
+corepack pnpm run test:all
+corepack pnpm run verify
+```
+
+`test:external-api`는 실제 외부 API를 호출하므로 네트워크와 유효한 키가 필요하고 호출 비용·쿼터가 발생할 수 있습니다. 전체 명령과 기대 결과는 [GOAT_TEST_COMMANDS.md](GOAT_TEST_COMMANDS.md), 팀 인수인계 절차는 [GOAT_TEAM_HANDOFF.md](GOAT_TEAM_HANDOFF.md), 최종 판정과 알려진 제한은 [GOAT_SERVICE_AUDIT_REPORT.md](GOAT_SERVICE_AUDIT_REPORT.md)를 확인하세요.
+
+## 주요 구조
+
+```text
+artifacts/api-server/       Express API
+artifacts/goat-mobile/      Expo 앱
+artifacts/mockup-sandbox/   브랜드 시안용 Vite 앱
+lib/travel-domain/          추천·KTO·LLM·코스 도메인
+lib/api-spec/               OpenAPI 원본
+lib/api-client-react/       생성된 프런트 API 클라이언트
+lib/api-zod/                생성된 요청/응답 Zod 스키마
+scripts/                    데이터·추천 회귀 및 전수 검사
+reports/                    자동 생성된 검증 결과
+문서/산출물/                기획·기능·ERD·아키텍처 문서
+```
+
+## 운영 전 확인
+
+- 개발용 API 및 OAuth 비밀값을 모두 교체합니다.
+- 실제 배포 도메인을 Kakao JavaScript SDK 허용 도메인과 OAuth redirect URI에 등록합니다.
+- 배포용 정적 산출물은 `EXPO_PUBLIC_API_BASE_URL`을 실제 HTTPS API 주소로 설정한 뒤 새로 생성합니다.
+- 추천 노출 이력은 현재 프로세스 메모리에만 저장됩니다. 다중 인스턴스·재시작 환경에서는 Redis나 데이터베이스 저장소로 교체해야 합니다.
+- 데이터에 명시적 `accessibility.walk`가 없어 도보 접근성은 보수적으로 추정합니다. 운영 검증값을 수집해 61곳에 추가하는 것이 좋습니다.
+- 장소 데이터의 직접 `imageUrl`은 비어 있습니다. 화면은 KTO 동적 사진, 로컬 이미지, 최종 placeholder 순으로 대체합니다.

@@ -1,0 +1,62 @@
+﻿place_id,place_name,total_count,card1_count,card2_count,card3_count,percentage,theme_count,purpose_count,transport_count,season_count,departure_count,is_new_place,is_over_recommended,is_under_recommended
+GOAT-001,제이드가든,2796,1800,136,860,1.4152,7,7,3,4,7,false,false,false
+GOAT-002,레고랜드 코리아 리조트,4532,1552,1304,1676,2.2939,7,7,3,4,7,false,false,false
+GOAT-003,춘천 산토리니,2492,0,924,1568,1.2613,7,6,3,4,7,false,false,false
+GOAT-004,해피초원목장,2916,2272,400,244,1.4759,2,7,3,4,7,false,false,false
+GOAT-005,아웃오브파크,2856,1128,1104,624,1.4456,5,7,3,4,7,false,false,false
+GOAT-006,교토정원,1944,0,64,1880,0.984,7,3,3,4,7,false,false,false
+GOAT-007,스테이 조각밤,624,0,0,624,0.3158,4,1,3,4,7,false,false,true
+GOAT-008,이와림,332,0,48,284,0.168,5,1,3,4,7,false,false,true
+GOAT-009,뮤지엄 SAN,4676,1808,1704,1164,2.3668,7,7,3,4,7,false,false,false
+GOAT-010,소금산 그랜드밸리,2196,0,1240,956,1.1115,7,7,3,4,7,false,false,false
+GOAT-011,알파카월드,1388,400,716,272,0.7025,3,6,3,4,7,false,false,false
+GOAT-012,원대리 자작나무숲,3468,1384,1708,376,1.7553,6,7,3,4,7,false,false,false
+GOAT-013,인제성당,6344,2848,872,2624,3.211,7,7,3,4,7,false,false,false
+GOAT-014,알펜시아 리조트,2956,448,488,2020,1.4962,7,5,3,4,7,false,false,false
+GOAT-015,육백마지기,256,0,140,116,0.1296,1,2,3,2,6,false,false,true
+GOAT-016,대관령양떼목장,5412,2584,1672,1156,2.7393,7,7,3,4,7,false,false,false
+GOAT-017,하늘목장,3604,576,2560,468,1.8242,5,7,3,4,7,false,false,false
+GOAT-018,삼양라운드힐,2496,1384,728,384,1.2634,3,6,3,4,7,false,false,false
+GOAT-019,발왕산 천년주목숲길·애니포레,3704,1264,2080,360,1.8748,5,7,3,4,7,false,false,false
+GOAT-020,삼탄아트마인,7192,3416,932,2844,3.6403,7,7,3,4,7,false,true,false
+GOAT-021,민둥산,1832,808,12,1012,0.9273,7,6,3,4,7,false,false,false
+GOAT-022,매봉산 바람의 언덕,208,0,72,136,0.1053,1,3,3,1,7,false,false,true
+GOAT-023,태기산,1488,0,1488,0,0.7532,1,7,3,3,7,false,false,false
+GOAT-024,안목해변 카페거리,8424,2240,3496,2688,4.2638,6,7,3,4,7,false,true,false
+GOAT-025,하슬라아트월드,7284,1856,2056,3372,3.6868,7,7,3,4,7,false,true,false
+GOAT-026,정동진 썬크루즈 리조트,2716,0,1700,1016,1.3747,6,7,3,4,7,false,false,false
+GOAT-027,BTS 버스정류장,4392,224,3732,436,2.223,3,7,3,4,7,false,false,false
+GOAT-028,정동진 철길 건널목,5604,4704,0,900,2.8365,6,7,3,4,7,false,false,false
+GOAT-029,안반데기,580,0,360,220,0.2936,1,2,3,3,7,false,false,true
+GOAT-030,금진해변·헌화로 드라이브 코스,6320,4760,464,1096,3.1989,6,7,3,4,7,false,false,false
+GOAT-031,교동 소품샵 거리,2912,0,280,2632,1.4739,7,6,3,4,7,false,false,false
+GOAT-032,휴식 료칸 풀빌라,408,0,16,392,0.2065,2,1,2,4,7,false,false,true
+GOAT-033,유메모리 리조트,1188,0,56,1132,0.6013,7,2,3,4,7,false,false,false
+GOAT-034,무릉별유천지,2088,1344,244,500,1.0569,4,7,3,4,7,false,false,false
+GOAT-035,어달삼거리,4776,64,4304,408,2.4174,5,7,3,4,7,false,false,false
+GOAT-036,묵호항 일대,8468,2464,1868,4136,4.2861,7,7,3,4,7,false,true,false
+GOAT-037,묵호등대·논골담길,1840,400,568,872,0.9313,4,3,3,4,7,false,false,false
+GOAT-038,외옹치 바다향기로,2396,0,752,1644,1.2127,7,6,3,4,7,false,false,false
+GOAT-039,카페 흰다정,4368,1224,2188,956,2.2109,6,7,3,4,7,false,false,false
+GOAT-040,서피비치,1800,168,972,660,0.9111,7,6,3,4,7,false,false,false
+GOAT-041,죽도해변·인구해변·양리단길,7120,1976,456,4688,3.6038,7,6,3,4,7,false,true,false
+GOAT-042,두둥실,5488,4152,592,744,2.7778,7,7,3,4,7,false,false,false
+GOAT-043,에이프레임(A-Frame),2116,664,1108,344,1.071,6,6,3,4,7,false,false,false
+GOAT-044,아야진해수욕장,4592,4280,112,200,2.3243,6,7,3,4,7,false,false,false
+GOAT-045,켄싱턴리조트 설악밸리,3504,2144,204,1156,1.7736,7,7,3,4,7,false,false,false
+GOAT-046,하늬라벤더팜,964,568,0,396,0.4879,4,7,3,1,7,false,false,false
+GOAT-047,능파대,3848,0,3292,556,1.9477,3,7,3,4,7,false,false,false
+GOAT-048,사유의 숲,964,0,736,228,0.4879,5,5,3,4,7,false,false,false
+GOAT-049,쏠비치 삼척·산토리니 광장,3336,2488,204,644,1.6885,5,6,3,4,7,false,false,false
+GOAT-050,라메종드마리,3380,0,2912,468,1.7108,5,7,3,4,7,false,false,false
+GOAT-051,장호항,4812,1176,3316,320,2.4356,4,7,3,4,7,false,false,false
+GOAT-052,용화해변,2532,1792,276,464,1.2816,6,7,3,4,7,false,false,false
+GOAT-053,초곡용굴촛대바위길,2176,0,204,1972,1.1014,7,5,3,4,7,false,false,false
+GOAT-054,한탄강 주상절리길,1288,0,288,1000,0.6519,4,3,3,4,7,false,false,false
+GOAT-055,쏠비치 양양,1888,312,704,872,0.9556,4,6,3,4,7,true,false,false
+GOAT-056,허브나라농원,3232,2416,144,672,1.6359,5,7,3,4,7,true,false,false
+GOAT-057,로미지안가든,3184,768,2408,8,1.6116,1,7,3,4,7,true,false,false
+GOAT-058,고석정 꽃밭,560,0,260,300,0.2834,3,6,3,1,7,true,false,true
+GOAT-059,파크로쉬 리조트 앤 웰니스,4872,0,1952,2920,2.466,6,6,3,4,7,true,false,false
+GOAT-060,켄싱턴호텔 평창 프렌치가든,1700,0,456,1244,0.8605,6,7,3,4,7,true,false,false
+GOAT-061,델피노·소노펠리체 델피노,4736,0,2784,1952,2.3971,7,7,3,4,7,true,false,false

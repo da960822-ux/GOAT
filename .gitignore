@@ -1,28 +1,64 @@
-# dependencies
-node_modules/
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# build outputs
-dist/
-build/
-coverage/
-
-# runtime logs / temp files
+# compiled output
+dist
+tmp
+out-tsc
+*.tsbuildinfo
+.expo
+.expo-shared
+.metro-cache/
+.replit-artifact/
+web-build
+static-build
 logs/
-tmp/
-*.log
-*.jsonl
 
-# environment variables / secrets
+# dependencies
+node_modules
+.corepack/
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
+
+# Replit
+.cache/
+.local/
+
+# Local launcher with private API key
+start-goat-service.bat
+
+# Local secrets
 .env
 .env.*
 !.env.example
-
-# OS / editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# package managers
-.pnpm-store/
-.yarn/
+GOAT.env

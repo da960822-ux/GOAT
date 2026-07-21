@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "name": "GOAT - 강원도 감성 여행",
+    "slug": "goat-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "goat-mobile",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#7C3AED"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.goattravel.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "GOAT가 출발지 기준 이동 정보와 추천 장소까지의 거리를 제공하기 위해 현재 위치를 사용합니다."
+      }
+    },
+    "android": {
+      "package": "com.goattravel.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#7C3AED"
+      },
+      "permissions": ["android.permission.ACCESS_FINE_LOCATION"]
+    },
+    "web": {
+      "favicon": "./assets/images/icon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "GOAT가 출발지 기준 이동 정보와 추천 장소까지의 거리를 제공하기 위해 현재 위치를 사용합니다."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}

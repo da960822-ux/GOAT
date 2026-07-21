@@ -1,0 +1,20 @@
+{
+  "name": "@workspace/scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "hello": "tsx ./src/hello.ts",
+    "test": "tsx ./src/verifyPlaceData.ts && tsx ./src/verifyRecommendationLogic.ts",
+    "test:recommendation": "tsx ./src/verifyRecommendationLogic.ts",
+    "test:place-coverage": "tsx ./src/auditRecommendationCoverage.ts --write-reports",
+    "test:place-coverage:all-references": "tsx ./src/auditRecommendationCoverage.ts --all-reference-cards",
+    "test:condition-sensitivity": "tsx ./src/verifyConditionSensitivity.ts --write-report",
+    "verify:place-data": "tsx ./src/verifyPlaceData.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "catalog:"
+  }
+}

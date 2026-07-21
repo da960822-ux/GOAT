@@ -1,0 +1,138 @@
+Use the attached GOAT logo system as the brand source of truth.
+
+Brand assets in the reference:
+1. Full horizontal logo: GOAT + “강원도 감성 여행”
+2. Symbol mark: G + location pin + mountain/wave shape
+3. App icon version
+4. Brand colors:
+- Primary violet: #3A2374
+- Lime accent: #C6E33D
+- Deep green: #2E5D3D
+
+Important goal:
+Apply the brand identity in a clean and selective way.
+Do NOT overuse the logo.
+Do NOT place the full logo everywhere.
+The app should feel polished and premium, not cluttered.
+
+Brand application rules:
+
+1. Full logo usage
+Use the full horizontal logo only in these places:
+- Splash screen
+- Landing screen top area
+- About / brand intro screen
+- Optional loading or onboarding first screen
+
+Do not use the full logo repeatedly on every screen.
+Do not place the full logo inside cards, lists, or detail sections.
+
+2. Symbol usage
+Use the symbol mark only as a subtle UI brand accent.
+Good places:
+- top header small mark
+- empty state illustration area
+- loading indicator area
+- selected mood section accent
+- recommendation result section accent
+- Kakao map CTA section accent if subtle
+
+Do not use the symbol too many times on one screen.
+Maximum: one small symbol accent per screen.
+
+3. App icon usage
+Use the app icon version only for:
+- app launcher icon
+- splash center icon if needed
+- preview/mockup presentation assets
+
+Do not use the rounded-square app icon inside normal content screens.
+
+4. Wordmark usage
+On most inner screens, do not repeat the full GOAT wordmark.
+Use simple text headers instead:
+- 감성 선택
+- 여행 조건 선택
+- 추천 결과
+- 장소 상세
+
+If branding is needed in inner screens, use only a small symbol near the title.
+
+5. Visual identity priority
+The app should feel branded mainly through:
+- violet and lime color system
+- typography
+- spacing
+- card style
+- CTA button style
+- subtle symbol accents
+
+Not through repeated large logos.
+
+6. Screen-by-screen guidance
+
+Landing screen:
+- show full horizontal logo once at the top
+- keep it clean and well spaced
+- hero copy remains the main focus
+- do not make the logo too large
+
+Splash screen:
+- centered app icon or symbol
+- optional GOAT wordmark below
+- minimal, clean, premium
+
+Mood selection screen:
+- no full logo
+- use small symbol in header only if needed
+- page title should remain the main focus
+
+Travel preference screen:
+- no full logo
+- optional tiny symbol in header
+- keep it utility-first and clean
+
+Recommendation result screen:
+- no full logo
+- optional small symbol near section title “추천 결과”
+- focus on recommendation cards, not branding
+
+Place detail screen:
+- no full logo
+- optional tiny symbol in header only
+- primary focus is place content and KakaoMap CTA
+
+About screen:
+- use full logo again
+- show brand colors and short brand sentence
+- this is the main place to explain the identity
+
+7. Brand sentence usage
+Use this sentence only in About / intro contexts:
+“해외의 감성을, 강원도에서.”
+
+Do not repeat this tagline on every screen.
+
+8. UI cleanliness rules
+- One major brand element per screen maximum
+- Avoid logo duplication
+- Avoid logo watermark effects
+- Avoid putting the subtitle “강원도 감성 여행” on every page
+- Keep plenty of white space
+- Let content breathe
+
+9. Technical asset organization
+Create brand assets folder and apply systematically:
+- assets/brand/logo-full.png
+- assets/brand/logo-symbol.png
+- assets/brand/app-icon.png
+
+Use consistent sizing rules:
+- full logo on landing: medium
+- symbol in headers: small
+- app icon: only launcher/splash use
+
+10. Final goal
+The app should feel like a refined travel app with a consistent identity,
+not like a brochure with the logo pasted everywhere.
+Branding should feel confident, minimal, and intentional.

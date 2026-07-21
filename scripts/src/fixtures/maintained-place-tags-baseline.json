@@ -1,0 +1,1731 @@
+[
+  {
+    "place_id": "GOAT-001",
+    "place_name": "제이드가든",
+    "primaryTheme": "숲·정원·자연휴식 무드",
+    "mood_tags": [
+      "유럽감성",
+      "자연친화",
+      "조용함",
+      "힐링",
+      "여유로움",
+      "이국적"
+    ],
+    "sceneTags": [
+      "정원",
+      "산책로"
+    ],
+    "place_type": "수목원/정원",
+    "purpose_tags": [
+      "산책·힐링",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "봄",
+      "가을"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-002",
+    "place_name": "레고랜드 코리아 리조트",
+    "primaryTheme": "건축·전시·랜드마크 무드",
+    "mood_tags": [
+      "가족친화",
+      "예술적",
+      "건축미",
+      "현대적",
+      "웅장함",
+      "컬러풀",
+      "활기"
+    ],
+    "sceneTags": [
+      "테마파크",
+      "랜드마크",
+      "광장"
+    ],
+    "place_type": "테마파크",
+    "purpose_tags": [
+      "체험·액티비티",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "봄",
+      "가을"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-003",
+    "place_name": "춘천 산토리니",
+    "primaryTheme": "휴양·카페·이국공간 무드",
+    "mood_tags": [
+      "산토리니감성",
+      "지중해감성",
+      "프리미엄",
+      "휴양감",
+      "탁트임",
+      "낭만적",
+      "아늑함"
+    ],
+    "sceneTags": [
+      "정원",
+      "카페",
+      "랜드마크",
+      "전망대"
+    ],
+    "place_type": "카페/전망공간",
+    "purpose_tags": [
+      "카페·실내휴식",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-004",
+    "place_name": "해피초원목장",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "알프스감성",
+      "가족친화",
+      "동물교감감성",
+      "자연친화",
+      "탁트임",
+      "청량함"
+    ],
+    "sceneTags": [
+      "목장",
+      "초원",
+      "산",
+      "동물"
+    ],
+    "place_type": "목장/초원",
+    "purpose_tags": [
+      "체험·액티비티",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름",
+      "가을"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-005",
+    "place_name": "아웃오브파크",
+    "primaryTheme": "레트로·시장·항구 무드",
+    "mood_tags": [
+      "미국서부감성",
+      "레트로",
+      "프라이빗",
+      "빈티지",
+      "로드트립감성",
+      "로컬감성",
+      "자유로움"
+    ],
+    "sceneTags": [
+      "숙소",
+      "포토존",
+      "카라반"
+    ],
+    "place_type": "카라반/숙박",
+    "purpose_tags": [
+      "숙소·리조트",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "봄",
+      "가을"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-006",
+    "place_name": "교토정원",
+    "primaryTheme": "일본 소도시·골목 무드",
+    "mood_tags": [
+      "일본소도시감성",
+      "일본감성",
+      "조용함",
+      "힐링",
+      "아늑함",
+      "아기자기함",
+      "이국적"
+    ],
+    "sceneTags": [
+      "정원",
+      "카페",
+      "료칸"
+    ],
+    "place_type": "카페/정원",
+    "purpose_tags": [
+      "카페·실내휴식",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-007",
+    "place_name": "스테이 조각밤",
+    "primaryTheme": "일본 소도시·골목 무드",
+    "mood_tags": [
+      "료칸감성",
+      "일본소도시감성",
+      "프리미엄",
+      "일본감성",
+      "프라이빗",
+      "조용함",
+      "힐링"
+    ],
+    "sceneTags": [
+      "정원",
+      "숙소",
+      "료칸"
+    ],
+    "place_type": "숙소",
+    "purpose_tags": [
+      "숙소·리조트"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-008",
+    "place_name": "이와림",
+    "primaryTheme": "일본 소도시·골목 무드",
+    "mood_tags": [
+      "료칸감성",
+      "일본소도시감성",
+      "프리미엄",
+      "일본감성",
+      "프라이빗",
+      "조용함",
+      "힐링"
+    ],
+    "sceneTags": [
+      "정원",
+      "숙소",
+      "료칸"
+    ],
+    "place_type": "숙소",
+    "purpose_tags": [
+      "숙소·리조트"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-009",
+    "place_name": "뮤지엄 SAN",
+    "primaryTheme": "건축·전시·랜드마크 무드",
+    "mood_tags": [
+      "예술적",
+      "미니멀",
+      "건축미",
+      "현대적",
+      "웅장함",
+      "조용함",
+      "도시적"
+    ],
+    "sceneTags": [
+      "정원",
+      "미술관",
+      "건축"
+    ],
+    "place_type": "미술관/건축",
+    "purpose_tags": [
+      "전시·건축관람",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "가을"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-010",
+    "place_name": "소금산 그랜드밸리",
+    "primaryTheme": "건축·전시·랜드마크 무드",
+    "mood_tags": [
+      "예술적",
+      "건축미",
+      "모험적",
+      "탁트임",
+      "신비로움",
+      "스릴감",
+      "웅장함"
+    ],
+    "sceneTags": [
+      "협곡",
+      "스카이워크",
+      "출렁다리",
+      "전망대"
+    ],
+    "place_type": "협곡/스카이워크",
+    "purpose_tags": [
+      "체험·액티비티",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "가을"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "상",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-011",
+    "place_name": "알파카월드",
+    "primaryTheme": "숲·정원·자연휴식 무드",
+    "mood_tags": [
+      "라틴감성",
+      "가족친화",
+      "동물교감감성",
+      "자연친화",
+      "힐링",
+      "아기자기함",
+      "조용함"
+    ],
+    "sceneTags": [
+      "숲",
+      "테마파크",
+      "마을",
+      "동물"
+    ],
+    "place_type": "동물 테마파크",
+    "purpose_tags": [
+      "체험·액티비티",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "가을"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-012",
+    "place_name": "원대리 자작나무숲",
+    "primaryTheme": "숲·정원·자연휴식 무드",
+    "mood_tags": [
+      "북유럽감성",
+      "유럽감성",
+      "자연친화",
+      "신비로움",
+      "몽환적",
+      "조용함",
+      "힐링"
+    ],
+    "sceneTags": [
+      "숲",
+      "설경",
+      "산책로"
+    ],
+    "place_type": "숲/자연",
+    "purpose_tags": [
+      "산책·힐링",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "가을",
+      "겨울"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-013",
+    "place_name": "인제성당",
+    "primaryTheme": "건축·전시·랜드마크 무드",
+    "mood_tags": [
+      "유럽감성",
+      "예술적",
+      "건축미",
+      "현대적",
+      "웅장함",
+      "조용함",
+      "이국적"
+    ],
+    "sceneTags": [
+      "건축",
+      "종교시설",
+      "마을"
+    ],
+    "place_type": "건축/종교시설",
+    "purpose_tags": [
+      "전시·건축관람",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-014",
+    "place_name": "알펜시아 리조트",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "알프스감성",
+      "프리미엄",
+      "휴양감",
+      "탁트임",
+      "신비로움",
+      "자연친화",
+      "청량함"
+    ],
+    "sceneTags": [
+      "리조트",
+      "랜드마크",
+      "설경"
+    ],
+    "place_type": "리조트",
+    "purpose_tags": [
+      "숙소·리조트",
+      "체험·액티비티"
+    ],
+    "season_tags": [
+      "겨울"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "상",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-015",
+    "place_name": "육백마지기",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "알프스감성",
+      "유럽감성",
+      "탁트임",
+      "청량함",
+      "자연친화",
+      "낭만적"
+    ],
+    "sceneTags": [
+      "고원",
+      "풍력발전기",
+      "꽃밭",
+      "별"
+    ],
+    "place_type": "고원/풍력발전",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "새벽",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-016",
+    "place_name": "대관령양떼목장",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "알프스감성",
+      "가족친화",
+      "자연친화",
+      "탁트임",
+      "청량함",
+      "신비로움"
+    ],
+    "sceneTags": [
+      "목장",
+      "초원",
+      "설경",
+      "동물"
+    ],
+    "place_type": "목장/초원",
+    "purpose_tags": [
+      "체험·액티비티",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름",
+      "겨울"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-017",
+    "place_name": "하늘목장",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "알프스감성",
+      "가족친화",
+      "자연친화",
+      "탁트임",
+      "청량함",
+      "모험적"
+    ],
+    "sceneTags": [
+      "목장",
+      "초원",
+      "동물"
+    ],
+    "place_type": "목장/초원",
+    "purpose_tags": [
+      "체험·액티비티",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름",
+      "겨울"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-018",
+    "place_name": "삼양라운드힐",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "홋카이도감성",
+      "알프스감성",
+      "탁트임",
+      "자연친화",
+      "신비로움",
+      "청량함",
+      "이국적"
+    ],
+    "sceneTags": [
+      "목장",
+      "초원",
+      "풍력발전기",
+      "설경"
+    ],
+    "place_type": "목장/초원",
+    "purpose_tags": [
+      "산책·힐링",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "여름",
+      "겨울"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-019",
+    "place_name": "발왕산 천년주목숲길·애니포레",
+    "primaryTheme": "숲·정원·자연휴식 무드",
+    "mood_tags": [
+      "북유럽감성",
+      "유럽감성",
+      "자연친화",
+      "신비로움",
+      "조용함",
+      "힐링",
+      "여유로움"
+    ],
+    "sceneTags": [
+      "숲",
+      "산",
+      "케이블카"
+    ],
+    "place_type": "숲/산악",
+    "purpose_tags": [
+      "산책·힐링",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "가을",
+      "겨울"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-020",
+    "place_name": "삼탄아트마인",
+    "primaryTheme": "레트로·시장·항구 무드",
+    "mood_tags": [
+      "레트로",
+      "빈티지",
+      "예술적",
+      "로컬감성",
+      "신비로움",
+      "조용함",
+      "활기"
+    ],
+    "sceneTags": [
+      "산업유산",
+      "미술관"
+    ],
+    "place_type": "산업유산/미술관",
+    "purpose_tags": [
+      "전시·건축관람",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-021",
+    "place_name": "민둥산",
+    "primaryTheme": "숲·정원·자연휴식 무드",
+    "mood_tags": [
+      "탁트임",
+      "자연친화",
+      "신비로움",
+      "모험적",
+      "낭만적",
+      "힐링",
+      "조용함"
+    ],
+    "sceneTags": [
+      "산",
+      "초원"
+    ],
+    "place_type": "산/억새",
+    "purpose_tags": [
+      "산책·힐링",
+      "체험·액티비티"
+    ],
+    "season_tags": [
+      "가을"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-022",
+    "place_name": "매봉산 바람의 언덕",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "알프스감성",
+      "로드트립감성",
+      "탁트임",
+      "청량함",
+      "자연친화",
+      "낭만적",
+      "이국적"
+    ],
+    "sceneTags": [
+      "고원",
+      "풍력발전기",
+      "노을"
+    ],
+    "place_type": "고원/풍력발전",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "새벽",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-023",
+    "place_name": "태기산",
+    "primaryTheme": "숲·정원·자연휴식 무드",
+    "mood_tags": [
+      "신비로움",
+      "자연친화",
+      "몽환적",
+      "조용함",
+      "힐링",
+      "여유로움"
+    ],
+    "sceneTags": [
+      "산",
+      "설경"
+    ],
+    "place_type": "산/설경",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "겨울"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-024",
+    "place_name": "안목해변 카페거리",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "휴양감",
+      "청량함",
+      "탁트임",
+      "낭만적",
+      "활기",
+      "아늑함"
+    ],
+    "sceneTags": [
+      "바다",
+      "해변",
+      "항구",
+      "카페"
+    ],
+    "place_type": "해변/카페거리",
+    "purpose_tags": [
+      "카페·실내휴식",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "상",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-025",
+    "place_name": "하슬라아트월드",
+    "primaryTheme": "건축·전시·랜드마크 무드",
+    "mood_tags": [
+      "지중해감성",
+      "예술적",
+      "건축미",
+      "탁트임",
+      "웅장함",
+      "현대적",
+      "이국적"
+    ],
+    "sceneTags": [
+      "절벽",
+      "바다",
+      "미술관"
+    ],
+    "place_type": "미술관/절벽",
+    "purpose_tags": [
+      "전시·건축관람",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-026",
+    "place_name": "정동진 썬크루즈 리조트",
+    "primaryTheme": "건축·전시·랜드마크 무드",
+    "mood_tags": [
+      "프리미엄",
+      "휴양감",
+      "예술적",
+      "건축미",
+      "탁트임",
+      "현대적",
+      "웅장함"
+    ],
+    "sceneTags": [
+      "절벽",
+      "리조트",
+      "랜드마크",
+      "노을"
+    ],
+    "place_type": "리조트/랜드마크",
+    "purpose_tags": [
+      "숙소·리조트",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "겨울"
+    ],
+    "best_time": "새벽",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-027",
+    "place_name": "BTS 버스정류장",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "K팝감성",
+      "로드트립감성",
+      "청량함",
+      "탁트임",
+      "낭만적",
+      "글로벌",
+      "이국적"
+    ],
+    "sceneTags": [
+      "바다",
+      "해변",
+      "포토존"
+    ],
+    "place_type": "해변 포토존",
+    "purpose_tags": [
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "새벽",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-028",
+    "place_name": "정동진 철길 건널목",
+    "primaryTheme": "일본 소도시·골목 무드",
+    "mood_tags": [
+      "가마쿠라감성",
+      "일본소도시감성",
+      "애니메이션감성",
+      "일본감성",
+      "청량함",
+      "탁트임",
+      "아기자기함"
+    ],
+    "sceneTags": [
+      "해변",
+      "바다",
+      "철길"
+    ],
+    "place_type": "철길/해변",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-029",
+    "place_name": "안반데기",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "몽골감성",
+      "홋카이도감성",
+      "알프스감성",
+      "탁트임",
+      "신비로움",
+      "자연친화",
+      "청량함"
+    ],
+    "sceneTags": [
+      "고원",
+      "별",
+      "은하수"
+    ],
+    "place_type": "고원/별관측",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름",
+      "겨울"
+    ],
+    "best_time": "야간",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-030",
+    "place_name": "금진해변·헌화로 드라이브 코스",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "캘리포니아감성",
+      "로드트립감성",
+      "서핑감성",
+      "청량함",
+      "탁트임",
+      "낭만적",
+      "자유로움"
+    ],
+    "sceneTags": [
+      "바다",
+      "해안도로",
+      "해변",
+      "서핑"
+    ],
+    "place_type": "해안도로/해변",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "봄",
+      "가을"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-031",
+    "place_name": "교동 소품샵 거리",
+    "primaryTheme": "일본 소도시·골목 무드",
+    "mood_tags": [
+      "일본소도시감성",
+      "일본감성",
+      "예술적",
+      "조용함",
+      "아기자기함",
+      "도시적",
+      "이국적"
+    ],
+    "sceneTags": [
+      "골목",
+      "소품샵"
+    ],
+    "place_type": "골목/소품샵",
+    "purpose_tags": [
+      "산책·힐링",
+      "카페·실내휴식"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-032",
+    "place_name": "휴식 료칸 풀빌라",
+    "primaryTheme": "일본 소도시·골목 무드",
+    "mood_tags": [
+      "료칸감성",
+      "일본소도시감성",
+      "프리미엄",
+      "일본감성",
+      "프라이빗",
+      "휴양감",
+      "조용함"
+    ],
+    "sceneTags": [
+      "숙소",
+      "료칸"
+    ],
+    "place_type": "숙소",
+    "purpose_tags": [
+      "숙소·리조트"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-033",
+    "place_name": "유메모리 리조트",
+    "primaryTheme": "일본 소도시·골목 무드",
+    "mood_tags": [
+      "료칸감성",
+      "일본소도시감성",
+      "프리미엄",
+      "프라이빗",
+      "일본감성",
+      "조용함",
+      "힐링"
+    ],
+    "sceneTags": [
+      "정원",
+      "숙소",
+      "료칸"
+    ],
+    "place_type": "숙소",
+    "purpose_tags": [
+      "숙소·리조트"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-034",
+    "place_name": "무릉별유천지",
+    "primaryTheme": "건축·전시·랜드마크 무드",
+    "mood_tags": [
+      "아이슬란드감성",
+      "예술적",
+      "건축미",
+      "신비로움",
+      "청량함",
+      "탁트임",
+      "현대적"
+    ],
+    "sceneTags": [
+      "호수",
+      "전망대",
+      "꽃밭"
+    ],
+    "place_type": "재생관광/호수",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "한낮",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-035",
+    "place_name": "어달삼거리",
+    "primaryTheme": "일본 소도시·골목 무드",
+    "mood_tags": [
+      "가마쿠라감성",
+      "일본소도시감성",
+      "일본감성",
+      "로드트립감성",
+      "청량함",
+      "조용함",
+      "아기자기함"
+    ],
+    "sceneTags": [
+      "바다",
+      "해안도로",
+      "포토존"
+    ],
+    "place_type": "해변 도로/포토존",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-036",
+    "place_name": "묵호항 일대",
+    "primaryTheme": "레트로·시장·항구 무드",
+    "mood_tags": [
+      "레트로",
+      "로컬감성",
+      "빈티지",
+      "청량함",
+      "활기",
+      "도시적",
+      "이국적"
+    ],
+    "sceneTags": [
+      "항구",
+      "시장",
+      "야간거리"
+    ],
+    "place_type": "항구/야간거리",
+    "purpose_tags": [
+      "먹거리·야간탐방",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-037",
+    "place_name": "묵호등대·논골담길",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "레트로",
+      "로컬감성",
+      "탁트임",
+      "청량함",
+      "이국적"
+    ],
+    "sceneTags": [
+      "해안언덕",
+      "바다",
+      "등대",
+      "벽화마을"
+    ],
+    "place_type": "해안 언덕마을",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-038",
+    "place_name": "외옹치 바다향기로",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "유럽감성",
+      "로드트립감성",
+      "청량함",
+      "탁트임",
+      "자연친화",
+      "웅장함",
+      "힐링"
+    ],
+    "sceneTags": [
+      "해안산책로",
+      "절벽",
+      "바다",
+      "암석"
+    ],
+    "place_type": "해안데크길",
+    "purpose_tags": [
+      "산책·힐링",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "상",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-039",
+    "place_name": "카페 흰다정",
+    "primaryTheme": "레트로·시장·항구 무드",
+    "mood_tags": [
+      "레트로",
+      "일본감성",
+      "빈티지",
+      "로컬감성",
+      "조용함",
+      "아늑함",
+      "활기"
+    ],
+    "sceneTags": [
+      "카페",
+      "실내공간"
+    ],
+    "place_type": "카페",
+    "purpose_tags": [
+      "카페·실내휴식",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-040",
+    "place_name": "서피비치",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "발리감성",
+      "캘리포니아감성",
+      "서핑감성",
+      "휴양감",
+      "청량함",
+      "탁트임",
+      "활기"
+    ],
+    "sceneTags": [
+      "해변",
+      "서핑",
+      "포토존"
+    ],
+    "place_type": "서프비치",
+    "purpose_tags": [
+      "체험·액티비티",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-041",
+    "place_name": "죽도해변·인구해변·양리단길",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "트렌디",
+      "서핑감성",
+      "청량함",
+      "탁트임",
+      "활기",
+      "낭만적"
+    ],
+    "sceneTags": [
+      "해변",
+      "서프타운",
+      "노을"
+    ],
+    "place_type": "서프타운/해변권역",
+    "purpose_tags": [
+      "체험·액티비티",
+      "먹거리·야간탐방"
+    ],
+    "season_tags": [
+      "여름",
+      "가을"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-042",
+    "place_name": "두둥실",
+    "primaryTheme": "휴양·카페·이국공간 무드",
+    "mood_tags": [
+      "발리감성",
+      "프라이빗",
+      "프리미엄",
+      "휴양감",
+      "청량함",
+      "힐링",
+      "아늑함"
+    ],
+    "sceneTags": [
+      "해변",
+      "카페"
+    ],
+    "place_type": "카페/감성공간",
+    "purpose_tags": [
+      "카페·실내휴식",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-043",
+    "place_name": "에이프레임(A-Frame)",
+    "primaryTheme": "휴양·카페·이국공간 무드",
+    "mood_tags": [
+      "프리미엄",
+      "서핑감성",
+      "휴양감",
+      "트렌디",
+      "청량함",
+      "활기",
+      "아늑함"
+    ],
+    "sceneTags": [
+      "카페",
+      "서핑",
+      "포토존"
+    ],
+    "place_type": "카페/서프감성",
+    "purpose_tags": [
+      "카페·실내휴식",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-044",
+    "place_name": "아야진해수욕장",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "휴양감",
+      "로드트립감성",
+      "청량함",
+      "탁트임",
+      "자연친화",
+      "힐링",
+      "낭만적"
+    ],
+    "sceneTags": [
+      "바다",
+      "해변",
+      "암석"
+    ],
+    "place_type": "해변",
+    "purpose_tags": [
+      "산책·힐링",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "한낮",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-045",
+    "place_name": "켄싱턴리조트 설악밸리",
+    "primaryTheme": "알프스·고원·목장 무드",
+    "mood_tags": [
+      "알프스감성",
+      "프리미엄",
+      "탁트임",
+      "자연친화",
+      "청량함",
+      "조용함",
+      "힐링"
+    ],
+    "sceneTags": [
+      "산",
+      "리조트",
+      "숙소"
+    ],
+    "place_type": "리조트/숙소",
+    "purpose_tags": [
+      "숙소·리조트",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "가을",
+      "겨울"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-046",
+    "place_name": "하늬라벤더팜",
+    "primaryTheme": "숲·정원·자연휴식 무드",
+    "mood_tags": [
+      "자연친화",
+      "청량함",
+      "컬러풀",
+      "힐링",
+      "조용함",
+      "여유로움",
+      "이국적"
+    ],
+    "sceneTags": [
+      "정원",
+      "꽃밭"
+    ],
+    "place_type": "정원/농장",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-047",
+    "place_name": "능파대",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "로드트립감성",
+      "신비로움",
+      "청량함",
+      "탁트임",
+      "자연친화",
+      "낭만적"
+    ],
+    "sceneTags": [
+      "바다",
+      "암석",
+      "산책로"
+    ],
+    "place_type": "지질/해안",
+    "purpose_tags": [
+      "사진·포토스팟",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-048",
+    "place_name": "사유의 숲",
+    "primaryTheme": "휴양·카페·이국공간 무드",
+    "mood_tags": [
+      "발리감성",
+      "프리미엄",
+      "프라이빗",
+      "휴양감",
+      "힐링",
+      "아늑함",
+      "여유로움"
+    ],
+    "sceneTags": [
+      "숙소",
+      "풀빌라"
+    ],
+    "place_type": "숙소/풀빌라",
+    "purpose_tags": [
+      "숙소·리조트"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "하",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-049",
+    "place_name": "쏠비치 삼척·산토리니 광장",
+    "primaryTheme": "휴양·카페·이국공간 무드",
+    "mood_tags": [
+      "산토리니감성",
+      "지중해감성",
+      "프리미엄",
+      "휴양감",
+      "청량함",
+      "아늑함",
+      "여유로움"
+    ],
+    "sceneTags": [
+      "리조트",
+      "랜드마크",
+      "광장"
+    ],
+    "place_type": "리조트/광장",
+    "purpose_tags": [
+      "숙소·리조트",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "저녁",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-050",
+    "place_name": "라메종드마리",
+    "primaryTheme": "휴양·카페·이국공간 무드",
+    "mood_tags": [
+      "프리미엄",
+      "유럽감성",
+      "휴양감",
+      "조용함",
+      "아늑함",
+      "여유로움",
+      "이국적"
+    ],
+    "sceneTags": [
+      "카페",
+      "건축",
+      "실내공간"
+    ],
+    "place_type": "카페/디저트공간",
+    "purpose_tags": [
+      "카페·실내휴식",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오후",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-051",
+    "place_name": "장호항",
+    "primaryTheme": "레트로·시장·항구 무드",
+    "mood_tags": [
+      "레트로",
+      "로컬감성",
+      "휴양감",
+      "빈티지",
+      "청량함",
+      "탁트임",
+      "모험적"
+    ],
+    "sceneTags": [
+      "항구",
+      "해변",
+      "바다"
+    ],
+    "place_type": "항구/해변",
+    "purpose_tags": [
+      "체험·액티비티",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "한낮",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-052",
+    "place_name": "용화해변",
+    "primaryTheme": "휴양·카페·이국공간 무드",
+    "mood_tags": [
+      "프리미엄",
+      "휴양감",
+      "청량함",
+      "탁트임",
+      "모험적",
+      "힐링",
+      "아늑함"
+    ],
+    "sceneTags": [
+      "바다",
+      "해변",
+      "케이블카"
+    ],
+    "place_type": "해변",
+    "purpose_tags": [
+      "체험·액티비티",
+      "산책·힐링"
+    ],
+    "season_tags": [
+      "여름"
+    ],
+    "best_time": "한낮",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-053",
+    "place_name": "초곡용굴촛대바위길",
+    "primaryTheme": "바다·해안 무드",
+    "mood_tags": [
+      "유럽감성",
+      "로드트립감성",
+      "청량함",
+      "모험적",
+      "탁트임",
+      "신비로움",
+      "낭만적"
+    ],
+    "sceneTags": [
+      "해안산책로",
+      "출렁다리",
+      "해식동굴",
+      "암석"
+    ],
+    "place_type": "해안 트레일",
+    "purpose_tags": [
+      "체험·액티비티",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "사계절"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  },
+  {
+    "place_id": "GOAT-054",
+    "place_name": "한탄강 주상절리길",
+    "primaryTheme": "건축·전시·랜드마크 무드",
+    "mood_tags": [
+      "예술적",
+      "건축미",
+      "신비로움",
+      "모험적",
+      "탁트임",
+      "웅장함",
+      "스릴감"
+    ],
+    "sceneTags": [
+      "협곡",
+      "절벽",
+      "주상절리",
+      "잔도"
+    ],
+    "place_type": "협곡/잔도",
+    "purpose_tags": [
+      "체험·액티비티",
+      "사진·포토스팟"
+    ],
+    "season_tags": [
+      "가을",
+      "겨울"
+    ],
+    "best_time": "오전",
+    "accessibility": {
+      "public_transport": "중",
+      "car": "상"
+    }
+  }
+]

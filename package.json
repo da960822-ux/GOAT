@@ -1,0 +1,34 @@
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
+  "packageManager": "pnpm@11.8.0",
+  "engines": {
+    "node": ">=20.19.4 <25"
+  },
+  "scripts": {
+    "preinstall": "node -e \"const fs=require('fs'); for(const f of ['package-lock.json','yarn.lock']) fs.rmSync(f,{force:true}); const ua=process.env.npm_config_user_agent||''; if(!ua.startsWith('pnpm/')){console.error('Use pnpm instead'); process.exit(1)}\"",
+    "dev:web": "corepack pnpm --filter @workspace/goat-mobile run dev:web",
+    "build": "corepack pnpm run typecheck && corepack pnpm -r --if-present run build",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "corepack pnpm run typecheck:libs && corepack pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "test": "corepack pnpm --filter @workspace/scripts run test",
+    "test:unit": "corepack pnpm --filter @workspace/scripts run test",
+    "test:integration": "corepack pnpm --filter @workspace/api-server run test:external && corepack pnpm --filter @workspace/goat-mobile run test:frontend-contract",
+    "test:e2e": "corepack pnpm --filter @workspace/api-server run build && node ./artifacts/goat-mobile/scripts/run-http-e2e.mjs",
+    "test:recommendation": "corepack pnpm --filter @workspace/scripts run test:recommendation",
+    "test:place-coverage": "corepack pnpm --filter @workspace/scripts run test:place-coverage",
+    "test:place-coverage:all-references": "corepack pnpm --filter @workspace/scripts run test:place-coverage:all-references",
+    "test:condition-sensitivity": "corepack pnpm --filter @workspace/scripts run test:condition-sensitivity",
+    "test:external-api": "corepack pnpm --filter @workspace/api-server run verify:external:live",
+    "test:all": "corepack pnpm run test:unit && corepack pnpm run test:integration && corepack pnpm run test:e2e && corepack pnpm run test:place-coverage && corepack pnpm run test:condition-sensitivity",
+    "verify:place-data": "corepack pnpm --filter @workspace/scripts run verify:place-data",
+    "verify": "corepack pnpm run build && corepack pnpm run test:all"
+  },
+  "private": true,
+  "devDependencies": {
+    "lightningcss-win32-x64-msvc": "1.32.0",
+    "prettier": "^3.8.3",
+    "typescript": "~5.9.3"
+  }
+}

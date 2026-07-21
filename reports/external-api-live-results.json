@@ -1,0 +1,72 @@
+{
+  "verification": "PASS",
+  "generatedAt": "2026-07-21T07:07:21.452Z",
+  "health": { "status": "ok", "latencyMs": 7 },
+  "exposureContract": {
+    "requestIdPresent": true,
+    "requestIdsDistinct": true,
+    "previousCardsExcluded": true,
+    "initialCount": 3,
+    "rerollCount": 3
+  },
+  "kakaoGeocode": {
+    "httpStatus": 200,
+    "latencyMs": 162,
+    "source": "KEYWORD",
+    "coordinatesFinite": true
+  },
+  "kakaoRoute": {
+    "apiHttpStatus": 200,
+    "totalLatencyMs": 1140,
+    "recommendationCount": 3,
+    "actualRouteCount": 2,
+    "fallbackRouteCount": 1,
+    "originStatus": "APPLIED",
+    "warnings": ["KAKAO_ROUTE_PARTIAL_FALLBACK"]
+  },
+  "ktoNearby": {
+    "httpStatuses": [200, 200, 200, 200, 200],
+    "latencyMs": 9650,
+    "requestCount": 5,
+    "successfulRequestCount": 5,
+    "failedRequestCount": 0,
+    "rawCandidateCount": 12,
+    "filteredCandidateCount": 12,
+    "coordinateCandidateCount": 12,
+    "candidatesPassedToLlm": 12,
+    "candidateSources": ["VISITKOREA_CONTENT_LAB:12"],
+    "actualPlaceExamples": [
+      { "id": "2892400", "title": "사랑대게" },
+      { "id": "2702507", "title": "[해파랑길] 44코스" },
+      { "id": "627070", "title": "옛뜰" }
+    ]
+  },
+  "llm": {
+    "courseHttpStatus": 200,
+    "totalCourseLatencyMs": 15355,
+    "mode": "LLM_OPENROUTER",
+    "requestedModel": "openai/gpt-4o-mini",
+    "actualModel": "openai/gpt-4o-mini",
+    "modelMatched": true,
+    "llmHttpStatus": 200,
+    "llmLatencyMs": 5698,
+    "attempts": 1,
+    "stopCount": 4,
+    "uniqueStopCount": 4,
+    "warnings": []
+  },
+  "map": {
+    "provider": "KAKAO_JS_SDK_STATIC_MAP",
+    "markerCount": 4,
+    "fallbackUrlPresent": true
+  },
+  "newPlaces": [
+    { "placeId": "GOAT-055", "coordinatesFinite": true, "status": "DONE", "stopCount": 3, "mapProvider": "KAKAO_JS_SDK_STATIC_MAP", "markerCount": 3 },
+    { "placeId": "GOAT-056", "coordinatesFinite": true, "status": "DONE", "stopCount": 2, "mapProvider": "KAKAO_JS_SDK_STATIC_MAP", "markerCount": 2 },
+    { "placeId": "GOAT-057", "coordinatesFinite": true, "status": "DONE", "stopCount": 2, "mapProvider": "KAKAO_JS_SDK_STATIC_MAP", "markerCount": 2 },
+    { "placeId": "GOAT-058", "coordinatesFinite": true, "status": "DONE", "stopCount": 2, "mapProvider": "KAKAO_JS_SDK_STATIC_MAP", "markerCount": 2 },
+    { "placeId": "GOAT-059", "coordinatesFinite": true, "status": "DONE", "stopCount": 2, "mapProvider": "KAKAO_JS_SDK_STATIC_MAP", "markerCount": 2 },
+    { "placeId": "GOAT-060", "coordinatesFinite": true, "status": "DONE", "stopCount": 2, "mapProvider": "KAKAO_JS_SDK_STATIC_MAP", "markerCount": 2 },
+    { "placeId": "GOAT-061", "coordinatesFinite": true, "status": "DONE", "stopCount": 3, "mapProvider": "KAKAO_JS_SDK_STATIC_MAP", "markerCount": 3 }
+  ]
+}

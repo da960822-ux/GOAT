@@ -1,0 +1,8799 @@
+{
+  "generatedAt": "2026-07-21T07:28:15.722Z",
+  "randomizationUsed": false,
+  "scorePolicy": {
+    "primaryTheme": 18,
+    "moodTags": {
+      "one": 6,
+      "two": 12,
+      "threeOrMore": 17
+    },
+    "sceneTags": {
+      "one": 5,
+      "twoOrMore": 10
+    },
+    "placeType": "baseScore 0; tie-break hint only",
+    "travelPurpose": 20,
+    "accessibility": {
+      "high": 12,
+      "middle": 7,
+      "low": 1,
+      "invalid": 0
+    },
+    "season": {
+      "current": 13,
+      "allSeason": 10,
+      "none": 0
+    },
+    "originDistanceBonus": {
+      "cards": [
+        2,
+        3
+      ],
+      "bandsKm": {
+        "<=5": 10,
+        "<=10": 8,
+        "<=20": 6,
+        "<=40": 4,
+        "<=70": 2,
+        ">70": 0
+      }
+    },
+    "routeDistanceBonus": {
+      "cards": [
+        2,
+        3
+      ],
+      "max": 10,
+      "durationPreferred": true
+    },
+    "duplicatePenalty": {
+      "card": 2,
+      "max": -6
+    },
+    "recentExposurePenalty": {
+      "cards": [
+        2,
+        3
+      ],
+      "max": -5
+    },
+    "coverageBoost": {
+      "cards": [
+        2,
+        3
+      ],
+      "points": 3
+    },
+    "lowExposureBoost": {
+      "cards": [
+        2,
+        3
+      ],
+      "max": 3,
+      "emptyHistory": 0
+    },
+    "bestTime": 0,
+    "companionType": 0,
+    "displayScore": "clamp(base + originDistanceBonus + routeDistanceBonus - duplicatePenalty, 0, 100)",
+    "selectionScore": "base + originDistanceBonus + routeDistanceBonus - duplicatePenalty - exposurePenalty + coverageBoost + lowExposureBoost"
+  },
+  "dimensions": {
+    "referenceProfiles": 7,
+    "primaryThemes": 7,
+    "travelPurposes": 7,
+    "transports": 3,
+    "companions": 4,
+    "seasons": 4,
+    "departures": 7,
+    "exposureStates": 2,
+    "retryStates": 2,
+    "total": 65856,
+    "externalApiCalls": 0
+  },
+  "summary": {
+    "profile": "ACTUAL_UI_7_MOOD_ENTRYPOINTS",
+    "referenceCardIds": [
+      "REF_SEA_02",
+      "REF_JP_02",
+      "REF_ALPS_01",
+      "REF_NATURE_01",
+      "REF_RETRO_01",
+      "REF_ARCH_01",
+      "REF_RESORT_02"
+    ],
+    "combinationCount": 65856,
+    "reachable": 61,
+    "reachableStatusCounts": {
+      "REACHABLE": 60,
+      "CONDITIONALLY_REACHABLE": 1,
+      "UNREACHABLE": 0
+    },
+    "unreachable": [],
+    "uniqueByCard": {
+      "card1": 38,
+      "card2": 58,
+      "card3": 60
+    },
+    "card1Unreachable": [
+      {
+        "placeId": "GOAT-003",
+        "placeName": "춘천 산토리니"
+      },
+      {
+        "placeId": "GOAT-006",
+        "placeName": "교토정원"
+      },
+      {
+        "placeId": "GOAT-007",
+        "placeName": "스테이 조각밤"
+      },
+      {
+        "placeId": "GOAT-008",
+        "placeName": "이와림"
+      },
+      {
+        "placeId": "GOAT-010",
+        "placeName": "소금산 그랜드밸리"
+      },
+      {
+        "placeId": "GOAT-015",
+        "placeName": "육백마지기"
+      },
+      {
+        "placeId": "GOAT-022",
+        "placeName": "매봉산 바람의 언덕"
+      },
+      {
+        "placeId": "GOAT-023",
+        "placeName": "태기산"
+      },
+      {
+        "placeId": "GOAT-026",
+        "placeName": "정동진 썬크루즈 리조트"
+      },
+      {
+        "placeId": "GOAT-029",
+        "placeName": "안반데기"
+      },
+      {
+        "placeId": "GOAT-031",
+        "placeName": "교동 소품샵 거리"
+      },
+      {
+        "placeId": "GOAT-032",
+        "placeName": "휴식 료칸 풀빌라"
+      },
+      {
+        "placeId": "GOAT-033",
+        "placeName": "유메모리 리조트"
+      },
+      {
+        "placeId": "GOAT-038",
+        "placeName": "외옹치 바다향기로"
+      },
+      {
+        "placeId": "GOAT-047",
+        "placeName": "능파대"
+      },
+      {
+        "placeId": "GOAT-048",
+        "placeName": "사유의 숲"
+      },
+      {
+        "placeId": "GOAT-050",
+        "placeName": "라메종드마리"
+      },
+      {
+        "placeId": "GOAT-053",
+        "placeName": "초곡용굴촛대바위길"
+      },
+      {
+        "placeId": "GOAT-054",
+        "placeName": "한탄강 주상절리길"
+      },
+      {
+        "placeId": "GOAT-058",
+        "placeName": "고석정 꽃밭"
+      },
+      {
+        "placeId": "GOAT-059",
+        "placeName": "파크로쉬 리조트 앤 웰니스"
+      },
+      {
+        "placeId": "GOAT-060",
+        "placeName": "켄싱턴호텔 평창 프렌치가든"
+      },
+      {
+        "placeId": "GOAT-061",
+        "placeName": "델피노·소노펠리체 델피노"
+      }
+    ],
+    "reachableByScenario": {
+      "initial": 60,
+      "reroll": 61,
+      "recent": 60,
+      "recentReroll": 61
+    },
+    "missingByScenario": {
+      "initial": [
+        {
+          "placeId": "GOAT-008",
+          "placeName": "이와림"
+        }
+      ],
+      "reroll": [],
+      "recent": [
+        {
+          "placeId": "GOAT-022",
+          "placeName": "매봉산 바람의 언덕"
+        }
+      ],
+      "recentReroll": []
+    },
+    "retryNewExposure": {
+      "coldStart": {
+        "count": 1,
+        "placeIds": [
+          "GOAT-008"
+        ]
+      },
+      "recentExposure": {
+        "count": 1,
+        "placeIds": [
+          "GOAT-022"
+        ]
+      }
+    },
+    "dimensionUniqueRecommendations": {
+      "primaryTheme": {
+        "건축·전시·랜드마크 무드": 49,
+        "레트로·시장·항구 무드": 49,
+        "바다·해안 무드": 42,
+        "숲·정원·자연휴식 무드": 38,
+        "알프스·고원·목장 무드": 49,
+        "일본 소도시·골목 무드": 45,
+        "휴양·카페·이국공간 무드": 45
+      },
+      "travelPurpose": {
+        "사진·포토스팟": 51,
+        "산책·힐링": 50,
+        "카페·실내휴식": 50,
+        "전시·건축관람": 52,
+        "체험·액티비티": 51,
+        "먹거리·야간탐방": 53,
+        "숙소·리조트": 52
+      },
+      "transportType": {
+        "자차": 61,
+        "대중교통": 61,
+        "도보중심": 60
+      },
+      "season": {
+        "봄": 59,
+        "여름": 60,
+        "가을": 55,
+        "겨울": 57
+      },
+      "departure": {
+        "none": 61,
+        "seoul": 61,
+        "chuncheon": 61,
+        "wonju": 61,
+        "gangneung": 61,
+        "sokcho": 60,
+        "pyeongchang": 61
+      }
+    },
+    "newPlaces": {
+      "reachable": 7,
+      "missingCoordinates": []
+    },
+    "appearance": {
+      "total": 197568,
+      "min": 208,
+      "max": 8468,
+      "average": 3238.8196721311474,
+      "median": 2912,
+      "populationStandardDeviation": 2044.4965351489247,
+      "top5SharePercent": 19.48088759313249,
+      "newPlacesTotalAppearances": 20172,
+      "mostFrequent": [
+        {
+          "placeId": "GOAT-036",
+          "placeName": "묵호항 일대",
+          "total": 8468
+        },
+        {
+          "placeId": "GOAT-024",
+          "placeName": "안목해변 카페거리",
+          "total": 8424
+        },
+        {
+          "placeId": "GOAT-025",
+          "placeName": "하슬라아트월드",
+          "total": 7284
+        },
+        {
+          "placeId": "GOAT-020",
+          "placeName": "삼탄아트마인",
+          "total": 7192
+        },
+        {
+          "placeId": "GOAT-041",
+          "placeName": "죽도해변·인구해변·양리단길",
+          "total": 7120
+        }
+      ],
+      "leastFrequent": [
+        {
+          "placeId": "GOAT-022",
+          "placeName": "매봉산 바람의 언덕",
+          "total": 208
+        },
+        {
+          "placeId": "GOAT-015",
+          "placeName": "육백마지기",
+          "total": 256
+        },
+        {
+          "placeId": "GOAT-008",
+          "placeName": "이와림",
+          "total": 332
+        },
+        {
+          "placeId": "GOAT-032",
+          "placeName": "휴식 료칸 풀빌라",
+          "total": 408
+        },
+        {
+          "placeId": "GOAT-058",
+          "placeName": "고석정 꽃밭",
+          "total": 560
+        }
+      ]
+    },
+    "largeScaleAudit": {
+      "counterUnits": {
+        "tests": "recommendGoatPlaces 호출 단위",
+        "duplicatePlaceTests": "중복 placeId가 한 번이라도 나온 결과 단위",
+        "scoreValues": "반환 카드의 필수 numeric score leaf 값 단위",
+        "missingMedia": "반환 카드 appearance 단위; unique placeId도 별도 제공"
+      },
+      "totalTests": 65856,
+      "successTests": 65856,
+      "failedTests": 0,
+      "thrownErrors": 0,
+      "threeCardFailureTests": 0,
+      "duplicatePlaceTests": 0,
+      "duplicateCardOccurrences": 0,
+      "unknownPlaceIdOccurrences": 0,
+      "nanScoreValues": 0,
+      "infinityScoreValues": 0,
+      "undefinedScoreValues": 0,
+      "outOfRangeScoreValues": 0,
+      "scoreRanges": {
+        "moodScore.total": [
+          0,
+          45
+        ],
+        "moodScore.theme.score": [
+          0,
+          18
+        ],
+        "moodScore.moodTags.score": [
+          0,
+          17
+        ],
+        "moodScore.sceneTags.score": [
+          0,
+          10
+        ],
+        "moodScore.placeTypeHint.score": [
+          0,
+          3
+        ],
+        "conditionScore.total": [
+          0,
+          45
+        ],
+        "conditionScore.purpose.score": [
+          0,
+          20
+        ],
+        "conditionScore.accessibility.score": [
+          0,
+          12
+        ],
+        "conditionScore.season.score": [
+          0,
+          13
+        ],
+        "baseScore": [
+          0,
+          90
+        ],
+        "originDistanceBonus": [
+          0,
+          10
+        ],
+        "routeDistanceBonus": [
+          0,
+          10
+        ],
+        "duplicatePenalty": [
+          0,
+          6
+        ],
+        "exposurePenalty": [
+          0,
+          5
+        ],
+        "coverageBoost": [
+          0,
+          3
+        ],
+        "lowExposureBoost": [
+          0,
+          3
+        ],
+        "selectionScore": [
+          -11,
+          116
+        ],
+        "displayScore": [
+          0,
+          100
+        ]
+      },
+      "card3PurposeFallbackTests": 1408,
+      "card1ThemeMismatchTests": 4640,
+      "card1ThemeMismatchWithEligibleThemeTests": 0,
+      "wrongPurposeFallbackTests": 0,
+      "missingCoordinateCardAppearances": 0,
+      "missingCoordinateUniquePlaces": 0,
+      "missingCoordinatePlaceIds": [],
+      "missingImageCardAppearances": 197568,
+      "missingImageUniquePlaces": 61,
+      "missingImagePlaceIds": [
+        "GOAT-001",
+        "GOAT-002",
+        "GOAT-003",
+        "GOAT-004",
+        "GOAT-005",
+        "GOAT-006",
+        "GOAT-007",
+        "GOAT-008",
+        "GOAT-009",
+        "GOAT-010",
+        "GOAT-011",
+        "GOAT-012",
+        "GOAT-013",
+        "GOAT-014",
+        "GOAT-015",
+        "GOAT-016",
+        "GOAT-017",
+        "GOAT-018",
+        "GOAT-019",
+        "GOAT-020",
+        "GOAT-021",
+        "GOAT-022",
+        "GOAT-023",
+        "GOAT-024",
+        "GOAT-025",
+        "GOAT-026",
+        "GOAT-027",
+        "GOAT-028",
+        "GOAT-029",
+        "GOAT-030",
+        "GOAT-031",
+        "GOAT-032",
+        "GOAT-033",
+        "GOAT-034",
+        "GOAT-035",
+        "GOAT-036",
+        "GOAT-037",
+        "GOAT-038",
+        "GOAT-039",
+        "GOAT-040",
+        "GOAT-041",
+        "GOAT-042",
+        "GOAT-043",
+        "GOAT-044",
+        "GOAT-045",
+        "GOAT-046",
+        "GOAT-047",
+        "GOAT-048",
+        "GOAT-049",
+        "GOAT-050",
+        "GOAT-051",
+        "GOAT-052",
+        "GOAT-053",
+        "GOAT-054",
+        "GOAT-055",
+        "GOAT-056",
+        "GOAT-057",
+        "GOAT-058",
+        "GOAT-059",
+        "GOAT-060",
+        "GOAT-061"
+      ],
+      "recommendedPlaces": 61,
+      "unrecommendedPlaces": 0,
+      "newPlacesRecommended": 7,
+      "placeExposureCounts": {
+        "GOAT-001": 2796,
+        "GOAT-002": 4532,
+        "GOAT-003": 2492,
+        "GOAT-004": 2916,
+        "GOAT-005": 2856,
+        "GOAT-006": 1944,
+        "GOAT-007": 624,
+        "GOAT-008": 332,
+        "GOAT-009": 4676,
+        "GOAT-010": 2196,
+        "GOAT-011": 1388,
+        "GOAT-012": 3468,
+        "GOAT-013": 6344,
+        "GOAT-014": 2956,
+        "GOAT-015": 256,
+        "GOAT-016": 5412,
+        "GOAT-017": 3604,
+        "GOAT-018": 2496,
+        "GOAT-019": 3704,
+        "GOAT-020": 7192,
+        "GOAT-021": 1832,
+        "GOAT-022": 208,
+        "GOAT-023": 1488,
+        "GOAT-024": 8424,
+        "GOAT-025": 7284,
+        "GOAT-026": 2716,
+        "GOAT-027": 4392,
+        "GOAT-028": 5604,
+        "GOAT-029": 580,
+        "GOAT-030": 6320,
+        "GOAT-031": 2912,
+        "GOAT-032": 408,
+        "GOAT-033": 1188,
+        "GOAT-034": 2088,
+        "GOAT-035": 4776,
+        "GOAT-036": 8468,
+        "GOAT-037": 1840,
+        "GOAT-038": 2396,
+        "GOAT-039": 4368,
+        "GOAT-040": 1800,
+        "GOAT-041": 7120,
+        "GOAT-042": 5488,
+        "GOAT-043": 2116,
+        "GOAT-044": 4592,
+        "GOAT-045": 3504,
+        "GOAT-046": 964,
+        "GOAT-047": 3848,
+        "GOAT-048": 964,
+        "GOAT-049": 3336,
+        "GOAT-050": 3380,
+        "GOAT-051": 4812,
+        "GOAT-052": 2532,
+        "GOAT-053": 2176,
+        "GOAT-054": 1288,
+        "GOAT-055": 1888,
+        "GOAT-056": 3232,
+        "GOAT-057": 3184,
+        "GOAT-058": 560,
+        "GOAT-059": 4872,
+        "GOAT-060": 1700,
+        "GOAT-061": 4736
+      },
+      "cardRoleDistribution": {
+        "BEST_SCENE": {
+          "uniquePlaceCount": 38,
+          "totalAppearances": 65856,
+          "places": [
+            {
+              "placeId": "GOAT-001",
+              "count": 1800
+            },
+            {
+              "placeId": "GOAT-002",
+              "count": 1552
+            },
+            {
+              "placeId": "GOAT-004",
+              "count": 2272
+            },
+            {
+              "placeId": "GOAT-005",
+              "count": 1128
+            },
+            {
+              "placeId": "GOAT-009",
+              "count": 1808
+            },
+            {
+              "placeId": "GOAT-011",
+              "count": 400
+            },
+            {
+              "placeId": "GOAT-012",
+              "count": 1384
+            },
+            {
+              "placeId": "GOAT-013",
+              "count": 2848
+            },
+            {
+              "placeId": "GOAT-014",
+              "count": 448
+            },
+            {
+              "placeId": "GOAT-016",
+              "count": 2584
+            },
+            {
+              "placeId": "GOAT-017",
+              "count": 576
+            },
+            {
+              "placeId": "GOAT-018",
+              "count": 1384
+            },
+            {
+              "placeId": "GOAT-019",
+              "count": 1264
+            },
+            {
+              "placeId": "GOAT-020",
+              "count": 3416
+            },
+            {
+              "placeId": "GOAT-021",
+              "count": 808
+            },
+            {
+              "placeId": "GOAT-024",
+              "count": 2240
+            },
+            {
+              "placeId": "GOAT-025",
+              "count": 1856
+            },
+            {
+              "placeId": "GOAT-027",
+              "count": 224
+            },
+            {
+              "placeId": "GOAT-028",
+              "count": 4704
+            },
+            {
+              "placeId": "GOAT-030",
+              "count": 4760
+            },
+            {
+              "placeId": "GOAT-034",
+              "count": 1344
+            },
+            {
+              "placeId": "GOAT-035",
+              "count": 64
+            },
+            {
+              "placeId": "GOAT-036",
+              "count": 2464
+            },
+            {
+              "placeId": "GOAT-037",
+              "count": 400
+            },
+            {
+              "placeId": "GOAT-039",
+              "count": 1224
+            },
+            {
+              "placeId": "GOAT-040",
+              "count": 168
+            },
+            {
+              "placeId": "GOAT-041",
+              "count": 1976
+            },
+            {
+              "placeId": "GOAT-042",
+              "count": 4152
+            },
+            {
+              "placeId": "GOAT-043",
+              "count": 664
+            },
+            {
+              "placeId": "GOAT-044",
+              "count": 4280
+            },
+            {
+              "placeId": "GOAT-045",
+              "count": 2144
+            },
+            {
+              "placeId": "GOAT-046",
+              "count": 568
+            },
+            {
+              "placeId": "GOAT-049",
+              "count": 2488
+            },
+            {
+              "placeId": "GOAT-051",
+              "count": 1176
+            },
+            {
+              "placeId": "GOAT-052",
+              "count": 1792
+            },
+            {
+              "placeId": "GOAT-055",
+              "count": 312
+            },
+            {
+              "placeId": "GOAT-056",
+              "count": 2416
+            },
+            {
+              "placeId": "GOAT-057",
+              "count": 768
+            }
+          ]
+        },
+        "SAME_MOOD_ALTERNATIVE": {
+          "uniquePlaceCount": 58,
+          "totalAppearances": 65856,
+          "places": [
+            {
+              "placeId": "GOAT-001",
+              "count": 136
+            },
+            {
+              "placeId": "GOAT-002",
+              "count": 1304
+            },
+            {
+              "placeId": "GOAT-003",
+              "count": 924
+            },
+            {
+              "placeId": "GOAT-004",
+              "count": 400
+            },
+            {
+              "placeId": "GOAT-005",
+              "count": 1104
+            },
+            {
+              "placeId": "GOAT-006",
+              "count": 64
+            },
+            {
+              "placeId": "GOAT-008",
+              "count": 48
+            },
+            {
+              "placeId": "GOAT-009",
+              "count": 1704
+            },
+            {
+              "placeId": "GOAT-010",
+              "count": 1240
+            },
+            {
+              "placeId": "GOAT-011",
+              "count": 716
+            },
+            {
+              "placeId": "GOAT-012",
+              "count": 1708
+            },
+            {
+              "placeId": "GOAT-013",
+              "count": 872
+            },
+            {
+              "placeId": "GOAT-014",
+              "count": 488
+            },
+            {
+              "placeId": "GOAT-015",
+              "count": 140
+            },
+            {
+              "placeId": "GOAT-016",
+              "count": 1672
+            },
+            {
+              "placeId": "GOAT-017",
+              "count": 2560
+            },
+            {
+              "placeId": "GOAT-018",
+              "count": 728
+            },
+            {
+              "placeId": "GOAT-019",
+              "count": 2080
+            },
+            {
+              "placeId": "GOAT-020",
+              "count": 932
+            },
+            {
+              "placeId": "GOAT-021",
+              "count": 12
+            },
+            {
+              "placeId": "GOAT-022",
+              "count": 72
+            },
+            {
+              "placeId": "GOAT-023",
+              "count": 1488
+            },
+            {
+              "placeId": "GOAT-024",
+              "count": 3496
+            },
+            {
+              "placeId": "GOAT-025",
+              "count": 2056
+            },
+            {
+              "placeId": "GOAT-026",
+              "count": 1700
+            },
+            {
+              "placeId": "GOAT-027",
+              "count": 3732
+            },
+            {
+              "placeId": "GOAT-029",
+              "count": 360
+            },
+            {
+              "placeId": "GOAT-030",
+              "count": 464
+            },
+            {
+              "placeId": "GOAT-031",
+              "count": 280
+            },
+            {
+              "placeId": "GOAT-032",
+              "count": 16
+            },
+            {
+              "placeId": "GOAT-033",
+              "count": 56
+            },
+            {
+              "placeId": "GOAT-034",
+              "count": 244
+            },
+            {
+              "placeId": "GOAT-035",
+              "count": 4304
+            },
+            {
+              "placeId": "GOAT-036",
+              "count": 1868
+            },
+            {
+              "placeId": "GOAT-037",
+              "count": 568
+            },
+            {
+              "placeId": "GOAT-038",
+              "count": 752
+            },
+            {
+              "placeId": "GOAT-039",
+              "count": 2188
+            },
+            {
+              "placeId": "GOAT-040",
+              "count": 972
+            },
+            {
+              "placeId": "GOAT-041",
+              "count": 456
+            },
+            {
+              "placeId": "GOAT-042",
+              "count": 592
+            },
+            {
+              "placeId": "GOAT-043",
+              "count": 1108
+            },
+            {
+              "placeId": "GOAT-044",
+              "count": 112
+            },
+            {
+              "placeId": "GOAT-045",
+              "count": 204
+            },
+            {
+              "placeId": "GOAT-047",
+              "count": 3292
+            },
+            {
+              "placeId": "GOAT-048",
+              "count": 736
+            },
+            {
+              "placeId": "GOAT-049",
+              "count": 204
+            },
+            {
+              "placeId": "GOAT-050",
+              "count": 2912
+            },
+            {
+              "placeId": "GOAT-051",
+              "count": 3316
+            },
+            {
+              "placeId": "GOAT-052",
+              "count": 276
+            },
+            {
+              "placeId": "GOAT-053",
+              "count": 204
+            },
+            {
+              "placeId": "GOAT-054",
+              "count": 288
+            },
+            {
+              "placeId": "GOAT-055",
+              "count": 704
+            },
+            {
+              "placeId": "GOAT-056",
+              "count": 144
+            },
+            {
+              "placeId": "GOAT-057",
+              "count": 2408
+            },
+            {
+              "placeId": "GOAT-058",
+              "count": 260
+            },
+            {
+              "placeId": "GOAT-059",
+              "count": 1952
+            },
+            {
+              "placeId": "GOAT-060",
+              "count": 456
+            },
+            {
+              "placeId": "GOAT-061",
+              "count": 2784
+            }
+          ]
+        },
+        "CONDITION_FIT_ALTERNATIVE": {
+          "uniquePlaceCount": 60,
+          "totalAppearances": 65856,
+          "places": [
+            {
+              "placeId": "GOAT-001",
+              "count": 860
+            },
+            {
+              "placeId": "GOAT-002",
+              "count": 1676
+            },
+            {
+              "placeId": "GOAT-003",
+              "count": 1568
+            },
+            {
+              "placeId": "GOAT-004",
+              "count": 244
+            },
+            {
+              "placeId": "GOAT-005",
+              "count": 624
+            },
+            {
+              "placeId": "GOAT-006",
+              "count": 1880
+            },
+            {
+              "placeId": "GOAT-007",
+              "count": 624
+            },
+            {
+              "placeId": "GOAT-008",
+              "count": 284
+            },
+            {
+              "placeId": "GOAT-009",
+              "count": 1164
+            },
+            {
+              "placeId": "GOAT-010",
+              "count": 956
+            },
+            {
+              "placeId": "GOAT-011",
+              "count": 272
+            },
+            {
+              "placeId": "GOAT-012",
+              "count": 376
+            },
+            {
+              "placeId": "GOAT-013",
+              "count": 2624
+            },
+            {
+              "placeId": "GOAT-014",
+              "count": 2020
+            },
+            {
+              "placeId": "GOAT-015",
+              "count": 116
+            },
+            {
+              "placeId": "GOAT-016",
+              "count": 1156
+            },
+            {
+              "placeId": "GOAT-017",
+              "count": 468
+            },
+            {
+              "placeId": "GOAT-018",
+              "count": 384
+            },
+            {
+              "placeId": "GOAT-019",
+              "count": 360
+            },
+            {
+              "placeId": "GOAT-020",
+              "count": 2844
+            },
+            {
+              "placeId": "GOAT-021",
+              "count": 1012
+            },
+            {
+              "placeId": "GOAT-022",
+              "count": 136
+            },
+            {
+              "placeId": "GOAT-024",
+              "count": 2688
+            },
+            {
+              "placeId": "GOAT-025",
+              "count": 3372
+            },
+            {
+              "placeId": "GOAT-026",
+              "count": 1016
+            },
+            {
+              "placeId": "GOAT-027",
+              "count": 436
+            },
+            {
+              "placeId": "GOAT-028",
+              "count": 900
+            },
+            {
+              "placeId": "GOAT-029",
+              "count": 220
+            },
+            {
+              "placeId": "GOAT-030",
+              "count": 1096
+            },
+            {
+              "placeId": "GOAT-031",
+              "count": 2632
+            },
+            {
+              "placeId": "GOAT-032",
+              "count": 392
+            },
+            {
+              "placeId": "GOAT-033",
+              "count": 1132
+            },
+            {
+              "placeId": "GOAT-034",
+              "count": 500
+            },
+            {
+              "placeId": "GOAT-035",
+              "count": 408
+            },
+            {
+              "placeId": "GOAT-036",
+              "count": 4136
+            },
+            {
+              "placeId": "GOAT-037",
+              "count": 872
+            },
+            {
+              "placeId": "GOAT-038",
+              "count": 1644
+            },
+            {
+              "placeId": "GOAT-039",
+              "count": 956
+            },
+            {
+              "placeId": "GOAT-040",
+              "count": 660
+            },
+            {
+              "placeId": "GOAT-041",
+              "count": 4688
+            },
+            {
+              "placeId": "GOAT-042",
+              "count": 744
+            },
+            {
+              "placeId": "GOAT-043",
+              "count": 344
+            },
+            {
+              "placeId": "GOAT-044",
+              "count": 200
+            },
+            {
+              "placeId": "GOAT-045",
+              "count": 1156
+            },
+            {
+              "placeId": "GOAT-046",
+              "count": 396
+            },
+            {
+              "placeId": "GOAT-047",
+              "count": 556
+            },
+            {
+              "placeId": "GOAT-048",
+              "count": 228
+            },
+            {
+              "placeId": "GOAT-049",
+              "count": 644
+            },
+            {
+              "placeId": "GOAT-050",
+              "count": 468
+            },
+            {
+              "placeId": "GOAT-051",
+              "count": 320
+            },
+            {
+              "placeId": "GOAT-052",
+              "count": 464
+            },
+            {
+              "placeId": "GOAT-053",
+              "count": 1972
+            },
+            {
+              "placeId": "GOAT-054",
+              "count": 1000
+            },
+            {
+              "placeId": "GOAT-055",
+              "count": 872
+            },
+            {
+              "placeId": "GOAT-056",
+              "count": 672
+            },
+            {
+              "placeId": "GOAT-057",
+              "count": 8
+            },
+            {
+              "placeId": "GOAT-058",
+              "count": 300
+            },
+            {
+              "placeId": "GOAT-059",
+              "count": 2920
+            },
+            {
+              "placeId": "GOAT-060",
+              "count": 1244
+            },
+            {
+              "placeId": "GOAT-061",
+              "count": 1952
+            }
+          ]
+        }
+      },
+      "errorMessages": []
+    }
+  },
+  "concentration": {
+    "coefficientOfVariation": 0.6312,
+    "gini": 0.3524,
+    "maxToMinRatio": 40.71,
+    "maximumSharePercent": 4.2861,
+    "equalSharePercent": 1.6393,
+    "median": 2912,
+    "populationStandardDeviation": 2044.4965,
+    "top5SharePercent": 19.4809
+  },
+  "diversity": {
+    "dimensionUniqueRecommendations": {
+      "primaryTheme": {
+        "건축·전시·랜드마크 무드": 49,
+        "레트로·시장·항구 무드": 49,
+        "바다·해안 무드": 42,
+        "숲·정원·자연휴식 무드": 38,
+        "알프스·고원·목장 무드": 49,
+        "일본 소도시·골목 무드": 45,
+        "휴양·카페·이국공간 무드": 45
+      },
+      "travelPurpose": {
+        "사진·포토스팟": 51,
+        "산책·힐링": 50,
+        "카페·실내휴식": 50,
+        "전시·건축관람": 52,
+        "체험·액티비티": 51,
+        "먹거리·야간탐방": 53,
+        "숙소·리조트": 52
+      },
+      "transportType": {
+        "자차": 61,
+        "대중교통": 61,
+        "도보중심": 60
+      },
+      "season": {
+        "봄": 59,
+        "여름": 60,
+        "가을": 55,
+        "겨울": 57
+      },
+      "departure": {
+        "none": 61,
+        "seoul": 61,
+        "chuncheon": 61,
+        "wonju": 61,
+        "gangneung": 61,
+        "sokcho": 60,
+        "pyeongchang": 61
+      }
+    },
+    "retryNewExposure": {
+      "coldStart": {
+        "count": 1,
+        "placeIds": [
+          "GOAT-008"
+        ]
+      },
+      "recentExposure": {
+        "count": 1,
+        "placeIds": [
+          "GOAT-022"
+        ]
+      }
+    },
+    "cardRoleDistribution": {
+      "BEST_SCENE": {
+        "uniquePlaceCount": 38,
+        "totalAppearances": 65856,
+        "places": [
+          {
+            "placeId": "GOAT-001",
+            "count": 1800
+          },
+          {
+            "placeId": "GOAT-002",
+            "count": 1552
+          },
+          {
+            "placeId": "GOAT-004",
+            "count": 2272
+          },
+          {
+            "placeId": "GOAT-005",
+            "count": 1128
+          },
+          {
+            "placeId": "GOAT-009",
+            "count": 1808
+          },
+          {
+            "placeId": "GOAT-011",
+            "count": 400
+          },
+          {
+            "placeId": "GOAT-012",
+            "count": 1384
+          },
+          {
+            "placeId": "GOAT-013",
+            "count": 2848
+          },
+          {
+            "placeId": "GOAT-014",
+            "count": 448
+          },
+          {
+            "placeId": "GOAT-016",
+            "count": 2584
+          },
+          {
+            "placeId": "GOAT-017",
+            "count": 576
+          },
+          {
+            "placeId": "GOAT-018",
+            "count": 1384
+          },
+          {
+            "placeId": "GOAT-019",
+            "count": 1264
+          },
+          {
+            "placeId": "GOAT-020",
+            "count": 3416
+          },
+          {
+            "placeId": "GOAT-021",
+            "count": 808
+          },
+          {
+            "placeId": "GOAT-024",
+            "count": 2240
+          },
+          {
+            "placeId": "GOAT-025",
+            "count": 1856
+          },
+          {
+            "placeId": "GOAT-027",
+            "count": 224
+          },
+          {
+            "placeId": "GOAT-028",
+            "count": 4704
+          },
+          {
+            "placeId": "GOAT-030",
+            "count": 4760
+          },
+          {
+            "placeId": "GOAT-034",
+            "count": 1344
+          },
+          {
+            "placeId": "GOAT-035",
+            "count": 64
+          },
+          {
+            "placeId": "GOAT-036",
+            "count": 2464
+          },
+          {
+            "placeId": "GOAT-037",
+            "count": 400
+          },
+          {
+            "placeId": "GOAT-039",
+            "count": 1224
+          },
+          {
+            "placeId": "GOAT-040",
+            "count": 168
+          },
+          {
+            "placeId": "GOAT-041",
+            "count": 1976
+          },
+          {
+            "placeId": "GOAT-042",
+            "count": 4152
+          },
+          {
+            "placeId": "GOAT-043",
+            "count": 664
+          },
+          {
+            "placeId": "GOAT-044",
+            "count": 4280
+          },
+          {
+            "placeId": "GOAT-045",
+            "count": 2144
+          },
+          {
+            "placeId": "GOAT-046",
+            "count": 568
+          },
+          {
+            "placeId": "GOAT-049",
+            "count": 2488
+          },
+          {
+            "placeId": "GOAT-051",
+            "count": 1176
+          },
+          {
+            "placeId": "GOAT-052",
+            "count": 1792
+          },
+          {
+            "placeId": "GOAT-055",
+            "count": 312
+          },
+          {
+            "placeId": "GOAT-056",
+            "count": 2416
+          },
+          {
+            "placeId": "GOAT-057",
+            "count": 768
+          }
+        ]
+      },
+      "SAME_MOOD_ALTERNATIVE": {
+        "uniquePlaceCount": 58,
+        "totalAppearances": 65856,
+        "places": [
+          {
+            "placeId": "GOAT-001",
+            "count": 136
+          },
+          {
+            "placeId": "GOAT-002",
+            "count": 1304
+          },
+          {
+            "placeId": "GOAT-003",
+            "count": 924
+          },
+          {
+            "placeId": "GOAT-004",
+            "count": 400
+          },
+          {
+            "placeId": "GOAT-005",
+            "count": 1104
+          },
+          {
+            "placeId": "GOAT-006",
+            "count": 64
+          },
+          {
+            "placeId": "GOAT-008",
+            "count": 48
+          },
+          {
+            "placeId": "GOAT-009",
+            "count": 1704
+          },
+          {
+            "placeId": "GOAT-010",
+            "count": 1240
+          },
+          {
+            "placeId": "GOAT-011",
+            "count": 716
+          },
+          {
+            "placeId": "GOAT-012",
+            "count": 1708
+          },
+          {
+            "placeId": "GOAT-013",
+            "count": 872
+          },
+          {
+            "placeId": "GOAT-014",
+            "count": 488
+          },
+          {
+            "placeId": "GOAT-015",
+            "count": 140
+          },
+          {
+            "placeId": "GOAT-016",
+            "count": 1672
+          },
+          {
+            "placeId": "GOAT-017",
+            "count": 2560
+          },
+          {
+            "placeId": "GOAT-018",
+            "count": 728
+          },
+          {
+            "placeId": "GOAT-019",
+            "count": 2080
+          },
+          {
+            "placeId": "GOAT-020",
+            "count": 932
+          },
+          {
+            "placeId": "GOAT-021",
+            "count": 12
+          },
+          {
+            "placeId": "GOAT-022",
+            "count": 72
+          },
+          {
+            "placeId": "GOAT-023",
+            "count": 1488
+          },
+          {
+            "placeId": "GOAT-024",
+            "count": 3496
+          },
+          {
+            "placeId": "GOAT-025",
+            "count": 2056
+          },
+          {
+            "placeId": "GOAT-026",
+            "count": 1700
+          },
+          {
+            "placeId": "GOAT-027",
+            "count": 3732
+          },
+          {
+            "placeId": "GOAT-029",
+            "count": 360
+          },
+          {
+            "placeId": "GOAT-030",
+            "count": 464
+          },
+          {
+            "placeId": "GOAT-031",
+            "count": 280
+          },
+          {
+            "placeId": "GOAT-032",
+            "count": 16
+          },
+          {
+            "placeId": "GOAT-033",
+            "count": 56
+          },
+          {
+            "placeId": "GOAT-034",
+            "count": 244
+          },
+          {
+            "placeId": "GOAT-035",
+            "count": 4304
+          },
+          {
+            "placeId": "GOAT-036",
+            "count": 1868
+          },
+          {
+            "placeId": "GOAT-037",
+            "count": 568
+          },
+          {
+            "placeId": "GOAT-038",
+            "count": 752
+          },
+          {
+            "placeId": "GOAT-039",
+            "count": 2188
+          },
+          {
+            "placeId": "GOAT-040",
+            "count": 972
+          },
+          {
+            "placeId": "GOAT-041",
+            "count": 456
+          },
+          {
+            "placeId": "GOAT-042",
+            "count": 592
+          },
+          {
+            "placeId": "GOAT-043",
+            "count": 1108
+          },
+          {
+            "placeId": "GOAT-044",
+            "count": 112
+          },
+          {
+            "placeId": "GOAT-045",
+            "count": 204
+          },
+          {
+            "placeId": "GOAT-047",
+            "count": 3292
+          },
+          {
+            "placeId": "GOAT-048",
+            "count": 736
+          },
+          {
+            "placeId": "GOAT-049",
+            "count": 204
+          },
+          {
+            "placeId": "GOAT-050",
+            "count": 2912
+          },
+          {
+            "placeId": "GOAT-051",
+            "count": 3316
+          },
+          {
+            "placeId": "GOAT-052",
+            "count": 276
+          },
+          {
+            "placeId": "GOAT-053",
+            "count": 204
+          },
+          {
+            "placeId": "GOAT-054",
+            "count": 288
+          },
+          {
+            "placeId": "GOAT-055",
+            "count": 704
+          },
+          {
+            "placeId": "GOAT-056",
+            "count": 144
+          },
+          {
+            "placeId": "GOAT-057",
+            "count": 2408
+          },
+          {
+            "placeId": "GOAT-058",
+            "count": 260
+          },
+          {
+            "placeId": "GOAT-059",
+            "count": 1952
+          },
+          {
+            "placeId": "GOAT-060",
+            "count": 456
+          },
+          {
+            "placeId": "GOAT-061",
+            "count": 2784
+          }
+        ]
+      },
+      "CONDITION_FIT_ALTERNATIVE": {
+        "uniquePlaceCount": 60,
+        "totalAppearances": 65856,
+        "places": [
+          {
+            "placeId": "GOAT-001",
+            "count": 860
+          },
+          {
+            "placeId": "GOAT-002",
+            "count": 1676
+          },
+          {
+            "placeId": "GOAT-003",
+            "count": 1568
+          },
+          {
+            "placeId": "GOAT-004",
+            "count": 244
+          },
+          {
+            "placeId": "GOAT-005",
+            "count": 624
+          },
+          {
+            "placeId": "GOAT-006",
+            "count": 1880
+          },
+          {
+            "placeId": "GOAT-007",
+            "count": 624
+          },
+          {
+            "placeId": "GOAT-008",
+            "count": 284
+          },
+          {
+            "placeId": "GOAT-009",
+            "count": 1164
+          },
+          {
+            "placeId": "GOAT-010",
+            "count": 956
+          },
+          {
+            "placeId": "GOAT-011",
+            "count": 272
+          },
+          {
+            "placeId": "GOAT-012",
+            "count": 376
+          },
+          {
+            "placeId": "GOAT-013",
+            "count": 2624
+          },
+          {
+            "placeId": "GOAT-014",
+            "count": 2020
+          },
+          {
+            "placeId": "GOAT-015",
+            "count": 116
+          },
+          {
+            "placeId": "GOAT-016",
+            "count": 1156
+          },
+          {
+            "placeId": "GOAT-017",
+            "count": 468
+          },
+          {
+            "placeId": "GOAT-018",
+            "count": 384
+          },
+          {
+            "placeId": "GOAT-019",
+            "count": 360
+          },
+          {
+            "placeId": "GOAT-020",
+            "count": 2844
+          },
+          {
+            "placeId": "GOAT-021",
+            "count": 1012
+          },
+          {
+            "placeId": "GOAT-022",
+            "count": 136
+          },
+          {
+            "placeId": "GOAT-024",
+            "count": 2688
+          },
+          {
+            "placeId": "GOAT-025",
+            "count": 3372
+          },
+          {
+            "placeId": "GOAT-026",
+            "count": 1016
+          },
+          {
+            "placeId": "GOAT-027",
+            "count": 436
+          },
+          {
+            "placeId": "GOAT-028",
+            "count": 900
+          },
+          {
+            "placeId": "GOAT-029",
+            "count": 220
+          },
+          {
+            "placeId": "GOAT-030",
+            "count": 1096
+          },
+          {
+            "placeId": "GOAT-031",
+            "count": 2632
+          },
+          {
+            "placeId": "GOAT-032",
+            "count": 392
+          },
+          {
+            "placeId": "GOAT-033",
+            "count": 1132
+          },
+          {
+            "placeId": "GOAT-034",
+            "count": 500
+          },
+          {
+            "placeId": "GOAT-035",
+            "count": 408
+          },
+          {
+            "placeId": "GOAT-036",
+            "count": 4136
+          },
+          {
+            "placeId": "GOAT-037",
+            "count": 872
+          },
+          {
+            "placeId": "GOAT-038",
+            "count": 1644
+          },
+          {
+            "placeId": "GOAT-039",
+            "count": 956
+          },
+          {
+            "placeId": "GOAT-040",
+            "count": 660
+          },
+          {
+            "placeId": "GOAT-041",
+            "count": 4688
+          },
+          {
+            "placeId": "GOAT-042",
+            "count": 744
+          },
+          {
+            "placeId": "GOAT-043",
+            "count": 344
+          },
+          {
+            "placeId": "GOAT-044",
+            "count": 200
+          },
+          {
+            "placeId": "GOAT-045",
+            "count": 1156
+          },
+          {
+            "placeId": "GOAT-046",
+            "count": 396
+          },
+          {
+            "placeId": "GOAT-047",
+            "count": 556
+          },
+          {
+            "placeId": "GOAT-048",
+            "count": 228
+          },
+          {
+            "placeId": "GOAT-049",
+            "count": 644
+          },
+          {
+            "placeId": "GOAT-050",
+            "count": 468
+          },
+          {
+            "placeId": "GOAT-051",
+            "count": 320
+          },
+          {
+            "placeId": "GOAT-052",
+            "count": 464
+          },
+          {
+            "placeId": "GOAT-053",
+            "count": 1972
+          },
+          {
+            "placeId": "GOAT-054",
+            "count": 1000
+          },
+          {
+            "placeId": "GOAT-055",
+            "count": 872
+          },
+          {
+            "placeId": "GOAT-056",
+            "count": 672
+          },
+          {
+            "placeId": "GOAT-057",
+            "count": 8
+          },
+          {
+            "placeId": "GOAT-058",
+            "count": 300
+          },
+          {
+            "placeId": "GOAT-059",
+            "count": 2920
+          },
+          {
+            "placeId": "GOAT-060",
+            "count": 1244
+          },
+          {
+            "placeId": "GOAT-061",
+            "count": 1952
+          }
+        ]
+      }
+    }
+  },
+  "largeScaleAudit": {
+    "counterUnits": {
+      "tests": "recommendGoatPlaces 호출 단위",
+      "duplicatePlaceTests": "중복 placeId가 한 번이라도 나온 결과 단위",
+      "scoreValues": "반환 카드의 필수 numeric score leaf 값 단위",
+      "missingMedia": "반환 카드 appearance 단위; unique placeId도 별도 제공"
+    },
+    "totalTests": 65856,
+    "successTests": 65856,
+    "failedTests": 0,
+    "thrownErrors": 0,
+    "threeCardFailureTests": 0,
+    "duplicatePlaceTests": 0,
+    "duplicateCardOccurrences": 0,
+    "unknownPlaceIdOccurrences": 0,
+    "nanScoreValues": 0,
+    "infinityScoreValues": 0,
+    "undefinedScoreValues": 0,
+    "outOfRangeScoreValues": 0,
+    "scoreRanges": {
+      "moodScore.total": [
+        0,
+        45
+      ],
+      "moodScore.theme.score": [
+        0,
+        18
+      ],
+      "moodScore.moodTags.score": [
+        0,
+        17
+      ],
+      "moodScore.sceneTags.score": [
+        0,
+        10
+      ],
+      "moodScore.placeTypeHint.score": [
+        0,
+        3
+      ],
+      "conditionScore.total": [
+        0,
+        45
+      ],
+      "conditionScore.purpose.score": [
+        0,
+        20
+      ],
+      "conditionScore.accessibility.score": [
+        0,
+        12
+      ],
+      "conditionScore.season.score": [
+        0,
+        13
+      ],
+      "baseScore": [
+        0,
+        90
+      ],
+      "originDistanceBonus": [
+        0,
+        10
+      ],
+      "routeDistanceBonus": [
+        0,
+        10
+      ],
+      "duplicatePenalty": [
+        0,
+        6
+      ],
+      "exposurePenalty": [
+        0,
+        5
+      ],
+      "coverageBoost": [
+        0,
+        3
+      ],
+      "lowExposureBoost": [
+        0,
+        3
+      ],
+      "selectionScore": [
+        -11,
+        116
+      ],
+      "displayScore": [
+        0,
+        100
+      ]
+    },
+    "card3PurposeFallbackTests": 1408,
+    "card1ThemeMismatchTests": 4640,
+    "card1ThemeMismatchWithEligibleThemeTests": 0,
+    "wrongPurposeFallbackTests": 0,
+    "missingCoordinateCardAppearances": 0,
+    "missingCoordinateUniquePlaces": 0,
+    "missingCoordinatePlaceIds": [],
+    "missingImageCardAppearances": 197568,
+    "missingImageUniquePlaces": 61,
+    "missingImagePlaceIds": [
+      "GOAT-001",
+      "GOAT-002",
+      "GOAT-003",
+      "GOAT-004",
+      "GOAT-005",
+      "GOAT-006",
+      "GOAT-007",
+      "GOAT-008",
+      "GOAT-009",
+      "GOAT-010",
+      "GOAT-011",
+      "GOAT-012",
+      "GOAT-013",
+      "GOAT-014",
+      "GOAT-015",
+      "GOAT-016",
+      "GOAT-017",
+      "GOAT-018",
+      "GOAT-019",
+      "GOAT-020",
+      "GOAT-021",
+      "GOAT-022",
+      "GOAT-023",
+      "GOAT-024",
+      "GOAT-025",
+      "GOAT-026",
+      "GOAT-027",
+      "GOAT-028",
+      "GOAT-029",
+      "GOAT-030",
+      "GOAT-031",
+      "GOAT-032",
+      "GOAT-033",
+      "GOAT-034",
+      "GOAT-035",
+      "GOAT-036",
+      "GOAT-037",
+      "GOAT-038",
+      "GOAT-039",
+      "GOAT-040",
+      "GOAT-041",
+      "GOAT-042",
+      "GOAT-043",
+      "GOAT-044",
+      "GOAT-045",
+      "GOAT-046",
+      "GOAT-047",
+      "GOAT-048",
+      "GOAT-049",
+      "GOAT-050",
+      "GOAT-051",
+      "GOAT-052",
+      "GOAT-053",
+      "GOAT-054",
+      "GOAT-055",
+      "GOAT-056",
+      "GOAT-057",
+      "GOAT-058",
+      "GOAT-059",
+      "GOAT-060",
+      "GOAT-061"
+    ],
+    "recommendedPlaces": 61,
+    "unrecommendedPlaces": 0,
+    "newPlacesRecommended": 7,
+    "placeExposureCounts": {
+      "GOAT-001": 2796,
+      "GOAT-002": 4532,
+      "GOAT-003": 2492,
+      "GOAT-004": 2916,
+      "GOAT-005": 2856,
+      "GOAT-006": 1944,
+      "GOAT-007": 624,
+      "GOAT-008": 332,
+      "GOAT-009": 4676,
+      "GOAT-010": 2196,
+      "GOAT-011": 1388,
+      "GOAT-012": 3468,
+      "GOAT-013": 6344,
+      "GOAT-014": 2956,
+      "GOAT-015": 256,
+      "GOAT-016": 5412,
+      "GOAT-017": 3604,
+      "GOAT-018": 2496,
+      "GOAT-019": 3704,
+      "GOAT-020": 7192,
+      "GOAT-021": 1832,
+      "GOAT-022": 208,
+      "GOAT-023": 1488,
+      "GOAT-024": 8424,
+      "GOAT-025": 7284,
+      "GOAT-026": 2716,
+      "GOAT-027": 4392,
+      "GOAT-028": 5604,
+      "GOAT-029": 580,
+      "GOAT-030": 6320,
+      "GOAT-031": 2912,
+      "GOAT-032": 408,
+      "GOAT-033": 1188,
+      "GOAT-034": 2088,
+      "GOAT-035": 4776,
+      "GOAT-036": 8468,
+      "GOAT-037": 1840,
+      "GOAT-038": 2396,
+      "GOAT-039": 4368,
+      "GOAT-040": 1800,
+      "GOAT-041": 7120,
+      "GOAT-042": 5488,
+      "GOAT-043": 2116,
+      "GOAT-044": 4592,
+      "GOAT-045": 3504,
+      "GOAT-046": 964,
+      "GOAT-047": 3848,
+      "GOAT-048": 964,
+      "GOAT-049": 3336,
+      "GOAT-050": 3380,
+      "GOAT-051": 4812,
+      "GOAT-052": 2532,
+      "GOAT-053": 2176,
+      "GOAT-054": 1288,
+      "GOAT-055": 1888,
+      "GOAT-056": 3232,
+      "GOAT-057": 3184,
+      "GOAT-058": 560,
+      "GOAT-059": 4872,
+      "GOAT-060": 1700,
+      "GOAT-061": 4736
+    },
+    "cardRoleDistribution": {
+      "BEST_SCENE": {
+        "uniquePlaceCount": 38,
+        "totalAppearances": 65856,
+        "places": [
+          {
+            "placeId": "GOAT-001",
+            "count": 1800
+          },
+          {
+            "placeId": "GOAT-002",
+            "count": 1552
+          },
+          {
+            "placeId": "GOAT-004",
+            "count": 2272
+          },
+          {
+            "placeId": "GOAT-005",
+            "count": 1128
+          },
+          {
+            "placeId": "GOAT-009",
+            "count": 1808
+          },
+          {
+            "placeId": "GOAT-011",
+            "count": 400
+          },
+          {
+            "placeId": "GOAT-012",
+            "count": 1384
+          },
+          {
+            "placeId": "GOAT-013",
+            "count": 2848
+          },
+          {
+            "placeId": "GOAT-014",
+            "count": 448
+          },
+          {
+            "placeId": "GOAT-016",
+            "count": 2584
+          },
+          {
+            "placeId": "GOAT-017",
+            "count": 576
+          },
+          {
+            "placeId": "GOAT-018",
+            "count": 1384
+          },
+          {
+            "placeId": "GOAT-019",
+            "count": 1264
+          },
+          {
+            "placeId": "GOAT-020",
+            "count": 3416
+          },
+          {
+            "placeId": "GOAT-021",
+            "count": 808
+          },
+          {
+            "placeId": "GOAT-024",
+            "count": 2240
+          },
+          {
+            "placeId": "GOAT-025",
+            "count": 1856
+          },
+          {
+            "placeId": "GOAT-027",
+            "count": 224
+          },
+          {
+            "placeId": "GOAT-028",
+            "count": 4704
+          },
+          {
+            "placeId": "GOAT-030",
+            "count": 4760
+          },
+          {
+            "placeId": "GOAT-034",
+            "count": 1344
+          },
+          {
+            "placeId": "GOAT-035",
+            "count": 64
+          },
+          {
+            "placeId": "GOAT-036",
+            "count": 2464
+          },
+          {
+            "placeId": "GOAT-037",
+            "count": 400
+          },
+          {
+            "placeId": "GOAT-039",
+            "count": 1224
+          },
+          {
+            "placeId": "GOAT-040",
+            "count": 168
+          },
+          {
+            "placeId": "GOAT-041",
+            "count": 1976
+          },
+          {
+            "placeId": "GOAT-042",
+            "count": 4152
+          },
+          {
+            "placeId": "GOAT-043",
+            "count": 664
+          },
+          {
+            "placeId": "GOAT-044",
+            "count": 4280
+          },
+          {
+            "placeId": "GOAT-045",
+            "count": 2144
+          },
+          {
+            "placeId": "GOAT-046",
+            "count": 568
+          },
+          {
+            "placeId": "GOAT-049",
+            "count": 2488
+          },
+          {
+            "placeId": "GOAT-051",
+            "count": 1176
+          },
+          {
+            "placeId": "GOAT-052",
+            "count": 1792
+          },
+          {
+            "placeId": "GOAT-055",
+            "count": 312
+          },
+          {
+            "placeId": "GOAT-056",
+            "count": 2416
+          },
+          {
+            "placeId": "GOAT-057",
+            "count": 768
+          }
+        ]
+      },
+      "SAME_MOOD_ALTERNATIVE": {
+        "uniquePlaceCount": 58,
+        "totalAppearances": 65856,
+        "places": [
+          {
+            "placeId": "GOAT-001",
+            "count": 136
+          },
+          {
+            "placeId": "GOAT-002",
+            "count": 1304
+          },
+          {
+            "placeId": "GOAT-003",
+            "count": 924
+          },
+          {
+            "placeId": "GOAT-004",
+            "count": 400
+          },
+          {
+            "placeId": "GOAT-005",
+            "count": 1104
+          },
+          {
+            "placeId": "GOAT-006",
+            "count": 64
+          },
+          {
+            "placeId": "GOAT-008",
+            "count": 48
+          },
+          {
+            "placeId": "GOAT-009",
+            "count": 1704
+          },
+          {
+            "placeId": "GOAT-010",
+            "count": 1240
+          },
+          {
+            "placeId": "GOAT-011",
+            "count": 716
+          },
+          {
+            "placeId": "GOAT-012",
+            "count": 1708
+          },
+          {
+            "placeId": "GOAT-013",
+            "count": 872
+          },
+          {
+            "placeId": "GOAT-014",
+            "count": 488
+          },
+          {
+            "placeId": "GOAT-015",
+            "count": 140
+          },
+          {
+            "placeId": "GOAT-016",
+            "count": 1672
+          },
+          {
+            "placeId": "GOAT-017",
+            "count": 2560
+          },
+          {
+            "placeId": "GOAT-018",
+            "count": 728
+          },
+          {
+            "placeId": "GOAT-019",
+            "count": 2080
+          },
+          {
+            "placeId": "GOAT-020",
+            "count": 932
+          },
+          {
+            "placeId": "GOAT-021",
+            "count": 12
+          },
+          {
+            "placeId": "GOAT-022",
+            "count": 72
+          },
+          {
+            "placeId": "GOAT-023",
+            "count": 1488
+          },
+          {
+            "placeId": "GOAT-024",
+            "count": 3496
+          },
+          {
+            "placeId": "GOAT-025",
+            "count": 2056
+          },
+          {
+            "placeId": "GOAT-026",
+            "count": 1700
+          },
+          {
+            "placeId": "GOAT-027",
+            "count": 3732
+          },
+          {
+            "placeId": "GOAT-029",
+            "count": 360
+          },
+          {
+            "placeId": "GOAT-030",
+            "count": 464
+          },
+          {
+            "placeId": "GOAT-031",
+            "count": 280
+          },
+          {
+            "placeId": "GOAT-032",
+            "count": 16
+          },
+          {
+            "placeId": "GOAT-033",
+            "count": 56
+          },
+          {
+            "placeId": "GOAT-034",
+            "count": 244
+          },
+          {
+            "placeId": "GOAT-035",
+            "count": 4304
+          },
+          {
+            "placeId": "GOAT-036",
+            "count": 1868
+          },
+          {
+            "placeId": "GOAT-037",
+            "count": 568
+          },
+          {
+            "placeId": "GOAT-038",
+            "count": 752
+          },
+          {
+            "placeId": "GOAT-039",
+            "count": 2188
+          },
+          {
+            "placeId": "GOAT-040",
+            "count": 972
+          },
+          {
+            "placeId": "GOAT-041",
+            "count": 456
+          },
+          {
+            "placeId": "GOAT-042",
+            "count": 592
+          },
+          {
+            "placeId": "GOAT-043",
+            "count": 1108
+          },
+          {
+            "placeId": "GOAT-044",
+            "count": 112
+          },
+          {
+            "placeId": "GOAT-045",
+            "count": 204
+          },
+          {
+            "placeId": "GOAT-047",
+            "count": 3292
+          },
+          {
+            "placeId": "GOAT-048",
+            "count": 736
+          },
+          {
+            "placeId": "GOAT-049",
+            "count": 204
+          },
+          {
+            "placeId": "GOAT-050",
+            "count": 2912
+          },
+          {
+            "placeId": "GOAT-051",
+            "count": 3316
+          },
+          {
+            "placeId": "GOAT-052",
+            "count": 276
+          },
+          {
+            "placeId": "GOAT-053",
+            "count": 204
+          },
+          {
+            "placeId": "GOAT-054",
+            "count": 288
+          },
+          {
+            "placeId": "GOAT-055",
+            "count": 704
+          },
+          {
+            "placeId": "GOAT-056",
+            "count": 144
+          },
+          {
+            "placeId": "GOAT-057",
+            "count": 2408
+          },
+          {
+            "placeId": "GOAT-058",
+            "count": 260
+          },
+          {
+            "placeId": "GOAT-059",
+            "count": 1952
+          },
+          {
+            "placeId": "GOAT-060",
+            "count": 456
+          },
+          {
+            "placeId": "GOAT-061",
+            "count": 2784
+          }
+        ]
+      },
+      "CONDITION_FIT_ALTERNATIVE": {
+        "uniquePlaceCount": 60,
+        "totalAppearances": 65856,
+        "places": [
+          {
+            "placeId": "GOAT-001",
+            "count": 860
+          },
+          {
+            "placeId": "GOAT-002",
+            "count": 1676
+          },
+          {
+            "placeId": "GOAT-003",
+            "count": 1568
+          },
+          {
+            "placeId": "GOAT-004",
+            "count": 244
+          },
+          {
+            "placeId": "GOAT-005",
+            "count": 624
+          },
+          {
+            "placeId": "GOAT-006",
+            "count": 1880
+          },
+          {
+            "placeId": "GOAT-007",
+            "count": 624
+          },
+          {
+            "placeId": "GOAT-008",
+            "count": 284
+          },
+          {
+            "placeId": "GOAT-009",
+            "count": 1164
+          },
+          {
+            "placeId": "GOAT-010",
+            "count": 956
+          },
+          {
+            "placeId": "GOAT-011",
+            "count": 272
+          },
+          {
+            "placeId": "GOAT-012",
+            "count": 376
+          },
+          {
+            "placeId": "GOAT-013",
+            "count": 2624
+          },
+          {
+            "placeId": "GOAT-014",
+            "count": 2020
+          },
+          {
+            "placeId": "GOAT-015",
+            "count": 116
+          },
+          {
+            "placeId": "GOAT-016",
+            "count": 1156
+          },
+          {
+            "placeId": "GOAT-017",
+            "count": 468
+          },
+          {
+            "placeId": "GOAT-018",
+            "count": 384
+          },
+          {
+            "placeId": "GOAT-019",
+            "count": 360
+          },
+          {
+            "placeId": "GOAT-020",
+            "count": 2844
+          },
+          {
+            "placeId": "GOAT-021",
+            "count": 1012
+          },
+          {
+            "placeId": "GOAT-022",
+            "count": 136
+          },
+          {
+            "placeId": "GOAT-024",
+            "count": 2688
+          },
+          {
+            "placeId": "GOAT-025",
+            "count": 3372
+          },
+          {
+            "placeId": "GOAT-026",
+            "count": 1016
+          },
+          {
+            "placeId": "GOAT-027",
+            "count": 436
+          },
+          {
+            "placeId": "GOAT-028",
+            "count": 900
+          },
+          {
+            "placeId": "GOAT-029",
+            "count": 220
+          },
+          {
+            "placeId": "GOAT-030",
+            "count": 1096
+          },
+          {
+            "placeId": "GOAT-031",
+            "count": 2632
+          },
+          {
+            "placeId": "GOAT-032",
+            "count": 392
+          },
+          {
+            "placeId": "GOAT-033",
+            "count": 1132
+          },
+          {
+            "placeId": "GOAT-034",
+            "count": 500
+          },
+          {
+            "placeId": "GOAT-035",
+            "count": 408
+          },
+          {
+            "placeId": "GOAT-036",
+            "count": 4136
+          },
+          {
+            "placeId": "GOAT-037",
+            "count": 872
+          },
+          {
+            "placeId": "GOAT-038",
+            "count": 1644
+          },
+          {
+            "placeId": "GOAT-039",
+            "count": 956
+          },
+          {
+            "placeId": "GOAT-040",
+            "count": 660
+          },
+          {
+            "placeId": "GOAT-041",
+            "count": 4688
+          },
+          {
+            "placeId": "GOAT-042",
+            "count": 744
+          },
+          {
+            "placeId": "GOAT-043",
+            "count": 344
+          },
+          {
+            "placeId": "GOAT-044",
+            "count": 200
+          },
+          {
+            "placeId": "GOAT-045",
+            "count": 1156
+          },
+          {
+            "placeId": "GOAT-046",
+            "count": 396
+          },
+          {
+            "placeId": "GOAT-047",
+            "count": 556
+          },
+          {
+            "placeId": "GOAT-048",
+            "count": 228
+          },
+          {
+            "placeId": "GOAT-049",
+            "count": 644
+          },
+          {
+            "placeId": "GOAT-050",
+            "count": 468
+          },
+          {
+            "placeId": "GOAT-051",
+            "count": 320
+          },
+          {
+            "placeId": "GOAT-052",
+            "count": 464
+          },
+          {
+            "placeId": "GOAT-053",
+            "count": 1972
+          },
+          {
+            "placeId": "GOAT-054",
+            "count": 1000
+          },
+          {
+            "placeId": "GOAT-055",
+            "count": 872
+          },
+          {
+            "placeId": "GOAT-056",
+            "count": 672
+          },
+          {
+            "placeId": "GOAT-057",
+            "count": 8
+          },
+          {
+            "placeId": "GOAT-058",
+            "count": 300
+          },
+          {
+            "placeId": "GOAT-059",
+            "count": 2920
+          },
+          {
+            "placeId": "GOAT-060",
+            "count": 1244
+          },
+          {
+            "placeId": "GOAT-061",
+            "count": 1952
+          }
+        ]
+      }
+    },
+    "errorMessages": []
+  },
+  "places": [
+    {
+      "placeId": "GOAT-001",
+      "placeName": "제이드가든",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2796,
+      "cards": [
+        1800,
+        136,
+        860
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 93,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-002",
+      "placeName": "레고랜드 코리아 리조트",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4532,
+      "cards": [
+        1552,
+        1304,
+        1676
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ARCH_01",
+        "primaryTheme": "건축·전시·랜드마크 무드",
+        "moodTags": [
+          "예술적",
+          "미니멀",
+          "건축미",
+          "현대적"
+        ],
+        "sceneTags": [
+          "미술관",
+          "건축",
+          "정원"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 92,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-003",
+      "placeName": "춘천 산토리니",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2492,
+      "cards": [
+        0,
+        924,
+        1568
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RESORT_02",
+        "primaryTheme": "휴양·카페·이국공간 무드",
+        "moodTags": [
+          "발리감성",
+          "휴양감",
+          "프라이빗",
+          "아늑함"
+        ],
+        "sceneTags": [
+          "카페",
+          "해변",
+          "실내공간"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "chuncheon",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 90,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-004",
+      "placeName": "해피초원목장",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2916,
+      "cards": [
+        2272,
+        400,
+        244
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 94,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-005",
+      "placeName": "아웃오브파크",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2856,
+      "cards": [
+        1128,
+        1104,
+        624
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RETRO_01",
+        "primaryTheme": "레트로·시장·항구 무드",
+        "moodTags": [
+          "레트로",
+          "로컬감성",
+          "활기",
+          "빈티지"
+        ],
+        "sceneTags": [
+          "항구",
+          "시장",
+          "야간거리"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 84,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-006",
+      "placeName": "교토정원",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1944,
+      "cards": [
+        0,
+        64,
+        1880
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "chuncheon",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 79,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "산책·힐링",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-007",
+      "placeName": "스테이 조각밤",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 624,
+      "cards": [
+        0,
+        0,
+        624
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "chuncheon",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 70,
+      "bestRank": 3,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "숲·정원·자연휴식 무드",
+        "일본 소도시·골목 무드"
+      ],
+      "purposeCoverage": [
+        "숙소·리조트"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-008",
+      "placeName": "이와림",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 332,
+      "cards": [
+        0,
+        48,
+        284
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 69,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드"
+      ],
+      "purposeCoverage": [
+        "숙소·리조트"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-009",
+      "placeName": "뮤지엄 SAN",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4676,
+      "cards": [
+        1808,
+        1704,
+        1164
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "전시·건축관람",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ARCH_01",
+        "primaryTheme": "건축·전시·랜드마크 무드",
+        "moodTags": [
+          "예술적",
+          "미니멀",
+          "건축미",
+          "현대적"
+        ],
+        "sceneTags": [
+          "미술관",
+          "건축",
+          "정원"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "wonju",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 91,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-010",
+      "placeName": "소금산 그랜드밸리",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2196,
+      "cards": [
+        0,
+        1240,
+        956
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "wonju",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ARCH_01",
+        "primaryTheme": "건축·전시·랜드마크 무드",
+        "moodTags": [
+          "예술적",
+          "미니멀",
+          "건축미",
+          "현대적"
+        ],
+        "sceneTags": [
+          "미술관",
+          "건축",
+          "정원"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "wonju",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 91,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-011",
+      "placeName": "알파카월드",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1388,
+      "cards": [
+        400,
+        716,
+        272
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "chuncheon",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 93,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-012",
+      "placeName": "원대리 자작나무숲",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3468,
+      "cards": [
+        1384,
+        1708,
+        376
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 92,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-013",
+      "placeName": "인제성당",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 6344,
+      "cards": [
+        2848,
+        872,
+        2624
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "전시·건축관람",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ARCH_01",
+        "primaryTheme": "건축·전시·랜드마크 무드",
+        "moodTags": [
+          "예술적",
+          "미니멀",
+          "건축미",
+          "현대적"
+        ],
+        "sceneTags": [
+          "미술관",
+          "건축",
+          "정원"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "sokcho",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 92,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-014",
+      "placeName": "알펜시아 리조트",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2956,
+      "cards": [
+        448,
+        488,
+        2020
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 92,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-015",
+      "placeName": "육백마지기",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 256,
+      "cards": [
+        0,
+        140,
+        116
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "pyeongchang",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 82,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "알프스·고원·목장 무드"
+      ],
+      "purposeCoverage": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-016",
+      "placeName": "대관령양떼목장",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 5412,
+      "cards": [
+        2584,
+        1672,
+        1156
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 90,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-017",
+      "placeName": "하늘목장",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3604,
+      "cards": [
+        576,
+        2560,
+        468
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 103,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-018",
+      "placeName": "삼양라운드힐",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2496,
+      "cards": [
+        1384,
+        728,
+        384
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 104,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "레트로·시장·항구 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-019",
+      "placeName": "발왕산 천년주목숲길·애니포레",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3704,
+      "cards": [
+        1264,
+        2080,
+        360
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 96,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "레트로·시장·항구 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-020",
+      "placeName": "삼탄아트마인",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 7192,
+      "cards": [
+        3416,
+        932,
+        2844
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "전시·건축관람",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RETRO_01",
+        "primaryTheme": "레트로·시장·항구 무드",
+        "moodTags": [
+          "레트로",
+          "로컬감성",
+          "활기",
+          "빈티지"
+        ],
+        "sceneTags": [
+          "항구",
+          "시장",
+          "야간거리"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 84,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-021",
+      "placeName": "민둥산",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1832,
+      "cards": [
+        808,
+        12,
+        1012
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "pyeongchang",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 87,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-022",
+      "placeName": "매봉산 바람의 언덕",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 208,
+      "cards": [
+        0,
+        72,
+        136
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 82,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "알프스·고원·목장 무드"
+      ],
+      "purposeCoverage": [
+        "사진·포토스팟",
+        "산책·힐링",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-023",
+      "placeName": "태기산",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1488,
+      "cards": [
+        0,
+        1488,
+        0
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "pyeongchang",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 92,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "숲·정원·자연휴식 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-024",
+      "placeName": "안목해변 카페거리",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 8424,
+      "cards": [
+        2240,
+        3496,
+        2688
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 99,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-025",
+      "placeName": "하슬라아트월드",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 7284,
+      "cards": [
+        1856,
+        2056,
+        3372
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "전시·건축관람",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ARCH_01",
+        "primaryTheme": "건축·전시·랜드마크 무드",
+        "moodTags": [
+          "예술적",
+          "미니멀",
+          "건축미",
+          "현대적"
+        ],
+        "sceneTags": [
+          "미술관",
+          "건축",
+          "정원"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 91,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-026",
+      "placeName": "정동진 썬크루즈 리조트",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2716,
+      "cards": [
+        0,
+        1700,
+        1016
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ARCH_01",
+        "primaryTheme": "건축·전시·랜드마크 무드",
+        "moodTags": [
+          "예술적",
+          "미니멀",
+          "건축미",
+          "현대적"
+        ],
+        "sceneTags": [
+          "미술관",
+          "건축",
+          "정원"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 91,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-027",
+      "placeName": "BTS 버스정류장",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4392,
+      "cards": [
+        224,
+        3732,
+        436
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 100,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-028",
+      "placeName": "정동진 철길 건널목",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 5604,
+      "cards": [
+        4704,
+        0,
+        900
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 87,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-029",
+      "placeName": "안반데기",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 580,
+      "cards": [
+        0,
+        360,
+        220
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 86,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "알프스·고원·목장 무드"
+      ],
+      "purposeCoverage": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-030",
+      "placeName": "금진해변·헌화로 드라이브 코스",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 6320,
+      "cards": [
+        4760,
+        464,
+        1096
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 90,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-031",
+      "placeName": "교동 소품샵 거리",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2912,
+      "cards": [
+        0,
+        280,
+        2632
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 85,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-032",
+      "placeName": "휴식 료칸 풀빌라",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 408,
+      "cards": [
+        0,
+        16,
+        392
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 81,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "숙소·리조트"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-033",
+      "placeName": "유메모리 리조트",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1188,
+      "cards": [
+        0,
+        56,
+        1132
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 78,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "숙소·리조트",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-034",
+      "placeName": "무릉별유천지",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2088,
+      "cards": [
+        1344,
+        244,
+        500
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ARCH_01",
+        "primaryTheme": "건축·전시·랜드마크 무드",
+        "moodTags": [
+          "예술적",
+          "미니멀",
+          "건축미",
+          "현대적"
+        ],
+        "sceneTags": [
+          "미술관",
+          "건축",
+          "정원"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 84,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-035",
+      "placeName": "어달삼거리",
+      "primaryTheme": "일본 소도시·골목 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4776,
+      "cards": [
+        64,
+        4304,
+        408
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 95,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-036",
+      "placeName": "묵호항 일대",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 8468,
+      "cards": [
+        2464,
+        1868,
+        4136
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "먹거리·야간탐방",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RETRO_01",
+        "primaryTheme": "레트로·시장·항구 무드",
+        "moodTags": [
+          "레트로",
+          "로컬감성",
+          "활기",
+          "빈티지"
+        ],
+        "sceneTags": [
+          "항구",
+          "시장",
+          "야간거리"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 87,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-037",
+      "placeName": "묵호등대·논골담길",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1840,
+      "cards": [
+        400,
+        568,
+        872
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 84,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "일본 소도시·골목 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-038",
+      "placeName": "외옹치 바다향기로",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2396,
+      "cards": [
+        0,
+        752,
+        1644
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "sokcho",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 93,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-039",
+      "placeName": "카페 흰다정",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4368,
+      "cards": [
+        1224,
+        2188,
+        956
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RETRO_01",
+        "primaryTheme": "레트로·시장·항구 무드",
+        "moodTags": [
+          "레트로",
+          "로컬감성",
+          "활기",
+          "빈티지"
+        ],
+        "sceneTags": [
+          "항구",
+          "시장",
+          "야간거리"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "sokcho",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 90,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-040",
+      "placeName": "서피비치",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1800,
+      "cards": [
+        168,
+        972,
+        660
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 94,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-041",
+      "placeName": "죽도해변·인구해변·양리단길",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 7120,
+      "cards": [
+        1976,
+        456,
+        4688
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 80,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-042",
+      "placeName": "두둥실",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 5488,
+      "cards": [
+        4152,
+        592,
+        744
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RESORT_02",
+        "primaryTheme": "휴양·카페·이국공간 무드",
+        "moodTags": [
+          "발리감성",
+          "휴양감",
+          "프라이빗",
+          "아늑함"
+        ],
+        "sceneTags": [
+          "카페",
+          "해변",
+          "실내공간"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 90,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-043",
+      "placeName": "에이프레임(A-Frame)",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2116,
+      "cards": [
+        664,
+        1108,
+        344
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RESORT_02",
+        "primaryTheme": "휴양·카페·이국공간 무드",
+        "moodTags": [
+          "발리감성",
+          "휴양감",
+          "프라이빗",
+          "아늑함"
+        ],
+        "sceneTags": [
+          "카페",
+          "해변",
+          "실내공간"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "sokcho",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 89,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-044",
+      "placeName": "아야진해수욕장",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4592,
+      "cards": [
+        4280,
+        112,
+        200
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 90,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-045",
+      "placeName": "켄싱턴리조트 설악밸리",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3504,
+      "cards": [
+        2144,
+        204,
+        1156
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "none",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 88,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-046",
+      "placeName": "하늬라벤더팜",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 964,
+      "cards": [
+        568,
+        0,
+        396
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "sokcho",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 84,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "숲·정원·자연휴식 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-047",
+      "placeName": "능파대",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3848,
+      "cards": [
+        0,
+        3292,
+        556
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "sokcho",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 101,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-048",
+      "placeName": "사유의 숲",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 964,
+      "cards": [
+        0,
+        736,
+        228
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RESORT_02",
+        "primaryTheme": "휴양·카페·이국공간 무드",
+        "moodTags": [
+          "발리감성",
+          "휴양감",
+          "프라이빗",
+          "아늑함"
+        ],
+        "sceneTags": [
+          "카페",
+          "해변",
+          "실내공간"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 92,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-049",
+      "placeName": "쏠비치 삼척·산토리니 광장",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3336,
+      "cards": [
+        2488,
+        204,
+        644
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "seoul",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RESORT_02",
+        "primaryTheme": "휴양·카페·이국공간 무드",
+        "moodTags": [
+          "발리감성",
+          "휴양감",
+          "프라이빗",
+          "아늑함"
+        ],
+        "sceneTags": [
+          "카페",
+          "해변",
+          "실내공간"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 79,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-050",
+      "placeName": "라메종드마리",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3380,
+      "cards": [
+        0,
+        2912,
+        468
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RESORT_02",
+        "primaryTheme": "휴양·카페·이국공간 무드",
+        "moodTags": [
+          "발리감성",
+          "휴양감",
+          "프라이빗",
+          "아늑함"
+        ],
+        "sceneTags": [
+          "카페",
+          "해변",
+          "실내공간"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "sokcho",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 95,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-051",
+      "placeName": "장호항",
+      "primaryTheme": "레트로·시장·항구 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4812,
+      "cards": [
+        1176,
+        3316,
+        320
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RETRO_01",
+        "primaryTheme": "레트로·시장·항구 무드",
+        "moodTags": [
+          "레트로",
+          "로컬감성",
+          "활기",
+          "빈티지"
+        ],
+        "sceneTags": [
+          "항구",
+          "시장",
+          "야간거리"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "gangneung",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 94,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-052",
+      "placeName": "용화해변",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2532,
+      "cards": [
+        1792,
+        276,
+        464
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RESORT_02",
+        "primaryTheme": "휴양·카페·이국공간 무드",
+        "moodTags": [
+          "발리감성",
+          "휴양감",
+          "프라이빗",
+          "아늑함"
+        ],
+        "sceneTags": [
+          "카페",
+          "해변",
+          "실내공간"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 80,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-053",
+      "placeName": "초곡용굴촛대바위길",
+      "primaryTheme": "바다·해안 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 2176,
+      "cards": [
+        0,
+        204,
+        1972
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 84,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-054",
+      "placeName": "한탄강 주상절리길",
+      "primaryTheme": "건축·전시·랜드마크 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1288,
+      "cards": [
+        0,
+        288,
+        1000
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ARCH_01",
+        "primaryTheme": "건축·전시·랜드마크 무드",
+        "moodTags": [
+          "예술적",
+          "미니멀",
+          "건축미",
+          "현대적"
+        ],
+        "sceneTags": [
+          "미술관",
+          "건축",
+          "정원"
+        ],
+        "travelPurpose": "체험·액티비티",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "chuncheon",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 82,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드"
+      ],
+      "purposeCoverage": [
+        "사진·포토스팟",
+        "전시·건축관람",
+        "체험·액티비티"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-055",
+      "placeName": "쏠비치 양양",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1888,
+      "cards": [
+        312,
+        704,
+        872
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_RESORT_02",
+        "primaryTheme": "휴양·카페·이국공간 무드",
+        "moodTags": [
+          "발리감성",
+          "휴양감",
+          "프라이빗",
+          "아늑함"
+        ],
+        "sceneTags": [
+          "카페",
+          "해변",
+          "실내공간"
+        ],
+        "travelPurpose": "숙소·리조트",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "여름",
+        "currentDate": "2026-07-20",
+        "departure": "sokcho",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 81,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "알프스·고원·목장 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-056",
+      "placeName": "허브나라농원",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3232,
+      "cards": [
+        2416,
+        144,
+        672
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "wonju",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "도보중심",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "pyeongchang",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 91,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-057",
+      "placeName": "로미지안가든",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 3184,
+      "cards": [
+        768,
+        2408,
+        8
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "pyeongchang",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "maxSelectionScore": 96,
+      "bestRank": 1,
+      "primaryThemeCoverage": [
+        "숲·정원·자연휴식 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-058",
+      "placeName": "고석정 꽃밭",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "CONDITIONALLY_REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 560,
+      "cards": [
+        0,
+        260,
+        300
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "none",
+        "exposureState": "none",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "chuncheon",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 84,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "봄"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-059",
+      "placeName": "파크로쉬 리조트 앤 웰니스",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4872,
+      "cards": [
+        0,
+        1952,
+        2920
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "seoul",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "산책·힐링",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "pyeongchang",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 86,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-060",
+      "placeName": "켄싱턴호텔 평창 프렌치가든",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 1700,
+      "cards": [
+        0,
+        456,
+        1244
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_JP_02",
+        "primaryTheme": "일본 소도시·골목 무드",
+        "moodTags": [
+          "가마쿠라감성",
+          "애니메이션감성",
+          "일본소도시감성",
+          "청량함"
+        ],
+        "sceneTags": [
+          "바다",
+          "해변",
+          "철길"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "seoul",
+        "exposureState": "none",
+        "retry": true
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_NATURE_01",
+        "primaryTheme": "숲·정원·자연휴식 무드",
+        "moodTags": [
+          "북유럽감성",
+          "자연친화",
+          "조용함",
+          "힐링"
+        ],
+        "sceneTags": [
+          "숲",
+          "산책로",
+          "산"
+        ],
+        "travelPurpose": "사진·포토스팟",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "봄",
+        "currentDate": "2026-05-20",
+        "departure": "gangneung",
+        "exposureState": "recent",
+        "retry": true
+      },
+      "maxSelectionScore": 91,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    },
+    {
+      "placeId": "GOAT-061",
+      "placeName": "델피노·소노펠리체 델피노",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "reachableStatus": "REACHABLE",
+      "hasCoordinates": true,
+      "mapStatus": "READY",
+      "total": 4736,
+      "cards": [
+        0,
+        2784,
+        1952
+      ],
+      "firstTrigger": {
+        "referenceCardId": "REF_SEA_02",
+        "primaryTheme": "바다·해안 무드",
+        "moodTags": [
+          "로드트립감성",
+          "청량함",
+          "자유로움",
+          "낭만적"
+        ],
+        "sceneTags": [
+          "바다",
+          "해안도로",
+          "해변",
+          "서핑"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "대중교통",
+        "companionType": "혼자",
+        "season": "겨울",
+        "currentDate": "2026-01-20",
+        "departure": "chuncheon",
+        "exposureState": "recent",
+        "retry": false
+      },
+      "bestTrigger": {
+        "referenceCardId": "REF_ALPS_01",
+        "primaryTheme": "알프스·고원·목장 무드",
+        "moodTags": [
+          "알프스감성",
+          "자연친화",
+          "청량함",
+          "탁트임"
+        ],
+        "sceneTags": [
+          "목장",
+          "초원",
+          "동물",
+          "산"
+        ],
+        "travelPurpose": "카페·실내휴식",
+        "transportType": "자차",
+        "companionType": "혼자",
+        "season": "가을",
+        "currentDate": "2026-10-20",
+        "departure": "sokcho",
+        "exposureState": "none",
+        "retry": false
+      },
+      "maxSelectionScore": 97,
+      "bestRank": 2,
+      "primaryThemeCoverage": [
+        "건축·전시·랜드마크 무드",
+        "레트로·시장·항구 무드",
+        "바다·해안 무드",
+        "숲·정원·자연휴식 무드",
+        "알프스·고원·목장 무드",
+        "일본 소도시·골목 무드",
+        "휴양·카페·이국공간 무드"
+      ],
+      "purposeCoverage": [
+        "먹거리·야간탐방",
+        "사진·포토스팟",
+        "산책·힐링",
+        "숙소·리조트",
+        "전시·건축관람",
+        "체험·액티비티",
+        "카페·실내휴식"
+      ],
+      "transportCoverage": [
+        "대중교통",
+        "도보중심",
+        "자차"
+      ],
+      "seasonCoverage": [
+        "가을",
+        "겨울",
+        "봄",
+        "여름"
+      ],
+      "departureCoverage": [
+        "chuncheon",
+        "gangneung",
+        "none",
+        "pyeongchang",
+        "seoul",
+        "sokcho",
+        "wonju"
+      ]
+    }
+  ]
+}

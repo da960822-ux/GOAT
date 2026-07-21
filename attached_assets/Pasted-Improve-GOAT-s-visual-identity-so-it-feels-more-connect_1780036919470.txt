@@ -1,0 +1,61 @@
+Improve GOAT’s visual identity so it feels more connected to Gangwon-do.
+
+Do not change the app logic.
+Do not add new features.
+Do not redesign from scratch.
+
+Current issue:
+The app feels like a generic overseas-vibe app.
+It should visually feel like a Gangwon-specialized travel app.
+
+Design direction:
+Keep GOAT’s violet and lime brand identity, but add a Gangwon nature-inspired color system.
+
+Use these visual meanings:
+- Deep violet: GOAT brand and main CTA
+- Lime green: active selection and positive recommendation
+- Sea blue: Donghae coast, ocean, beach, harbor
+- Mountain green: highland, forest, ranch, Baekdudaegan feeling
+- Mist lavender/gray: mountain ridge, fog, quiet nature
+- Sand beige: beach, market, alley, warm travel mood
+
+Apply colors by region_group:
+- 동해안권: sea blue accent
+- 고원권: mountain green accent
+- 영서권: lime/olive garden accent
+- 북부내륙권: mist blue/forest accent
+
+UI changes:
+1. Landing screen
+- Keep the mountain/landscape hero.
+- Add subtle Gangwon nature color accents.
+- Info chips should mention:
+  동해안 · 고원 · 영서 · 북부내륙
+  강원 감성 명소 43곳
+  카카오맵으로 바로 이동
+
+2. Mood selection screen
+- Mood cards should include subtle color accents based on the dominant Gangwon scene:
+  sea, forest, highland, alley, harbor, garden.
+- Do not make every card the same lavender box.
+- Each card should feel like a different travel scene.
+
+3. Recommendation result screen
+- Add a region label using region_group color:
+  예: 강릉 · 동해안권, 평창 · 고원권, 춘천 · 영서권
+- Keep the card clean.
+- Use region color only as a subtle badge, top border, or small accent, not as a full background.
+
+4. Detail screen
+- Add a section title:
+  “강원 장면 포인트”
+- Show city + region_group + photo_point.
+- Use the region_group accent color.
+
+5. Overall visual quality
+- Make the app feel like Gangwon nature:
+  sea, mountain, highland, forest, coastal road, local alley.
+- Avoid looking like a generic purple startup app.
+- Avoid using official Gangwon government logos or CI marks.
+- Do not copy official symbols.
+- Only use nature-inspired colors and regional mood.
