@@ -7,6 +7,8 @@ out-tsc
 *.tsbuildinfo
 .expo
 .expo-shared
+/artifacts/goat-mobile/static-build/
+/artifacts/goat-mobile/dist-validation/
 
 # dependencies
 node_modules
