@@ -480,7 +480,7 @@ type RecommendFromTagsRequest = {
 - `currentMonth`: 1부터 12까지
 - `origin.latitude`: -90부터 90까지
 - `origin.longitude`: -180부터 180까지
-- `excludeIds`: 최대 58개
+- `excludeIds`: 최대 61개
 - `excludeIds`: 중복 불가
 - 정의되지 않은 추가 필드는 허용하지 않음
 
@@ -514,9 +514,9 @@ type RecommendFromTagsRequest = {
     "moodId": "mood-id",
     "referenceCardId": "reference-card-id",
     "appliedTags": ["tag"],
-    "seedPoolSize": 58,
+    "seedPoolSize": 61,
     "candidatePoolSize": 12,
-    "poolPolicy": "ALL58",
+    "poolPolicy": "ALL61",
     "poolReason": "...",
     "fallbackUsed": false,
     "adaptivePoolRetryUsed": false,

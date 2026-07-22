@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 import type { TravelOriginType } from './travelOriginType';
 
@@ -19,6 +19,9 @@ export interface TravelOrigin {
      * @maximum 180
      */
   longitude?: number;
-  /** @minLength 1 */
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
   regionName?: string;
 }

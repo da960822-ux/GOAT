@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 
 export interface LegacyRecommendationScoreBreakdown {
@@ -20,8 +20,12 @@ export interface LegacyRecommendationScoreBreakdown {
   dataStatus: number;
   directMatchCount: number;
   baseScore: number;
+  originDistanceBonus?: number;
   routeDistanceBonus: number;
   duplicatePenalty: number;
+  exposurePenalty?: number;
+  coverageBoost?: number;
+  lowExposureBoost?: number;
   selectionScore: number;
   displayScore: number;
 }

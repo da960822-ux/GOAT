@@ -3,11 +3,14 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 
 export type GoatRecommendationCardAccessibility = {
-  public_transport?: string;
-  car?: string;
-  walk?: string;
+  /** @nullable */
+  public_transport?: string | null;
+  /** @nullable */
+  car?: string | null;
+  /** @nullable */
+  walk?: string | null;
 };

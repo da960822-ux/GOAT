@@ -3,14 +3,20 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 import type { RecommendationCardResponse } from './recommendationCardResponse';
 import type { RecommendationDataConditions } from './recommendationDataConditions';
 import type { RecommendationDataCourse } from './recommendationDataCourse';
+import type { RecommendationDataOriginStatus } from './recommendationDataOriginStatus';
 
 export interface RecommendationData {
   recommendationId: string;
+  policyVersion: string;
+  /** @nullable */
+  originStatus: RecommendationDataOriginStatus;
+  /** @nullable */
+  originNotice: string | null;
   conditions: RecommendationDataConditions;
   /**
      * @minItems 3

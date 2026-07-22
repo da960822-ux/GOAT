@@ -3,10 +3,12 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 import type { GoatConditionScoreBreakdown } from './goatConditionScoreBreakdown';
 import type { GoatMoodScoreBreakdown } from './goatMoodScoreBreakdown';
+import type { GoatScoreBreakdownOriginDistanceSource } from './goatScoreBreakdownOriginDistanceSource';
+import type { GoatScoreBreakdownRouteDistanceSource } from './goatScoreBreakdownRouteDistanceSource';
 
 export interface GoatScoreBreakdown {
   moodScore: GoatMoodScoreBreakdown;
@@ -16,6 +18,19 @@ export interface GoatScoreBreakdown {
      * @maximum 90
      */
   baseScore: number;
+  /** @minimum 0 */
+  originDistanceKm?: number;
+  originDistanceSource?: GoatScoreBreakdownOriginDistanceSource;
+  /**
+     * @minimum 0
+     * @maximum 10
+     */
+  originDistanceBonus: number;
+  /** @minimum 0 */
+  routeDistanceKm?: number;
+  /** @minimum 0 */
+  routeDurationMin?: number;
+  routeDistanceSource: GoatScoreBreakdownRouteDistanceSource;
   /**
      * @minimum 0
      * @maximum 10
@@ -43,7 +58,7 @@ export interface GoatScoreBreakdown {
   lowExposureBoost: number;
   /**
      * @minimum -11
-     * @maximum 106
+     * @maximum 116
      */
   selectionScore: number;
   /**

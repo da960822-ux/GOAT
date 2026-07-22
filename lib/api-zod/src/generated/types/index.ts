@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 
 export * from './apiSuccessBase';
@@ -16,12 +16,20 @@ export * from './bookmarkStatusSuccessResponseData';
 export * from './courseStop';
 export * from './courseStopCategory';
 export * from './courseStopType';
+export * from './createRecommendationRequest';
+export * from './createRecommendationRequestTransportType';
+export * from './createRecommendationRequestTravelPurpose';
+export * from './createRecommendationRequestVisitTime';
 export * from './errorResponse';
 export * from './feedbackRequest';
 export * from './feedbackRequestReasonCode';
 export * from './feedbackRequestType';
 export * from './feedbackSuccessResponse';
 export * from './feedbackSuccessResponseData';
+export * from './geocodeOriginData';
+export * from './geocodeOriginDataSource';
+export * from './geocodeOriginRequest';
+export * from './geocodeOriginSuccessResponse';
 export * from './getRecentRecommendationsParams';
 export * from './goatConditionScoreBreakdown';
 export * from './goatMoodScoreBreakdown';
@@ -30,6 +38,8 @@ export * from './goatRecommendationCard';
 export * from './goatRecommendationCardAccessibility';
 export * from './goatRecommendationCardRole';
 export * from './goatScoreBreakdown';
+export * from './goatScoreBreakdownOriginDistanceSource';
+export * from './goatScoreBreakdownRouteDistanceSource';
 export * from './healthStatus';
 export * from './ktoProxyError';
 export * from './legacyRecommendationScoreBreakdown';
@@ -54,13 +64,19 @@ export * from './recommendationCardResponseSeasonBadge';
 export * from './recommendationData';
 export * from './recommendationDataConditions';
 export * from './recommendationDataCourse';
+export * from './recommendationDataOriginStatus';
 export * from './recommendationDataSuccessResponse';
+export * from './recommendationDistanceScoreDetail';
+export * from './recommendationDistanceScoreDetailSource';
 export * from './recommendationMatchDetail';
 export * from './recommendationPurposeScoreDetail';
 export * from './recommendationRole';
 export * from './recommendationScoreDetails';
 export * from './recommendationScoreSummary';
 export * from './recommendationsData';
+export * from './recommendationsDataDecisionAudit';
+export * from './recommendationsDataOriginStatus';
+export * from './recommendationsDataPolicyVersion';
 export * from './recommendationsDataPoolPolicy';
 export * from './recommendationSeasonScoreDetail';
 export * from './recommendationSeasonScoreDetailMatchType';
@@ -82,6 +98,9 @@ export * from './recommendFromTagsRequest';
 export * from './recommendFromTagsRequestTransportType';
 export * from './recommendFromTagsRequestTravelPurpose';
 export * from './recommendFromTagsRequestVisitTime';
+export * from './routeInfo';
+export * from './routeInfoFrom';
+export * from './routeInfoSource';
 export * from './staticMapResult';
 export * from './staticMapResultProvider';
 export * from './staticMapResultStaticMapConfig';

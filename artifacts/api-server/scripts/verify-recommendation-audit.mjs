@@ -56,10 +56,33 @@ const validScore = {
   displayScore: 72,
 };
 
+const normalizedLegacyScore = {
+  ...validScore,
+  originDistanceBonus: 0,
+  originDistanceSource: "NONE",
+  routeDistanceSource: "NONE",
+};
+
 assert.deepEqual(
   auditModule.safeParsePersistedRecommendationScore(validScore),
-  validScore,
-  "valid persisted score must pass runtime validation",
+  normalizedLegacyScore,
+  "legacy v1 score must be normalized for v2 readers",
+);
+
+const validV2Score = {
+  ...validScore,
+  originDistanceKm: 42.5,
+  originDistanceSource: "HAVERSINE",
+  originDistanceBonus: 6,
+  routeDistanceKm: 18.2,
+  routeDurationMin: 31,
+  routeDistanceSource: "KAKAO_ROUTE",
+  selectionScore: 80,
+};
+assert.deepEqual(
+  auditModule.safeParsePersistedRecommendationScore(validV2Score),
+  validV2Score,
+  "valid v2 score must pass runtime validation",
 );
 
 assert.equal(
@@ -71,10 +94,17 @@ assert.equal(
   "penalties must be stored as non-negative magnitudes",
 );
 
-assert.deepEqual(auditModule.toPublicScoreSummary(validScore), {
+assert.deepEqual(auditModule.toPublicScoreSummary(normalizedLegacyScore), {
   moodScore: 35,
   conditionScore: 32,
   baseScore: 67,
+  originDistanceBonus: 0,
+  routeDistanceBonus: 8,
+  duplicatePenalty: 3,
+  exposurePenalty: 2,
+  coverageBoost: 3,
+  lowExposureBoost: 1,
+  selectionScore: 74,
   displayScore: 72,
 });
 

@@ -3,11 +3,11 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 
 /**
- * User-safe summary. Internal exposure and candidate-selection adjustments are not exposed here.
+ * Typed goat-score-v2 summary. Penalties are stored as non-negative magnitudes and subtracted by the policy.
  */
 export interface RecommendationScoreSummary {
   /**
@@ -25,6 +25,41 @@ export interface RecommendationScoreSummary {
      * @maximum 90
      */
   baseScore: number;
+  /**
+     * @minimum 0
+     * @maximum 10
+     */
+  originDistanceBonus: number;
+  /**
+     * @minimum 0
+     * @maximum 10
+     */
+  routeDistanceBonus: number;
+  /**
+     * @minimum 0
+     * @maximum 6
+     */
+  duplicatePenalty: number;
+  /**
+     * @minimum 0
+     * @maximum 5
+     */
+  exposurePenalty: number;
+  /**
+     * @minimum 0
+     * @maximum 3
+     */
+  coverageBoost: number;
+  /**
+     * @minimum 0
+     * @maximum 3
+     */
+  lowExposureBoost: number;
+  /**
+     * @minimum -11
+     * @maximum 116
+     */
+  selectionScore: number;
   /**
      * @minimum 0
      * @maximum 100

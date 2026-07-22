@@ -22,7 +22,7 @@ Type the recommendation engine's real score output in the public OpenAPI contrac
 
 ## Project Structure
 
-- `lib/travel-domain/src`: recommendation score, audit types, and runtime schemas
+- `lib/travel-domain/src`: network/DB-free recommendation data and pure scoring policy
 - `lib/db/src/schema`: Drizzle schema and database relations
 - `artifacts/api-server/src`: recommendation persistence and HTTP responses
 - `lib/api-spec/openapi.yaml`: public HTTP contract
@@ -44,29 +44,31 @@ Penalty fields are non-negative magnitudes and are subtracted by the formula.
 
 ```text
 base_score = mood_score + condition_score
-selection_score = base_score + route_distance_bonus - duplicate_penalty
+selection_score = base_score + origin_distance_bonus + route_distance_bonus - duplicate_penalty
                   - exposure_penalty + coverage_boost + low_exposure_boost
-display_score = clamp(base_score + route_distance_bonus - duplicate_penalty, 0, 100)
+display_score = clamp(base_score + origin_distance_bonus + route_distance_bonus - duplicate_penalty, 0, 100)
 ```
 
-Ranges for `goat-score-v1`:
+Ranges for `goat-score-v2`:
 
 - mood score 0..45; condition score 0..45; base score 0..90
-- route bonus 0..10; duplicate penalty 0..6; exposure penalty 0..5
+- origin and route bonuses 0..10 each; duplicate penalty 0..6; exposure penalty 0..5
 - coverage boost 0..3; low-exposure boost 0..3
-- selection score -11..106; display score 0..100
+- selection score -11..116; display score 0..100
+
+Card 1 does not receive origin, route, exposure, coverage, or low-exposure corrections. Legacy `goat-score-v1` score/audit JSON remains readable and is normalized with zero origin bonus and `NONE` distance sources.
 
 ## API Behavior
 
 - Existing `score` and `reason` fields remain unchanged.
 - Cards add typed `scoreSummary`, `scoreDetails`, `reasons`, and `cautions` fields.
 - `scoreSummary` and `scoreDetails` are nullable for legacy or invalid persisted JSON; newly created recommendations always return both.
-- Internal candidate pools, exposure corrections, and complete decision audit data are not added to ordinary user responses.
+- Public responses include the policy version, typed score summary/detail, origin status, and route information. Candidate-pool audit JSON remains server-side.
 - Existing dynamic crowd lookup remains outside the persisted score snapshot.
 
 ## Persistence Behavior
 
-- Sessions store `policy_version`, fallback metadata, and a versioned decision-audit JSONB snapshot.
+- Sessions store `policy_version`, origin status/notice, fallback metadata, and audit JSON schema v2.
 - Frequently aggregated score components are stored as numeric card columns.
 - Warning codes are stored one row per session and code in `recommendation_session_warnings`.
 - Audit and score JSONB are validated with internal Zod schemas before writes and after reads.

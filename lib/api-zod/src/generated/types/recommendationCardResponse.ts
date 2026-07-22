@@ -3,13 +3,14 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 import type { RecommendationCardResponseFeedback } from './recommendationCardResponseFeedback';
 import type { RecommendationCardResponseRole } from './recommendationCardResponseRole';
 import type { RecommendationCardResponseSeasonBadge } from './recommendationCardResponseSeasonBadge';
 import type { RecommendationScoreDetails } from './recommendationScoreDetails';
 import type { RecommendationScoreSummary } from './recommendationScoreSummary';
+import type { RouteInfo } from './routeInfo';
 import type { VisitConcentration } from './visitConcentration';
 
 export interface RecommendationCardResponse {
@@ -31,6 +32,7 @@ export interface RecommendationCardResponse {
   score: number;
   scoreSummary: RecommendationScoreSummary | null;
   scoreDetails: RecommendationScoreDetails | null;
+  routeInfo: RouteInfo | null;
   reason: string;
   reasons: string[];
   cautions: string[];

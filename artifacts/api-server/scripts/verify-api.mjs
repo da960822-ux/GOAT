@@ -16,7 +16,12 @@ const expectedMoodIds = [
 
 const server = spawn(process.execPath, ["--enable-source-maps", "./dist/index.mjs"], {
   cwd: new URL("..", import.meta.url),
-  env: { ...process.env, PORT: String(port), KTO_SERVICE_KEY: "" },
+  env: {
+    ...process.env,
+    PORT: String(port),
+    KTO_SERVICE_KEY: "",
+    DATABASE_URL: process.env.DATABASE_URL ?? "postgresql://goat:goat@127.0.0.1:65432/goat",
+  },
   stdio: ["ignore", "pipe", "pipe"],
 });
 
@@ -53,8 +58,8 @@ try {
   const places = JSON.parse(
     await readFile(new URL("../../../lib/travel-domain/src/data/goat_simplified_scoring_tags_v10_accessibility_merged.json", import.meta.url)),
   );
-  assert.equal(places.places.length, 58);
-  assert.equal(new Set(places.places.map(({ place_id }) => place_id)).size, 58);
+  assert.equal(places.places.length, 61);
+  assert.equal(new Set(places.places.map(({ place_id }) => place_id)).size, 61);
   assert.ok(places.places.some(({ place_id, place_name }) => place_id === "GOAT-002" && place_name.includes("레고랜드")));
 
   const moodsResult = await request("/moods");
@@ -68,7 +73,10 @@ try {
   for (const mood of moodsResult.body.data.moods) {
     const result = await recommend({ moodId: mood.id });
     assert.equal(result.response.status, 200, mood.id);
-    assert.equal(result.body.data.seedPoolSize, 58, mood.id);
+    assert.equal(result.body.data.seedPoolSize, 61, mood.id);
+    assert.equal(result.response.headers.get("deprecation"), "true", mood.id);
+    assert.match(result.response.headers.get("link") ?? "", /\/api\/recommendations/, mood.id);
+    assert.equal(result.body.data.policyVersion, "goat-score-v2", mood.id);
     assert.ok(result.body.data.referenceCardId, mood.id);
     assert.equal(result.body.data.cards.length, 3, mood.id);
     assert.equal(result.body.data.recommendations.length, 3, mood.id);
@@ -164,7 +172,7 @@ try {
   assert.equal(ktoWithoutKey.response.status, 500);
   assert.match(ktoWithoutKey.body.error, /service key not configured/i);
 
-  console.log("API verification passed: 58 places, 7 moods, GOAT reference-card scoring engine.");
+  console.log("API verification passed: 61 places, 7 moods, GOAT score v2 guest preview.");
 } finally {
   server.kill();
 }

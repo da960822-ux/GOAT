@@ -3,20 +3,23 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 import type { GoatRecommendationCard } from './goatRecommendationCard';
 import type { Recommendation } from './recommendation';
+import type { RecommendationsDataDecisionAudit } from './recommendationsDataDecisionAudit';
+import type { RecommendationsDataOriginStatus } from './recommendationsDataOriginStatus';
+import type { RecommendationsDataPolicyVersion } from './recommendationsDataPolicyVersion';
 import type { RecommendationsDataPoolPolicy } from './recommendationsDataPoolPolicy';
 
 export interface RecommendationsData {
   moodId: string;
   referenceCardId?: string;
   appliedTags: string[];
-  seedPoolSize: 58;
+  seedPoolSize: 61;
   /**
      * @minimum 0
-     * @maximum 58
+     * @maximum 61
      */
   candidatePoolSize: number;
   poolPolicy: RecommendationsDataPoolPolicy;
@@ -35,4 +38,8 @@ export interface RecommendationsData {
   cards?: GoatRecommendationCard[];
   alternatives?: GoatRecommendationCard[];
   warnings?: string[];
+  policyVersion: RecommendationsDataPolicyVersion;
+  originStatus: RecommendationsDataOriginStatus;
+  originNotice?: string;
+  decisionAudit: RecommendationsDataDecisionAudit;
 }

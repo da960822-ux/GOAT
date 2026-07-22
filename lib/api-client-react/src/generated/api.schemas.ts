@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 export interface HealthStatus {
   status: string;
@@ -103,6 +103,7 @@ export type TravelOriginType = typeof TravelOriginType[keyof typeof TravelOrigin
 export const TravelOriginType = {
   current: 'current',
   region: 'region',
+  address: 'address',
   skip: 'skip',
 } as const;
 
@@ -118,7 +119,10 @@ export interface TravelOrigin {
      * @maximum 180
      */
   longitude?: number;
-  /** @minLength 1 */
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
   regionName?: string;
 }
 
@@ -172,9 +176,90 @@ export interface RecommendFromTagsRequest {
   debug?: boolean;
   preferences?: TravelPreferences;
   origin?: TravelOrigin;
-  /** @maxItems 58 */
+  /** @maxItems 61 */
   excludeIds?: string[];
 }
+
+export type CreateRecommendationRequestTravelPurpose = typeof CreateRecommendationRequestTravelPurpose[keyof typeof CreateRecommendationRequestTravelPurpose];
+
+
+export const CreateRecommendationRequestTravelPurpose = {
+  '사진·포토스팟': '사진·포토스팟',
+  '산책·힐링': '산책·힐링',
+  '카페·실내휴식': '카페·실내휴식',
+  '전시·건축관람': '전시·건축관람',
+  '체험·액티비티': '체험·액티비티',
+  '먹거리·야간탐방': '먹거리·야간탐방',
+  '숙소·리조트': '숙소·리조트',
+} as const;
+
+export type CreateRecommendationRequestTransportType = typeof CreateRecommendationRequestTransportType[keyof typeof CreateRecommendationRequestTransportType];
+
+
+export const CreateRecommendationRequestTransportType = {
+  자차: '자차',
+  대중교통: '대중교통',
+  도보중심: '도보중심',
+} as const;
+
+export type CreateRecommendationRequestVisitTime = typeof CreateRecommendationRequestVisitTime[keyof typeof CreateRecommendationRequestVisitTime];
+
+
+export const CreateRecommendationRequestVisitTime = {
+  새벽: '새벽',
+  오전: '오전',
+  한낮: '한낮',
+  오후: '오후',
+  저녁: '저녁',
+  야간: '야간',
+} as const;
+
+export interface CreateRecommendationRequest {
+  /** @minLength 1 */
+  moodId?: string;
+  /** @minLength 1 */
+  referenceCardId?: string;
+  travelPurpose?: CreateRecommendationRequestTravelPurpose;
+  transportType?: CreateRecommendationRequestTransportType;
+  visitTime?: CreateRecommendationRequestVisitTime;
+  /**
+     * @minimum 1
+     * @maximum 12
+     */
+  currentMonth?: number;
+  debug?: boolean;
+  preferences?: TravelPreferences;
+  origin?: TravelOrigin;
+  rerollOfRecommendationId?: string;
+  /** @maxItems 61 */
+  excludeIds?: string[];
+}
+
+export interface GeocodeOriginRequest {
+  /**
+     * @minLength 2
+     * @maxLength 120
+     */
+  query: string;
+}
+
+export type GeocodeOriginDataSource = typeof GeocodeOriginDataSource[keyof typeof GeocodeOriginDataSource];
+
+
+export const GeocodeOriginDataSource = {
+  ADDRESS: 'ADDRESS',
+  KEYWORD: 'KEYWORD',
+} as const;
+
+export interface GeocodeOriginData {
+  origin: TravelOrigin;
+  address: string;
+  source: GeocodeOriginDataSource;
+}
+
+export type GeocodeOriginSuccessResponse = ApiSuccessBase & {
+  data: GeocodeOriginData;
+};
 
 export type RecommendCourseRequestPrimaryTheme = typeof RecommendCourseRequestPrimaryTheme[keyof typeof RecommendCourseRequestPrimaryTheme];
 
@@ -353,7 +438,7 @@ export interface RecommendationSeasonScoreDetail {
 }
 
 /**
- * User-safe summary. Internal exposure and candidate-selection adjustments are not exposed here.
+ * Typed goat-score-v2 summary. Penalties are stored as non-negative magnitudes and subtracted by the policy.
  */
 export interface RecommendationScoreSummary {
   /**
@@ -373,9 +458,72 @@ export interface RecommendationScoreSummary {
   baseScore: number;
   /**
      * @minimum 0
+     * @maximum 10
+     */
+  originDistanceBonus: number;
+  /**
+     * @minimum 0
+     * @maximum 10
+     */
+  routeDistanceBonus: number;
+  /**
+     * @minimum 0
+     * @maximum 6
+     */
+  duplicatePenalty: number;
+  /**
+     * @minimum 0
+     * @maximum 5
+     */
+  exposurePenalty: number;
+  /**
+     * @minimum 0
+     * @maximum 3
+     */
+  coverageBoost: number;
+  /**
+     * @minimum 0
+     * @maximum 3
+     */
+  lowExposureBoost: number;
+  /**
+     * @minimum -11
+     * @maximum 116
+     */
+  selectionScore: number;
+  /**
+     * @minimum 0
      * @maximum 100
      */
   displayScore: number;
+}
+
+export type RecommendationDistanceScoreDetailSource = typeof RecommendationDistanceScoreDetailSource[keyof typeof RecommendationDistanceScoreDetailSource];
+
+
+export const RecommendationDistanceScoreDetailSource = {
+  KAKAO_ROUTE: 'KAKAO_ROUTE',
+  HAVERSINE: 'HAVERSINE',
+  NONE: 'NONE',
+} as const;
+
+export interface RecommendationDistanceScoreDetail {
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  distanceKm: number | null;
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  durationMin?: number | null;
+  source: RecommendationDistanceScoreDetailSource;
+  /**
+     * @minimum 0
+     * @maximum 10
+     */
+  bonus: number;
 }
 
 export interface RecommendationScoreDetails {
@@ -385,6 +533,8 @@ export interface RecommendationScoreDetails {
   purpose: RecommendationPurposeScoreDetail;
   accessibility: RecommendationAccessibilityScoreDetail;
   season: RecommendationSeasonScoreDetail;
+  origin: RecommendationDistanceScoreDetail;
+  route: RecommendationDistanceScoreDetail;
 }
 
 export interface LegacyRecommendationScoreBreakdown {
@@ -401,8 +551,12 @@ export interface LegacyRecommendationScoreBreakdown {
   dataStatus: number;
   directMatchCount: number;
   baseScore: number;
+  originDistanceBonus?: number;
   routeDistanceBonus: number;
   duplicatePenalty: number;
+  exposurePenalty?: number;
+  coverageBoost?: number;
+  lowExposureBoost?: number;
   selectionScore: number;
   displayScore: number;
 }
@@ -440,6 +594,23 @@ export interface GoatConditionScoreBreakdown {
   season: RecommendationSeasonScoreDetail;
 }
 
+export type GoatScoreBreakdownOriginDistanceSource = typeof GoatScoreBreakdownOriginDistanceSource[keyof typeof GoatScoreBreakdownOriginDistanceSource];
+
+
+export const GoatScoreBreakdownOriginDistanceSource = {
+  HAVERSINE: 'HAVERSINE',
+  NONE: 'NONE',
+} as const;
+
+export type GoatScoreBreakdownRouteDistanceSource = typeof GoatScoreBreakdownRouteDistanceSource[keyof typeof GoatScoreBreakdownRouteDistanceSource];
+
+
+export const GoatScoreBreakdownRouteDistanceSource = {
+  KAKAO_ROUTE: 'KAKAO_ROUTE',
+  HAVERSINE: 'HAVERSINE',
+  NONE: 'NONE',
+} as const;
+
 export interface GoatScoreBreakdown {
   moodScore: GoatMoodScoreBreakdown;
   conditionScore: GoatConditionScoreBreakdown;
@@ -448,6 +619,19 @@ export interface GoatScoreBreakdown {
      * @maximum 90
      */
   baseScore: number;
+  /** @minimum 0 */
+  originDistanceKm?: number;
+  originDistanceSource?: GoatScoreBreakdownOriginDistanceSource;
+  /**
+     * @minimum 0
+     * @maximum 10
+     */
+  originDistanceBonus: number;
+  /** @minimum 0 */
+  routeDistanceKm?: number;
+  /** @minimum 0 */
+  routeDurationMin?: number;
+  routeDistanceSource: GoatScoreBreakdownRouteDistanceSource;
   /**
      * @minimum 0
      * @maximum 10
@@ -475,7 +659,7 @@ export interface GoatScoreBreakdown {
   lowExposureBoost: number;
   /**
      * @minimum -11
-     * @maximum 106
+     * @maximum 116
      */
   selectionScore: number;
   /**
@@ -483,6 +667,34 @@ export interface GoatScoreBreakdown {
      * @maximum 100
      */
   displayScore: number;
+}
+
+export type RouteInfoFrom = typeof RouteInfoFrom[keyof typeof RouteInfoFrom];
+
+
+export const RouteInfoFrom = {
+  ORIGIN: 'ORIGIN',
+  FIRST_CARD: 'FIRST_CARD',
+} as const;
+
+export type RouteInfoSource = typeof RouteInfoSource[keyof typeof RouteInfoSource];
+
+
+export const RouteInfoSource = {
+  KAKAO_ROUTE: 'KAKAO_ROUTE',
+  HAVERSINE: 'HAVERSINE',
+} as const;
+
+export interface RouteInfo {
+  from: RouteInfoFrom;
+  fromLabel: string;
+  /** @minimum 0 */
+  distanceKm: number;
+  /** @minimum 0 */
+  durationMin?: number;
+  source: RouteInfoSource;
+  estimated: boolean;
+  scoreApplied: boolean;
 }
 
 export type GoatRecommendationCardRole = typeof GoatRecommendationCardRole[keyof typeof GoatRecommendationCardRole];
@@ -495,9 +707,12 @@ export const GoatRecommendationCardRole = {
 } as const;
 
 export type GoatRecommendationCardAccessibility = {
-  public_transport?: string;
-  car?: string;
-  walk?: string;
+  /** @nullable */
+  public_transport?: string | null;
+  /** @nullable */
+  car?: string | null;
+  /** @nullable */
+  walk?: string | null;
 };
 
 export interface GoatRecommendationCard {
@@ -549,24 +764,43 @@ export interface Recommendation {
   safetyNotes: string[];
   weatherFit: string;
   parkingInfo: string;
+  routeInfo?: RouteInfo;
 }
 
 export type RecommendationsDataPoolPolicy = typeof RecommendationsDataPoolPolicy[keyof typeof RecommendationsDataPoolPolicy];
 
 
 export const RecommendationsDataPoolPolicy = {
-  ALL58: 'ALL58',
+  ALL61: 'ALL61',
   PRIMARY43: 'PRIMARY43',
 } as const;
+
+export type RecommendationsDataPolicyVersion = typeof RecommendationsDataPolicyVersion[keyof typeof RecommendationsDataPolicyVersion];
+
+
+export const RecommendationsDataPolicyVersion = {
+  'goat-score-v2': 'goat-score-v2',
+} as const;
+
+export type RecommendationsDataOriginStatus = typeof RecommendationsDataOriginStatus[keyof typeof RecommendationsDataOriginStatus];
+
+
+export const RecommendationsDataOriginStatus = {
+  APPLIED: 'APPLIED',
+  SKIPPED: 'SKIPPED',
+  UNAVAILABLE: 'UNAVAILABLE',
+} as const;
+
+export type RecommendationsDataDecisionAudit = { [key: string]: unknown };
 
 export interface RecommendationsData {
   moodId: string;
   referenceCardId?: string;
   appliedTags: string[];
-  seedPoolSize: 58;
+  seedPoolSize: 61;
   /**
      * @minimum 0
-     * @maximum 58
+     * @maximum 61
      */
   candidatePoolSize: number;
   poolPolicy: RecommendationsDataPoolPolicy;
@@ -585,6 +819,10 @@ export interface RecommendationsData {
   cards?: GoatRecommendationCard[];
   alternatives?: GoatRecommendationCard[];
   warnings?: string[];
+  policyVersion: RecommendationsDataPolicyVersion;
+  originStatus: RecommendationsDataOriginStatus;
+  originNotice?: string;
+  decisionAudit: RecommendationsDataDecisionAudit;
 }
 
 export type RecommendationsSuccessResponse = ApiSuccessBase & {
@@ -664,6 +902,7 @@ export interface RecommendationCardResponse {
   score: number;
   scoreSummary: RecommendationScoreSummary | null;
   scoreDetails: RecommendationScoreDetails | null;
+  routeInfo: RouteInfo | null;
   reason: string;
   reasons: string[];
   cautions: string[];
@@ -676,6 +915,18 @@ export interface RecommendationCardResponse {
   feedback: RecommendationCardResponseFeedback;
 }
 
+/**
+ * @nullable
+ */
+export type RecommendationDataOriginStatus = typeof RecommendationDataOriginStatus[keyof typeof RecommendationDataOriginStatus] | null;
+
+
+export const RecommendationDataOriginStatus = {
+  APPLIED: 'APPLIED',
+  SKIPPED: 'SKIPPED',
+  UNAVAILABLE: 'UNAVAILABLE',
+} as const;
+
 export type RecommendationDataConditions = { [key: string]: unknown };
 
 /**
@@ -685,6 +936,11 @@ export type RecommendationDataCourse = { [key: string]: unknown } | null;
 
 export interface RecommendationData {
   recommendationId: string;
+  policyVersion: string;
+  /** @nullable */
+  originStatus: RecommendationDataOriginStatus;
+  /** @nullable */
+  originNotice: string | null;
   conditions: RecommendationDataConditions;
   /**
      * @minItems 3

@@ -47,7 +47,10 @@ for (const table of [
 for (const schemaField of [
   'policyVersion: text("policy_version")',
   'decisionAudit: jsonb("decision_audit")',
+  'originStatus: text("origin_status")',
   'moodScore: integer("mood_score")',
+  'originDistanceBonus: integer("origin_distance_bonus")',
+  'routeInfo: jsonb("route_info")',
   'cautions: jsonb("cautions")',
 ]) {
   assert.ok(
@@ -112,10 +115,8 @@ assert.ok(
   !recommendationStore.includes("crowd: null"),
   "recommendation crowd must not be hard-coded to null",
 );
-assert.ok(
-  travelRoutes.includes("decisionAudit: undefined"),
-  "legacy recommendation responses must not expose internal decision audit data",
-);
+assert.ok(travelRoutes.includes('res.setHeader("Deprecation", "true")'));
+assert.ok(travelRoutes.includes('rel="successor-version"'));
 assert.ok(
   recommendationStore.includes("safeParsePersistedRecommendationScore"),
   "persisted recommendation score JSON must be runtime-validated",

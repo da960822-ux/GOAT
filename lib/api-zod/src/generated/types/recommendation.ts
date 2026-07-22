@@ -3,11 +3,12 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 import type { LegacyRecommendationScoreBreakdown } from './legacyRecommendationScoreBreakdown';
 import type { Place } from './place';
 import type { RecommendationRole } from './recommendationRole';
+import type { RouteInfo } from './routeInfo';
 
 export interface Recommendation {
   place: Place;
@@ -19,4 +20,5 @@ export interface Recommendation {
   safetyNotes: string[];
   weatherFit: string;
   parkingInfo: string;
+  routeInfo?: RouteInfo;
 }

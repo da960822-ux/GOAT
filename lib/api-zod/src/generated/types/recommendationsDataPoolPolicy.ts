@@ -3,13 +3,13 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 
 export type RecommendationsDataPoolPolicy = typeof RecommendationsDataPoolPolicy[keyof typeof RecommendationsDataPoolPolicy];
 
 
 export const RecommendationsDataPoolPolicy = {
-  ALL58: 'ALL58',
+  ALL61: 'ALL61',
   PRIMARY43: 'PRIMARY43',
 } as const;

@@ -125,7 +125,16 @@ try {
   assert.equal(missingKey.response.status, 400);
   assert.equal(missingKey.body.code, "INVALID_IDEMPOTENCY_KEY");
 
-  const requestBody = { moodId: "alps-ranch", currentMonth: 7 };
+  const requestBody = {
+    moodId: "alps-ranch",
+    currentMonth: 7,
+    transportType: "대중교통",
+    origin: {
+      type: "current",
+      latitude: 37.5665,
+      longitude: 126.978,
+    },
+  };
   const created = await jsonRequest(
     "/recommendations",
     "POST",
@@ -137,6 +146,8 @@ try {
   assert.equal(created.body.code, "RECOMMENDATION_CREATED");
   assert.match(created.body.data.recommendationId, /^[0-9a-f-]{36}$/i);
   assert.equal(created.body.data.cards.length, 3);
+  assert.equal(created.body.data.policyVersion, "goat-score-v2");
+  assert.equal(created.body.data.originStatus, "APPLIED");
   assert.deepEqual(
     created.body.data.cards.map(({ role }) => role),
     ["BEST_SCENE", "SAME_MOOD_ALTERNATIVE", "CONDITION_FIT_ALTERNATIVE"],
@@ -144,6 +155,8 @@ try {
   for (const card of created.body.data.cards) {
     assert.equal(typeof card.score, "number");
     assert.equal(typeof card.scoreSummary?.displayScore, "number");
+    assert.equal(typeof card.scoreSummary?.originDistanceBonus, "number");
+    assert.equal(typeof card.scoreSummary?.selectionScore, "number");
     assert.equal(typeof card.scoreDetails?.theme?.score, "number");
     assert.ok(Array.isArray(card.reasons));
     assert.ok(Array.isArray(card.cautions));
@@ -202,17 +215,35 @@ try {
         from public.recommendation_sessions where id = $3) as audit_schema_version,
        (select bool_and(display_score is not null and selection_score is not null)
         from public.recommendation_session_places
-        where recommendation_id = $3) as scores_complete`,
+        where recommendation_id = $3) as scores_complete,
+       (select bool_and(origin_distance_bonus is not null and route_info is not null)
+        from public.recommendation_session_places
+        where recommendation_id = $3) as route_fields_complete`,
     [userId, idempotencyKey, recommendationId],
   );
   assert.deepEqual(savedRows.rows[0], {
     request_count: 1,
     session_count: 1,
     place_count: 3,
-    policy_version: "goat-score-v1",
-    audit_schema_version: "1",
+    policy_version: "goat-score-v2",
+    audit_schema_version: "2",
     scores_complete: true,
+    route_fields_complete: true,
   });
+
+  const rerolled = await jsonRequest(
+    "/recommendations",
+    "POST",
+    {
+      ...requestBody,
+      rerollOfRecommendationId: recommendationId,
+    },
+    true,
+    { "Idempotency-Key": crypto.randomUUID() },
+  );
+  assert.equal(rerolled.response.status, 201, JSON.stringify(rerolled.body));
+  const previousIds = new Set(created.body.data.cards.map(({ placeId }) => placeId));
+  assert.ok(rerolled.body.data.cards.every(({ placeId }) => !previousIds.has(placeId)));
 
   const bookmarkSaved = await jsonRequest("/bookmarks", "POST", {
     placeId: firstPlaceId,

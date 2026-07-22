@@ -3,12 +3,10 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 import type { Mood } from './mood';
-import type { ReferenceCard } from './referenceCard';
 
 export interface MoodsData {
   moods: Mood[];
-  referenceCards: ReferenceCard[];
 }

@@ -3,9 +3,10 @@
  * Do not edit manually.
  * Api
  * Korean Travel Guide API
- * OpenAPI spec version: 0.3.0
+ * OpenAPI spec version: 0.4.0
  */
 import type { RecommendationAccessibilityScoreDetail } from './recommendationAccessibilityScoreDetail';
+import type { RecommendationDistanceScoreDetail } from './recommendationDistanceScoreDetail';
 import type { RecommendationMatchDetail } from './recommendationMatchDetail';
 import type { RecommendationPurposeScoreDetail } from './recommendationPurposeScoreDetail';
 import type { RecommendationSeasonScoreDetail } from './recommendationSeasonScoreDetail';
@@ -18,4 +19,6 @@ export interface RecommendationScoreDetails {
   purpose: RecommendationPurposeScoreDetail;
   accessibility: RecommendationAccessibilityScoreDetail;
   season: RecommendationSeasonScoreDetail;
+  origin: RecommendationDistanceScoreDetail;
+  route: RecommendationDistanceScoreDetail;
 }

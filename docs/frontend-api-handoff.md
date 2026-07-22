@@ -50,7 +50,7 @@ type ApiError = {
 → 최근 추천/추천 상세에서 복원
 ```
 
-공식 추천 화면에서는 `POST /recommendations`를 사용한다. 기존 `POST /recommend-from-tags`는 DB에 저장하지 않는 미리보기·호환용 API다.
+공식 추천 화면에서는 `POST /recommendations`를 사용한다. 기존 `POST /recommend-from-tags`는 DB에 저장하지 않는 한 릴리스용 게스트 미리보기 API이며 `Deprecation: true` 헤더를 반환한다.
 
 ## 3. 인증
 
@@ -159,9 +159,11 @@ type RecommendationRequest = {
   };
   origin?:
     | { type: "current"; latitude: number; longitude: number }
-    | { type: "region"; regionName: string }
+    | { type: "region"; regionName: string; latitude?: number; longitude?: number }
+    | { type: "address"; regionName: string; latitude: number; longitude: number }
     | { type: "skip" };
-  excludeIds?: string[]; // 최대 58개, 중복 금지
+  rerollOfRecommendationId?: string; // 본인 소유 추천 UUID
+  excludeIds?: string[]; // 최대 61개, 중복 금지
 };
 ```
 
@@ -207,6 +209,13 @@ type RecommendationScoreSummary = {
   moodScore: number;      // 0~45
   conditionScore: number; // 0~45
   baseScore: number;      // 0~90
+  originDistanceBonus: number; // 0~10
+  routeDistanceBonus: number;  // 0~10
+  duplicatePenalty: number;    // 0~6, 양수 크기로 저장 후 차감
+  exposurePenalty: number;     // 0~5, 양수 크기로 저장 후 차감
+  coverageBoost: number;       // 0~3
+  lowExposureBoost: number;    // 0~3
+  selectionScore: number;      // -11~116
   displayScore: number;   // 0~100
 };
 
@@ -238,6 +247,15 @@ type RecommendationScoreDetails = {
     matchType: "current" | "all_season" | "none" | "not_requested";
     score: number;
   };
+  origin: DistanceScoreDetail;
+  route: DistanceScoreDetail;
+};
+
+type DistanceScoreDetail = {
+  distanceKm: number | null;
+  durationMin?: number | null;
+  source: "KAKAO_ROUTE" | "HAVERSINE" | "NONE";
+  bonus: number;
 };
 
 type MatchDetail = {
@@ -257,6 +275,15 @@ type RecommendationCard = {
   score: number; // 화면 표시용 0~100
   scoreSummary: RecommendationScoreSummary | null;
   scoreDetails: RecommendationScoreDetails | null;
+  routeInfo: {
+    from: "ORIGIN" | "FIRST_CARD";
+    fromLabel: string;
+    distanceKm: number;
+    durationMin?: number;
+    source: "KAKAO_ROUTE" | "HAVERSINE";
+    estimated: boolean;
+    scoreApplied: boolean;
+  } | null;
   reason: string;
   reasons: string[];
   cautions: string[];
@@ -272,6 +299,9 @@ type RecommendationCard = {
 
 type RecommendationData = {
   recommendationId: string;
+  policyVersion: string;
+  originStatus: "APPLIED" | "SKIPPED" | "UNAVAILABLE" | null;
+  originNotice: string | null;
   conditions: RecommendationRequest;
   cards: [RecommendationCard, RecommendationCard, RecommendationCard];
   course: Record<string, unknown> | null;

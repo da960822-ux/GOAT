@@ -8,10 +8,10 @@
 |---|---|---|
 | CORS | 운영 환경에서는 `CORS_ORIGINS`를 반드시 명시하고 `*`는 금지 | 코드 반영 |
 | KTO 프록시 | 서버 키로 호출 가능한 KTO endpoint를 allowlist로 제한 | 코드 반영 |
-| 추천 API | `POST /recommend-from-tags`에 IP 기준 rate limit 적용 | 코드 반영 |
-| DB 스키마 | `users`, `bookmarks`, `recommendation_logs` 테이블 정의 | 코드 반영 |
-| 북마크 | 클라이언트 로컬 저장은 임시, 서버 저장 API 필요 | 설계 확정 필요 |
-| 사용자 식별 | API body의 `user_id`는 신뢰하지 않고 JWT/session에서 추출 | 원칙 확정 |
+| 추천 API | 인증형 `/recommendations`, 게스트 미리보기와 geocode rate limit | 코드 반영 |
+| DB 스키마 | 추천 세션·카드·경고·요청·북마크·피드백·코스 테이블 | 코드 반영 |
+| 북마크 | 로그인 사용자별 Supabase 저장 및 중복 방지 | 코드 반영 |
+| 사용자 식별 | API body의 `user_id`는 받지 않고 세션에서 추출 | 코드 반영 |
 | 이미지 처리 | 사용자 사진 분석은 제거하고 `/api/image-status` KTO URL 검증은 유지 | 코드 반영 |
 
 ## 1. CORS 정책
@@ -60,7 +60,7 @@ CORS_ORIGINS=https://goat.example.com,https://admin.goat.example.com
 
 ## 3. 추천 API Rate Limit
 
-`POST /recommend-from-tags`는 추천 엔진을 실행하는 endpoint라 반복 호출 비용이 있습니다. 현재는 간단한 in-memory rate limit을 적용합니다.
+`POST /recommend-from-tags`와 공개 `POST /geocode-origin`에는 IP 기준 rate limit을 적용합니다. 정식 저장형 `POST /recommendations`는 로그인과 Idempotency-Key가 필요합니다.
 
 기본값:
 
@@ -118,20 +118,18 @@ RECOMMEND_RATE_LIMIT_MAX=30
 
 `user_id + place_id`를 primary key로 사용해 같은 사용자가 같은 장소를 중복 저장하지 않도록 합니다.
 
-### recommendation_logs
+### recommendation_sessions와 하위 테이블
 
-추천 요청과 결과를 기록합니다. 재노출 방지, 추천 품질 분석, 디버깅에 사용할 수 있습니다.
+정식 추천 조건과 카드 3개, 점수, 경고, 감사 JSON을 구조적으로 저장합니다. `recommendation_logs`는 레거시 호환을 위해 deprecated 상태로만 유지하고 새 추천은 기록하지 않습니다.
 
-| 컬럼 | 설명 |
+| 테이블 | 용도 |
 |---|---|
-| `id` | 로그 UUID |
-| `user_id` | 사용자 UUID, 비로그인 요청이면 null 가능 |
-| `mood_id` | 추천 요청의 mood ID |
-| `reference_card_id` | 추천 요청의 reference card ID |
-| `request` | 원본 요청 JSON |
-| `recommended_place_ids` | 추천 결과 place ID 목록 |
-| `excluded_place_ids` | 요청에서 제외한 place ID 목록 |
-| `created_at` | 기록 시각 |
+| `recommendation_sessions` | 사용자, 조건, 정책 버전, 출발지 상태, fallback, 감사 JSON |
+| `recommendation_requests` | 사용자별 Idempotency-Key와 요청 해시/상태 |
+| `recommendation_session_places` | 외부 place ID 문자열, 카드 순위/역할, v2 점수와 route_info |
+| `recommendation_session_warnings` | 경고 코드·메시지·상세를 행 단위 저장 |
+| `recommended_courses` | 추천 하나당 하루 코스 하나 |
+| `recommendation_feedback` | 사용자·추천·장소별 LIKE/DISLIKE |
 
 관련 코드:
 
@@ -139,11 +137,7 @@ RECOMMEND_RATE_LIMIT_MAX=30
 
 ## 5. 북마크 저장 설계 원칙
 
-현재 모바일 앱의 북마크는 `AsyncStorage` 기반 로컬 저장입니다. 이 방식은 MVP에는 빠르지만 다음 한계가 있습니다.
-
-- 기기를 바꾸면 북마크가 사라집니다.
-- 앱 재설치 시 복구할 수 없습니다.
-- 여러 기기 간 동기화가 되지 않습니다.
+서버 북마크 API가 사용자별로 장소 ID와 저장 당시 표시 이름·지역을 보존합니다. 모바일에서 버튼을 연결하면 기기와 무관하게 복원할 수 있습니다.
 
 서버 북마크 API를 만들 때는 아래 원칙을 지킵니다.
 
@@ -154,16 +148,14 @@ RECOMMEND_RATE_LIMIT_MAX=30
 | `place_id`만 클라이언트 입력으로 받음 | 저장 대상만 클라이언트가 선택 |
 | `user_id + place_id` 중복 저장 방지 | 토글/동기화 단순화 |
 
-권장 API 초안:
+현재 API:
 
 ```http
 GET /api/bookmarks
-Authorization: Bearer <token>
 ```
 
 ```http
 POST /api/bookmarks
-Authorization: Bearer <token>
 Content-Type: application/json
 
 {
@@ -173,7 +165,6 @@ Content-Type: application/json
 
 ```http
 DELETE /api/bookmarks/{placeId}
-Authorization: Bearer <token>
 ```
 
 서버 처리 흐름:
@@ -185,15 +176,15 @@ Authorization: Bearer <token>
 
 ## 6. 추천 로그와 재노출 방지
 
-추천 엔진에는 이미 `excludeIds` 기반 재노출 방지 흐름이 있습니다. `recommendation_logs`가 쌓이면 서버가 최근 추천 이력을 조회해 자동으로 `excludeIds`를 구성할 수 있습니다.
+정식 추천은 `recommendation_session_places`에서 해당 사용자의 최근 카드 20행과 전체 노출 통계를 조회합니다. 재추천은 본인 소유 `rerollOfRecommendationId`의 카드 3개를 자동 제외합니다.
 
 권장 흐름:
 
 1. 사용자가 추천 요청
 2. 서버가 JWT/session에서 `user_id` 확인
-3. 최근 `recommendation_logs`에서 같은 사용자에게 이미 노출된 place ID 조회
+3. 최근 `recommendation_session_places`에서 같은 사용자에게 이미 노출된 place ID 조회
 4. 조회한 ID를 추천 엔진의 `excludeIds`에 전달
-5. 추천 결과를 `recommendation_logs`에 저장
+5. 확정 세션·카드·경고와 Idempotency 완료를 짧은 트랜잭션으로 저장
 
 초기 운영에서는 최근 N일 또는 최근 N회 기준 중 하나를 선택하면 됩니다.
 

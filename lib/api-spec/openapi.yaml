@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Api
-  version: 0.3.0
+  version: 0.4.0
   description: Korean Travel Guide API
 servers:
   - url: /api
@@ -44,7 +44,8 @@ paths:
     post:
       operationId: recommendFromTags
       tags: [recommendations]
-      summary: Recommend three places using the GOAT v1.3+ scoring engine
+      summary: Guest preview using the GOAT score v2 engine
+      deprecated: true
       requestBody:
         required: true
         content:
@@ -70,6 +71,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /geocode-origin:
+    post:
+      operationId: geocodeOrigin
+      tags: [recommendations]
+      summary: Resolve an address or region query to an origin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GeocodeOriginRequest" }
+      responses:
+        "200":
+          description: Origin resolved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GeocodeOriginSuccessResponse" }
+        "404":
+          description: Origin not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "429":
+          description: Too many origin lookup requests
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
   /recommend-course:
     post:
       operationId: recommendCourse
@@ -116,7 +143,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RecommendFromTagsRequest"
+              $ref: "#/components/schemas/CreateRecommendationRequest"
       responses:
         "201":
           description: Recommendation created
@@ -481,7 +508,7 @@ components:
       properties:
         type:
           type: string
-          enum: [current, region, skip]
+          enum: [current, region, address, skip]
         latitude:
           type: number
           minimum: -90
@@ -493,6 +520,7 @@ components:
         regionName:
           type: string
           minLength: 1
+          maxLength: 200
       required: [type]
       additionalProperties: false
     RecommendFromTagsRequest:
@@ -535,11 +563,57 @@ components:
         excludeIds:
           type: array
           uniqueItems: true
-          maxItems: 58
+          maxItems: 61
           items:
             type: string
             minLength: 1
       additionalProperties: false
+    CreateRecommendationRequest:
+      type: object
+      properties:
+        moodId: { type: string, minLength: 1 }
+        referenceCardId: { type: string, minLength: 1 }
+        travelPurpose:
+          type: string
+          enum: [사진·포토스팟, 산책·힐링, 카페·실내휴식, 전시·건축관람, 체험·액티비티, 먹거리·야간탐방, 숙소·리조트]
+        transportType:
+          type: string
+          enum: [자차, 대중교통, 도보중심]
+        visitTime:
+          type: string
+          enum: [새벽, 오전, 한낮, 오후, 저녁, 야간]
+        currentMonth: { type: integer, minimum: 1, maximum: 12 }
+        debug: { type: boolean }
+        preferences: { $ref: "#/components/schemas/TravelPreferences" }
+        origin: { $ref: "#/components/schemas/TravelOrigin" }
+        rerollOfRecommendationId: { type: string, format: uuid }
+        excludeIds:
+          type: array
+          uniqueItems: true
+          maxItems: 61
+          items: { type: string, minLength: 1 }
+      additionalProperties: false
+    GeocodeOriginRequest:
+      type: object
+      properties:
+        query: { type: string, minLength: 2, maxLength: 120 }
+      required: [query]
+      additionalProperties: false
+    GeocodeOriginData:
+      type: object
+      properties:
+        origin: { $ref: "#/components/schemas/TravelOrigin" }
+        address: { type: string }
+        source: { type: string, enum: [ADDRESS, KEYWORD] }
+      required: [origin, address, source]
+      additionalProperties: false
+    GeocodeOriginSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data: { $ref: "#/components/schemas/GeocodeOriginData" }
+          required: [data]
     RecommendCourseRequest:
       type: object
       properties:
@@ -713,13 +787,29 @@ components:
       additionalProperties: false
     RecommendationScoreSummary:
       type: object
-      description: User-safe summary. Internal exposure and candidate-selection adjustments are not exposed here.
+      description: Typed goat-score-v2 summary. Penalties are stored as non-negative magnitudes and subtracted by the policy.
       properties:
         moodScore: { type: integer, minimum: 0, maximum: 45 }
         conditionScore: { type: integer, minimum: 0, maximum: 45 }
         baseScore: { type: integer, minimum: 0, maximum: 90 }
+        originDistanceBonus: { type: integer, minimum: 0, maximum: 10 }
+        routeDistanceBonus: { type: integer, minimum: 0, maximum: 10 }
+        duplicatePenalty: { type: integer, minimum: 0, maximum: 6 }
+        exposurePenalty: { type: integer, minimum: 0, maximum: 5 }
+        coverageBoost: { type: integer, minimum: 0, maximum: 3 }
+        lowExposureBoost: { type: integer, minimum: 0, maximum: 3 }
+        selectionScore: { type: integer, minimum: -11, maximum: 116 }
         displayScore: { type: integer, minimum: 0, maximum: 100 }
-      required: [moodScore, conditionScore, baseScore, displayScore]
+      required: [moodScore, conditionScore, baseScore, originDistanceBonus, routeDistanceBonus, duplicatePenalty, exposurePenalty, coverageBoost, lowExposureBoost, selectionScore, displayScore]
+      additionalProperties: false
+    RecommendationDistanceScoreDetail:
+      type: object
+      properties:
+        distanceKm: { type: [number, "null"], minimum: 0 }
+        durationMin: { type: [number, "null"], minimum: 0 }
+        source: { type: string, enum: [KAKAO_ROUTE, HAVERSINE, NONE] }
+        bonus: { type: integer, minimum: 0, maximum: 10 }
+      required: [distanceKm, source, bonus]
       additionalProperties: false
     RecommendationScoreDetails:
       type: object
@@ -730,7 +820,9 @@ components:
         purpose: { $ref: "#/components/schemas/RecommendationPurposeScoreDetail" }
         accessibility: { $ref: "#/components/schemas/RecommendationAccessibilityScoreDetail" }
         season: { $ref: "#/components/schemas/RecommendationSeasonScoreDetail" }
-      required: [theme, moodTags, sceneTags, purpose, accessibility, season]
+        origin: { $ref: "#/components/schemas/RecommendationDistanceScoreDetail" }
+        route: { $ref: "#/components/schemas/RecommendationDistanceScoreDetail" }
+      required: [theme, moodTags, sceneTags, purpose, accessibility, season, origin, route]
       additionalProperties: false
     LegacyRecommendationScoreBreakdown:
       type: object
@@ -748,8 +840,12 @@ components:
         dataStatus: { type: number }
         directMatchCount: { type: number }
         baseScore: { type: number }
+        originDistanceBonus: { type: number }
         routeDistanceBonus: { type: number }
         duplicatePenalty: { type: number }
+        exposurePenalty: { type: number }
+        coverageBoost: { type: number }
+        lowExposureBoost: { type: number }
         selectionScore: { type: number }
         displayScore: { type: number }
       required:
@@ -807,18 +903,26 @@ components:
         moodScore: { $ref: "#/components/schemas/GoatMoodScoreBreakdown" }
         conditionScore: { $ref: "#/components/schemas/GoatConditionScoreBreakdown" }
         baseScore: { type: integer, minimum: 0, maximum: 90 }
+        originDistanceKm: { type: number, minimum: 0 }
+        originDistanceSource: { type: string, enum: [HAVERSINE, NONE] }
+        originDistanceBonus: { type: integer, minimum: 0, maximum: 10 }
+        routeDistanceKm: { type: number, minimum: 0 }
+        routeDurationMin: { type: number, minimum: 0 }
+        routeDistanceSource: { type: string, enum: [KAKAO_ROUTE, HAVERSINE, NONE] }
         routeDistanceBonus: { type: integer, minimum: 0, maximum: 10 }
         duplicatePenalty: { type: integer, minimum: 0, maximum: 6 }
         exposurePenalty: { type: integer, minimum: 0, maximum: 5 }
         coverageBoost: { type: integer, minimum: 0, maximum: 3 }
         lowExposureBoost: { type: integer, minimum: 0, maximum: 3 }
-        selectionScore: { type: integer, minimum: -11, maximum: 106 }
+        selectionScore: { type: integer, minimum: -11, maximum: 116 }
         displayScore: { type: integer, minimum: 0, maximum: 100 }
       required:
         [
           moodScore,
           conditionScore,
           baseScore,
+          originDistanceBonus,
+          routeDistanceSource,
           routeDistanceBonus,
           duplicatePenalty,
           exposurePenalty,
@@ -827,6 +931,18 @@ components:
           selectionScore,
           displayScore,
         ]
+      additionalProperties: false
+    RouteInfo:
+      type: object
+      properties:
+        from: { type: string, enum: [ORIGIN, FIRST_CARD] }
+        fromLabel: { type: string }
+        distanceKm: { type: number, minimum: 0 }
+        durationMin: { type: number, minimum: 0 }
+        source: { type: string, enum: [KAKAO_ROUTE, HAVERSINE] }
+        estimated: { type: boolean }
+        scoreApplied: { type: boolean }
+      required: [from, fromLabel, distanceKm, source, estimated, scoreApplied]
       additionalProperties: false
     GoatRecommendationCard:
       type: object
@@ -854,9 +970,9 @@ components:
         accessibility:
           type: object
           properties:
-            public_transport: { type: string }
-            car: { type: string }
-            walk: { type: string }
+            public_transport: { type: [string, "null"] }
+            car: { type: [string, "null"] }
+            walk: { type: [string, "null"] }
           additionalProperties: false
         note: { type: string }
         imageUrl: { type: [string, "null"] }
@@ -916,6 +1032,7 @@ components:
           type: string
         parkingInfo:
           type: string
+        routeInfo: { $ref: "#/components/schemas/RouteInfo" }
       required:
         [
           place,
@@ -941,14 +1058,14 @@ components:
             type: string
         seedPoolSize:
           type: integer
-          const: 58
+          const: 61
         candidatePoolSize:
           type: integer
           minimum: 0
-          maximum: 58
+          maximum: 61
         poolPolicy:
           type: string
-          enum: [ALL58, PRIMARY43]
+          enum: [ALL61, PRIMARY43]
         poolReason:
           type: string
         fallbackUsed:
@@ -975,6 +1092,12 @@ components:
           type: array
           items:
             type: string
+        policyVersion: { type: string, enum: [goat-score-v2] }
+        originStatus: { type: string, enum: [APPLIED, SKIPPED, UNAVAILABLE] }
+        originNotice: { type: string }
+        decisionAudit:
+          type: object
+          additionalProperties: true
       required:
         [
           moodId,
@@ -986,6 +1109,9 @@ components:
           fallbackUsed,
           adaptivePoolRetryUsed,
           recommendations,
+          policyVersion,
+          originStatus,
+          decisionAudit,
         ]
     RecommendationsSuccessResponse:
       allOf:
@@ -1014,6 +1140,10 @@ components:
         scoreDetails:
           oneOf:
             - $ref: "#/components/schemas/RecommendationScoreDetails"
+            - type: "null"
+        routeInfo:
+          oneOf:
+            - $ref: "#/components/schemas/RouteInfo"
             - type: "null"
         reason: { type: string }
         reasons:
@@ -1045,6 +1175,7 @@ components:
           score,
           scoreSummary,
           scoreDetails,
+          routeInfo,
           reason,
           reasons,
           cautions,
@@ -1071,6 +1202,11 @@ components:
       type: object
       properties:
         recommendationId: { type: string, format: uuid }
+        policyVersion: { type: string }
+        originStatus:
+          type: [string, "null"]
+          enum: [APPLIED, SKIPPED, UNAVAILABLE, null]
+        originNotice: { type: [string, "null"] }
         conditions:
           type: object
           additionalProperties: true
@@ -1083,7 +1219,7 @@ components:
           type: [object, "null"]
           additionalProperties: true
         createdAt: { type: string, format: date-time }
-      required: [recommendationId, conditions, cards, course, createdAt]
+      required: [recommendationId, policyVersion, originStatus, originNotice, conditions, cards, course, createdAt]
     RecommendationDataSuccessResponse:
       allOf:
         - $ref: "#/components/schemas/ApiSuccessBase"
