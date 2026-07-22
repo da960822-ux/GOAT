@@ -1,58 +1,39 @@
-# GOAT Design System
+# GOAT 디자인 시스템
 
-## Intent
+## 구현 기준
 
-제공된 GOAT 시안의 짙은 포레스트 그린, 따뜻한 아이보리, 한국어 세리프 제목과 사진 중심 구성을 그대로 재현한다. 이 문서는 새 방향을 제안하지 않고 구현이 시안에서 벗어나지 않도록 제한한다.
+`C:\Users\SMHRD\Documents\카카오톡 받은 파일\새 폴더`의 시안을 기준으로, 새로운 해석 대신 화면 구조·여백·CTA 위치·사진 중심 구성을 맞춘다. 핵심 흐름은 홈 → 감성 또는 레퍼런스 → 여행 조건 → 분석 → 추천/오류다.
 
-## Color
+## 토큰
 
-- Primary / forest: `#173F36`
-- Primary deep: `#0F302A`
-- Background / ivory: `#F6F2E9`
-- Surface / paper: `#FFFCF6`
-- Secondary surface / sage: `#DDE3DA`
-- Ink: `#18322D`
-- Muted: `#6F7C76`
-- Outline: `#D9D9CF`
-- Error: `#A3493F`
+| 구분 | 값 |
+| --- | --- |
+| Forest | `#173F36` |
+| Forest deep | `#0F302A` |
+| Ivory | `#F6F2E9` |
+| Paper | `#FFFCF6` |
+| Sage | `#DDE3DA` |
+| Ink | `#18322D` |
+| Muted | `#6F7C76` |
+| Outline | `#D9D9CF` |
+| Error | `#A3493F` |
 
-색은 `src/theme/editorial.ts` 토큰으로만 공유한다. 시안에 없는 보라색, 장식용 그라디언트와 글래스 효과는 금지한다.
+## 서체와 컴포넌트
 
-## Typography
+- 제목은 Noto Serif KR, 본문·레이블·제어 요소는 Pretendard를 사용한다.
+- `BrandIcon` SVG 레지스트리만 사용한다. Unicode 이모지와 아이콘 폰트는 사용하지 않는다.
+- 버튼·뒤로가기·아이콘 조작 영역은 최소 44×44dp, 화면 경계에는 Safe Area를 적용한다.
+- 사진 카드는 `cover` 크롭과 절제된 오버레이를 사용하며, 선택 카드는 테두리와 체크 표시로 상태를 전달한다.
+- reduced-motion 환경에서는 분석 로딩과 전환 모션을 즉시 또는 최소 모션으로 처리한다.
 
-- Display and editorial headings: Noto Serif KR 400/600
-- Body, labels and controls: Pretendard 400/500/600/700
-- 제목은 대체로 22–33sp, 본문은 13–15sp, 버튼은 16sp를 사용한다.
-- 한국어 줄바꿈은 시안의 행 수를 우선하며 본문 행간은 글자 크기의 약 1.55–1.7배를 유지한다.
+## 선택 데이터
 
-## Shape and Spacing
+감성은 `sea-coast`, `japan-alley`, `alps-ranch`, `forest-garden-rest`, `retro-market-harbor`, `architecture-exhibit-landmark`, `resort-cafe-exotic` 7종이다. 레퍼런스 카드는 각 감성군 3장씩 총 21장이며, 모든 카드는 정적 이미지 자산에 컴파일 타임으로 매핑한다.
 
-- Cards: 16–24dp radius, only where the reference uses rounded photography.
-- Buttons and tags: pill shape.
-- Touch targets: 48dp preferred, never below 44dp.
-- Primary horizontal gutters: 16–22dp.
-- Safe-area insets are always applied at screen boundaries.
+감성과 레퍼런스는 상호 배타적이다. 감성을 고르면 레퍼런스 선택을 지우고, 레퍼런스를 고르면 감성 선택을 지운다.
 
-## Brand assets
+## 오류·복구
 
-- `assets/images/goat-logo-full.png`: 제공 원본을 그대로 보존한 앱 아이콘·스플래시 자산.
-- `GoatMark`: 원본의 GOAT 세리프 워드마크와 `GANGWON OF ALL TIME` 로크업.
-- `GangwonSymbol`: 로딩·빈 상태·소형 표시에 쓰는 강원 실루엣 SVG.
-- `BrandIcon`: 외부 아이콘 폰트 없이 렌더되는 단일 SVG 레지스트리. 선 굵기와 선택 채움 상태를 통일한다.
-
-## Components
-
-- `GoatMark` and `GangwonSymbol`: shared brand lockups.
-- `BrandIcon`: all navigation, status and action icons.
-- `ScreenHeader`: shared top bar and 44dp back action.
-- `PrimaryButton`: filled, outline and paper variants with pressed, disabled and loading states.
-- Editorial image cards: fixed aspect and `cover` crop with restrained dark overlay.
-- Error, no-results and analysis states use independent routes and an explicit recovery action.
-
-## Motion
-
-랜딩은 260ms 페이드만 사용하고 분석 오비트는 느리게 회전한다. reduced-motion에서는 두 효과 모두 즉시 전환된다. 페이지 이동은 플랫폼 라우터 전환을 따른다.
-
-## Reference Priority
-
-When this document, a skill recommendation and the reference JPGs conflict, the reference JPGs win. 허용된 랜딩 차이는 오른쪽 CTA가 `내 위치로 찾기`로 바뀐 것, 새 브랜드 로고, 접근성에 필요한 플랫폼 동작뿐이다. 제거된 사진 분석 시안은 더 이상 제품 라우트가 아니다.
+- 401: 로그인으로 이동하되 원래 목적지를 보존한다.
+- 422: 결과 없음 화면과 재선택 경로를 제공한다.
+- 409/503/네트워크: 네트워크 오류 화면에서 동일 Idempotency-Key로 재시도한다.
