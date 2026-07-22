@@ -46,7 +46,7 @@ Last updated: 2025-05 (v1.0.0 shell)
 
 ## TypeScript
 - [x] tsc --noEmit passes with zero errors
-- [x] All new files (photo-mood, contact, imageMoodService, KakaoMapButton) are typed
+- [x] All active contact and map components are typed
 
 ## Known Non-Issues
 - getAlternatives() is labeled "같은 감성 대안" (not "nearby") — correct, no lat/lng

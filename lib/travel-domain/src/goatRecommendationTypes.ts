@@ -378,18 +378,6 @@ export interface RecommendResult {
         selectionScore: number;
         displayScore: number;
       }>;
-      /** 사진으로 찾기 모드에서 AI 분석값이 추천 입력으로 어떻게 변환됐는지 확인하는 디버그 정보. */
-      photoAnalysis?: {
-        status: string;
-        confidence?: number;
-        selectedPrimaryTheme?: string;
-        candidateThemes: Array<{
-          primaryTheme: string;
-          confidence?: number;
-          reason?: string;
-        }>;
-        summary?: string;
-      };
     };
   } | null;
   failReason: string | null;
