@@ -28,7 +28,7 @@
       },
       "permissions": ["android.permission.ACCESS_FINE_LOCATION"]
     },
-    "web": { "favicon": "./assets/images/goat-logo-full.png" },
+    "web": { "favicon": "./assets/images/goat-logo-full.png", "bundler": "metro" },
     "plugins": [
       ["expo-router", { "origin": "https://replit.com/" }],
       "expo-font",

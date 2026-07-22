@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColors } from '@/hooks/useColors';
+import { fonts } from '@/src/theme/editorial';
 
 interface HeaderProps {
   title?: string;
@@ -20,7 +21,7 @@ export function Header({ title, onBack, right }: HeaderProps) {
       <View style={styles.inner}>
         <View style={styles.left}>
           {onBack && (
-            <TouchableOpacity onPress={onBack} style={[styles.backBtn, { backgroundColor: colors.surface }]} testID="back-button">
+            <TouchableOpacity accessibilityRole="button" accessibilityLabel="뒤로 가기" onPress={onBack} style={[styles.backBtn, { backgroundColor: colors.surface, borderColor: colors.border }]} testID="back-button">
               <Feather name="arrow-left" size={20} color={colors.foreground} />
             </TouchableOpacity>
           )}
@@ -42,20 +43,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
   },
-  left: { width: 40 },
-  right: { width: 40, alignItems: 'flex-end' },
+  left: { width: 44 },
+  right: { width: 44, alignItems: 'flex-end' },
   backBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
     flex: 1,
     textAlign: 'center',
-    fontSize: 17,
-    fontWeight: '600',
-    fontFamily: 'Inter_600SemiBold',
+    fontSize: 16,
+    fontFamily: fonts.semibold,
   },
 });

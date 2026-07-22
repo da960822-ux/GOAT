@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
+import { fonts, radius, spacing } from '@/src/theme/editorial';
 
 export default function GuideScreen() {
   const router = useRouter();
@@ -108,19 +109,19 @@ const FAQ = [
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  step: { paddingHorizontal: 20, paddingVertical: 20, borderBottomWidth: 1 },
+  step: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, borderBottomWidth: 1 },
   stepHeader: { flexDirection: 'row', alignItems: 'center', gap: 14, marginBottom: 12 },
-  stepIcon: { width: 48, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  stepIcon: { width: 48, height: 48, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center' },
   stepMeta: { flex: 1 },
-  stepNum: { fontSize: 11, fontFamily: 'Inter_500Medium', letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: 2 },
-  stepTitle: { fontSize: 16, fontWeight: '700', fontFamily: 'Inter_700Bold' },
-  stepBody: { fontSize: 14, fontFamily: 'Inter_400Regular', lineHeight: 22, marginBottom: 10 },
-  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 7, paddingHorizontal: 10, paddingVertical: 7, borderRadius: 8, marginBottom: 5 },
-  tipText: { flex: 1, fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
-  faqSection: { paddingHorizontal: 20, paddingVertical: 20, borderBottomWidth: 1 },
-  faqTitle: { fontSize: 16, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 14 },
-  faqItem: { borderWidth: 1, borderRadius: 12, padding: 14, marginBottom: 10 },
-  faqQ: { fontSize: 14, fontWeight: '600', fontFamily: 'Inter_600SemiBold', marginBottom: 6 },
-  faqA: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 20 },
+  stepNum: { fontSize: 11, fontFamily: fonts.medium, letterSpacing: 0.8, textTransform: 'uppercase', marginBottom: 2 },
+  stepTitle: { fontSize: 18, fontFamily: fonts.serif },
+  stepBody: { fontSize: 14, fontFamily: fonts.body, lineHeight: 23, marginBottom: 12 },
+  tipRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8, paddingHorizontal: 12, paddingVertical: 10, borderRadius: radius.sm, marginBottom: 6 },
+  tipText: { flex: 1, fontSize: 13, fontFamily: fonts.body, lineHeight: 20 },
+  faqSection: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, borderBottomWidth: 1 },
+  faqTitle: { fontSize: 18, fontFamily: fonts.serif, marginBottom: 14 },
+  faqItem: { borderWidth: 1, borderRadius: radius.md, padding: spacing.md, marginBottom: 10 },
+  faqQ: { fontSize: 14, fontFamily: fonts.semibold, marginBottom: 6 },
+  faqA: { fontSize: 13, fontFamily: fonts.body, lineHeight: 21 },
   spacer: { height: 32 },
 });

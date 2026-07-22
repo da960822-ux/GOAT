@@ -25,7 +25,7 @@ export function PrimaryButton({ label, onPress, icon, disabled, loading, variant
   const paper = variant === "paper";
   const color = outline ? palette.forest : paper ? palette.forest : palette.white;
   return (
-    <Pressable accessibilityRole="button" accessibilityState={{ disabled: Boolean(disabled || loading), busy: Boolean(loading) }} disabled={disabled || loading} onPress={onPress} style={({ pressed }) => [styles.button, outline && styles.outlineButton, paper && styles.paperButton, (disabled || loading) && styles.disabled, pressed && styles.pressed, style]}>
+    <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: Boolean(disabled || loading), busy: Boolean(loading) }} disabled={disabled || loading} onPress={onPress} style={({ pressed }) => [styles.button, outline && styles.outlineButton, paper && styles.paperButton, (disabled || loading) && styles.disabled, pressed && styles.pressed, style]}>
       {loading ? <ActivityIndicator color={color} /> : <>
         {icon && <BrandIcon name={icon} size={19} color={color} />}
         <Text style={[styles.buttonLabel, { color }]}>{label}</Text>
@@ -38,6 +38,27 @@ export function SectionEyebrow({ children, light = false }: { children: React.Re
   return <Text style={[styles.eyebrow, light && { color: palette.sage }]}>{children}</Text>;
 }
 
+const FLOW_STEPS = ["감성 선택", "여행 조건", "추천 완성"];
+
+export function FlowProgress({ currentStep }: { currentStep: 1 | 2 | 3 }) {
+  return <View accessibilityRole="progressbar" accessibilityValue={{ min: 1, max: 3, now: currentStep }} accessibilityLabel={`여행 추천 ${currentStep}단계`} style={styles.progress}>
+    {FLOW_STEPS.map((label, index) => {
+      const step = index + 1;
+      const complete = step < currentStep;
+      const active = step === currentStep;
+      return <React.Fragment key={label}>
+        <View style={styles.progressItem}>
+          <View style={[styles.progressDot, (complete || active) && styles.progressDotActive]}>
+            {complete ? <BrandIcon name="check" size={12} color={palette.white} /> : <Text style={[styles.progressNumber, active && styles.progressNumberActive]}>{step}</Text>}
+          </View>
+          <Text style={[styles.progressLabel, active && styles.progressLabelActive]}>{label}</Text>
+        </View>
+        {step < FLOW_STEPS.length && <View style={[styles.progressLine, complete && styles.progressLineActive]} />}
+      </React.Fragment>;
+    })}
+  </View>;
+}
+
 const styles = StyleSheet.create({
   header: { height: 60, paddingHorizontal: 20, flexDirection: "row", alignItems: "center", justifyContent: "space-between", backgroundColor: palette.ivory, zIndex: 5 },
   headerTransparent: { backgroundColor: "transparent" },
@@ -48,8 +69,18 @@ const styles = StyleSheet.create({
   button: { minHeight: 56, borderRadius: radius.pill, paddingHorizontal: 22, flexDirection: "row", gap: 9, alignItems: "center", justifyContent: "center", backgroundColor: palette.forest },
   outlineButton: { backgroundColor: "transparent", borderColor: palette.forest, borderWidth: 1.25 },
   paperButton: { backgroundColor: palette.paper },
-  disabled: { opacity: 0.45 },
+  disabled: { backgroundColor: palette.sageDark, opacity: 1 },
   pressed: { opacity: 0.82, transform: [{ scale: 0.99 }] },
   buttonLabel: { fontFamily: fonts.semibold, fontSize: 16, letterSpacing: -0.2 },
   eyebrow: { fontFamily: fonts.bold, fontSize: 11, letterSpacing: 1.6, color: palette.forestSoft, textTransform: "uppercase" },
+  progress: { flexDirection: "row", alignItems: "flex-start", paddingVertical: 4 },
+  progressItem: { alignItems: "center", minWidth: 54 },
+  progressDot: { width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: palette.line, backgroundColor: palette.paper },
+  progressDotActive: { borderColor: palette.forest, backgroundColor: palette.forest },
+  progressNumber: { fontFamily: fonts.bold, fontSize: 11, color: palette.muted },
+  progressNumberActive: { color: palette.white },
+  progressLabel: { marginTop: 6, fontFamily: fonts.medium, fontSize: 10, color: palette.muted },
+  progressLabelActive: { color: palette.forest, fontFamily: fonts.semibold },
+  progressLine: { flex: 1, height: 1, marginTop: 12, backgroundColor: palette.line },
+  progressLineActive: { backgroundColor: palette.forest },
 });

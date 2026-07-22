@@ -1,28 +1,69 @@
 import { BrandIcon, type BrandIconName } from "@/src/components/BrandIcon";
+import { useAuth, type AuthProviderName } from "@/src/context/AuthContext";
+import { fonts, palette, radius } from "@/src/theme/editorial";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { GoatMark } from "@/src/components/editorial/Brand";
-import { useAuth, type AuthProviderName } from "@/src/context/AuthContext";
-import { editorialImages } from "@/src/data/editorialContent";
-import { fonts, palette, radius } from "@/src/theme/editorial";
+
+const coastImage = require("@/assets/images/editorial/landing-coast.png");
 
 export default function LoginScreen() {
-  const insets = useSafeAreaInsets(); const router = useRouter(); const { next = "/" } = useLocalSearchParams<{ next?: string }>(); const { signIn } = useAuth(); const [busy, setBusy] = useState<AuthProviderName | null>(null);
-  const login = async (provider: AuthProviderName) => { if (busy) return; setBusy(provider); try { await signIn(provider, next); } catch { Alert.alert("로그인을 완료하지 못했어요", "잠시 후 다시 시도해주세요."); } finally { setBusy(null); } };
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const { next = "/" } = useLocalSearchParams<{ next?: string }>();
+  const { signIn } = useAuth();
+  const [busy, setBusy] = useState<AuthProviderName | null>(null);
+
+  const login = async (provider: AuthProviderName) => {
+    if (busy) return;
+    setBusy(provider);
+    try { await signIn(provider, next); }
+    catch { Alert.alert("로그인을 완료하지 못했어요", "잠시 후 다시 시도해 주세요."); }
+    finally { setBusy(null); }
+  };
+
   return <View style={styles.screen}>
-    <Image source={editorialImages.coast} style={StyleSheet.absoluteFillObject} contentFit="cover" />
-    <View style={styles.scrim} />
-    <View style={[styles.top, { paddingTop: insets.top + 20 }]}><Pressable accessibilityLabel="로그인 닫기" onPress={() => router.back()} style={styles.close}><BrandIcon name="close" color={palette.white}/></Pressable><GoatMark light /><Text style={styles.title}>마음이 머무는 풍경을{`\n`}함께 찾아볼까요?</Text><Text style={styles.body}>당신의 취향을 기억하고, 꼭 맞는 강원 여행을 추천해드려요.</Text></View>
-    <View style={[styles.sheet, { paddingBottom: insets.bottom + 24 }]}>
-      <Text style={styles.sheetTitle}>여행을 시작해요</Text>
-      <LoginButton label="카카오로 계속하기" color={palette.kakao} textColor="#2A231E" icon="chatbubble" onPress={() => login("kakao")} />
-      <LoginButton label="Google로 계속하기" color={palette.white} textColor={palette.ink} icon="logo-google" onPress={() => login("google")} />
-      <Text style={styles.terms}>계속하면 GOAT의 이용약관 및 개인정보 처리방침에 동의하게 됩니다.</Text>
+    <Image source={coastImage} style={StyleSheet.absoluteFillObject} contentFit="cover" contentPosition="center" accessibilityLabel="강원 해안 절벽과 바다 풍경" />
+    <View style={styles.imageWash} />
+    <View style={[styles.content, { paddingTop: insets.top + 72, paddingBottom: insets.bottom + 22 }]}>
+      <Pressable accessibilityRole="button" accessibilityLabel="이전 화면" onPress={() => router.back()} style={styles.back} hitSlop={8}>
+        <BrandIcon name="back" size={22} color={palette.forest} />
+      </Pressable>
+      <View style={styles.brand} accessibilityLabel="GOAT, Gangwon of all time">
+        <Text style={styles.wordmark}>GOAT</Text>
+        <Text style={styles.tagline}>GANGWON OF ALL TIME</Text>
+      </View>
+      <View style={styles.message}><Text style={styles.messageTitle}>GOAT와 함께{`\n`}강원의 특별한 순간을 만나보세요.</Text></View>
+      <View style={styles.actions}>
+        <LoginButton label="카카오로 로그인" color={palette.forest} textColor={palette.white} icon="chatbubble" busy={busy === "kakao"} disabled={Boolean(busy)} onPress={() => login("kakao")} />
+        <LoginButton label="Google로 로그인" color="rgba(255,252,246,.94)" textColor={palette.ink} icon="logo-google" busy={busy === "google"} disabled={Boolean(busy)} onPress={() => login("google")} />
+        <Text style={styles.terms}>로그인하면 GOAT의{`\n`}이용약관 및 개인정보처리방침에 동의하게 됩니다.</Text>
+      </View>
     </View>
   </View>;
 }
-function LoginButton({ label, color, textColor, icon, onPress }: { label: string; color: string; textColor: string; icon: BrandIconName; onPress: () => void }) { return <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={({ pressed }) => [styles.loginButton, { backgroundColor: color }, pressed && { opacity: .8 }]}><BrandIcon name={icon} size={20} color={textColor} /><Text style={[styles.loginLabel, { color: textColor }]}>{label}</Text></Pressable>; }
-const styles = StyleSheet.create({ screen: { flex: 1, backgroundColor: palette.forest }, scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(9,37,31,.55)" }, top: { flex: 1, paddingHorizontal: 26 }, close: { position: "absolute", right: 16, top: 48, width: 48, height: 48, alignItems: "center", justifyContent: "center", zIndex: 2 }, title: { marginTop: 62, fontFamily: fonts.serif, fontSize: 31, lineHeight: 44, letterSpacing: -1.3, color: palette.white }, body: { marginTop: 16, maxWidth: 310, fontFamily: fonts.body, fontSize: 15, lineHeight: 24, color: "rgba(255,255,255,.8)" }, sheet: { backgroundColor: palette.ivory, borderTopLeftRadius: 30, borderTopRightRadius: 30, paddingHorizontal: 22, paddingTop: 25, gap: 10 }, sheetTitle: { fontFamily: fonts.serif, fontSize: 22, color: palette.ink, marginBottom: 7, textAlign: "center" }, loginButton: { minHeight: 55, borderRadius: radius.pill, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, borderWidth: StyleSheet.hairlineWidth, borderColor: "rgba(20,50,43,.15)" }, loginLabel: { fontFamily: fonts.semibold, fontSize: 15 }, terms: { marginTop: 8, paddingHorizontal: 18, textAlign: "center", fontFamily: fonts.body, fontSize: 10.5, lineHeight: 16, color: palette.muted } });
+
+function LoginButton({ label, color, textColor, icon, busy, disabled, onPress }: { label: string; color: string; textColor: string; icon: BrandIconName; busy: boolean; disabled: boolean; onPress: () => void }) {
+  return <Pressable accessibilityRole="button" accessibilityState={{ busy, disabled }} accessibilityLabel={label} disabled={disabled} onPress={onPress} style={({ pressed }) => [styles.loginButton, { backgroundColor: color }, (pressed || disabled) && { opacity: .78 }]}>
+    {busy ? <ActivityIndicator color={textColor} /> : <BrandIcon name={icon} size={20} color={textColor} />}
+    <Text style={[styles.loginLabel, { color: textColor }]}>{busy ? "연결하는 중" : label}</Text>
+  </Pressable>;
+}
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: palette.ivory },
+  imageWash: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(246,242,233,.76)" },
+  content: { flex: 1, paddingHorizontal: 40 },
+  back: { position: "absolute", left: 26, top: 20, width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,252,246,.62)", borderWidth: StyleSheet.hairlineWidth, borderColor: "rgba(23,63,54,.1)" },
+  brand: { alignItems: "center" },
+  wordmark: { fontFamily: fonts.serifRegular, fontSize: 62, lineHeight: 72, letterSpacing: 8, color: palette.forest },
+  tagline: { marginTop: 2, fontFamily: fonts.medium, fontSize: 10, letterSpacing: 4, color: palette.forest },
+  message: { flex: 1, alignItems: "center", justifyContent: "center", paddingBottom: 76 },
+  messageTitle: { textAlign: "center", fontFamily: fonts.serifRegular, fontSize: 25, lineHeight: 39, letterSpacing: -1.1, color: palette.forest },
+  actions: { gap: 14 },
+  loginButton: { minHeight: 76, borderRadius: radius.md, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12, borderWidth: StyleSheet.hairlineWidth, borderColor: "rgba(23,63,54,.16)" },
+  loginLabel: { fontFamily: fonts.semibold, fontSize: 19 },
+  terms: { marginTop: 12, textAlign: "center", fontFamily: fonts.body, fontSize: 12, lineHeight: 20, color: palette.muted },
+});

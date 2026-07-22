@@ -8,8 +8,8 @@ export type RecommendationMethod = RecommendationSelection['method'];
 
 interface AppContextValue {
   selectedMood: Mood | null;
-  recommendationMethod: RecommendationMethod | null;
   selectedReferenceCardId: ReferenceCardId | null;
+  recommendationMethod: RecommendationMethod | null;
   travelPreferences: TravelPreferences | null;
   recommendationSession: RecommendationSession | null;
   course: RecommendCourseData | null;
@@ -28,8 +28,8 @@ const AppContext = createContext<AppContextValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [selectedMood, setSelectedMood] = useState<Mood | null>(null);
-  const [recommendationMethod, setRecommendationMethod] = useState<RecommendationMethod | null>(null);
   const [selectedReferenceCardId, setSelectedReferenceCardIdState] = useState<ReferenceCardId | null>(null);
+  const [recommendationMethod, setRecommendationMethod] = useState<RecommendationMethod | null>(null);
   const [travelPreferences, setTravelPreferences] = useState<TravelPreferences | null>(null);
   const [recommendationSession, setRecommendationSession] = useState<RecommendationSession | null>(null);
   const [course, setCourse] = useState<RecommendCourseData | null>(null);
@@ -42,25 +42,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setRecommendationMethod(mood ? 'mood' : null);
   };
 
-  const selectReferenceCard = (referenceCardId: ReferenceCardId | null) => {
+  const selectReference = (referenceCardId: ReferenceCardId | null) => {
     setSelectedReferenceCardIdState(referenceCardId);
     setSelectedMood(null);
     setRecommendationMethod(referenceCardId ? 'reference' : null);
   };
 
+
   return (
     <AppContext.Provider
       value={{
         selectedMood,
-        recommendationMethod,
         selectedReferenceCardId,
+        recommendationMethod,
         travelPreferences,
         recommendationSession,
         course,
         pendingAttempt,
         origin,
         setSelectedMood: selectMood,
-        setSelectedReferenceCardId: selectReferenceCard,
+        setSelectedReferenceCardId: selectReference,
         setTravelPreferences,
         setRecommendationSession,
         setCourse,

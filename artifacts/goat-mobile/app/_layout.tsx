@@ -1,4 +1,5 @@
 import { NotoSerifKR_400Regular } from "@expo-google-fonts/noto-serif-kr/400Regular";
+import "../global.css";
 import { NotoSerifKR_600SemiBold } from "@expo-google-fonts/noto-serif-kr/600SemiBold";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack, usePathname, useRouter } from "expo-router";
@@ -9,6 +10,7 @@ import { ActivityIndicator, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { PortalHost } from "@rn-primitives/portal";
 import { setBaseUrl } from "@workspace/api-client-react";
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -88,6 +90,7 @@ export default function RootLayout() {
             <KeyboardProvider>
               <AppProvider>
                 <AuthProvider><RootLayoutNav /></AuthProvider>
+                <PortalHost />
               </AppProvider>
             </KeyboardProvider>
           </GestureHandlerRootView>

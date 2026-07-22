@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
+import { fonts, palette, radius, spacing } from '@/src/theme/editorial';
 
 async function openLink(url: string) {
   try {
@@ -103,23 +104,24 @@ const CHANNELS = [
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  hero: { alignItems: 'center', padding: 32, marginBottom: 4 },
-  heroIcon: { width: 60, height: 60, borderRadius: 20, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
-  heroTitle: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 6 },
-  heroSub: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 20, textAlign: 'center' },
+  hero: { alignItems: 'center', padding: spacing.xl, marginBottom: 4 },
+  heroIcon: { width: 60, height: 60, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', marginBottom: 12, backgroundColor: palette.forest },
+  heroTitle: { fontSize: 20, fontFamily: fonts.serif, marginBottom: 6 },
+  heroSub: { fontSize: 13, fontFamily: fonts.body, lineHeight: 21, textAlign: 'center' },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    minHeight: 76,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
     borderBottomWidth: 1,
     gap: 14,
   },
-  rowIcon: { width: 44, height: 44, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  rowIcon: { width: 44, height: 44, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
   rowText: { flex: 1 },
-  rowLabel: { fontSize: 15, fontWeight: '600', fontFamily: 'Inter_600SemiBold', marginBottom: 2 },
-  rowValue: { fontSize: 12, fontFamily: 'Inter_400Regular' },
-  notice: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, margin: 20, padding: 14, borderRadius: 12, borderWidth: 1 },
-  noticeText: { flex: 1, fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 20 },
+  rowLabel: { fontSize: 15, fontFamily: fonts.semibold, marginBottom: 2 },
+  rowValue: { fontSize: 12, fontFamily: fonts.body },
+  notice: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, margin: spacing.lg, padding: spacing.md, borderRadius: radius.md, borderWidth: 1 },
+  noticeText: { flex: 1, fontSize: 13, fontFamily: fonts.body, lineHeight: 21 },
   spacer: { height: 32 },
 });

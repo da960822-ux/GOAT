@@ -3,6 +3,7 @@ import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
+import { fonts, radius, spacing } from '@/src/theme/editorial';
 
 export default function PrivacyScreen() {
   const router = useRouter();
@@ -63,10 +64,10 @@ const SECTIONS = [
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  notice: { margin: 20, padding: 14, borderRadius: 12, borderWidth: 1 },
-  noticeText: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 20 },
-  section: { paddingHorizontal: 20, paddingVertical: 18, borderBottomWidth: 1 },
-  sectionTitle: { fontSize: 15, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 10 },
-  body: { fontSize: 14, fontFamily: 'Inter_400Regular', lineHeight: 22 },
+  notice: { margin: spacing.lg, padding: spacing.md, borderRadius: radius.md, borderWidth: 1 },
+  noticeText: { fontSize: 13, fontFamily: fonts.body, lineHeight: 21 },
+  section: { paddingHorizontal: spacing.lg, paddingVertical: 20, borderBottomWidth: 1 },
+  sectionTitle: { fontSize: 17, fontFamily: fonts.serif, marginBottom: 10 },
+  body: { fontSize: 14, fontFamily: fonts.body, lineHeight: 23 },
   spacer: { height: 32 },
 });

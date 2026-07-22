@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
+import { fonts, radius, spacing } from '@/src/theme/editorial';
 
 const LINKS = [
   { label: 'GOAT 소개', icon: 'info' as const, path: '/about' },
@@ -47,21 +48,22 @@ export default function ServiceScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  list: { marginTop: 16 },
+  list: { marginTop: spacing.md },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    minHeight: 64,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
     gap: 14,
     borderBottomWidth: 1,
   },
   iconWrap: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
+    width: 44,
+    height: 44,
+    borderRadius: radius.sm,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  label: { flex: 1, fontSize: 15, fontFamily: 'Inter_500Medium' },
+  label: { flex: 1, fontSize: 16, fontFamily: fonts.semibold },
 });

@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
 import { GoatLogo } from '@/src/components/GoatLogo';
+import { fonts, palette, radius, spacing } from '@/src/theme/editorial';
 
 export default function AboutScreen() {
   const router = useRouter();
@@ -99,37 +100,36 @@ function Paragraph({ colors, children }: { colors: any; children: React.ReactNod
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  hero: { alignItems: 'center', paddingVertical: 36, paddingHorizontal: 24, marginBottom: 4, gap: 24 },
+  hero: { alignItems: 'center', paddingVertical: spacing.xl, paddingHorizontal: spacing.lg, marginBottom: 4, gap: spacing.lg, backgroundColor: palette.forestDeep },
   brandSentenceBox: { width: '100%', paddingTop: 20, borderTopWidth: 1, alignItems: 'center', gap: 8 },
   brandSentence: {
     fontSize: 18,
-    fontWeight: '700',
-    fontFamily: 'Inter_700Bold',
+    fontFamily: fonts.serif,
     letterSpacing: 0.5,
     textAlign: 'center',
     color: '#FFFFFF',
   },
   brandDesc: {
     fontSize: 13,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: fonts.body,
     lineHeight: 20,
     textAlign: 'center',
     color: 'rgba(255,255,255,0.6)',
   },
-  section: { paddingHorizontal: 20, paddingVertical: 20, borderBottomWidth: 1 },
-  sectionTitle: { fontSize: 16, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 14 },
-  para: { fontSize: 14, fontFamily: 'Inter_400Regular', lineHeight: 22, marginBottom: 10 },
+  section: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, borderBottomWidth: 1 },
+  sectionTitle: { fontSize: 18, fontFamily: fonts.serif, marginBottom: 14 },
+  para: { fontSize: 14, fontFamily: fonts.body, lineHeight: 23, marginBottom: 10 },
   stepRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 12 },
-  stepNum: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
-  stepNumText: { color: '#FFFFFF', fontSize: 13, fontWeight: '700', fontFamily: 'Inter_700Bold' },
-  stepText: { flex: 1, fontSize: 14, fontFamily: 'Inter_400Regular', lineHeight: 21 },
-  roleRow: { borderRadius: 12, borderWidth: 1, padding: 14, marginBottom: 8 },
-  roleLabel: { fontSize: 14, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 5 },
-  roleDesc: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
+  stepNum: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
+  stepNumText: { color: '#FFFFFF', fontSize: 13, fontFamily: fonts.bold },
+  stepText: { flex: 1, fontSize: 14, fontFamily: fonts.body, lineHeight: 22 },
+  roleRow: { borderRadius: radius.md, borderWidth: 1, padding: spacing.md, marginBottom: 8 },
+  roleLabel: { fontSize: 14, fontFamily: fonts.semibold, marginBottom: 5 },
+  roleDesc: { fontSize: 13, fontFamily: fonts.body, lineHeight: 20 },
   swatchRow: { flexDirection: 'row', gap: 16 },
   swatchItem: { alignItems: 'center', gap: 6 },
-  swatch: { width: 48, height: 48, borderRadius: 12 },
-  swatchHex: { fontSize: 11, fontFamily: 'Inter_500Medium' },
-  swatchLabel: { fontSize: 11, fontFamily: 'Inter_400Regular' },
+  swatch: { width: 48, height: 48, borderRadius: radius.sm },
+  swatchHex: { fontSize: 11, fontFamily: fonts.medium },
+  swatchLabel: { fontSize: 11, fontFamily: fonts.body },
   spacer: { height: 32 },
 });

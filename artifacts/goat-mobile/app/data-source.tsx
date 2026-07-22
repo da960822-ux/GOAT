@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
+import { fonts, radius, spacing } from '@/src/theme/editorial';
 
 export default function DataSourceScreen() {
   const router = useRouter();
@@ -133,16 +134,16 @@ function ApiBlock({
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  intro: { margin: 20, padding: 16, borderRadius: 14, borderWidth: 1 },
-  introText: { fontSize: 14, fontFamily: 'Inter_400Regular', lineHeight: 22 },
-  block: { paddingHorizontal: 20, paddingVertical: 20, borderBottomWidth: 1 },
+  intro: { margin: spacing.lg, padding: spacing.md, borderRadius: radius.md, borderWidth: 1 },
+  introText: { fontSize: 14, fontFamily: fonts.body, lineHeight: 23 },
+  block: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, borderBottomWidth: 1 },
   blockHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
-  blockTitle: { fontSize: 16, fontWeight: '700', fontFamily: 'Inter_700Bold' },
-  sourcePill: { borderRadius: 8, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 5, marginBottom: 12, alignSelf: 'flex-start' },
-  sourceText: { fontSize: 11, fontFamily: 'Inter_500Medium' },
+  blockTitle: { fontSize: 18, fontFamily: fonts.serif },
+  sourcePill: { borderRadius: radius.pill, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 6, marginBottom: 12, alignSelf: 'flex-start' },
+  sourceText: { fontSize: 11, fontFamily: fonts.medium },
   itemRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8, gap: 10 },
   dot: { width: 5, height: 5, borderRadius: 3, marginTop: 8 },
-  itemText: { flex: 1, fontSize: 14, fontFamily: 'Inter_400Regular', lineHeight: 21 },
-  noteText: { fontSize: 12, fontFamily: 'Inter_400Regular', lineHeight: 19, marginTop: 4 },
+  itemText: { flex: 1, fontSize: 14, fontFamily: fonts.body, lineHeight: 22 },
+  noteText: { fontSize: 12, fontFamily: fonts.body, lineHeight: 20, marginTop: 4 },
   spacer: { height: 32 },
 });
