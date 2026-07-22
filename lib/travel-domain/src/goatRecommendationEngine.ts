@@ -12,7 +12,6 @@ import {
   RecommendResult,
   RecommendationCard,
   RecommendationWarning,
-  RecommendationWarningLogPayload,
   RecommendationDecisionAudit,
   RecommendationCardSelectionAudit,
   RecommendationCardRole,
@@ -22,119 +21,7 @@ import {
 } from "./goatRecommendationTypes";
 import { getAccessibilityRecommendationScore } from "./accessibilityScoringPolicy";
 
-declare const process: {
-  env?: Record<string, string | undefined>;
-  getBuiltinModule?: (moduleName: string) => unknown;
-} | undefined;
-declare const console: { warn: (...data: unknown[]) => void };
-
-const WARNING_LOG_EVENT = "GOAT_RECOMMENDATION_WARNING" as const;
-const WARNING_LOG_LABEL = "[GOAT_RECOMMENDATION_WARNING]";
-const WARNING_LOG_WRITE_FAIL_LABEL = "[GOAT_RECOMMENDATION_LOG_WRITE_FAILED]";
-const DEFAULT_WARNING_LOG_FILE_PATH = "logs/goat-recommendation-warnings.jsonl";
-
 export const RECOMMENDATION_POLICY_VERSION = "goat-score-v2" as const;
-
-interface FsLike {
-  mkdirSync(path: string, options?: { recursive?: boolean }): void;
-  appendFileSync(path: string, data: string, encoding?: string): void;
-}
-
-interface PathLike {
-  dirname(path: string): string;
-}
-
-function getEnvValue(key: string): string | undefined {
-  const value = typeof process !== "undefined" ? process?.env?.[key] : undefined;
-  return typeof value === "string" && value.trim() !== "" ? value : undefined;
-}
-
-function loadNodeBuiltin<T>(moduleName: string): T | null {
-  try {
-    if (typeof process === "undefined" || typeof process.getBuiltinModule !== "function") {
-      return null;
-    }
-    return process.getBuiltinModule(moduleName) as T;
-  } catch {
-    return null;
-  }
-}
-
-function appendWarningLogFile(filePath: string, payload: RecommendationWarningLogPayload): void {
-  const fs = loadNodeBuiltin<FsLike>("node:fs");
-  const path = loadNodeBuiltin<PathLike>("node:path");
-  if (!fs || !path) return;
-
-  try {
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    fs.appendFileSync(filePath, `${JSON.stringify(payload)}\n`, "utf8");
-  } catch (error) {
-    console.warn(WARNING_LOG_WRITE_FAIL_LABEL, {
-      filePath,
-      failReason: error instanceof Error ? error.message : "UNKNOWN_ERROR",
-    });
-  }
-}
-
-function buildWarningLogPayload(params: {
-  rawRequest: RecommendRequest;
-  request: NormalizedRequest;
-  result: RecommendResult;
-  warnings: RecommendationWarning[];
-  decisionAudit?: RecommendationDecisionAudit;
-}): RecommendationWarningLogPayload {
-  return {
-    event: WARNING_LOG_EVENT,
-    timestamp: new Date().toISOString(),
-    warningCodes: params.warnings.map((warning) => String(warning.code)),
-    warnings: params.warnings,
-    request: {
-      referenceCardId: params.rawRequest.referenceCardId,
-      primaryTheme: params.request.primaryTheme ?? (params.rawRequest.primaryTheme ? String(params.rawRequest.primaryTheme) : undefined),
-      travelPurpose: params.request.travelPurpose ?? (params.rawRequest.travelPurpose ? String(params.rawRequest.travelPurpose) : undefined),
-      transportType: params.request.transportType ?? (params.rawRequest.transportType ? String(params.rawRequest.transportType) : undefined),
-      currentSeason: params.request.currentSeason ?? (params.rawRequest.currentSeason ? String(params.rawRequest.currentSeason) : undefined),
-      currentMonth: params.rawRequest.currentMonth,
-      selectedPlaceIds: params.result.resultData?.cards.map((card) => card.placeId) ?? [],
-    },
-    result: {
-      status: params.result.status,
-      resultType: params.result.resultType,
-      score: params.result.score,
-      cardCount: params.result.resultData?.cards.length ?? 0,
-      cardPlaceIds: params.result.resultData?.cards.map((card) => card.placeId) ?? [],
-    },
-    decisionAudit: params.decisionAudit,
-    context: params.rawRequest.logContext,
-  };
-}
-
-function emitRecommendationWarningLog(params: {
-  rawRequest: RecommendRequest;
-  request: NormalizedRequest;
-  result: RecommendResult;
-  warnings: RecommendationWarning[];
-  decisionAudit?: RecommendationDecisionAudit;
-}): void {
-  if (params.rawRequest.enableWarningLog === false || params.warnings.length === 0) return;
-
-  const payload = buildWarningLogPayload(params);
-  const logger = params.rawRequest.warningLogger ?? ((logPayload: RecommendationWarningLogPayload) => {
-    console.warn(WARNING_LOG_LABEL, logPayload);
-  });
-
-  try {
-    logger(payload);
-  } catch (error) {
-    console.warn(WARNING_LOG_WRITE_FAIL_LABEL, {
-      target: "warningLogger",
-      failReason: error instanceof Error ? error.message : "UNKNOWN_ERROR",
-    });
-  }
-
-  const logFilePath = params.rawRequest.warningLogFilePath ?? getEnvValue("GOAT_RECOMMENDATION_LOG_FILE") ?? DEFAULT_WARNING_LOG_FILE_PATH;
-  appendWarningLogFile(logFilePath, payload);
-}
 
 const MAX_SWAP_GAP = 8;
 const CARD_LIMIT = 3;
@@ -1180,7 +1067,6 @@ export function recommendGoatPlaces(
       failReason: null,
     };
 
-    emitRecommendationWarningLog({ rawRequest, request, result, warnings, decisionAudit });
     return result;
   } catch (error) {
     return {

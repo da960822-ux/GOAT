@@ -1,20 +1,13 @@
 export {
   getRecommendations,
-  getRecommendationsWithExposure,
   getRouteCandidatePlaces,
   getAlternatives,
   getPlaceById,
   moodCategories,
   referenceCards,
-  createGoatRecommendation,
-  createGoatCourseRecommendation,
+  goatPlacesDataset,
 } from "./recommendationService";
-export type {
-  CreateGoatRecommendationParams,
-  RecommendationServiceBody,
-  RecommendationServiceContext,
-  ExposureRecommendationOptions,
-} from "./recommendationService";
+export type { RecommendationRequestOptions } from "./recommendationService";
 export {
   RECOMMENDATION_POLICY_VERSION,
   recommendGoatPlaces,
@@ -31,12 +24,7 @@ export type {
   CarEvaluationInput,
   PublicTransportEvaluationInput,
 } from "./accessibilityScoringPolicy";
-export * from "./recommendationExposureRepository";
 export * from "./courseRecommendationTypes";
-export { createGoatDayCourse } from "./courseRecommendationService";
-export { buildGoatCoursePlannerPrompt, callOpenRouterCoursePlanner } from "./openRouterCourseLlm";
-export { fetchVisitKoreaContentLabNearbyCandidates, fetchTourApiNearbyCandidates } from "./tourApiClient";
-export { buildKakaoMapSearchUrl, buildKakaoStaticMapResult } from "./kakaoStaticMap";
 export type {
   Companion,
   DataStatus,
@@ -55,6 +43,7 @@ export type {
 } from "./types";
 export type {
   GoatPlaceDataset,
+  GoatPlace,
   GoatReferenceCardDataset,
   RecommendRequest,
   RecommendResult,

@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import {
-  getRecommendations,
   moodCategories,
+  type TravelOrigin,
   type TravelPreferences,
 } from "@workspace/travel-domain";
 import { z } from "zod";
@@ -12,11 +12,15 @@ import {
   deleteRecommendation,
   failRecommendationRequest,
   getDislikedPlaceIds,
+  getOwnedRecommendationPlaceIds,
   getRecentRecommendations,
   getRecommendationData,
   hashRecommendationRequest,
   reserveRecommendationRequest,
+  type StoredRouteInfo,
 } from "../lib/recommendation-store";
+import { dbRecommendationExposureRepository } from "../lib/db-recommendation-exposure";
+import { createRecommendationPreview } from "../services/recommendation-orchestrator";
 
 const router: IRouter = Router();
 
@@ -40,14 +44,18 @@ const recommendationRequestSchema = z
       .optional(),
     origin: z
       .object({
-        type: z.enum(["current", "region", "skip"]),
+        type: z.enum(["current", "region", "address", "skip"]),
         latitude: z.number().min(-90).max(90).optional(),
         longitude: z.number().min(-180).max(180).optional(),
-        regionName: z.string().min(1).optional(),
+        regionName: z.string().min(1).max(200).optional(),
       })
       .strict()
       .optional(),
-    excludeIds: z.array(z.string().min(1)).max(58).optional(),
+    rerollOfRecommendationId: z.string().uuid().optional(),
+    excludeIds: z.array(z.string().min(1)).max(61).refine(
+      (ids) => new Set(ids).size === ids.length,
+      "excludeIds must not contain duplicates.",
+    ).optional(),
   })
   .strict()
   .refine((body) => body.moodId || body.referenceCardId, {
@@ -58,6 +66,8 @@ const recommendationRequestSchema = z
 const recentQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(20).default(1),
 });
+
+const isDebugEnabled = process.env.ALLOW_RECOMMENDATION_DEBUG === "true";
 
 router.post("/recommendations", async (req, res, next) => {
   let requestRecordId: string | undefined;
@@ -83,6 +93,9 @@ router.post("/recommendations", async (req, res, next) => {
         "Invalid recommendation request.",
         parsed.error.flatten(),
       );
+    }
+    if (parsed.data.debug && !isDebugEnabled) {
+      throw new ApiError(403, "DEBUG_NOT_ALLOWED", "Debug responses are disabled.");
     }
 
     const requestHash = hashRecommendationRequest(parsed.data);
@@ -128,9 +141,23 @@ router.post("/recommendations", async (req, res, next) => {
       return;
     }
 
+    const rerollPlaceIds = parsed.data.rerollOfRecommendationId
+      ? await getOwnedRecommendationPlaceIds(user.id, parsed.data.rerollOfRecommendationId)
+      : [];
+    if (parsed.data.rerollOfRecommendationId && !rerollPlaceIds) {
+      throw new ApiError(
+        404,
+        "RECOMMENDATION_NOT_FOUND",
+        "The recommendation to reroll was not found.",
+      );
+    }
     const dislikedPlaceIds = await getDislikedPlaceIds(user.id);
     const excludeIds = Array.from(
-      new Set([...(parsed.data.excludeIds ?? []), ...dislikedPlaceIds]),
+      new Set([
+        ...(parsed.data.excludeIds ?? []),
+        ...(rerollPlaceIds ?? []),
+        ...dislikedPlaceIds,
+      ]),
     );
     const mood = parsed.data.moodId
       ? moodCategories.find(({ id }) => id === parsed.data.moodId)
@@ -139,19 +166,21 @@ router.post("/recommendations", async (req, res, next) => {
       throw new ApiError(400, "INVALID_MOOD_ID", "Unknown mood ID.");
     }
 
-    const result = getRecommendations(
-      mood?.id,
-      parsed.data.preferences as TravelPreferences | undefined,
-      excludeIds,
+    const result = await createRecommendationPreview(
       {
+        moodId: mood?.id,
         referenceCardId: parsed.data.referenceCardId,
+        preferences: parsed.data.preferences as TravelPreferences | undefined,
         travelPurpose: parsed.data.travelPurpose,
         transportType: parsed.data.transportType,
         visitTime: parsed.data.visitTime,
         currentMonth: parsed.data.currentMonth,
+        origin: parsed.data.origin as TravelOrigin | undefined,
         excludeIds,
+        userId: user.id,
         debug: parsed.data.debug,
       },
+      dbRecommendationExposureRepository,
     );
     if (!result?.cards || result.cards.length !== 3) {
       throw new ApiError(
@@ -164,6 +193,16 @@ router.post("/recommendations", async (req, res, next) => {
       throw new Error("RECOMMENDATION_AUDIT_NOT_AVAILABLE");
     }
 
+    const warningDetails = [...(result.warningDetails ?? [])];
+    for (const warningCode of result.warnings ?? []) {
+      if (!warningDetails.some(({ code }) => code === warningCode)) {
+        warningDetails.push({
+          code: warningCode,
+          message: warningCode,
+          details: { source: "recommendation-orchestrator" },
+        });
+      }
+    }
     const recommendationId = await completeRecommendationRequest({
       requestRecordId: reservation.request.id,
       userId: user.id,
@@ -171,7 +210,17 @@ router.post("/recommendations", async (req, res, next) => {
       cards: result.cards,
       policyVersion: result.policyVersion,
       decisionAudit: result.decisionAudit,
-      warnings: result.warningDetails ?? [],
+      warnings: warningDetails,
+      originStatus: result.originStatus,
+      originNotice: result.originNotice,
+      routeInfoByPlaceId: Object.fromEntries(
+        result.recommendations
+          .filter(({ routeInfo }) => Boolean(routeInfo))
+          .map(({ place, routeInfo }) => [
+            place.place_id,
+            routeInfo as StoredRouteInfo,
+          ]),
+      ),
     });
     requestRecordId = undefined;
     const data = await getRecommendationData(user.id, recommendationId);

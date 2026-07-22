@@ -1,4 +1,4 @@
-import { CourseStop, StaticMapResult } from "./courseRecommendationTypes";
+import type { CourseStop, StaticMapResult } from "@workspace/travel-domain";
 
 declare const process: { env: Record<string, string | undefined> };
 

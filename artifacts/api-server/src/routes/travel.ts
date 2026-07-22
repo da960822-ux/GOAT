@@ -6,19 +6,25 @@ import {
   type Response,
 } from "express";
 import {
-  createGoatCourseRecommendation,
   getPlaceById,
-  getRecommendations,
   moodCategories,
+  type TravelOrigin,
   type TravelPreferences,
 } from "@workspace/travel-domain";
 import { z } from "zod";
 import { ApiError } from "../lib/api-response";
 import { getOptionalAuthenticatedUser } from "../lib/auth-context";
+import { createRateLimiter } from "../lib/rate-limit";
 import {
   recommendationContainsPlace,
   saveRecommendedCourse,
 } from "../lib/recommendation-store";
+import {
+  geocodeOriginQuery,
+  isKakaoGeocodingConfigured,
+} from "../services/kakao-location";
+import { createRecommendationPreview } from "../services/recommendation-orchestrator";
+import { createGoatCourseRecommendation } from "../services/course-recommendation";
 
 const router: IRouter = Router();
 
@@ -76,6 +82,23 @@ const recommendRateLimit = (
   next();
 };
 
+const geocodeRateLimit = createRateLimiter({
+  windowMs: RECOMMEND_RATE_LIMIT_WINDOW_MS,
+  max: readPositiveInt(process.env.GEOCODE_RATE_LIMIT_MAX, 20),
+});
+const isDebugEnabled = process.env.ALLOW_RECOMMENDATION_DEBUG === "true";
+const defaultLlmModel = process.env.OPENROUTER_DEFAULT_MODEL?.trim() || "openai/gpt-4o-mini";
+const allowedLlmModels = new Set(
+  (process.env.OPENROUTER_ALLOWED_MODELS ?? defaultLlmModel)
+    .split(",")
+    .map((model) => model.trim())
+    .filter(Boolean),
+);
+
+const geocodeOriginSchema = z.object({
+  query: z.string().trim().min(2).max(120),
+}).strict();
+
 const requestSchema = z
   .object({
     moodId: z.string().min(1).optional(),
@@ -125,16 +148,16 @@ const requestSchema = z
       .optional(),
     origin: z
       .object({
-        type: z.enum(["current", "region", "skip"]),
+        type: z.enum(["current", "region", "address", "skip"]),
         latitude: z.number().min(-90).max(90).optional(),
         longitude: z.number().min(-180).max(180).optional(),
-        regionName: z.string().min(1).optional(),
+        regionName: z.string().min(1).max(200).optional(),
       })
       .strict()
       .optional(),
     excludeIds: z
       .array(z.string().min(1))
-      .max(58)
+      .max(61)
       .refine(
         (ids) => new Set(ids).size === ids.length,
         "excludeIds에는 중복된 장소 ID를 넣을 수 없습니다.",
@@ -363,7 +386,44 @@ router.get("/course-map", (req, res, next) => {
 </html>`);
 });
 
-router.post("/recommend-from-tags", recommendRateLimit, (req, res, next) => {
+router.post("/geocode-origin", geocodeRateLimit, async (req, res, next) => {
+  const parsed = geocodeOriginSchema.safeParse(req.body);
+  if (!parsed.success) {
+    next(new ApiError(400, "INVALID_REQUEST", "출발지 검색어를 확인해 주세요.", parsed.error.flatten()));
+    return;
+  }
+  if (!isKakaoGeocodingConfigured()) {
+    next(new ApiError(503, "KAKAO_LOCAL_NOT_CONFIGURED", "출발지 검색 기능이 아직 설정되지 않았습니다."));
+    return;
+  }
+  try {
+    const result = await geocodeOriginQuery(parsed.data.query);
+    if (!result) {
+      next(new ApiError(404, "ORIGIN_NOT_FOUND", "입력한 출발지를 찾지 못했습니다."));
+      return;
+    }
+    res.json({
+      success: true,
+      code: "SUCCESS",
+      message: "출발지를 확인했습니다.",
+      data: {
+        origin: {
+          type: "address",
+          latitude: result.latitude,
+          longitude: result.longitude,
+          regionName: result.label,
+        },
+        address: result.address,
+        source: result.source,
+      },
+    });
+  } catch (error) {
+    req.log?.warn?.({ error }, "Kakao origin geocoding failed");
+    next(new ApiError(502, "KAKAO_LOCAL_FAILED", "출발지 검색에 실패했습니다. 잠시 후 다시 시도해 주세요."));
+  }
+});
+
+router.post("/recommend-from-tags", recommendRateLimit, async (req, res, next) => {
   const parsed = requestSchema.safeParse(req.body);
   if (!parsed.success) {
     next(
@@ -385,36 +445,40 @@ router.post("/recommend-from-tags", recommendRateLimit, (req, res, next) => {
     return;
   }
 
-  const result = getRecommendations(
-    mood?.id,
-    parsed.data.preferences as TravelPreferences | undefined,
-    parsed.data.excludeIds,
-    {
+  if (parsed.data.debug && !isDebugEnabled) {
+    next(new ApiError(403, "DEBUG_NOT_ALLOWED", "Debug responses are disabled."));
+    return;
+  }
+
+  try {
+    const result = await createRecommendationPreview({
+      moodId: mood?.id,
       referenceCardId: parsed.data.referenceCardId,
+      preferences: parsed.data.preferences as TravelPreferences | undefined,
       travelPurpose: parsed.data.travelPurpose,
       transportType: parsed.data.transportType,
       visitTime: parsed.data.visitTime,
       currentMonth: parsed.data.currentMonth,
+      origin: parsed.data.origin as TravelOrigin | undefined,
       excludeIds: parsed.data.excludeIds,
       debug: parsed.data.debug,
-    },
-  );
-  if (!result) {
-    next(new ApiError(400, "INVALID_REQUEST", "추천 기준을 찾을 수 없습니다."));
-    return;
-  }
+    });
+    if (!result) {
+      next(new ApiError(400, "INVALID_REQUEST", "추천 기준을 찾을 수 없습니다."));
+      return;
+    }
 
-  res.json({
-    success: true,
-    code: "SUCCESS",
-    message: "추천 장소를 조회했습니다.",
-    data: {
-      ...result,
-      decisionAudit: undefined,
-      warningDetails: undefined,
-      policyVersion: undefined,
-    },
-  });
+    res.setHeader("Deprecation", "true");
+    res.setHeader("Link", '</api/recommendations>; rel="successor-version"');
+    res.json({
+      success: true,
+      code: "SUCCESS",
+      message: "추천 장소를 조회했습니다.",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.post("/recommend-course", recommendRateLimit, async (req, res, next) => {
@@ -428,6 +492,15 @@ router.post("/recommend-course", recommendRateLimit, async (req, res, next) => {
         parsed.error.flatten(),
       ),
     );
+    return;
+  }
+
+  if (parsed.data.debug && !isDebugEnabled) {
+    next(new ApiError(403, "DEBUG_NOT_ALLOWED", "Debug responses are disabled."));
+    return;
+  }
+  if (parsed.data.llmModel && !allowedLlmModels.has(parsed.data.llmModel)) {
+    next(new ApiError(400, "LLM_MODEL_NOT_ALLOWED", "Requested LLM model is not allowed."));
     return;
   }
 

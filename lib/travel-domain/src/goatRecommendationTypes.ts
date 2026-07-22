@@ -302,10 +302,7 @@ export interface RecommendRequest extends ExposureStats, RouteDistanceInput {
    * false로 두면 resultData.warnings에는 남기되 console/logger/file 로그는 찍지 않는다.
    */
   enableWarningLog?: boolean;
-  /**
-   * warning을 JSONL 파일로도 저장할 경로.
-   * 없으면 process.env.GOAT_RECOMMENDATION_LOG_FILE 값을 사용하고, 그것도 없으면 logs/goat-recommendation-warnings.jsonl에 저장한다.
-   */
+  /** @deprecated 순수 엔진에서는 파일 로그를 쓰지 않는다. 서버 감사 로그를 사용한다. */
   warningLogFilePath?: string;
   /** requestId, userId, sessionId 등 로그 추적에 필요한 값을 함께 남길 때 사용한다. */
   logContext?: Record<string, unknown>;

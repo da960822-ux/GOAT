@@ -3,10 +3,6 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { recommendGoatPlaces } from "../../lib/travel-domain/src/goatRecommendationEngine";
-import {
-  createGoatRecommendation,
-} from "../../lib/travel-domain/src/recommendationService";
-import { InMemoryRecommendationExposureRepository } from "../../lib/travel-domain/src/recommendationExposureRepository";
 import type {
   GoatPlace,
   GoatPlaceDataset,
@@ -299,37 +295,21 @@ const purposeFallback = run({
 assert.equal(purposeFallback.resultData?.decisionAudit?.fallback.card3PurposeFallbackUsed, true);
 assert.ok(purposeFallback.resultData?.warnings.some((warning) => warning.code === "CARD3_PURPOSE_FALLBACK"));
 
-const repository = new InMemoryRecommendationExposureRepository();
-const serviceTestNow = new Date();
-const serviceFirst = await createGoatRecommendation({
-  body: baseRequest,
-  context: { requestId: "REQ-COVERAGE-1", sessionId: "SESSION-COVERAGE", now: serviceTestNow },
-  placesDataset: places,
-  referenceDataset: references,
-  exposureRepository: repository,
+const serviceFirst = run(baseRequest);
+const firstExposureIds = (serviceFirst.resultData?.cards ?? []).map(({ placeId }) => placeId);
+const exposureCounts = Object.fromEntries(firstExposureIds.map((placeId) => [placeId, 1]));
+const serviceReroll = run({
+  ...baseRequest,
+  excludePlaceIds: firstExposureIds,
+  recentExposureByPlaceId: exposureCounts,
+  totalExposureByPlaceId: exposureCounts,
+  themeAverageExposure: { "바다·해안 무드": 1 },
 });
-assert.equal(serviceFirst.resultData?.requestId, "REQ-COVERAGE-1");
-assert.equal(repository.getRecords().length, 3, "첫 추천 노출 3건이 누적되지 않았습니다.");
-
-const serviceReroll = await createGoatRecommendation({
-  body: { ...baseRequest, rerollOfRequestId: "REQ-COVERAGE-1" },
-  context: {
-    requestId: "REQ-COVERAGE-2",
-    sessionId: "SESSION-COVERAGE",
-    now: new Date(serviceTestNow.getTime() + 60_000),
-  },
-  placesDataset: places,
-  referenceDataset: references,
-  exposureRepository: repository,
-});
-assert.equal(repository.getRecords().length, 6, "다시 추천 노출 3건이 누적되지 않았습니다.");
 assert.equal(
   (serviceReroll.resultData?.cards ?? []).filter((card) => (serviceFirst.resultData?.cards ?? []).some((first) => first.placeId === card.placeId)).length,
   0,
-  "service reroll이 직전 requestId의 카드 3개를 제외하지 않았습니다.",
+  "순수 엔진 reroll 입력이 직전 카드 3개를 제외하지 않았습니다.",
 );
-const accumulatedStats = await repository.getExposureStats({ sessionId: "SESSION-COVERAGE" });
-assert.equal(Object.values(accumulatedStats.totalExposureByPlaceId).reduce<number>((sum, count) => sum + (count ?? 0), 0), 6);
 
 console.log(JSON.stringify({
   status: "PASS",
@@ -362,7 +342,7 @@ console.log(JSON.stringify({
     "departure sensitivity on cards 2 and 3",
     "explicit and inferred walk accessibility",
     "empty and accumulated exposure behavior",
-    "reroll exclusion and exposure persistence service",
+    "reroll exclusion and externally supplied exposure statistics",
     "card 3 purpose fallback audit",
   ],
 }, null, 2));

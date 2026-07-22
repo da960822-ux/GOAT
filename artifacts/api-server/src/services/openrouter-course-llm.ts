@@ -1,9 +1,9 @@
-import { GoatPlace } from "./goatRecommendationTypes";
 import {
+  type GoatPlace,
   CoursePlanningUserConditions,
   LlmCoursePlannerJson,
   TourApiNearbyCandidate,
-} from "./courseRecommendationTypes";
+} from "@workspace/travel-domain";
 
 declare const process: { env: Record<string, string | undefined> };
 declare const fetch: (input: string, init: {

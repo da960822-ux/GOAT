@@ -1,9 +1,7 @@
 import moodCategoryData from "./data/mood-categories.json";
 import placesDatasetData from "./data/goat_simplified_scoring_tags_v10_accessibility_merged.json";
 import referenceDatasetData from "./data/goat_reference_cards_v2_balanced.json";
-import { createGoatDayCourse } from "./courseRecommendationService";
 import { RECOMMENDATION_POLICY_VERSION, recommendGoatPlaces } from "./goatRecommendationEngine";
-import type { GoatDayCourseRequest, GoatDayCourseResult } from "./courseRecommendationTypes";
 import type {
   GoatPlace,
   GoatPlaceDataset,
@@ -12,7 +10,6 @@ import type {
   RecommendResult,
   RecommendationCard as GoatRecommendationCard,
 } from "./goatRecommendationTypes";
-import type { RecommendationExposureRepository } from "./recommendationExposureRepository";
 import type {
   MoodCategory,
   Place,
@@ -22,7 +19,8 @@ import type {
   TravelPreferences,
 } from "./types";
 
-const placesDataset = placesDatasetData as GoatPlaceDataset;
+export const goatPlacesDataset = placesDatasetData as GoatPlaceDataset;
+const placesDataset = goatPlacesDataset;
 const referenceDataset = referenceDatasetData as GoatReferenceCardDataset;
 const sourcePlaces = placesDataset.places;
 export const moodCategories = moodCategoryData as MoodCategory[];
@@ -59,6 +57,9 @@ export type RecommendationRequestOptions = {
   routeDurationMinByPlaceId?: Record<string, number | undefined>;
   routeSourceByPlaceId?: Record<string, "KAKAO_ROUTE" | "HAVERSINE" | "NONE" | undefined>;
   excludeIds?: string[];
+  recentExposureByPlaceId?: Record<string, number | undefined>;
+  totalExposureByPlaceId?: Record<string, number | undefined>;
+  themeAverageExposure?: Record<string, number | undefined>;
   debug?: boolean;
 };
 
@@ -67,36 +68,6 @@ function toLocalIsoDate(date: Date): string {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
-}
-
-export interface RecommendationServiceBody
-  extends Omit<
-    RecommendRequest,
-    "recentExposureByPlaceId" | "totalExposureByPlaceId" | "themeAverageExposure" | "excludePlaceIds"
-  > {
-  /** 다시 추천 버튼을 눌렀을 때 직전 추천 requestId. 이 요청의 카드 3개는 excludePlaceIds로 강제 제외된다. */
-  rerollOfRequestId?: string;
-  /** 프론트/백엔드가 이미 제외해야 할 장소를 알고 있을 때 추가로 전달한다. */
-  excludePlaceIds?: string[];
-}
-
-export interface RecommendationServiceContext {
-  requestId?: string;
-  userId?: string;
-  sessionId?: string;
-  /** 최근 몇 개의 노출 카드 row를 recentExposureByPlaceId 계산에 쓸지. 기본 20. */
-  recentLimit?: number;
-  now?: Date;
-}
-
-export interface CreateGoatRecommendationParams {
-  body: RecommendationServiceBody;
-  context?: RecommendationServiceContext;
-  placesDataset: GoatPlaceDataset;
-  referenceDataset?: GoatReferenceCardDataset;
-  exposureRepository: RecommendationExposureRepository;
-  /** 경로 API 재산정처럼 중간 계산만 할 때 false. 최종 응답 계산에서만 true로 둔다. */
-  persistExposures?: boolean;
 }
 
 const MOOD_TO_REFERENCE_CARD: Record<string, string> = {
@@ -120,108 +91,6 @@ const TIME_MAP: Record<string, string> = {
   "일몰": "저녁",
   "밤/새벽": "야간",
 };
-
-function uniq(values: string[]): string[] {
-  return Array.from(new Set(values.filter(Boolean)));
-}
-
-function createRequestId(now: Date): string {
-  const random = Math.random().toString(36).slice(2, 8).toUpperCase();
-  return `REQ_${now.getTime()}_${random}`;
-}
-
-function pickPrimaryThemeForExposure(body: RecommendationServiceBody, result: RecommendResult): string | undefined {
-  return result.resultData?.request.primaryTheme ?? (body.primaryTheme ? String(body.primaryTheme) : undefined);
-}
-
-function toExposureCards(cards: GoatRecommendationCard[]) {
-  return cards.map((card) => ({
-    placeId: card.placeId,
-    rankNo: card.rank,
-    cardRole: card.role,
-  }));
-}
-
-/**
- * 실제 백엔드 API에서 호출할 서비스 레이어.
- *
- * 추천 전 노출 통계를 조회해 엔진에 넘기고, 추천 결과 카드 3개를 저장해
- * 다음 추천과 다시 추천에서 재노출 방지 보정이 실제로 작동하게 한다.
- */
-export async function createGoatRecommendation(params: CreateGoatRecommendationParams): Promise<RecommendResult> {
-  const now = params.context?.now ?? new Date();
-  const requestId = params.context?.requestId ?? createRequestId(now);
-
-  const previousPlaceIds = params.body.rerollOfRequestId
-    ? await params.exposureRepository.findPlaceIdsByRequestId(params.body.rerollOfRequestId, {
-        userId: params.context?.userId,
-        sessionId: params.context?.sessionId,
-      })
-    : [];
-
-  const exposureStats = await params.exposureRepository.getExposureStats({
-    userId: params.context?.userId,
-    sessionId: params.context?.sessionId,
-    referenceCardId: params.body.referenceCardId,
-    primaryTheme: params.body.primaryTheme ? String(params.body.primaryTheme) : undefined,
-    recentLimit: params.context?.recentLimit ?? 20,
-  });
-
-  const excludePlaceIds = uniq([
-    ...(params.body.excludePlaceIds ?? []),
-    ...previousPlaceIds,
-  ]);
-
-  const result = recommendGoatPlaces(
-    {
-      ...params.body,
-      currentMonth: params.body.currentMonth ?? now.getMonth() + 1,
-      currentDate: params.body.currentDate
-        ?? ((params.body.currentMonth ?? now.getMonth() + 1) === now.getMonth() + 1
-          ? toLocalIsoDate(now)
-          : undefined),
-      excludePlaceIds,
-      recentExposureByPlaceId: exposureStats.recentExposureByPlaceId,
-      totalExposureByPlaceId: exposureStats.totalExposureByPlaceId,
-      themeAverageExposure: exposureStats.themeAverageExposure,
-      logContext: {
-        ...(params.body.logContext ?? {}),
-        requestId,
-        userId: params.context?.userId,
-        sessionId: params.context?.sessionId,
-        rerollOfRequestId: params.body.rerollOfRequestId,
-        excludePlaceIds,
-      },
-    },
-    params.placesDataset,
-    params.referenceDataset,
-  );
-
-  if (result.resultData) {
-    result.resultData.requestId = requestId;
-  }
-
-  if (params.persistExposures !== false && result.status === "DONE" && result.resultData?.cards.length) {
-    await params.exposureRepository.saveExposures({
-      requestId,
-      userId: params.context?.userId,
-      sessionId: params.context?.sessionId,
-      referenceCardId: params.body.referenceCardId,
-      primaryTheme: pickPrimaryThemeForExposure(params.body, result),
-      travelPurpose: params.body.travelPurpose ? String(params.body.travelPurpose) : undefined,
-      cards: toExposureCards(result.resultData.cards),
-      createdAt: now,
-    });
-  }
-
-  return result;
-}
-
-export async function createGoatCourseRecommendation(
-  request: GoatDayCourseRequest,
-): Promise<GoatDayCourseResult> {
-  return createGoatDayCourse(request, placesDataset);
-}
 
 function validateData(): void {
   if (sourcePlaces.length !== 61) {
@@ -412,6 +281,9 @@ export function getRecommendations(
     routeDistanceKmByPlaceId: options.routeDistanceKmByPlaceId,
     routeDurationMinByPlaceId: options.routeDurationMinByPlaceId,
     routeSourceByPlaceId: options.routeSourceByPlaceId,
+    recentExposureByPlaceId: options.recentExposureByPlaceId,
+    totalExposureByPlaceId: options.totalExposureByPlaceId,
+    themeAverageExposure: options.themeAverageExposure,
     excludePlaceIds: options.excludeIds ?? excludeIds,
     debug: options.debug,
   };
@@ -425,71 +297,6 @@ export function getRecommendations(
   if (!result.resultData) {
     throw new Error(result.failReason ?? result.message);
   }
-
-  return toLegacyRecommendationResult(result, moodId, referenceCardId);
-}
-
-export interface ExposureRecommendationOptions extends RecommendationRequestOptions {
-  sessionId?: string;
-  rerollOfRequestId?: string;
-  requestId?: string;
-  persistExposures?: boolean;
-  recentLimit?: number;
-}
-
-/**
- * API용 추천 경로. 노출 통계를 읽어 엔진에 반영하고 최종 계산에서만 노출을 저장한다.
- * 카카오 경로 후보를 재산정할 때는 같은 requestId와 persistExposures=false를 사용한다.
- */
-export async function getRecommendationsWithExposure(
-  exposureRepository: RecommendationExposureRepository,
-  moodId?: string,
-  preferences?: TravelPreferences,
-  excludeIds?: string[],
-  options: ExposureRecommendationOptions = {},
-): Promise<RecommendationResult | undefined> {
-  if (moodId && !moodCategories.some(({ id }) => id === moodId)) return undefined;
-  const referenceCardId = resolveReferenceCardId(moodId, options.referenceCardId);
-  if (!referenceCardId) return undefined;
-  if (!referenceDataset.reference_cards.some(
-    (card) => card.referenceCardId === referenceCardId && card.isActive !== false,
-  )) return undefined;
-
-  const now = new Date();
-  const currentMonth = options.currentMonth ?? now.getMonth() + 1;
-  const result = await createGoatRecommendation({
-    body: {
-      referenceCardId,
-      travelPurpose: normalizePurpose(options.travelPurpose ?? preferences?.purpose),
-      transportType: options.transportType ?? preferences?.transport,
-      visitTime: normalizeVisitTime(options.visitTime ?? preferences?.visitTime),
-      currentMonth,
-      ...(currentMonth === now.getMonth() + 1 ? { currentDate: toLocalIsoDate(now) } : {}),
-      origin: options.origin,
-      routeDistanceEnabled: options.routeDistanceEnabled ?? Boolean(
-        options.origin
-        && options.origin.type !== "skip"
-        && Number.isFinite(options.origin.latitude)
-        && Number.isFinite(options.origin.longitude)
-      ),
-      routeDistanceKmByPlaceId: options.routeDistanceKmByPlaceId,
-      routeDurationMinByPlaceId: options.routeDurationMinByPlaceId,
-      routeSourceByPlaceId: options.routeSourceByPlaceId,
-      excludePlaceIds: options.excludeIds ?? excludeIds,
-      rerollOfRequestId: options.rerollOfRequestId,
-      debug: options.debug,
-    },
-    context: {
-      requestId: options.requestId,
-      sessionId: options.sessionId,
-      recentLimit: options.recentLimit,
-      now,
-    },
-    placesDataset,
-    referenceDataset,
-    exposureRepository,
-    persistExposures: options.persistExposures,
-  });
 
   return toLegacyRecommendationResult(result, moodId, referenceCardId);
 }

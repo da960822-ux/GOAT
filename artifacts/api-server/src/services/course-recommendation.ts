@@ -1,17 +1,19 @@
-import { GoatPlace, GoatPlaceDataset } from "./goatRecommendationTypes";
 import {
+  goatPlacesDataset,
+  type GoatPlace,
+  type GoatPlaceDataset,
   CourseStop,
   GoatDayCourseRequest,
   GoatDayCourseResult,
   LlmCoursePlannerJson,
   TourApiNearbyCandidate,
-} from "./courseRecommendationTypes";
-import { callOpenRouterCoursePlanner } from "./openRouterCourseLlm";
+} from "@workspace/travel-domain";
+import { buildKakaoStaticMapResult } from "./kakao-static-map";
+import { callOpenRouterCoursePlanner } from "./openrouter-course-llm";
 import {
   fetchVisitKoreaContentLabNearbyCandidates,
   type VisitKoreaNearbyDiagnostics,
-} from "./tourApiClient";
-import { buildKakaoStaticMapResult } from "./kakaoStaticMap";
+} from "./tour-api-client";
 
 function toNumber(value: unknown): number | undefined {
   if (typeof value === "number" && Number.isFinite(value)) return value;
@@ -429,4 +431,10 @@ export async function createGoatDayCourse(
       } : undefined,
     };
   }
+}
+
+export async function createGoatCourseRecommendation(
+  request: GoatDayCourseRequest,
+): Promise<GoatDayCourseResult> {
+  return createGoatDayCourse(request, goatPlacesDataset);
 }

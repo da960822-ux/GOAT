@@ -1,4 +1,7 @@
-import { TourApiNearbyCandidate, TourCandidateCategory } from "./courseRecommendationTypes";
+import type {
+  TourApiNearbyCandidate,
+  TourCandidateCategory,
+} from "@workspace/travel-domain";
 
 declare const process: { env: Record<string, string | undefined> };
 declare const fetch: (input: string, init?: { signal?: unknown }) => Promise<{
