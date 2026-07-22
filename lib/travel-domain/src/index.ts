@@ -52,3 +52,26 @@ export type {
   RecommendationCard as GoatRecommendationCard,
   ScoreBreakdown as GoatScoreBreakdown,
 } from "./goatRecommendationTypes";
+export {
+  COMPANION_OPTIONS,
+  MOOD_IDS,
+  RECOMMENDATION_PURPOSE_OPTIONS,
+  REFERENCE_CARD_IDS,
+  TRANSPORT_OPTIONS,
+  TRAVEL_PURPOSE_OPTIONS,
+  VISIT_TIME_OPTIONS,
+  isMoodId,
+  isReferenceCardId,
+} from "./catalog";
+export type {
+  CatalogOption,
+  CompanionValue,
+  MoodId,
+  RecommendationSelection,
+  RecommendationSelectionInput,
+  RecommendationPurposeValue,
+  ReferenceCardId,
+  TransportValue,
+  TravelPurposeValue,
+  VisitTimeValue,
+} from "./catalog";

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { Image } from 'expo-image';
-import { Feather } from '@expo/vector-icons';
+import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { RecommendationCard } from '@/src/types/place';
 import { RecommendationRoleBadge } from './RecommendationRoleBadge';
 import { openKakaoMap } from '@/src/services/mapLink';

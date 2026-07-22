@@ -1,134 +1,21 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import type { Mood } from '@workspace/api-client-react';
-import { useColors } from '@/hooks/useColors';
+import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import type { Mood } from "@workspace/api-client-react";
+import { BrandIcon, type BrandIconName } from "@/src/components/BrandIcon";
+import { fonts, palette } from "@/src/theme/editorial";
 
-type FeatherIconName = React.ComponentProps<typeof Feather>['name'];
-
-interface SceneTheme {
-  icon: FeatherIconName;
-  accent: string;
-  bg: string;
-  border: string;
-}
-
-const SCENE_THEME: Record<string, SceneTheme> = {
-  'sea-coast': { icon: 'navigation', accent: '#0369A1', bg: '#F0F9FF', border: '#BAE6FD' },
-  'japan-alley': { icon: 'map', accent: '#B45309', bg: '#FEF3C7', border: '#FDE68A' },
-  'alps-ranch': { icon: 'triangle', accent: '#15803D', bg: '#F0FDF4', border: '#BBF7D0' },
-  'forest-garden-rest': { icon: 'feather', accent: '#047857', bg: '#ECFDF5', border: '#A7F3D0' },
-  'retro-market-harbor': { icon: 'anchor', accent: '#7C3AED', bg: '#F5F0FF', border: '#DDD6FE' },
-  'architecture-exhibit-landmark': { icon: 'layers', accent: '#475569', bg: '#F8FAFC', border: '#CBD5E1' },
-  'resort-cafe-exotic': { icon: 'coffee', accent: '#A16207', bg: '#FFFBEB', border: '#FDE68A' },
+const themeByMood: Record<string, { icon: BrandIconName; accent: string; surface: string }> = {
+  "sea-coast": { icon: "map", accent: "#38678A", surface: "#E7F0F2" },
+  "japan-alley": { icon: "home", accent: "#8B6040", surface: "#F6EDE1" },
+  "alps-ranch": { icon: "course", accent: "#527545", surface: "#EAF1E5" },
+  "forest-garden-rest": { icon: "leaf", accent: "#3F7463", surface: "#E4F0EA" },
+  "retro-market-harbor": { icon: "location", accent: "#705F82", surface: "#EEEAF3" },
+  "architecture-exhibit-landmark": { icon: "image", accent: "#5C6970", surface: "#EDF0F0" },
+  "resort-cafe-exotic": { icon: "sun", accent: "#9A7140", surface: "#F9F0DB" },
 };
-
-const FALLBACK_THEME: SceneTheme = {
-  icon: 'map-pin',
-  accent: '#7C3AED',
-  bg: '#F5F3FF',
-  border: '#EDE9FE',
-};
-
-interface MoodCategoryCardProps {
-  mood: Mood;
-  selected: boolean;
-  onPress: () => void;
+const fallback = { icon: "mood" as BrandIconName, accent: palette.forest, surface: palette.sage };
+export function MoodCategoryCard({ mood, selected, onPress }: { mood: Mood; selected: boolean; onPress: () => void }) {
+  const theme = themeByMood[mood.id] ?? fallback;
+  return <Pressable accessibilityRole="radio" accessibilityState={{ checked: selected }} accessibilityLabel={`${mood.name}. ${mood.description}`} onPress={onPress} style={({ pressed }) => [styles.card, { backgroundColor: selected ? theme.accent : theme.surface, borderColor: selected ? theme.accent : "transparent" }, pressed && styles.pressed]}><View style={styles.top}><View style={[styles.icon, { backgroundColor: selected ? "rgba(255,255,255,.18)" : "rgba(255,255,255,.62)" }]}><BrandIcon name={theme.icon} size={21} color={selected ? palette.white : theme.accent} /></View>{selected && <View style={styles.check}><BrandIcon name="check" size={15} color={theme.accent} /></View>}</View><Text style={[styles.name, selected && styles.light]}>{mood.name}</Text><Text numberOfLines={2} style={[styles.description, selected && styles.lightMuted]}>{mood.description}</Text><View style={styles.keywords}>{mood.keywords.slice(0, 3).map((keyword) => <Text key={keyword} style={[styles.keyword, { color: selected ? "rgba(255,255,255,.9)" : theme.accent }]}>{`#${keyword}`}</Text>)}</View></Pressable>;
 }
-
-export function MoodCategoryCard({ mood, selected, onPress }: MoodCategoryCardProps) {
-  const colors = useColors();
-  const theme = SCENE_THEME[mood.id] ?? FALLBACK_THEME;
-  const scenePhrase = mood.description;
-
-  const cardBg = selected ? theme.accent : theme.bg;
-  const cardBorder = selected ? theme.accent : theme.border;
-
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.85}
-      testID={`mood-card-${mood.id}`}
-      style={[
-        styles.card,
-        {
-          backgroundColor: cardBg,
-          borderColor: cardBorder,
-          shadowColor: selected ? theme.accent : '#000',
-        },
-      ]}
-    >
-      <View style={styles.top}>
-        <View style={[
-          styles.iconCircle,
-          { backgroundColor: selected ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.9)' },
-        ]}>
-          <Feather
-            name={theme.icon}
-            size={18}
-            color={selected ? '#FFFFFF' : theme.accent}
-          />
-        </View>
-        {selected && (
-          <View style={[styles.checkCircle, { backgroundColor: colors.accent }]}>
-            <Feather name="check" size={13} color={colors.accentForeground} />
-          </View>
-        )}
-      </View>
-
-      <Text style={[styles.name, { color: selected ? '#FFFFFF' : colors.foreground }]}>
-        {mood.name}
-      </Text>
-
-      <Text
-        style={[styles.scene, { color: selected ? 'rgba(255,255,255,0.88)' : colors.foreground }]}
-        numberOfLines={2}
-      >
-        {scenePhrase}
-      </Text>
-
-      <View style={styles.keywords}>
-        {mood.keywords.slice(0, 3).map((kw) => (
-          <View
-            key={kw}
-            style={[
-              styles.kwBadge,
-              { backgroundColor: selected ? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.75)' },
-            ]}
-          >
-            <Text style={[styles.kwText, { color: selected ? 'rgba(255,255,255,0.9)' : theme.accent }]}>
-              #{kw}
-            </Text>
-          </View>
-        ))}
-      </View>
-    </TouchableOpacity>
-  );
-}
-
-const styles = StyleSheet.create({
-  card: {
-    borderRadius: 20,
-    borderWidth: 1.5,
-    paddingHorizontal: 20,
-    paddingVertical: 22,
-    marginBottom: 12,
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.07,
-    shadowRadius: 14,
-    elevation: 3,
-  },
-  top: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  iconCircle: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center' },
-  checkCircle: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
-  name: { fontSize: 17, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 6 },
-  scene: { fontSize: 14, fontFamily: 'Inter_400Regular', lineHeight: 21, marginBottom: 14 },
-  keywords: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
-  kwBadge: { paddingHorizontal: 9, paddingVertical: 4, borderRadius: 7 },
-  kwText: { fontSize: 12, fontFamily: 'Inter_500Medium' },
-});
+const styles = StyleSheet.create({ card: { minHeight: 178, borderRadius: 20, borderWidth: 2, padding: 18 }, top: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" }, icon: { width: 42, height: 42, borderRadius: 21, alignItems: "center", justifyContent: "center" }, check: { width: 30, height: 30, borderRadius: 15, backgroundColor: palette.ivory, alignItems: "center", justifyContent: "center" }, name: { marginTop: 18, fontFamily: fonts.serif, fontSize: 21, color: palette.ink }, description: { marginTop: 6, fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: palette.muted }, keywords: { marginTop: 14, flexDirection: "row", flexWrap: "wrap", gap: 8 }, keyword: { fontFamily: fonts.medium, fontSize: 12 }, light: { color: palette.white }, lightMuted: { color: "rgba(255,255,255,.84)" }, pressed: { opacity: .88, transform: [{ scale: .985 }] } });

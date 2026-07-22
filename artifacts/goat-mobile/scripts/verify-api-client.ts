@@ -14,9 +14,20 @@ const serverEntry = fileURLToPath(
   new URL("../../api-server/dist/index.mjs", import.meta.url).href,
 );
 const server = spawn(process.execPath, ["--enable-source-maps", serverEntry], {
-  env: { ...process.env, PORT: String(port) },
-  stdio: "ignore",
+  env: {
+    ...process.env,
+    PORT: String(port),
+    KTO_SERVICE_KEY: "",
+    DATABASE_URL: process.env.DATABASE_URL ?? "postgresql://goat:goat@127.0.0.1:65432/goat",
+  },
+  stdio: ["ignore", "pipe", "pipe"],
 });
+
+let serverOutput = "";
+for (const stream of [server.stdout, server.stderr]) {
+  stream.setEncoding("utf8");
+  stream.on("data", (chunk) => { serverOutput = `${serverOutput}${chunk}`.slice(-8_000); });
+}
 
 setBaseUrl(apiBaseUrl);
 
@@ -30,7 +41,7 @@ async function waitForServer() {
     }
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
-  throw new Error("API server did not start");
+  throw new Error(`API server did not start\n${serverOutput}`);
 }
 
 async function main() {
@@ -42,7 +53,7 @@ try {
 
   const first = await recommendFromTags({ moodId: "alps-ranch" });
   assert.equal(first.data.recommendations.length, 3);
-  assert.equal(first.data.seedPoolSize, 58);
+  assert.equal(first.data.seedPoolSize, 61);
   assert.ok(
     first.data.recommendations.every(({ place: item }) =>
       /^GOAT-\d{3}$/.test(item.place_id),

@@ -5,9 +5,10 @@
  * Korean Travel Guide API
  * OpenAPI spec version: 0.4.0
  */
+import type { MoodId } from './moodId';
 
 export interface Mood {
-  id: string;
+  id: MoodId;
   name: string;
   description: string;
   keywords: string[];

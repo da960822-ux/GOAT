@@ -1,257 +1,51 @@
-import React, { useState } from 'react';
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import React, { useMemo, useState } from "react";
+import { Alert, Modal, Pressable, ScrollView, Share, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  View, ScrollView, StyleSheet, Text, TouchableOpacity, Alert
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
-import { Header } from '@/src/components/Header';
-import { PlaceCard } from '@/src/components/PlaceCard';
-import { EmptyState } from '@/src/components/EmptyState';
-import { StepIndicator } from '@/src/components/StepIndicator';
-import { useApp } from '@/src/context/AppContext';
-import { useColors } from '@/hooks/useColors';
-import { recommendFromTags } from '@workspace/api-client-react';
-import { RecommendationCard } from '@/src/types/place';
+  deleteBookmark, putRecommendationFeedback, recommendCourse, saveBookmark,
+  type FeedbackRequestReasonCode, type RecommendationCardResponse,
+} from "@workspace/api-client-react";
+import { BrandIcon } from "@/src/components/BrandIcon";
+import { PrimaryButton, ScreenHeader } from "@/src/components/editorial/UI";
+import { useApp } from "@/src/context/AppContext";
+import { editorialImages, showcasePlaces } from "@/src/data/editorialContent";
+import { buildRecommendationAttempt } from "@/src/services/recommendationApi";
+import { fonts, palette, radius } from "@/src/theme/editorial";
+
+const reasonOptions: Array<{ code: FeedbackRequestReasonCode; label: string }> = [
+  { code: "TOO_FAR", label: "거리가 멀어요" }, { code: "NOT_MY_MOOD", label: "감성이 달라요" },
+  { code: "TRANSPORT_DIFFICULT", label: "이동이 불편해요" }, { code: "ALREADY_VISITED", label: "이미 가본 곳이에요" },
+  { code: "TOO_CROWDED", label: "혼잡할 것 같아요" }, { code: "OTHER", label: "기타" },
+];
 
 export default function ResultsScreen() {
-  const router = useRouter();
-  const colors = useColors();
-  const { selectedMood, travelPreferences, recommendations, setRecommendations, origin } = useApp();
-  const [isRecommending, setIsRecommending] = useState(false);
-
-  if (!selectedMood || recommendations.length === 0) {
-    return (
-      <View style={[styles.root, { backgroundColor: colors.background }]}>
-        <Header title="추천 결과" onBack={() => router.back()} />
-        <EmptyState
-          title="감성을 먼저 선택해주세요"
-          description="이런 장면을 찾고 있나요?{'\n'}감성을 고르면 3곳으로 압축해드려요."
-          actionLabel="감성 선택하러 가기"
-          onAction={() => router.replace('/mood-selection')}
-        />
-      </View>
-    );
-  }
-
-  if (recommendations.length < 3) {
-    return (
-      <View style={[styles.root, { backgroundColor: colors.background }]}>
-        <Header title="추천 결과" onBack={() => router.back()} />
-        <EmptyState
-          title="추천 결과가 부족해요"
-          description="조건을 조금 넓혀 다시 추천해볼게요."
-          actionLabel="감성 다시 선택하기"
-          onAction={() => router.replace('/mood-selection')}
-        />
-      </View>
-    );
-  }
-
-  function handleCardPress(card: RecommendationCard) {
-    router.push({
-      pathname: '/detail/[id]',
-      params: { id: card.place.place_id, role: card.role, reason: card.reason },
-    });
-  }
-
-  function handleEditConditions() {
-    router.push('/travel-preference');
-  }
-
-  async function handleReRecommend() {
-    if (!selectedMood || isRecommending) return;
-    const currentIds = recommendations.map((c) => c.place.place_id);
-    setIsRecommending(true);
-    try {
-      const result = await recommendFromTags({
-        moodId: selectedMood.id,
-        preferences: travelPreferences ?? undefined,
-        origin: origin ?? undefined,
-        excludeIds: currentIds,
-      });
-      setRecommendations(result.data.recommendations);
-    } catch {
-      Alert.alert('다시 추천하지 못했어요', '잠시 후 다시 시도해주세요.');
-    } finally {
-      setIsRecommending(false);
-    }
-  }
-
-  const conditionParts = [
-    selectedMood.name.split('·')[0].trim() + ' 감성',
-    travelPreferences?.companion,
-    travelPreferences?.transport,
-    travelPreferences?.visitTime ?? null,
-    travelPreferences?.purpose,
-  ].filter(Boolean) as string[];
-
-  const showLocationChip = origin?.type === 'current' || origin?.type === 'region';
-  const locationChipLabel =
-    origin?.type === 'current'
-      ? '현재 위치 기준'
-      : origin?.regionName
-      ? `${origin.regionName} 기준`
-      : null;
-
-  return (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
-      <Header
-        title="추천 결과"
-        onBack={() => router.back()}
-        right={
-          <TouchableOpacity onPress={() => router.replace('/mood-selection')} style={styles.refreshBtn}>
-            <Feather name="refresh-cw" size={18} color={colors.primary} />
-          </TouchableOpacity>
-        }
-      />
-      <StepIndicator currentStep={3} />
-
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-
-        <View style={[styles.conditionBanner, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
-          <View style={styles.conditionBannerTop}>
-            <Text style={[styles.conditionLabel, { color: colors.mutedForeground }]}>선택한 조건</Text>
-            <TouchableOpacity onPress={handleEditConditions} style={styles.editBtn}>
-              <Feather name="sliders" size={12} color={colors.primary} />
-              <Text style={[styles.editBtnText, { color: colors.primary }]}>조건 수정</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={[styles.conditionText, { color: colors.foreground }]} numberOfLines={2}>
-            {conditionParts.join(' · ')}
-          </Text>
-          {showLocationChip && locationChipLabel && (
-            <View style={styles.locationChipRow}>
-              <View style={[styles.locationChip, { backgroundColor: '#EDE9FE', borderColor: '#C4B5FD' }]}>
-                <Feather name="navigation" size={11} color="#5B21B6" />
-                <Text style={styles.locationChipText}>{locationChipLabel}</Text>
-              </View>
-            </View>
-          )}
-        </View>
-
-        <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
-            오늘을 위한 장소를 세 곳 골랐어요
-          </Text>
-          <Text style={[styles.sectionSub, { color: colors.mutedForeground }]}>
-            가장 닮은 장면 · 비슷한 대안 · 오늘 가기 편한 곳
-          </Text>
-        </View>
-
-        {recommendations.map((card) => (
-          <PlaceCard
-            key={card.place.place_id}
-            card={card}
-            onPress={() => handleCardPress(card)}
-          />
-        ))}
-
-        <TouchableOpacity
-          style={[styles.reRecommendBtn, { backgroundColor: colors.primary + '12', borderColor: colors.primary + '40' }]}
-          onPress={handleReRecommend}
-          disabled={isRecommending}
-          activeOpacity={0.75}
-        >
-          <Feather name="zap" size={14} color={colors.primary} />
-          <Text style={[styles.reRecommendText, { color: colors.primary }]}>
-            {isRecommending ? '다른 장소를 찾는 중…' : '이 감성으로 다시 추천'}
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.retryBtn, { borderColor: colors.border }]}
-          onPress={() => router.replace('/mood-selection')}
-        >
-          <Text style={[styles.retryText, { color: colors.mutedForeground }]}>다른 감성으로 다시 찾기</Text>
-        </TouchableOpacity>
-
-        <View style={styles.spacer} />
-      </ScrollView>
-    </View>
-  );
+  const router = useRouter(); const insets = useSafeAreaInsets(); const { recommendationSession, travelPreferences, origin, setCourse, setPendingAttempt } = useApp();
+  const [cards, setCards] = useState(recommendationSession?.cards ?? []); const [detailCard, setDetailCard] = useState<RecommendationCardResponse | null>(null); const [dislikeCard, setDislikeCard] = useState<RecommendationCardResponse | null>(null); const [busy, setBusy] = useState<string | null>(null);
+  const fallbackCards = useMemo(() => showcasePlaces.map((p, i) => ({ placeId: p.id, name: p.name, region: p.area, imageUrl: null, rank: i + 1, role: ["BEST_SCENE","SAME_MOOD_ALTERNATIVE","CONDITION_FIT_ALTERNATIVE"][i], score: p.match, scoreSummary: null, scoreDetails: null, routeInfo: null, reason: p.kicker, reasons: [p.description], cautions: [], bestSeasons: [], seasonBadge: null, crowd: { level: "unknown", label: null, concentrationRate: null, baseDate: null, source: "fallback" }, bookmarked: false, feedback: null } as RecommendationCardResponse)), []);
+  const visibleCards = cards.length ? cards : fallbackCards;
+  const update = (id: string, patch: Partial<RecommendationCardResponse>) => setCards((prev) => prev.map((c) => c.placeId === id ? { ...c, ...patch } : c));
+  const toggleBookmark = async (card: RecommendationCardResponse) => { setBusy(`bookmark-${card.placeId}`); try { card.bookmarked ? await deleteBookmark(card.placeId) : await saveBookmark({ placeId: card.placeId }); update(card.placeId, { bookmarked: !card.bookmarked }); } catch { Alert.alert("저장하지 못했어요", "로그인 상태와 네트워크를 확인해주세요."); } finally { setBusy(null); } };
+  const like = async (card: RecommendationCardResponse) => { if (!recommendationSession) return; setBusy(`like-${card.placeId}`); try { await putRecommendationFeedback(recommendationSession.recommendationId, card.placeId, { type: "LIKE" }); update(card.placeId, { feedback: "LIKE" }); } finally { setBusy(null); } };
+  const dislike = async (code: FeedbackRequestReasonCode) => { if (!recommendationSession || !dislikeCard) return; setBusy(`dislike-${dislikeCard.placeId}`); try { await putRecommendationFeedback(recommendationSession.recommendationId, dislikeCard.placeId, { type: "DISLIKE", reasonCode: code }); update(dislikeCard.placeId, { feedback: "DISLIKE" }); setDislikeCard(null); } finally { setBusy(null); } };
+  const buildCourse = async (card: RecommendationCardResponse) => { setBusy(`course-${card.placeId}`); try { const response = await recommendCourse({ recommendationId: recommendationSession?.recommendationId, selectedPlaceId: card.placeId, primaryTheme: "바다·해안 무드", companionType: travelPreferences?.companion, travelPurpose: travelPreferences?.purpose === "사진 위주" ? "사진·포토스팟" : travelPreferences?.purpose === "조용한 휴식" || travelPreferences?.purpose === "가볍게 산책" ? "산책·힐링" : "체험·액티비티", transportType: travelPreferences?.transport }); setCourse(response.data); router.push("/map" as never); } catch { Alert.alert("코스를 만들지 못했어요", "잠시 후 다시 시도해주세요."); } finally { setBusy(null); } };
+  const reroll = () => { if (!recommendationSession) return; setPendingAttempt(buildRecommendationAttempt({ selection: recommendationSession.initialSelection, preferences: travelPreferences ?? recommendationSession.conditions.preferences, origin: origin ?? recommendationSession.conditions.origin, rerollOfRecommendationId: recommendationSession.recommendationId, excludeIds: visibleCards.map((c) => c.placeId) })); router.replace("/analyzing"); };
+  return <View style={[styles.screen, { paddingTop: insets.top }]}><ScreenHeader title="추천 결과" right={<Pressable accessibilityLabel="추천 공유" onPress={() => Share.share({ message: `GOAT 추천 ${visibleCards.map((c) => c.name).join(", ")}` })} style={styles.iconButton}><BrandIcon name="share"/></Pressable>}/>
+    <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 40 }} showsVerticalScrollIndicator={false}>
+      <View style={styles.intro}><Text style={styles.title}>당신의 마음과 닮은{`\n`}세 곳을 찾았어요.</Text><Text style={styles.desc}>{recommendationSession?.originNotice ?? "감성과 이동 조건을 함께 비교했어요."}</Text></View>
+      <View style={styles.list}>{visibleCards.map((card, index) => { const local = showcasePlaces[index % showcasePlaces.length]; const route = card.routeInfo; const crowd = card.crowd.level === "unknown" ? "혼잡 정보 없음" : card.crowd.label ?? card.crowd.level; return <View key={card.placeId} style={styles.card}>
+        <Pressable onPress={() => router.push(`/detail/${card.placeId}` as never)} style={styles.photoArea}><Image source={card.imageUrl ? { uri: card.imageUrl } : local.image} style={StyleSheet.absoluteFillObject} contentFit="cover"/><View style={styles.scrim}/><View style={styles.rank}><Text style={styles.rankText}>0{card.rank}</Text><Text style={styles.role}>{roleLabel(card.role)}</Text></View><Pressable accessibilityLabel={`${card.name} 저장`} disabled={busy === `bookmark-${card.placeId}`} onPress={() => toggleBookmark(card)} style={styles.save}><BrandIcon name="bookmark" color={palette.white} filled={card.bookmarked}/></Pressable><View style={styles.cardCopy}><Text style={styles.area}>{card.region}</Text><Text style={styles.name}>{card.name}</Text><Text style={styles.reason} numberOfLines={2}>{card.reason}</Text></View><View style={styles.match}><Text style={styles.matchNumber}>{Math.round(card.score)}</Text><Text style={styles.matchLabel}>MATCH</Text></View></Pressable>
+        <View style={styles.metaRow}><Meta icon="transport" text={route ? `${route.distanceKm.toFixed(1)}km${route.durationMin ? ` · ${route.durationMin}분` : ""}${route.estimated ? " 예상" : ""}` : "거리 정보 없음"}/><Meta icon="crowd" text={crowd}/></View>
+        {card.cautions.length > 0 && <View style={styles.caution}><BrandIcon name="warning" size={17} color={palette.error}/><Text style={styles.cautionText} numberOfLines={2}>{card.cautions.join(" · ")}</Text></View>}
+        <View style={styles.actions}><Pressable onPress={() => setDetailCard(card)} style={styles.reasonButton}><Text style={styles.reasonButtonText}>왜 추천됐나요?</Text></Pressable><Pressable accessibilityLabel="좋아요" onPress={() => like(card)} style={styles.smallAction}><BrandIcon name="like" size={19} filled={card.feedback === "LIKE"}/></Pressable><Pressable accessibilityLabel="싫어요" onPress={() => setDislikeCard(card)} style={styles.smallAction}><BrandIcon name="dislike" size={19} filled={card.feedback === "DISLIKE"}/></Pressable><Pressable accessibilityLabel="하루 코스 만들기" onPress={() => buildCourse(card)} style={styles.smallAction}><BrandIcon name="course" size={19}/></Pressable></View>
+      </View>; })}</View>
+      <View style={styles.footer}><PrimaryButton label="다른 세 곳 추천" icon="refresh" onPress={reroll}/><PrimaryButton label="감성 다시 고르기" variant="outline" onPress={() => router.replace("/mood-selection")}/></View>
+    </ScrollView>
+    <Modal visible={Boolean(detailCard)} transparent animationType="fade" onRequestClose={() => setDetailCard(null)}><Pressable style={styles.backdrop} onPress={() => setDetailCard(null)}><Pressable style={styles.sheet} onPress={(e) => e.stopPropagation()}><View style={styles.sheetHead}><Text style={styles.sheetTitle}>추천 근거</Text><Pressable onPress={() => setDetailCard(null)} style={styles.iconButton}><BrandIcon name="close"/></Pressable></View>{detailCard?.reasons.map((reason) => <View key={reason} style={styles.reasonLine}><BrandIcon name="check" size={17}/><Text style={styles.sheetText}>{reason}</Text></View>)}</Pressable></Pressable></Modal>
+    <Modal visible={Boolean(dislikeCard)} transparent animationType="slide" onRequestClose={() => setDislikeCard(null)}><Pressable style={styles.backdrop} onPress={() => setDislikeCard(null)}><Pressable style={styles.sheet} onPress={(e) => e.stopPropagation()}><Text style={styles.sheetTitle}>어떤 점이 아쉬웠나요?</Text><View style={styles.reasonOptions}>{reasonOptions.map((option) => <Pressable key={option.code} onPress={() => dislike(option.code)} style={styles.reasonOption}><Text style={styles.reasonOptionText}>{option.label}</Text><BrandIcon name="arrow-right" size={17}/></Pressable>)}</View></Pressable></Pressable></Modal>
+  </View>;
 }
-
-const styles = StyleSheet.create({
-  root: { flex: 1 },
-  scroll: { paddingHorizontal: 20, paddingTop: 0, paddingBottom: 32 },
-
-  conditionBanner: {
-    borderRadius: 14,
-    borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginBottom: 20,
-    gap: 4,
-  },
-  conditionBannerTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 2,
-  },
-  conditionLabel: {
-    fontSize: 11,
-    fontFamily: 'Inter_500Medium',
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
-  },
-  editBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-  },
-  editBtnText: { fontSize: 12, fontFamily: 'Inter_600SemiBold' },
-  conditionText: {
-    fontSize: 14,
-    fontFamily: 'Inter_600SemiBold',
-    lineHeight: 20,
-  },
-  locationChipRow: { flexDirection: 'row', marginTop: 6 },
-  locationChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 9,
-    paddingVertical: 4,
-    borderRadius: 7,
-    borderWidth: 1,
-  },
-  locationChipText: {
-    fontSize: 11,
-    fontFamily: 'Inter_600SemiBold',
-    color: '#5B21B6',
-  },
-
-  sectionHeader: { marginBottom: 16 },
-  sectionTitle: { fontSize: 18, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 4 },
-  sectionSub: { fontSize: 13, fontFamily: 'Inter_400Regular', lineHeight: 19 },
-
-  reRecommendBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 7,
-    paddingVertical: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    marginTop: 4,
-    marginBottom: 8,
-  },
-  reRecommendText: { fontSize: 14, fontFamily: 'Inter_600SemiBold' },
-
-  retryBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    marginTop: 0,
-  },
-  retryText: { fontSize: 14, fontFamily: 'Inter_500Medium' },
-  refreshBtn: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
-  spacer: { height: 20 },
-});
+function roleLabel(role: RecommendationCardResponse["role"]) { return role === "BEST_SCENE" ? "장면 최적" : role === "SAME_MOOD_ALTERNATIVE" ? "같은 분위기 대안" : "조건 맞춤"; }
+function Meta({ icon, text }: { icon: "transport" | "crowd"; text: string }) { return <View style={styles.meta}><BrandIcon name={icon} size={16} color={palette.forestSoft}/><Text style={styles.metaText}>{text}</Text></View>; }
+const styles = StyleSheet.create({ screen: { flex: 1, backgroundColor: palette.ivory }, iconButton: { width: 44, height: 44, alignItems: "center", justifyContent: "center" }, intro: { padding: 22, paddingBottom: 18 }, title: { fontFamily: fonts.serif, fontSize: 29, lineHeight: 41, letterSpacing: -1.2, color: palette.ink }, desc: { marginTop: 10, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.muted }, list: { paddingHorizontal: 16, gap: 16 }, card: { borderRadius: radius.lg, overflow: "hidden", backgroundColor: palette.paper }, photoArea: { height: 330, overflow: "hidden" }, scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(7,29,24,.32)" }, rank: { position: "absolute", top: 18, left: 18 }, rankText: { fontFamily: fonts.serifRegular, fontSize: 31, color: palette.white }, role: { fontFamily: fonts.medium, fontSize: 10, color: palette.white }, save: { position: "absolute", right: 14, top: 14, width: 44, height: 44, borderRadius: 22, backgroundColor: "rgba(8,34,28,.42)", alignItems: "center", justifyContent: "center" }, cardCopy: { position: "absolute", left: 20, right: 82, bottom: 20 }, area: { fontFamily: fonts.medium, fontSize: 11, color: "rgba(255,255,255,.78)" }, name: { marginTop: 4, fontFamily: fonts.serif, fontSize: 24, color: palette.white }, reason: { marginTop: 7, fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: palette.white }, match: { position: "absolute", right: 18, bottom: 22, alignItems: "center" }, matchNumber: { fontFamily: fonts.serifRegular, fontSize: 29, color: palette.white }, matchLabel: { fontFamily: fonts.bold, fontSize: 7, letterSpacing: 1, color: palette.white }, metaRow: { flexDirection: "row", padding: 14, gap: 10 }, meta: { flex: 1, flexDirection: "row", alignItems: "center", gap: 6 }, metaText: { flex: 1, fontFamily: fonts.medium, fontSize: 11, color: palette.muted }, caution: { marginHorizontal: 14, padding: 11, borderRadius: 10, backgroundColor: "#F7E9E5", flexDirection: "row", gap: 8 }, cautionText: { flex: 1, fontFamily: fonts.body, fontSize: 11, lineHeight: 17, color: palette.error }, actions: { padding: 12, flexDirection: "row", alignItems: "center", gap: 7 }, reasonButton: { flex: 1, minHeight: 44, justifyContent: "center" }, reasonButtonText: { fontFamily: fonts.semibold, fontSize: 12, color: palette.forest, textDecorationLine: "underline" }, smallAction: { width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", backgroundColor: palette.sage }, footer: { padding: 24, gap: 10 }, backdrop: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(9,30,25,.48)" }, sheet: { borderTopLeftRadius: 22, borderTopRightRadius: 22, backgroundColor: palette.paper, padding: 22, paddingBottom: 38 }, sheetHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, sheetTitle: { fontFamily: fonts.serif, fontSize: 21, color: palette.ink, marginBottom: 14 }, reasonLine: { flexDirection: "row", gap: 9, marginBottom: 11 }, sheetText: { flex: 1, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.ink }, reasonOptions: { gap: 4 }, reasonOption: { minHeight: 52, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomWidth: StyleSheet.hairlineWidth, borderColor: palette.line }, reasonOptionText: { fontFamily: fonts.medium, fontSize: 14, color: palette.ink } });

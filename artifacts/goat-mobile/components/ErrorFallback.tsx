@@ -1,4 +1,4 @@
-import { Feather } from "@expo/vector-icons";
+import { BrandIcon as Feather } from "@/src/components/BrandIcon";
 import { reloadAppAsync } from "expo";
 import React, { useState } from "react";
 import {

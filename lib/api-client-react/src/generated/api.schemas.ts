@@ -28,8 +28,47 @@ export interface KtoProxyError {
   error: string;
 }
 
+export type MoodId = (typeof MoodId)[keyof typeof MoodId];
+
+export const MoodId = {
+  'sea-coast': 'sea-coast',
+  'japan-alley': 'japan-alley',
+  'alps-ranch': 'alps-ranch',
+  'forest-garden-rest': 'forest-garden-rest',
+  'retro-market-harbor': 'retro-market-harbor',
+  'architecture-exhibit-landmark': 'architecture-exhibit-landmark',
+  'resort-cafe-exotic': 'resort-cafe-exotic',
+} as const;
+
+export type ReferenceCardId =
+  (typeof ReferenceCardId)[keyof typeof ReferenceCardId];
+
+export const ReferenceCardId = {
+  REF_SEA_01: 'REF_SEA_01',
+  REF_SEA_02: 'REF_SEA_02',
+  REF_SEA_03: 'REF_SEA_03',
+  REF_JP_01: 'REF_JP_01',
+  REF_JP_02: 'REF_JP_02',
+  REF_JP_03: 'REF_JP_03',
+  REF_ALPS_01: 'REF_ALPS_01',
+  REF_ALPS_02: 'REF_ALPS_02',
+  REF_ALPS_03: 'REF_ALPS_03',
+  REF_NATURE_01: 'REF_NATURE_01',
+  REF_NATURE_02: 'REF_NATURE_02',
+  REF_NATURE_03: 'REF_NATURE_03',
+  REF_RETRO_01: 'REF_RETRO_01',
+  REF_RETRO_02: 'REF_RETRO_02',
+  REF_RETRO_03: 'REF_RETRO_03',
+  REF_ARCH_01: 'REF_ARCH_01',
+  REF_ARCH_02: 'REF_ARCH_02',
+  REF_ARCH_03: 'REF_ARCH_03',
+  REF_RESORT_01: 'REF_RESORT_01',
+  REF_RESORT_02: 'REF_RESORT_02',
+  REF_RESORT_03: 'REF_RESORT_03',
+} as const;
+
 export interface Mood {
-  id: string;
+  id: MoodId;
   name: string;
   description: string;
   keywords: string[];
@@ -43,8 +82,8 @@ export type MoodsSuccessResponse = ApiSuccessBase & {
   data: MoodsData;
 };
 
-export type TravelPreferencesCompanion = typeof TravelPreferencesCompanion[keyof typeof TravelPreferencesCompanion];
-
+export type TravelPreferencesCompanion =
+  (typeof TravelPreferencesCompanion)[keyof typeof TravelPreferencesCompanion];
 
 export const TravelPreferencesCompanion = {
   혼자: '혼자',
@@ -53,8 +92,8 @@ export const TravelPreferencesCompanion = {
   가족: '가족',
 } as const;
 
-export type TravelPreferencesTransport = typeof TravelPreferencesTransport[keyof typeof TravelPreferencesTransport];
-
+export type TravelPreferencesTransport =
+  (typeof TravelPreferencesTransport)[keyof typeof TravelPreferencesTransport];
 
 export const TravelPreferencesTransport = {
   자차: '자차',
@@ -65,8 +104,9 @@ export const TravelPreferencesTransport = {
 /**
  * @nullable
  */
-export type TravelPreferencesVisitTime = typeof TravelPreferencesVisitTime[keyof typeof TravelPreferencesVisitTime] | null;
-
+export type TravelPreferencesVisitTime =
+  | (typeof TravelPreferencesVisitTime)[keyof typeof TravelPreferencesVisitTime]
+  | null;
 
 export const TravelPreferencesVisitTime = {
   새벽: '새벽',
@@ -79,8 +119,8 @@ export const TravelPreferencesVisitTime = {
   '밤/새벽': '밤/새벽',
 } as const;
 
-export type TravelPreferencesPurpose = typeof TravelPreferencesPurpose[keyof typeof TravelPreferencesPurpose];
-
+export type TravelPreferencesPurpose =
+  (typeof TravelPreferencesPurpose)[keyof typeof TravelPreferencesPurpose];
 
 export const TravelPreferencesPurpose = {
   가볍게_산책: '가볍게 산책',
@@ -97,8 +137,8 @@ export interface TravelPreferences {
   purpose: TravelPreferencesPurpose;
 }
 
-export type TravelOriginType = typeof TravelOriginType[keyof typeof TravelOriginType];
-
+export type TravelOriginType =
+  (typeof TravelOriginType)[keyof typeof TravelOriginType];
 
 export const TravelOriginType = {
   current: 'current',
@@ -110,24 +150,24 @@ export const TravelOriginType = {
 export interface TravelOrigin {
   type: TravelOriginType;
   /**
-     * @minimum -90
-     * @maximum 90
-     */
+   * @minimum -90
+   * @maximum 90
+   */
   latitude?: number;
   /**
-     * @minimum -180
-     * @maximum 180
-     */
+   * @minimum -180
+   * @maximum 180
+   */
   longitude?: number;
   /**
-     * @minLength 1
-     * @maxLength 200
-     */
+   * @minLength 1
+   * @maxLength 200
+   */
   regionName?: string;
 }
 
-export type RecommendFromTagsRequestTravelPurpose = typeof RecommendFromTagsRequestTravelPurpose[keyof typeof RecommendFromTagsRequestTravelPurpose];
-
+export type RecommendFromTagsRequestTravelPurpose =
+  (typeof RecommendFromTagsRequestTravelPurpose)[keyof typeof RecommendFromTagsRequestTravelPurpose];
 
 export const RecommendFromTagsRequestTravelPurpose = {
   '사진·포토스팟': '사진·포토스팟',
@@ -139,8 +179,8 @@ export const RecommendFromTagsRequestTravelPurpose = {
   '숙소·리조트': '숙소·리조트',
 } as const;
 
-export type RecommendFromTagsRequestTransportType = typeof RecommendFromTagsRequestTransportType[keyof typeof RecommendFromTagsRequestTransportType];
-
+export type RecommendFromTagsRequestTransportType =
+  (typeof RecommendFromTagsRequestTransportType)[keyof typeof RecommendFromTagsRequestTransportType];
 
 export const RecommendFromTagsRequestTransportType = {
   자차: '자차',
@@ -148,8 +188,8 @@ export const RecommendFromTagsRequestTransportType = {
   도보중심: '도보중심',
 } as const;
 
-export type RecommendFromTagsRequestVisitTime = typeof RecommendFromTagsRequestVisitTime[keyof typeof RecommendFromTagsRequestVisitTime];
-
+export type RecommendFromTagsRequestVisitTime =
+  (typeof RecommendFromTagsRequestVisitTime)[keyof typeof RecommendFromTagsRequestVisitTime];
 
 export const RecommendFromTagsRequestVisitTime = {
   새벽: '새벽',
@@ -169,9 +209,9 @@ export interface RecommendFromTagsRequest {
   transportType?: RecommendFromTagsRequestTransportType;
   visitTime?: RecommendFromTagsRequestVisitTime;
   /**
-     * @minimum 1
-     * @maximum 12
-     */
+   * @minimum 1
+   * @maximum 12
+   */
   currentMonth?: number;
   debug?: boolean;
   preferences?: TravelPreferences;
@@ -180,8 +220,8 @@ export interface RecommendFromTagsRequest {
   excludeIds?: string[];
 }
 
-export type CreateRecommendationRequestTravelPurpose = typeof CreateRecommendationRequestTravelPurpose[keyof typeof CreateRecommendationRequestTravelPurpose];
-
+export type CreateRecommendationRequestTravelPurpose =
+  (typeof CreateRecommendationRequestTravelPurpose)[keyof typeof CreateRecommendationRequestTravelPurpose];
 
 export const CreateRecommendationRequestTravelPurpose = {
   '사진·포토스팟': '사진·포토스팟',
@@ -193,8 +233,8 @@ export const CreateRecommendationRequestTravelPurpose = {
   '숙소·리조트': '숙소·리조트',
 } as const;
 
-export type CreateRecommendationRequestTransportType = typeof CreateRecommendationRequestTransportType[keyof typeof CreateRecommendationRequestTransportType];
-
+export type CreateRecommendationRequestTransportType =
+  (typeof CreateRecommendationRequestTransportType)[keyof typeof CreateRecommendationRequestTransportType];
 
 export const CreateRecommendationRequestTransportType = {
   자차: '자차',
@@ -202,8 +242,8 @@ export const CreateRecommendationRequestTransportType = {
   도보중심: '도보중심',
 } as const;
 
-export type CreateRecommendationRequestVisitTime = typeof CreateRecommendationRequestVisitTime[keyof typeof CreateRecommendationRequestVisitTime];
-
+export type CreateRecommendationRequestVisitTime =
+  (typeof CreateRecommendationRequestVisitTime)[keyof typeof CreateRecommendationRequestVisitTime];
 
 export const CreateRecommendationRequestVisitTime = {
   새벽: '새벽',
@@ -214,18 +254,23 @@ export const CreateRecommendationRequestVisitTime = {
   야간: '야간',
 } as const;
 
-export interface CreateRecommendationRequest {
-  /** @minLength 1 */
-  moodId?: string;
-  /** @minLength 1 */
-  referenceCardId?: string;
+export type CreateRecommendationRequest = (
+  | {
+      moodId: MoodId;
+      referenceCardId?: never;
+    }
+  | {
+      referenceCardId: ReferenceCardId;
+      moodId?: never;
+    }
+) & {
   travelPurpose?: CreateRecommendationRequestTravelPurpose;
   transportType?: CreateRecommendationRequestTransportType;
   visitTime?: CreateRecommendationRequestVisitTime;
   /**
-     * @minimum 1
-     * @maximum 12
-     */
+   * @minimum 1
+   * @maximum 12
+   */
   currentMonth?: number;
   debug?: boolean;
   preferences?: TravelPreferences;
@@ -233,18 +278,18 @@ export interface CreateRecommendationRequest {
   rerollOfRecommendationId?: string;
   /** @maxItems 61 */
   excludeIds?: string[];
-}
+};
 
 export interface GeocodeOriginRequest {
   /**
-     * @minLength 2
-     * @maxLength 120
-     */
+   * @minLength 2
+   * @maxLength 120
+   */
   query: string;
 }
 
-export type GeocodeOriginDataSource = typeof GeocodeOriginDataSource[keyof typeof GeocodeOriginDataSource];
-
+export type GeocodeOriginDataSource =
+  (typeof GeocodeOriginDataSource)[keyof typeof GeocodeOriginDataSource];
 
 export const GeocodeOriginDataSource = {
   ADDRESS: 'ADDRESS',
@@ -261,8 +306,8 @@ export type GeocodeOriginSuccessResponse = ApiSuccessBase & {
   data: GeocodeOriginData;
 };
 
-export type RecommendCourseRequestPrimaryTheme = typeof RecommendCourseRequestPrimaryTheme[keyof typeof RecommendCourseRequestPrimaryTheme];
-
+export type RecommendCourseRequestPrimaryTheme =
+  (typeof RecommendCourseRequestPrimaryTheme)[keyof typeof RecommendCourseRequestPrimaryTheme];
 
 export const RecommendCourseRequestPrimaryTheme = {
   '바다·해안_무드': '바다·해안 무드',
@@ -274,8 +319,8 @@ export const RecommendCourseRequestPrimaryTheme = {
   '휴양·카페·이국공간_무드': '휴양·카페·이국공간 무드',
 } as const;
 
-export type RecommendCourseRequestCompanionType = typeof RecommendCourseRequestCompanionType[keyof typeof RecommendCourseRequestCompanionType];
-
+export type RecommendCourseRequestCompanionType =
+  (typeof RecommendCourseRequestCompanionType)[keyof typeof RecommendCourseRequestCompanionType];
 
 export const RecommendCourseRequestCompanionType = {
   혼자: '혼자',
@@ -284,8 +329,8 @@ export const RecommendCourseRequestCompanionType = {
   가족: '가족',
 } as const;
 
-export type RecommendCourseRequestTravelPurpose = typeof RecommendCourseRequestTravelPurpose[keyof typeof RecommendCourseRequestTravelPurpose];
-
+export type RecommendCourseRequestTravelPurpose =
+  (typeof RecommendCourseRequestTravelPurpose)[keyof typeof RecommendCourseRequestTravelPurpose];
 
 export const RecommendCourseRequestTravelPurpose = {
   '사진·포토스팟': '사진·포토스팟',
@@ -297,8 +342,8 @@ export const RecommendCourseRequestTravelPurpose = {
   '숙소·리조트': '숙소·리조트',
 } as const;
 
-export type RecommendCourseRequestTransportType = typeof RecommendCourseRequestTransportType[keyof typeof RecommendCourseRequestTransportType];
-
+export type RecommendCourseRequestTransportType =
+  (typeof RecommendCourseRequestTransportType)[keyof typeof RecommendCourseRequestTransportType];
 
 export const RecommendCourseRequestTransportType = {
   자차: '자차',
@@ -319,26 +364,26 @@ export interface RecommendCourseRequest {
   travelPurpose?: RecommendCourseRequestTravelPurpose;
   transportType?: RecommendCourseRequestTransportType;
   /**
-     * @minimum 100
-     * @maximum 20000
-     */
+   * @minimum 100
+   * @maximum 20000
+   */
   radiusMeters?: number;
   /**
-     * @minimum 1
-     * @maximum 20
-     */
+   * @minimum 1
+   * @maximum 20
+   */
   maxCandidatesForLlm?: number;
   forceRuleBasedFallback?: boolean;
   /**
-     * @minLength 1
-     * @maxLength 120
-     */
+   * @minLength 1
+   * @maxLength 120
+   */
   llmModel?: string;
   debug?: boolean;
 }
 
-export type PlaceDataStatus = typeof PlaceDataStatus[keyof typeof PlaceDataStatus];
-
+export type PlaceDataStatus =
+  (typeof PlaceDataStatus)[keyof typeof PlaceDataStatus];
 
 export const PlaceDataStatus = {
   confirmed: 'confirmed',
@@ -387,9 +432,9 @@ export interface RecommendationThemeScoreDetail {
   placeTheme: string;
   matched: boolean;
   /**
-     * @minimum 0
-     * @maximum 18
-     */
+   * @minimum 0
+   * @maximum 18
+   */
   score: number;
 }
 
@@ -398,9 +443,9 @@ export interface RecommendationPurposeScoreDetail {
   placePurposeTags: string[];
   matched: boolean;
   /**
-     * @minimum 0
-     * @maximum 20
-     */
+   * @minimum 0
+   * @maximum 20
+   */
   score: number;
 }
 
@@ -408,16 +453,16 @@ export interface RecommendationAccessibilityScoreDetail {
   transportType?: string;
   grade?: string;
   /**
-     * @minimum 0
-     * @maximum 12
-     */
+   * @minimum 0
+   * @maximum 12
+   */
   score: number;
   inferred?: boolean;
   note?: string;
 }
 
-export type RecommendationSeasonScoreDetailMatchType = typeof RecommendationSeasonScoreDetailMatchType[keyof typeof RecommendationSeasonScoreDetailMatchType];
-
+export type RecommendationSeasonScoreDetailMatchType =
+  (typeof RecommendationSeasonScoreDetailMatchType)[keyof typeof RecommendationSeasonScoreDetailMatchType];
 
 export const RecommendationSeasonScoreDetailMatchType = {
   current: 'current',
@@ -431,9 +476,9 @@ export interface RecommendationSeasonScoreDetail {
   placeSeasonTags: string[];
   matchType: RecommendationSeasonScoreDetailMatchType;
   /**
-     * @minimum 0
-     * @maximum 13
-     */
+   * @minimum 0
+   * @maximum 13
+   */
   score: number;
 }
 
@@ -442,64 +487,64 @@ export interface RecommendationSeasonScoreDetail {
  */
 export interface RecommendationScoreSummary {
   /**
-     * @minimum 0
-     * @maximum 45
-     */
+   * @minimum 0
+   * @maximum 45
+   */
   moodScore: number;
   /**
-     * @minimum 0
-     * @maximum 45
-     */
+   * @minimum 0
+   * @maximum 45
+   */
   conditionScore: number;
   /**
-     * @minimum 0
-     * @maximum 90
-     */
+   * @minimum 0
+   * @maximum 90
+   */
   baseScore: number;
   /**
-     * @minimum 0
-     * @maximum 10
-     */
+   * @minimum 0
+   * @maximum 10
+   */
   originDistanceBonus: number;
   /**
-     * @minimum 0
-     * @maximum 10
-     */
+   * @minimum 0
+   * @maximum 10
+   */
   routeDistanceBonus: number;
   /**
-     * @minimum 0
-     * @maximum 6
-     */
+   * @minimum 0
+   * @maximum 6
+   */
   duplicatePenalty: number;
   /**
-     * @minimum 0
-     * @maximum 5
-     */
+   * @minimum 0
+   * @maximum 5
+   */
   exposurePenalty: number;
   /**
-     * @minimum 0
-     * @maximum 3
-     */
+   * @minimum 0
+   * @maximum 3
+   */
   coverageBoost: number;
   /**
-     * @minimum 0
-     * @maximum 3
-     */
+   * @minimum 0
+   * @maximum 3
+   */
   lowExposureBoost: number;
   /**
-     * @minimum -11
-     * @maximum 116
-     */
+   * @minimum -11
+   * @maximum 116
+   */
   selectionScore: number;
   /**
-     * @minimum 0
-     * @maximum 100
-     */
+   * @minimum 0
+   * @maximum 100
+   */
   displayScore: number;
 }
 
-export type RecommendationDistanceScoreDetailSource = typeof RecommendationDistanceScoreDetailSource[keyof typeof RecommendationDistanceScoreDetailSource];
-
+export type RecommendationDistanceScoreDetailSource =
+  (typeof RecommendationDistanceScoreDetailSource)[keyof typeof RecommendationDistanceScoreDetailSource];
 
 export const RecommendationDistanceScoreDetailSource = {
   KAKAO_ROUTE: 'KAKAO_ROUTE',
@@ -509,20 +554,20 @@ export const RecommendationDistanceScoreDetailSource = {
 
 export interface RecommendationDistanceScoreDetail {
   /**
-     * @minimum 0
-     * @nullable
-     */
+   * @minimum 0
+   * @nullable
+   */
   distanceKm: number | null;
   /**
-     * @minimum 0
-     * @nullable
-     */
+   * @minimum 0
+   * @nullable
+   */
   durationMin?: number | null;
   source: RecommendationDistanceScoreDetailSource;
   /**
-     * @minimum 0
-     * @maximum 10
-     */
+   * @minimum 0
+   * @maximum 10
+   */
   bonus: number;
 }
 
@@ -564,18 +609,18 @@ export interface LegacyRecommendationScoreBreakdown {
 export type GoatMoodScoreBreakdownPlaceTypeHint = {
   matchedHints: string[];
   /**
-     * @minimum 0
-     * @maximum 3
-     */
+   * @minimum 0
+   * @maximum 3
+   */
   score: number;
   note: string;
 };
 
 export interface GoatMoodScoreBreakdown {
   /**
-     * @minimum 0
-     * @maximum 45
-     */
+   * @minimum 0
+   * @maximum 45
+   */
   total: number;
   theme: RecommendationThemeScoreDetail;
   moodTags: RecommendationMatchDetail;
@@ -585,25 +630,25 @@ export interface GoatMoodScoreBreakdown {
 
 export interface GoatConditionScoreBreakdown {
   /**
-     * @minimum 0
-     * @maximum 45
-     */
+   * @minimum 0
+   * @maximum 45
+   */
   total: number;
   purpose: RecommendationPurposeScoreDetail;
   accessibility: RecommendationAccessibilityScoreDetail;
   season: RecommendationSeasonScoreDetail;
 }
 
-export type GoatScoreBreakdownOriginDistanceSource = typeof GoatScoreBreakdownOriginDistanceSource[keyof typeof GoatScoreBreakdownOriginDistanceSource];
-
+export type GoatScoreBreakdownOriginDistanceSource =
+  (typeof GoatScoreBreakdownOriginDistanceSource)[keyof typeof GoatScoreBreakdownOriginDistanceSource];
 
 export const GoatScoreBreakdownOriginDistanceSource = {
   HAVERSINE: 'HAVERSINE',
   NONE: 'NONE',
 } as const;
 
-export type GoatScoreBreakdownRouteDistanceSource = typeof GoatScoreBreakdownRouteDistanceSource[keyof typeof GoatScoreBreakdownRouteDistanceSource];
-
+export type GoatScoreBreakdownRouteDistanceSource =
+  (typeof GoatScoreBreakdownRouteDistanceSource)[keyof typeof GoatScoreBreakdownRouteDistanceSource];
 
 export const GoatScoreBreakdownRouteDistanceSource = {
   KAKAO_ROUTE: 'KAKAO_ROUTE',
@@ -615,17 +660,17 @@ export interface GoatScoreBreakdown {
   moodScore: GoatMoodScoreBreakdown;
   conditionScore: GoatConditionScoreBreakdown;
   /**
-     * @minimum 0
-     * @maximum 90
-     */
+   * @minimum 0
+   * @maximum 90
+   */
   baseScore: number;
   /** @minimum 0 */
   originDistanceKm?: number;
   originDistanceSource?: GoatScoreBreakdownOriginDistanceSource;
   /**
-     * @minimum 0
-     * @maximum 10
-     */
+   * @minimum 0
+   * @maximum 10
+   */
   originDistanceBonus: number;
   /** @minimum 0 */
   routeDistanceKm?: number;
@@ -633,52 +678,51 @@ export interface GoatScoreBreakdown {
   routeDurationMin?: number;
   routeDistanceSource: GoatScoreBreakdownRouteDistanceSource;
   /**
-     * @minimum 0
-     * @maximum 10
-     */
+   * @minimum 0
+   * @maximum 10
+   */
   routeDistanceBonus: number;
   /**
-     * @minimum 0
-     * @maximum 6
-     */
+   * @minimum 0
+   * @maximum 6
+   */
   duplicatePenalty: number;
   /**
-     * @minimum 0
-     * @maximum 5
-     */
+   * @minimum 0
+   * @maximum 5
+   */
   exposurePenalty: number;
   /**
-     * @minimum 0
-     * @maximum 3
-     */
+   * @minimum 0
+   * @maximum 3
+   */
   coverageBoost: number;
   /**
-     * @minimum 0
-     * @maximum 3
-     */
+   * @minimum 0
+   * @maximum 3
+   */
   lowExposureBoost: number;
   /**
-     * @minimum -11
-     * @maximum 116
-     */
+   * @minimum -11
+   * @maximum 116
+   */
   selectionScore: number;
   /**
-     * @minimum 0
-     * @maximum 100
-     */
+   * @minimum 0
+   * @maximum 100
+   */
   displayScore: number;
 }
 
-export type RouteInfoFrom = typeof RouteInfoFrom[keyof typeof RouteInfoFrom];
-
+export type RouteInfoFrom = (typeof RouteInfoFrom)[keyof typeof RouteInfoFrom];
 
 export const RouteInfoFrom = {
   ORIGIN: 'ORIGIN',
   FIRST_CARD: 'FIRST_CARD',
 } as const;
 
-export type RouteInfoSource = typeof RouteInfoSource[keyof typeof RouteInfoSource];
-
+export type RouteInfoSource =
+  (typeof RouteInfoSource)[keyof typeof RouteInfoSource];
 
 export const RouteInfoSource = {
   KAKAO_ROUTE: 'KAKAO_ROUTE',
@@ -697,8 +741,8 @@ export interface RouteInfo {
   scoreApplied: boolean;
 }
 
-export type GoatRecommendationCardRole = typeof GoatRecommendationCardRole[keyof typeof GoatRecommendationCardRole];
-
+export type GoatRecommendationCardRole =
+  (typeof GoatRecommendationCardRole)[keyof typeof GoatRecommendationCardRole];
 
 export const GoatRecommendationCardRole = {
   BEST_SCENE: 'BEST_SCENE',
@@ -717,9 +761,9 @@ export type GoatRecommendationCardAccessibility = {
 
 export interface GoatRecommendationCard {
   /**
-     * @minimum 1
-     * @maximum 3
-     */
+   * @minimum 1
+   * @maximum 3
+   */
   rank: number;
   role: GoatRecommendationCardRole;
   roleLabel: string;
@@ -745,8 +789,8 @@ export interface GoatRecommendationCard {
   cautions: string[];
 }
 
-export type RecommendationRole = typeof RecommendationRole[keyof typeof RecommendationRole];
-
+export type RecommendationRole =
+  (typeof RecommendationRole)[keyof typeof RecommendationRole];
 
 export const RecommendationRole = {
   장면_최적: '장면 최적',
@@ -767,23 +811,23 @@ export interface Recommendation {
   routeInfo?: RouteInfo;
 }
 
-export type RecommendationsDataPoolPolicy = typeof RecommendationsDataPoolPolicy[keyof typeof RecommendationsDataPoolPolicy];
-
+export type RecommendationsDataPoolPolicy =
+  (typeof RecommendationsDataPoolPolicy)[keyof typeof RecommendationsDataPoolPolicy];
 
 export const RecommendationsDataPoolPolicy = {
   ALL61: 'ALL61',
   PRIMARY43: 'PRIMARY43',
 } as const;
 
-export type RecommendationsDataPolicyVersion = typeof RecommendationsDataPolicyVersion[keyof typeof RecommendationsDataPolicyVersion];
-
+export type RecommendationsDataPolicyVersion =
+  (typeof RecommendationsDataPolicyVersion)[keyof typeof RecommendationsDataPolicyVersion];
 
 export const RecommendationsDataPolicyVersion = {
   'goat-score-v2': 'goat-score-v2',
 } as const;
 
-export type RecommendationsDataOriginStatus = typeof RecommendationsDataOriginStatus[keyof typeof RecommendationsDataOriginStatus];
-
+export type RecommendationsDataOriginStatus =
+  (typeof RecommendationsDataOriginStatus)[keyof typeof RecommendationsDataOriginStatus];
 
 export const RecommendationsDataOriginStatus = {
   APPLIED: 'APPLIED',
@@ -799,23 +843,23 @@ export interface RecommendationsData {
   appliedTags: string[];
   seedPoolSize: 61;
   /**
-     * @minimum 0
-     * @maximum 61
-     */
+   * @minimum 0
+   * @maximum 61
+   */
   candidatePoolSize: number;
   poolPolicy: RecommendationsDataPoolPolicy;
   poolReason: string;
   fallbackUsed: boolean;
   adaptivePoolRetryUsed: boolean;
   /**
-     * @minItems 3
-     * @maxItems 3
-     */
+   * @minItems 3
+   * @maxItems 3
+   */
   recommendations: Recommendation[];
   /**
-     * @minItems 3
-     * @maxItems 3
-     */
+   * @minItems 3
+   * @maxItems 3
+   */
   cards?: GoatRecommendationCard[];
   alternatives?: GoatRecommendationCard[];
   warnings?: string[];
@@ -829,8 +873,8 @@ export type RecommendationsSuccessResponse = ApiSuccessBase & {
   data: RecommendationsData;
 };
 
-export type RecommendationCardResponseRole = typeof RecommendationCardResponseRole[keyof typeof RecommendationCardResponseRole];
-
+export type RecommendationCardResponseRole =
+  (typeof RecommendationCardResponseRole)[keyof typeof RecommendationCardResponseRole];
 
 export const RecommendationCardResponseRole = {
   BEST_SCENE: 'BEST_SCENE',
@@ -841,21 +885,24 @@ export const RecommendationCardResponseRole = {
 /**
  * @nullable
  */
-export type RecommendationCardResponseSeasonBadge = { [key: string]: unknown } | null;
+export type RecommendationCardResponseSeasonBadge = {
+  [key: string]: unknown;
+} | null;
 
 /**
  * @nullable
  */
-export type RecommendationCardResponseFeedback = typeof RecommendationCardResponseFeedback[keyof typeof RecommendationCardResponseFeedback] | null;
-
+export type RecommendationCardResponseFeedback =
+  | (typeof RecommendationCardResponseFeedback)[keyof typeof RecommendationCardResponseFeedback]
+  | null;
 
 export const RecommendationCardResponseFeedback = {
   LIKE: 'LIKE',
   DISLIKE: 'DISLIKE',
 } as const;
 
-export type VisitConcentrationLevel = typeof VisitConcentrationLevel[keyof typeof VisitConcentrationLevel];
-
+export type VisitConcentrationLevel =
+  (typeof VisitConcentrationLevel)[keyof typeof VisitConcentrationLevel];
 
 export const VisitConcentrationLevel = {
   low: 'low',
@@ -864,8 +911,8 @@ export const VisitConcentrationLevel = {
   unknown: 'unknown',
 } as const;
 
-export type VisitConcentrationSource = typeof VisitConcentrationSource[keyof typeof VisitConcentrationSource];
-
+export type VisitConcentrationSource =
+  (typeof VisitConcentrationSource)[keyof typeof VisitConcentrationSource];
 
 export const VisitConcentrationSource = {
   KTO_VISIT_CONCENTRATION: 'KTO_VISIT_CONCENTRATION',
@@ -890,15 +937,15 @@ export interface RecommendationCardResponse {
   /** @nullable */
   imageUrl: string | null;
   /**
-     * @minimum 1
-     * @maximum 3
-     */
+   * @minimum 1
+   * @maximum 3
+   */
   rank: number;
   role: RecommendationCardResponseRole;
   /**
-     * @minimum 0
-     * @maximum 100
-     */
+   * @minimum 0
+   * @maximum 100
+   */
   score: number;
   scoreSummary: RecommendationScoreSummary | null;
   scoreDetails: RecommendationScoreDetails | null;
@@ -918,16 +965,15 @@ export interface RecommendationCardResponse {
 /**
  * @nullable
  */
-export type RecommendationDataOriginStatus = typeof RecommendationDataOriginStatus[keyof typeof RecommendationDataOriginStatus] | null;
-
+export type RecommendationDataOriginStatus =
+  | (typeof RecommendationDataOriginStatus)[keyof typeof RecommendationDataOriginStatus]
+  | null;
 
 export const RecommendationDataOriginStatus = {
   APPLIED: 'APPLIED',
   SKIPPED: 'SKIPPED',
   UNAVAILABLE: 'UNAVAILABLE',
 } as const;
-
-export type RecommendationDataConditions = { [key: string]: unknown };
 
 /**
  * @nullable
@@ -941,11 +987,11 @@ export interface RecommendationData {
   originStatus: RecommendationDataOriginStatus;
   /** @nullable */
   originNotice: string | null;
-  conditions: RecommendationDataConditions;
+  conditions: CreateRecommendationRequest;
   /**
-     * @minItems 3
-     * @maxItems 3
-     */
+   * @minItems 3
+   * @maxItems 3
+   */
   cards: RecommendationCardResponse[];
   /** @nullable */
   course: RecommendationDataCourse;
@@ -990,8 +1036,8 @@ export type BookmarksSuccessResponse = ApiSuccessBase & {
   data: BookmarksSuccessResponseData;
 };
 
-export type FeedbackRequestType = typeof FeedbackRequestType[keyof typeof FeedbackRequestType];
-
+export type FeedbackRequestType =
+  (typeof FeedbackRequestType)[keyof typeof FeedbackRequestType];
 
 export const FeedbackRequestType = {
   LIKE: 'LIKE',
@@ -1001,8 +1047,9 @@ export const FeedbackRequestType = {
 /**
  * @nullable
  */
-export type FeedbackRequestReasonCode = typeof FeedbackRequestReasonCode[keyof typeof FeedbackRequestReasonCode] | null;
-
+export type FeedbackRequestReasonCode =
+  | (typeof FeedbackRequestReasonCode)[keyof typeof FeedbackRequestReasonCode]
+  | null;
 
 export const FeedbackRequestReasonCode = {
   TOO_FAR: 'TOO_FAR',
@@ -1018,9 +1065,9 @@ export interface FeedbackRequest {
   /** @nullable */
   reasonCode?: FeedbackRequestReasonCode;
   /**
-     * @maxLength 500
-     * @nullable
-     */
+   * @maxLength 500
+   * @nullable
+   */
   reasonText?: string | null;
 }
 
@@ -1030,8 +1077,8 @@ export type FeedbackSuccessResponse = ApiSuccessBase & {
   data: FeedbackSuccessResponseData;
 };
 
-export type CourseStopType = typeof CourseStopType[keyof typeof CourseStopType];
-
+export type CourseStopType =
+  (typeof CourseStopType)[keyof typeof CourseStopType];
 
 export const CourseStopType = {
   START_PLACE: 'START_PLACE',
@@ -1043,8 +1090,8 @@ export const CourseStopType = {
   ETC: 'ETC',
 } as const;
 
-export type CourseStopCategory = typeof CourseStopCategory[keyof typeof CourseStopCategory];
-
+export type CourseStopCategory =
+  (typeof CourseStopCategory)[keyof typeof CourseStopCategory];
 
 export const CourseStopCategory = {
   START_PLACE: 'START_PLACE',
@@ -1071,8 +1118,8 @@ export interface CourseStop {
   source?: string;
 }
 
-export type StaticMapResultProvider = typeof StaticMapResultProvider[keyof typeof StaticMapResultProvider];
-
+export type StaticMapResultProvider =
+  (typeof StaticMapResultProvider)[keyof typeof StaticMapResultProvider];
 
 export const StaticMapResultProvider = {
   KAKAO_JS_SDK_STATIC_MAP: 'KAKAO_JS_SDK_STATIC_MAP',
@@ -1089,24 +1136,24 @@ export interface StaticMapResult {
   reason?: string;
 }
 
-export type RecommendCourseDataStatus = typeof RecommendCourseDataStatus[keyof typeof RecommendCourseDataStatus];
-
+export type RecommendCourseDataStatus =
+  (typeof RecommendCourseDataStatus)[keyof typeof RecommendCourseDataStatus];
 
 export const RecommendCourseDataStatus = {
   DONE: 'DONE',
   FAILED: 'FAILED',
 } as const;
 
-export type RecommendCourseDataResultType = typeof RecommendCourseDataResultType[keyof typeof RecommendCourseDataResultType];
-
+export type RecommendCourseDataResultType =
+  (typeof RecommendCourseDataResultType)[keyof typeof RecommendCourseDataResultType];
 
 export const RecommendCourseDataResultType = {
   COURSE: 'COURSE',
   UNKNOWN: 'UNKNOWN',
 } as const;
 
-export type RecommendCourseDataMode = typeof RecommendCourseDataMode[keyof typeof RecommendCourseDataMode];
-
+export type RecommendCourseDataMode =
+  (typeof RecommendCourseDataMode)[keyof typeof RecommendCourseDataMode];
 
 export const RecommendCourseDataMode = {
   LLM_OPENROUTER: 'LLM_OPENROUTER',
@@ -1148,41 +1195,39 @@ export type PlaceSuccessResponse = ApiSuccessBase & {
 };
 
 export type GetRecentRecommendationsParams = {
-/**
- * @minimum 1
- * @maximum 20
- */
-limit?: number;
+  /**
+   * @minimum 1
+   * @maximum 20
+   */
+  limit?: number;
 };
 
 export type ProxyKtoParams = {
-/**
- * KTO path below https://apis.data.go.kr/B551011/
- */
-path: string;
-MobileOS?: string;
-MobileApp?: string;
-_type?: ProxyKto_Type;
-keyword?: string;
-contentId?: string;
-contentTypeId?: string;
-areaCode?: string;
-/**
- * @minimum 1
- */
-numOfRows?: number;
-/**
- * @minimum 1
- */
-pageNo?: number;
+  /**
+   * KTO path below https://apis.data.go.kr/B551011/
+   */
+  path: string;
+  MobileOS?: string;
+  MobileApp?: string;
+  _type?: ProxyKto_Type;
+  keyword?: string;
+  contentId?: string;
+  contentTypeId?: string;
+  areaCode?: string;
+  /**
+   * @minimum 1
+   */
+  numOfRows?: number;
+  /**
+   * @minimum 1
+   */
+  pageNo?: number;
 };
 
-export type ProxyKto_Type = typeof ProxyKto_Type[keyof typeof ProxyKto_Type];
-
+export type ProxyKto_Type = (typeof ProxyKto_Type)[keyof typeof ProxyKto_Type];
 
 export const ProxyKto_Type = {
   json: 'json',
 } as const;
 
 export type ProxyKto200 = { [key: string]: unknown };
-

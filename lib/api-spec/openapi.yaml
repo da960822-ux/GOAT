@@ -456,11 +456,45 @@ components:
         error:
           type: string
       required: [error]
+    MoodId:
+      type: string
+      enum:
+        - sea-coast
+        - japan-alley
+        - alps-ranch
+        - forest-garden-rest
+        - retro-market-harbor
+        - architecture-exhibit-landmark
+        - resort-cafe-exotic
+    ReferenceCardId:
+      type: string
+      enum:
+        - REF_SEA_01
+        - REF_SEA_02
+        - REF_SEA_03
+        - REF_JP_01
+        - REF_JP_02
+        - REF_JP_03
+        - REF_ALPS_01
+        - REF_ALPS_02
+        - REF_ALPS_03
+        - REF_NATURE_01
+        - REF_NATURE_02
+        - REF_NATURE_03
+        - REF_RETRO_01
+        - REF_RETRO_02
+        - REF_RETRO_03
+        - REF_ARCH_01
+        - REF_ARCH_02
+        - REF_ARCH_03
+        - REF_RESORT_01
+        - REF_RESORT_02
+        - REF_RESORT_03
     Mood:
       type: object
       properties:
         id:
-          type: string
+          $ref: "#/components/schemas/MoodId"
         name:
           type: string
         description:
@@ -571,8 +605,8 @@ components:
     CreateRecommendationRequest:
       type: object
       properties:
-        moodId: { type: string, minLength: 1 }
-        referenceCardId: { type: string, minLength: 1 }
+        moodId: { $ref: "#/components/schemas/MoodId" }
+        referenceCardId: { $ref: "#/components/schemas/ReferenceCardId" }
         travelPurpose:
           type: string
           enum: [사진·포토스팟, 산책·힐링, 카페·실내휴식, 전시·건축관람, 체험·액티비티, 먹거리·야간탐방, 숙소·리조트]
@@ -592,6 +626,13 @@ components:
           uniqueItems: true
           maxItems: 61
           items: { type: string, minLength: 1 }
+      oneOf:
+        - required: [moodId]
+          not:
+            required: [referenceCardId]
+        - required: [referenceCardId]
+          not:
+            required: [moodId]
       additionalProperties: false
     GeocodeOriginRequest:
       type: object
@@ -1208,8 +1249,7 @@ components:
           enum: [APPLIED, SKIPPED, UNAVAILABLE, null]
         originNotice: { type: [string, "null"] }
         conditions:
-          type: object
-          additionalProperties: true
+          $ref: "#/components/schemas/CreateRecommendationRequest"
         cards:
           type: array
           minItems: 3

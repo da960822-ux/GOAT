@@ -39,3 +39,6 @@ yarn-error.*
 .vercel
 
 .env
+dist-web-v2/
+dist-android-v2/
+dist-ios-v2/

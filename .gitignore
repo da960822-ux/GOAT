@@ -36,6 +36,12 @@ node_modules
 **/.env.*
 !**/.env.example
 GOAT.env
+
+# GOAT mobile local validation artifacts
+/artifacts/goat-mobile/dist-web/
+/artifacts/goat-mobile/dist-web-final/
+/artifacts/goat-mobile/dist-validation/
+/artifacts/goat-mobile/.playwright-cli/
 GOAT_FINAL_AI_API_RECOMMENDATION/
 /.sass-cache
 /connect.lock

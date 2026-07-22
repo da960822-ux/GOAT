@@ -8,21 +8,28 @@
 import type { CreateRecommendationRequestTransportType } from './createRecommendationRequestTransportType';
 import type { CreateRecommendationRequestTravelPurpose } from './createRecommendationRequestTravelPurpose';
 import type { CreateRecommendationRequestVisitTime } from './createRecommendationRequestVisitTime';
+import type { MoodId } from './moodId';
+import type { ReferenceCardId } from './referenceCardId';
 import type { TravelOrigin } from './travelOrigin';
 import type { TravelPreferences } from './travelPreferences';
 
-export interface CreateRecommendationRequest {
-  /** @minLength 1 */
-  moodId?: string;
-  /** @minLength 1 */
-  referenceCardId?: string;
+export type CreateRecommendationRequest = (
+  | {
+      moodId: MoodId;
+      referenceCardId?: never;
+    }
+  | {
+      referenceCardId: ReferenceCardId;
+      moodId?: never;
+    }
+) & {
   travelPurpose?: CreateRecommendationRequestTravelPurpose;
   transportType?: CreateRecommendationRequestTransportType;
   visitTime?: CreateRecommendationRequestVisitTime;
   /**
-     * @minimum 1
-     * @maximum 12
-     */
+   * @minimum 1
+   * @maximum 12
+   */
   currentMonth?: number;
   debug?: boolean;
   preferences?: TravelPreferences;
@@ -30,4 +37,4 @@ export interface CreateRecommendationRequest {
   rerollOfRecommendationId?: string;
   /** @maxItems 61 */
   excludeIds?: string[];
-}
+};

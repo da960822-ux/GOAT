@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { useColors } from '@/hooks/useColors';
 
 interface CautionBoxProps {

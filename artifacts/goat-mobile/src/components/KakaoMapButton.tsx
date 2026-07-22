@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Alert, View } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { Place } from '@/src/types/place';
 import { openKakaoMap } from '@/src/services/mapLink';
 

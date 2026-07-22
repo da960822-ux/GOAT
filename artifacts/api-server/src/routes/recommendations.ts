@@ -4,6 +4,7 @@ import {
   type TravelOrigin,
   type TravelPreferences,
 } from "@workspace/travel-domain";
+import { MOOD_IDS, REFERENCE_CARD_IDS } from "@workspace/travel-domain/catalog";
 import { z } from "zod";
 import { ApiError, getRequestId } from "../lib/api-response";
 import { requireAuthenticatedUser } from "../lib/auth-context";
@@ -26,8 +27,8 @@ const router: IRouter = Router();
 
 const recommendationRequestSchema = z
   .object({
-    moodId: z.string().min(1).optional(),
-    referenceCardId: z.string().min(1).optional(),
+    moodId: z.enum(MOOD_IDS).optional(),
+    referenceCardId: z.enum(REFERENCE_CARD_IDS).optional(),
     travelPurpose: z.string().min(1).optional(),
     transportType: z.string().min(1).optional(),
     visitTime: z.string().min(1).optional(),
@@ -58,10 +59,15 @@ const recommendationRequestSchema = z
     ).optional(),
   })
   .strict()
-  .refine((body) => body.moodId || body.referenceCardId, {
-    message: "moodId or referenceCardId is required.",
-    path: ["moodId"],
-  });
+  .refine(
+    (body) =>
+      Number(Boolean(body.moodId)) + Number(Boolean(body.referenceCardId)) ===
+      1,
+    {
+      message: "Exactly one of moodId or referenceCardId is required.",
+      path: ["moodId"],
+    },
+  );
 
 const recentQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(20).default(1),

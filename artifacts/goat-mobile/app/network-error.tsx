@@ -1,0 +1,11 @@
+import { useRouter } from "expo-router";
+import React from "react";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { BrandIcon } from "@/src/components/BrandIcon";
+import { GoatMark } from "@/src/components/editorial/Brand";
+import { PrimaryButton } from "@/src/components/editorial/UI";
+import { editorialImages } from "@/src/data/editorialContent";
+import { fonts, palette } from "@/src/theme/editorial";
+export default function NetworkErrorScreen() { const router = useRouter(); const insets = useSafeAreaInsets(); return <ImageBackground source={editorialImages.coast} style={styles.screen} imageStyle={styles.background}><View style={styles.wash} /><View style={[styles.content, { paddingTop: insets.top + 18, paddingBottom: insets.bottom + 22 }]}><GoatMark /><View style={styles.center}><View style={styles.icon}><BrandIcon name="warning" size={46} color={palette.forest} /></View><Text style={styles.code}>CONNECTION LOST</Text><Text style={styles.title}>잠시 연결이{`\n`}불안정해요</Text><Text style={styles.body}>입력한 조건은 그대로 보관되어 있어요.{`\n`}네트워크 상태를 확인한 뒤 다시 시도해주세요.</Text></View><View style={styles.actions}><PrimaryButton label="다시 시도하기" icon="refresh" onPress={() => router.replace("/analyzing" as never)} /><PrimaryButton label="홈으로 돌아가기" variant="outline" onPress={() => router.replace("/")} /></View></View></ImageBackground>; }
+const styles = StyleSheet.create({ screen: { flex: 1, backgroundColor: palette.ivory }, background: { opacity: .25 }, wash: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(246,242,233,.84)" }, content: { flex: 1, paddingHorizontal: 22 }, center: { flex: 1, alignItems: "center", justifyContent: "center", marginTop: -25 }, icon: { width: 112, height: 112, borderRadius: 56, backgroundColor: "rgba(222,231,211,.92)", alignItems: "center", justifyContent: "center" }, code: { marginTop: 28, fontFamily: fonts.bold, fontSize: 9, letterSpacing: 1.8, color: palette.forestSoft }, title: { marginTop: 11, textAlign: "center", fontFamily: fonts.serif, fontSize: 30, lineHeight: 41, color: palette.ink }, body: { marginTop: 12, textAlign: "center", fontFamily: fonts.body, fontSize: 14, lineHeight: 23, color: palette.muted }, actions: { gap: 10 } });
