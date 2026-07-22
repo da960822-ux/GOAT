@@ -1345,10 +1345,3 @@ export function useProxyKto<TData = Awaited<ReturnType<typeof proxyKto>>, TError
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
-
-
-
-
-
-
-

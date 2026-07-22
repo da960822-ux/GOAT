@@ -1464,5 +1464,3 @@ export const ProxyKtoQueryParams = zod.object({
 })
 
 export const ProxyKtoResponse = zod.record(zod.string(), zod.unknown())
-
-
