@@ -41,6 +41,7 @@ export interface RecommendationScoreSummary {
   moodScore: number;
   conditionScore: number;
   baseScore: number;
+  originDistanceBonus: number;
   routeDistanceBonus: number;
   duplicatePenalty: number;
   exposurePenalty: number;
@@ -85,10 +86,18 @@ export interface RecommendationCardSelectionAudit {
   cautions: string[];
 }
 
-export interface RecommendationDecisionAudit {
-  schemaVersion: 1;
-  policyVersion: "goat-score-v1";
+export interface RecommendationDecisionAuditV2 {
+  schemaVersion: 2;
+  policyVersion: "goat-score-v2";
   candidateCount: number;
+  operatingDate: {
+    requestedDate?: string;
+    excludedPlaces: Array<{
+      placeId: string;
+      placeName: string;
+      reason: "DATE_REQUIRED" | "OUTSIDE_OPEN_RANGE" | "UNVERIFIED_CONDITION";
+    }>;
+  };
   fallback: {
     card3PurposeFallbackUsed: boolean;
     reason?: string;
@@ -98,6 +107,20 @@ export interface RecommendationDecisionAudit {
   };
   cardSelections: RecommendationCardSelectionAudit[];
 }
+
+export interface RecommendationDecisionAuditV1 {
+  schemaVersion: 1;
+  policyVersion: "goat-score-v1";
+  candidateCount: number;
+  fallback: RecommendationDecisionAuditV2["fallback"];
+  cardSelections: Array<Omit<RecommendationCardSelectionAudit, "scoreSummary"> & {
+    scoreSummary: Omit<RecommendationScoreSummary, "originDistanceBonus">;
+  }>;
+}
+
+export type RecommendationDecisionAudit =
+  | RecommendationDecisionAuditV1
+  | RecommendationDecisionAuditV2;
 
 export interface RecommendationWarningLogPayload {
   event: "GOAT_RECOMMENDATION_WARNING";
@@ -140,9 +163,9 @@ export interface GoatPlace {
   season_tags: string[];
   best_time: BestTime | string;
   accessibility: {
-    public_transport?: AccessGrade | string;
-    car?: AccessGrade | string;
-    walk?: AccessGrade | string;
+    public_transport?: AccessGrade | string | null;
+    car?: AccessGrade | string | null;
+    walk?: AccessGrade | string | null;
   };
   recommendation_use: string;
   note?: string;
@@ -152,12 +175,33 @@ export interface GoatPlace {
   lng?: number | string | null;
   imageUrl?: string | null;
   address?: string | null;
+  coordinateSource?: string | null;
+  verification_status?: "active_verified" | "pending_verification" | string;
+  verification_items?: string[];
+  sourceUrls?: string[];
+  source_checked_at?: string;
+  operatingCondition?: {
+    type: "date_ranges";
+    status: "verified" | "verification_required";
+    timezone: string;
+    openDateRanges: Array<{
+      startDate: string;
+      endDate: string;
+      label?: string;
+    }>;
+    requiresExactDate: boolean;
+    unknownDatePolicy: "exclude";
+    sourceUrl?: string;
+    checkedAt?: string;
+    note?: string;
+  };
   [key: string]: unknown;
 }
 
 export interface GoatPlaceDataset {
   tag_sets?: Record<string, string[]>;
   places: GoatPlace[];
+  pending_places?: GoatPlace[];
 }
 
 export interface GoatReferenceCard {
@@ -200,12 +244,30 @@ export interface ExposureStats {
   themeAverageExposure?: Record<string, number | undefined>;
 }
 
+export type RouteDistanceSource = "KAKAO_ROUTE" | "HAVERSINE" | "NONE";
+
 export interface RouteDistanceInput {
   /** 실제 길찾기 API가 계산한 1번 카드 기준 도로 이동거리. 있으면 좌표보다 우선한다. */
   routeDistanceKmByPlaceId?: Record<string, number | undefined>;
+  /** 실제 길찾기 API가 계산한 1번 카드 기준 예상 이동시간(분). 거리보다 우선한다. */
+  routeDurationMinByPlaceId?: Record<string, number | undefined>;
+  /** 장소별 거리 데이터 출처. 명시하지 않으면 실제 API 값은 KAKAO_ROUTE로 간주한다. */
+  routeSourceByPlaceId?: Record<string, RouteDistanceSource | undefined>;
 }
 
 export interface RecommendRequest extends ExposureStats, RouteDistanceInput {
+  /**
+   * 사용자가 직접 허용한 현재 위치 또는 선택한 지역 중심 좌표.
+   * skip이거나 좌표가 없으면 기존 추천 결과에 영향을 주지 않는다.
+   */
+  origin?: {
+    type: "current" | "region" | "address" | "skip";
+    latitude?: number;
+    longitude?: number;
+    regionName?: string;
+  };
+  /** 출발지가 정상 적용된 경우에만 카드 2·3의 카드 1 기준 연계 거리 점수를 활성화한다. */
+  routeDistanceEnabled?: boolean;
   /** 사용자가 고른 레퍼런스 카드. 있으면 카드의 숨은 태그와 candidatePlaceIds를 입력값으로 사용한다. */
   referenceCardId?: string;
   /** 레퍼런스 카드 없이 감성 버튼/AI 분석값으로 직접 추천할 때 사용한다. */
@@ -222,6 +284,11 @@ export interface RecommendRequest extends ExposureStats, RouteDistanceInput {
   currentSeason?: SeasonTag | string;
   /** 1~12. currentSeason이 없을 때 계절 계산에 사용한다. */
   currentMonth?: number;
+  /**
+   * YYYY-MM-DD 형식의 실제 현지 날짜. 날짜 범위형 운영 조건이 있는 장소의
+   * 추천 자격 확인에만 사용하며 기존 점수 계산에는 영향을 주지 않는다.
+   */
+  currentDate?: string;
   /** 후보 장소를 강제로 제한할 때 사용한다. 예: API가 미리 추린 후보 ID 목록. */
   candidatePlaceIds?: string[];
   /** 이미 화면에 보여준 장소를 제외하고 싶을 때 사용한다. */
@@ -297,6 +364,18 @@ export interface ScoreBreakdown {
   moodScore: MoodScoreBreakdown;
   conditionScore: ConditionScoreBreakdown;
   baseScore: number;
+  /** 사용자 출발지에서 현재 후보까지의 직선거리. 카드 1에는 적용하지 않는다. */
+  originDistanceKm?: number;
+  /** 출발지 근접성 계산 출처. */
+  originDistanceSource?: "HAVERSINE" | "NONE";
+  /** 카드 2·3에만 적용하는 사용자 출발지 근접성 보너스. */
+  originDistanceBonus: number;
+  /** 1번 카드에서 현재 카드까지의 연계 거리(km). 1번 카드에서는 생략한다. */
+  routeDistanceKm?: number;
+  /** 1번 카드에서 현재 카드까지의 예상 이동시간(분). 카카오 길찾기 사용 시 제공한다. */
+  routeDurationMin?: number;
+  /** 연계 거리 계산 출처. */
+  routeDistanceSource: RouteDistanceSource;
   routeDistanceBonus: number;
   duplicatePenalty: number;
   exposurePenalty: number;
@@ -375,8 +454,14 @@ export interface RecommendResult {
         placeName: string;
         primaryTheme: string;
         baseScore: number;
+        originDistanceKm?: number;
+        originDistanceBonus: number;
+        routeDistanceKm?: number;
+        routeDurationMin?: number;
+        routeDistanceSource: RouteDistanceSource;
         selectionScore: number;
         displayScore: number;
+        scoreBreakdown: ScoreBreakdown;
       }>;
     };
   } | null;

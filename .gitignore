@@ -38,6 +38,7 @@ GOAT_FINAL_AI_API_RECOMMENDATION/
 /.sass-cache
 /connect.lock
 /coverage
+/reports/
 /libpeerconnection.log
 npm-debug.log
 yarn-error.log

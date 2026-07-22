@@ -10,19 +10,51 @@ declare const fetch: (input: string, init: {
   method: string;
   headers: Record<string, string>;
   body: string;
+  signal?: unknown;
 }) => Promise<{
   ok: boolean;
   status: number;
   text(): Promise<string>;
   json(): Promise<unknown>;
 }>;
+declare const AbortSignal: { timeout(ms: number): unknown };
+declare const setTimeout: (handler: () => void, ms: number) => unknown;
 
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 const DEFAULT_MODEL = "openai/gpt-4o-mini";
+const REQUEST_TIMEOUT_MS = 15_000;
+const DEFAULT_MAX_ATTEMPTS = 2;
+const DEFAULT_RETRY_DELAY_MS = 250;
+const MAX_OUTPUT_TOKENS = 1_200;
+const MAX_RESPONSE_CHARS = 50_000;
+const RETRYABLE_HTTP_STATUSES = new Set([429, 500, 502, 503, 504]);
+const ALLOWED_STOP_CATEGORIES = new Set([
+  "START_PLACE",
+  "TOUR",
+  "CAFE",
+  "RESTAURANT",
+  "WALK",
+  "PHOTO",
+  "ETC",
+]);
 
 function getOpenRouterKey(): string | undefined {
   const key = process.env.OPENROUTER_API_KEY;
   return key && key.trim() ? key.trim() : undefined;
+}
+
+function getPositiveInt(key: string, fallback: number, min: number, max: number): number {
+  const parsed = Number.parseInt(process.env[key] ?? "", 10);
+  return Number.isFinite(parsed) ? Math.min(Math.max(parsed, min), max) : fallback;
+}
+
+function getOpenRouterBaseUrl(): string {
+  return (process.env.OPENROUTER_BASE_URL?.trim() || OPENROUTER_BASE_URL).replace(/\/+$/, "");
+}
+
+function wait(ms: number): Promise<void> {
+  if (ms <= 0) return Promise.resolve();
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function safeJsonParse<T>(text: string): T {
@@ -34,6 +66,91 @@ function safeJsonParse<T>(text: string): T {
     if (first >= 0 && last > first) return JSON.parse(text.slice(first, last + 1)) as T;
     throw new Error("LLM_JSON_PARSE_FAILED");
   }
+}
+
+function nonEmptyString(value: unknown, code: string): string {
+  if (typeof value !== "string" || !value.trim()) throw new Error(code);
+  return value.trim();
+}
+
+/**
+ * Validates the structured LLM response before any field is used. Candidate
+ * titles are deliberately ignored downstream; canonical data is joined by ID.
+ */
+export function validateLlmCoursePlannerJson(
+  value: unknown,
+  params: { selectedPlaceId: string; candidateIds: string[] },
+): LlmCoursePlannerJson {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("LLM_SCHEMA_INVALID_OBJECT");
+  }
+  const record = value as Record<string, unknown>;
+  const courseTitle = nonEmptyString(record.courseTitle, "LLM_SCHEMA_COURSE_TITLE_REQUIRED");
+  const summary = nonEmptyString(record.summary, "LLM_SCHEMA_SUMMARY_REQUIRED");
+  const routeNote = nonEmptyString(record.routeNote, "LLM_SCHEMA_ROUTE_NOTE_REQUIRED");
+  const candidateIdSet = new Set(params.candidateIds);
+
+  if (!Array.isArray(record.selectedCandidateIds)) {
+    throw new Error("LLM_SCHEMA_SELECTED_IDS_REQUIRED");
+  }
+  const rawSelectedCandidateIds = record.selectedCandidateIds.map((id) =>
+    nonEmptyString(id, "LLM_SCHEMA_INVALID_CANDIDATE_ID")
+  );
+  // Some JSON-capable models include the mandatory start place in this list.
+  // It is canonical (not hallucinated), so normalize it away while continuing
+  // to reject every ID outside the selected place and supplied candidates.
+  const selectedCandidateIds = rawSelectedCandidateIds.filter((id) => id !== params.selectedPlaceId);
+  if (selectedCandidateIds.length === 0) throw new Error("LLM_SCHEMA_EMPTY_CANDIDATE_SELECTION");
+  if (new Set(rawSelectedCandidateIds).size !== rawSelectedCandidateIds.length) {
+    throw new Error("LLM_SCHEMA_DUPLICATE_CANDIDATE_ID");
+  }
+  if (selectedCandidateIds.some((id) => !candidateIdSet.has(id))) {
+    throw new Error("LLM_SCHEMA_UNKNOWN_CANDIDATE_ID");
+  }
+
+  if (!Array.isArray(record.stops) || record.stops.length < 2 || record.stops.length > 5) {
+    throw new Error("LLM_SCHEMA_INVALID_STOP_COUNT");
+  }
+  const seenStopIds = new Set<string>();
+  const stops = record.stops.map((value) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+      throw new Error("LLM_SCHEMA_INVALID_STOP");
+    }
+    const stop = value as Record<string, unknown>;
+    const id = nonEmptyString(stop.id, "LLM_SCHEMA_STOP_ID_REQUIRED");
+    if (seenStopIds.has(id)) throw new Error("LLM_SCHEMA_DUPLICATE_STOP_ID");
+    seenStopIds.add(id);
+    if (id !== params.selectedPlaceId && !candidateIdSet.has(id)) {
+      throw new Error("LLM_SCHEMA_UNKNOWN_STOP_ID");
+    }
+
+    const category = nonEmptyString(stop.category, "LLM_SCHEMA_STOP_CATEGORY_REQUIRED");
+    if (!ALLOWED_STOP_CATEGORIES.has(category)) throw new Error("LLM_SCHEMA_INVALID_STOP_CATEGORY");
+    const stayMinutes = Number(stop.stayMinutes);
+    if (!Number.isInteger(stayMinutes) || stayMinutes < 10 || stayMinutes > 360) {
+      throw new Error("LLM_SCHEMA_INVALID_STAY_MINUTES");
+    }
+    return {
+      id,
+      title: nonEmptyString(stop.title, "LLM_SCHEMA_STOP_TITLE_REQUIRED"),
+      category: category as LlmCoursePlannerJson["stops"][number]["category"],
+      stayMinutes,
+      reason: nonEmptyString(stop.reason, "LLM_SCHEMA_STOP_REASON_REQUIRED"),
+    };
+  });
+
+  if (!seenStopIds.has(params.selectedPlaceId)) throw new Error("LLM_SCHEMA_START_PLACE_MISSING");
+  const stopCandidateIds = stops
+    .map((stop) => stop.id)
+    .filter((id) => id !== params.selectedPlaceId);
+  if (
+    stopCandidateIds.length !== selectedCandidateIds.length ||
+    stopCandidateIds.some((id) => !selectedCandidateIds.includes(id))
+  ) {
+    throw new Error("LLM_SCHEMA_SELECTED_IDS_MISMATCH");
+  }
+
+  return { courseTitle, summary, selectedCandidateIds, stops, routeNote };
 }
 
 export function buildGoatCoursePlannerPrompt(params: {
@@ -103,7 +220,9 @@ ${JSON.stringify(candidates.map((candidate) => ({
     }
   ],
   "routeNote": "동선 정렬 기준과 이동 팁"
-}`;
+}
+
+중요: selectedCandidateIds에는 주변 후보 id만 넣고 selectedPlace id는 넣지 않는다.`;
 }
 
 export async function callOpenRouterCoursePlanner(params: {
@@ -111,39 +230,91 @@ export async function callOpenRouterCoursePlanner(params: {
   conditions: CoursePlanningUserConditions;
   candidates: TourApiNearbyCandidate[];
   model?: string;
-}): Promise<{ parsed: LlmCoursePlannerJson; rawText: string; model: string }> {
+}): Promise<{
+  parsed: LlmCoursePlannerJson;
+  rawText: string;
+  model: string;
+  requestedModel: string;
+  httpStatus: number;
+  latencyMs: number;
+  attempts: number;
+}> {
   const apiKey = getOpenRouterKey();
   if (!apiKey) throw new Error("OPENROUTER_API_KEY_MISSING");
 
-  const model = params.model ?? DEFAULT_MODEL;
+  const model = params.model ?? (process.env.OPENROUTER_DEFAULT_MODEL?.trim() || DEFAULT_MODEL);
   const prompt = buildGoatCoursePlannerPrompt(params);
-  const response = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": "https://goat.local",
-      "X-Title": "GOAT Gangwon Course Planner",
-    },
-    body: JSON.stringify({
-      model,
-      response_format: { type: "json_object" },
-      temperature: 0.2,
-      messages: [
-        { role: "system", content: "너는 강원 관광 하루 코스를 JSON으로만 설계하는 추천 큐레이터다." },
-        { role: "user", content: prompt },
-      ],
-    }),
+  const requestBody = JSON.stringify({
+    model,
+    response_format: { type: "json_object" },
+    temperature: 0.2,
+    max_tokens: MAX_OUTPUT_TOKENS,
+    messages: [
+      { role: "system", content: "너는 강원 관광 하루 코스를 JSON으로만 설계하는 추천 큐레이터다." },
+      { role: "user", content: prompt },
+    ],
   });
+  const maxAttempts = getPositiveInt("OPENROUTER_MAX_ATTEMPTS", DEFAULT_MAX_ATTEMPTS, 1, 2);
+  const retryDelayMs = getPositiveInt("OPENROUTER_RETRY_DELAY_MS", DEFAULT_RETRY_DELAY_MS, 0, 2_000);
+  const timeoutMs = getPositiveInt("OPENROUTER_TIMEOUT_MS", REQUEST_TIMEOUT_MS, 1_000, 30_000);
+  const startedAt = Date.now();
+  let response: Awaited<ReturnType<typeof fetch>> | undefined;
+  let attempts = 0;
 
-  if (!response.ok) {
-    const text = await response.text().catch(() => "");
-    throw new Error(`OPENROUTER_HTTP_${response.status}:${text.slice(0, 300)}`);
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    attempts = attempt;
+    try {
+      response = await fetch(`${getOpenRouterBaseUrl()}/chat/completions`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://goat.local",
+          "X-Title": "GOAT Gangwon Course Planner",
+        },
+        body: requestBody,
+        signal: AbortSignal.timeout(timeoutMs),
+      });
+    } catch (error) {
+      if (attempt < maxAttempts) {
+        await wait(retryDelayMs * attempt);
+        continue;
+      }
+      const isTimeout = error instanceof Error && error.name === "TimeoutError";
+      throw new Error(isTimeout ? "OPENROUTER_TIMEOUT" : "OPENROUTER_REQUEST_FAILED");
+    }
+
+    if (response.ok) break;
+    if (attempt < maxAttempts && RETRYABLE_HTTP_STATUSES.has(response.status)) {
+      await response.text().catch(() => "");
+      await wait(retryDelayMs * attempt);
+      response = undefined;
+      continue;
+    }
+    throw new Error(`OPENROUTER_HTTP_${response.status}`);
   }
 
-  const data = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
+  if (!response?.ok) throw new Error("OPENROUTER_REQUEST_FAILED");
+  const data = await response.json() as {
+    model?: unknown;
+    choices?: Array<{ message?: { content?: string } }>;
+  };
   const rawText = data.choices?.[0]?.message?.content ?? "";
   if (!rawText.trim()) throw new Error("OPENROUTER_EMPTY_RESPONSE");
+  if (rawText.length > MAX_RESPONSE_CHARS) throw new Error("OPENROUTER_RESPONSE_TOO_LARGE");
+  const parsedJson = safeJsonParse<unknown>(rawText);
+  const parsed = validateLlmCoursePlannerJson(parsedJson, {
+    selectedPlaceId: params.selectedPlace.place_id,
+    candidateIds: params.candidates.map((candidate) => candidate.id),
+  });
 
-  return { parsed: safeJsonParse<LlmCoursePlannerJson>(rawText), rawText, model };
+  return {
+    parsed,
+    rawText,
+    model: typeof data.model === "string" && data.model.trim() ? data.model : model,
+    requestedModel: model,
+    httpStatus: response.status,
+    latencyMs: Date.now() - startedAt,
+    attempts,
+  };
 }

@@ -1,15 +1,15 @@
 {
-  "version": "v2-balanced-coverage",
-  "generatedAt": "2026-06-30",
+  "version": "v2-balanced-coverage-place-tags-final",
+  "generatedAt": "2026-07-14",
   "source": "goat_simplified_scoring_tags_v10_accessibility_merged.json + goat_reference_cards_v1.json",
-  "purpose": "사용자가 고르는 21개 레퍼런스 카드가 58개 장소 전체를 후보군으로 고르게 연결하도록 만든 프론트/백엔드 공용 입력 프리셋",
+  "purpose": "사용자가 고르는 21개 레퍼런스 카드가 활성 추천 장소 61개 전체를 후보군으로 고르게 연결하도록 만든 프론트/백엔드 공용 입력 프리셋",
   "usage": {
     "frontend": "title, subtitle, description/displayTags/uiKeywords를 카드 UI에 표시하고, 선택 시 referenceCardId 또는 숨은 태그값을 백엔드로 전달한다.",
     "backend": "primaryTheme, sceneTags, mood_tags, recommendedPurpose, candidatePlaceIds, coveragePlaceIds를 사용해 추천 점수와 노출 보정을 계산한다.",
-    "important": "21개 카드는 UI 선택지이고, 58개 장소 균등 노출은 candidatePlaceIds + coveragePlaceIds + exposure penalty 로 제어한다."
+    "important": "21개 카드는 UI 선택지이고, 활성 61개 장소 균등 노출은 candidatePlaceIds + coveragePlaceIds + exposure penalty로 제어한다. 모든 장소가 추천 후보와 coverage에 포함된다."
   },
   "balancePolicy": {
-    "coverageGoal": "58개 장소가 최소 1개 reference card의 coveragePlaceIds에 정확히 1회 배정된다.",
+    "coverageGoal": "활성 61개 장소가 reference card의 coveragePlaceIds에 정확히 1회씩 배정된다.",
     "candidateGoal": "각 reference card는 7~10개 내외 후보를 가진다. 같은 테마 후보를 우선하고, 실제 사용 흐름상 함께 추천 가능한 교차 테마 후보를 일부 포함한다.",
     "cardSelection": {
       "firstCard": "candidatePlaceIds 안에서 baseScore 1위. 노출 보정은 적용하지 않는다.",
@@ -64,7 +64,7 @@
         "자차"
       ],
       "examplePlaceIds": [
-        "GOAT-025"
+        "GOAT-024"
       ],
       "uiKeywords": [
         "바다",
@@ -74,23 +74,24 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-025",
-        "GOAT-028",
-        "GOAT-048"
+        "GOAT-024",
+        "GOAT-027",
+        "GOAT-044"
       ],
       "candidatePlaceIds": [
-        "GOAT-025",
-        "GOAT-028",
-        "GOAT-048",
-        "GOAT-056",
-        "GOAT-046",
-        "GOAT-047",
-        "GOAT-053",
-        "GOAT-054"
+        "GOAT-024",
+        "GOAT-027",
+        "GOAT-044",
+        "GOAT-052",
+        "GOAT-042",
+        "GOAT-043",
+        "GOAT-049",
+        "GOAT-050",
+        "GOAT-055"
       ],
-      "candidateCount": 8,
+      "candidateCount": 9,
       "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_SEA_02",
@@ -122,8 +123,8 @@
         "자차"
       ],
       "examplePlaceIds": [
-        "GOAT-031",
-        "GOAT-037"
+        "GOAT-030",
+        "GOAT-035"
       ],
       "uiKeywords": [
         "해안도로",
@@ -133,23 +134,23 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-031",
-        "GOAT-044",
-        "GOAT-045"
+        "GOAT-030",
+        "GOAT-040",
+        "GOAT-041"
       ],
       "candidatePlaceIds": [
-        "GOAT-031",
+        "GOAT-030",
+        "GOAT-040",
+        "GOAT-041",
+        "GOAT-035",
+        "GOAT-051",
+        "GOAT-052",
         "GOAT-044",
-        "GOAT-045",
-        "GOAT-037",
-        "GOAT-055",
-        "GOAT-056",
-        "GOAT-048",
-        "GOAT-023"
+        "GOAT-022"
       ],
       "candidateCount": 8,
       "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_SEA_03",
@@ -183,9 +184,9 @@
         "도보중심"
       ],
       "examplePlaceIds": [
-        "GOAT-040",
-        "GOAT-051",
-        "GOAT-057"
+        "GOAT-038",
+        "GOAT-047",
+        "GOAT-053"
       ],
       "uiKeywords": [
         "해안산책",
@@ -195,24 +196,24 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-039",
-        "GOAT-040",
-        "GOAT-051",
-        "GOAT-057"
+        "GOAT-037",
+        "GOAT-038",
+        "GOAT-047",
+        "GOAT-053"
       ],
       "candidatePlaceIds": [
-        "GOAT-039",
-        "GOAT-040",
-        "GOAT-051",
-        "GOAT-057",
+        "GOAT-037",
+        "GOAT-038",
+        "GOAT-047",
+        "GOAT-053",
+        "GOAT-025",
         "GOAT-026",
-        "GOAT-027",
-        "GOAT-058",
-        "GOAT-036"
+        "GOAT-054",
+        "GOAT-034"
       ],
       "candidateCount": 8,
       "coverageCount": 4,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_JP_01",
@@ -246,7 +247,7 @@
       "examplePlaceIds": [
         "GOAT-006",
         "GOAT-007",
-        "GOAT-034"
+        "GOAT-033"
       ],
       "uiKeywords": [
         "일본정원",
@@ -259,22 +260,21 @@
         "GOAT-006",
         "GOAT-007",
         "GOAT-008",
-        "GOAT-033",
-        "GOAT-034"
+        "GOAT-032",
+        "GOAT-033"
       ],
       "candidatePlaceIds": [
         "GOAT-006",
         "GOAT-007",
         "GOAT-008",
+        "GOAT-032",
         "GOAT-033",
-        "GOAT-034",
-        "GOAT-041",
-        "GOAT-042",
-        "GOAT-054"
+        "GOAT-039",
+        "GOAT-050"
       ],
-      "candidateCount": 8,
+      "candidateCount": 7,
       "coverageCount": 5,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_JP_02",
@@ -306,8 +306,8 @@
         "자차"
       ],
       "examplePlaceIds": [
-        "GOAT-029",
-        "GOAT-037"
+        "GOAT-028",
+        "GOAT-035"
       ],
       "uiKeywords": [
         "철길",
@@ -317,21 +317,21 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-029",
-        "GOAT-037"
+        "GOAT-028",
+        "GOAT-035"
       ],
       "candidatePlaceIds": [
-        "GOAT-029",
-        "GOAT-037",
         "GOAT-028",
-        "GOAT-031",
-        "GOAT-039",
-        "GOAT-048",
-        "GOAT-025"
+        "GOAT-035",
+        "GOAT-027",
+        "GOAT-030",
+        "GOAT-037",
+        "GOAT-044",
+        "GOAT-024"
       ],
       "candidateCount": 7,
       "coverageCount": 2,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_JP_03",
@@ -363,8 +363,7 @@
         "도보중심"
       ],
       "examplePlaceIds": [
-        "GOAT-032",
-        "GOAT-041"
+        "GOAT-031"
       ],
       "uiKeywords": [
         "골목",
@@ -374,21 +373,20 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-032",
-        "GOAT-041"
+        "GOAT-031"
       ],
       "candidatePlaceIds": [
-        "GOAT-032",
-        "GOAT-041",
+        "GOAT-031",
         "GOAT-006",
-        "GOAT-042",
-        "GOAT-035",
+        "GOAT-039",
         "GOAT-013",
-        "GOAT-001"
+        "GOAT-001",
+        "GOAT-007",
+        "GOAT-008"
       ],
       "candidateCount": 7,
-      "coverageCount": 2,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "coverageCount": 1,
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_ALPS_01",
@@ -421,8 +419,8 @@
       ],
       "examplePlaceIds": [
         "GOAT-004",
-        "GOAT-017",
-        "GOAT-018"
+        "GOAT-016",
+        "GOAT-017"
       ],
       "uiKeywords": [
         "목장",
@@ -433,22 +431,23 @@
       "isActive": true,
       "coveragePlaceIds": [
         "GOAT-004",
-        "GOAT-017",
-        "GOAT-018"
+        "GOAT-016",
+        "GOAT-017"
       ],
       "candidatePlaceIds": [
         "GOAT-004",
+        "GOAT-016",
         "GOAT-017",
         "GOAT-018",
-        "GOAT-019",
-        "GOAT-049",
-        "GOAT-015",
+        "GOAT-045",
+        "GOAT-014",
         "GOAT-011",
-        "GOAT-022"
+        "GOAT-021",
+        "GOAT-057"
       ],
-      "candidateCount": 8,
+      "candidateCount": 9,
       "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_ALPS_02",
@@ -481,8 +480,8 @@
         "자차"
       ],
       "examplePlaceIds": [
-        "GOAT-016",
-        "GOAT-023"
+        "GOAT-015",
+        "GOAT-022"
       ],
       "uiKeywords": [
         "고원",
@@ -492,23 +491,23 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-016",
-        "GOAT-019",
-        "GOAT-023"
+        "GOAT-015",
+        "GOAT-018",
+        "GOAT-022"
       ],
       "candidatePlaceIds": [
-        "GOAT-016",
-        "GOAT-019",
+        "GOAT-015",
+        "GOAT-018",
+        "GOAT-022",
+        "GOAT-029",
         "GOAT-023",
-        "GOAT-030",
-        "GOAT-024",
-        "GOAT-020",
-        "GOAT-050",
-        "GOAT-017"
+        "GOAT-019",
+        "GOAT-046",
+        "GOAT-016"
       ],
       "candidateCount": 8,
       "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_ALPS_03",
@@ -539,7 +538,7 @@
         "자차"
       ],
       "examplePlaceIds": [
-        "GOAT-030"
+        "GOAT-029"
       ],
       "uiKeywords": [
         "별",
@@ -549,22 +548,24 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-015",
-        "GOAT-030",
-        "GOAT-049"
+        "GOAT-014",
+        "GOAT-029",
+        "GOAT-045",
+        "GOAT-061"
       ],
       "candidatePlaceIds": [
+        "GOAT-014",
+        "GOAT-029",
+        "GOAT-045",
         "GOAT-015",
-        "GOAT-030",
-        "GOAT-049",
-        "GOAT-016",
+        "GOAT-022",
         "GOAT-023",
-        "GOAT-024",
-        "GOAT-020"
+        "GOAT-019",
+        "GOAT-061"
       ],
-      "candidateCount": 7,
-      "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateCount": 8,
+      "coverageCount": 4,
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_NATURE_01",
@@ -598,8 +599,9 @@
       ],
       "examplePlaceIds": [
         "GOAT-012",
-        "GOAT-020",
-        "GOAT-024"
+        "GOAT-019",
+        "GOAT-023",
+        "GOAT-057"
       ],
       "uiKeywords": [
         "숲",
@@ -610,22 +612,24 @@
       "isActive": true,
       "coveragePlaceIds": [
         "GOAT-012",
-        "GOAT-020",
-        "GOAT-024"
+        "GOAT-019",
+        "GOAT-023",
+        "GOAT-057"
       ],
       "candidatePlaceIds": [
         "GOAT-012",
-        "GOAT-020",
-        "GOAT-024",
+        "GOAT-019",
+        "GOAT-023",
         "GOAT-011",
-        "GOAT-022",
+        "GOAT-021",
         "GOAT-001",
-        "GOAT-050",
-        "GOAT-014"
+        "GOAT-046",
+        "GOAT-056",
+        "GOAT-057"
       ],
-      "candidateCount": 8,
-      "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateCount": 9,
+      "coverageCount": 4,
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_NATURE_02",
@@ -658,7 +662,9 @@
       ],
       "examplePlaceIds": [
         "GOAT-001",
-        "GOAT-050"
+        "GOAT-046",
+        "GOAT-056",
+        "GOAT-058"
       ],
       "uiKeywords": [
         "정원",
@@ -670,21 +676,27 @@
       "coveragePlaceIds": [
         "GOAT-001",
         "GOAT-011",
-        "GOAT-050"
+        "GOAT-046",
+        "GOAT-056",
+        "GOAT-058",
+        "GOAT-060"
       ],
       "candidatePlaceIds": [
         "GOAT-001",
         "GOAT-011",
-        "GOAT-050",
-        "GOAT-014",
+        "GOAT-046",
         "GOAT-003",
-        "GOAT-036",
+        "GOAT-034",
         "GOAT-009",
-        "GOAT-006"
+        "GOAT-006",
+        "GOAT-056",
+        "GOAT-057",
+        "GOAT-058",
+        "GOAT-060"
       ],
-      "candidateCount": 8,
-      "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateCount": 11,
+      "coverageCount": 6,
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_NATURE_03",
@@ -716,7 +728,7 @@
         "도보중심"
       ],
       "examplePlaceIds": [
-        "GOAT-014"
+        "GOAT-034"
       ],
       "uiKeywords": [
         "호수",
@@ -726,21 +738,21 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-014",
-        "GOAT-022"
+        "GOAT-021"
       ],
       "candidatePlaceIds": [
-        "GOAT-014",
-        "GOAT-022",
-        "GOAT-020",
+        "GOAT-021",
+        "GOAT-019",
         "GOAT-012",
-        "GOAT-036",
+        "GOAT-034",
         "GOAT-001",
-        "GOAT-051"
+        "GOAT-047",
+        "GOAT-056",
+        "GOAT-057"
       ],
-      "candidateCount": 7,
-      "coverageCount": 2,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateCount": 8,
+      "coverageCount": 1,
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_RETRO_01",
@@ -773,9 +785,8 @@
         "도보중심"
       ],
       "examplePlaceIds": [
-        "GOAT-038",
-        "GOAT-043",
-        "GOAT-055"
+        "GOAT-036",
+        "GOAT-051"
       ],
       "uiKeywords": [
         "항구",
@@ -785,24 +796,22 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-035",
-        "GOAT-038",
-        "GOAT-043",
-        "GOAT-055"
+        "GOAT-036",
+        "GOAT-051"
       ],
       "candidatePlaceIds": [
-        "GOAT-035",
-        "GOAT-038",
-        "GOAT-043",
-        "GOAT-055",
-        "GOAT-025",
+        "GOAT-036",
+        "GOAT-051",
+        "GOAT-024",
+        "GOAT-037",
+        "GOAT-041",
         "GOAT-039",
-        "GOAT-045",
-        "GOAT-042"
+        "GOAT-005",
+        "GOAT-020"
       ],
       "candidateCount": 8,
-      "coverageCount": 4,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "coverageCount": 2,
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_RETRO_02",
@@ -832,7 +841,7 @@
         "자차"
       ],
       "examplePlaceIds": [
-        "GOAT-042"
+        "GOAT-039"
       ],
       "uiKeywords": [
         "레트로",
@@ -843,20 +852,20 @@
       "isActive": true,
       "coveragePlaceIds": [
         "GOAT-005",
-        "GOAT-042"
+        "GOAT-039"
       ],
       "candidatePlaceIds": [
         "GOAT-005",
-        "GOAT-042",
-        "GOAT-035",
-        "GOAT-041",
-        "GOAT-032",
+        "GOAT-039",
+        "GOAT-031",
         "GOAT-006",
-        "GOAT-054"
+        "GOAT-050",
+        "GOAT-020",
+        "GOAT-036"
       ],
       "candidateCount": 7,
       "coverageCount": 2,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_RETRO_03",
@@ -886,7 +895,7 @@
         "대중교통"
       ],
       "examplePlaceIds": [
-        "GOAT-021"
+        "GOAT-020"
       ],
       "uiKeywords": [
         "산업유산",
@@ -896,20 +905,20 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-021"
+        "GOAT-020"
       ],
       "candidatePlaceIds": [
-        "GOAT-021",
+        "GOAT-020",
         "GOAT-009",
-        "GOAT-026",
-        "GOAT-036",
-        "GOAT-058",
+        "GOAT-025",
+        "GOAT-034",
+        "GOAT-054",
         "GOAT-010",
         "GOAT-013"
       ],
       "candidateCount": 7,
       "coverageCount": 1,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_ARCH_01",
@@ -941,7 +950,7 @@
       ],
       "examplePlaceIds": [
         "GOAT-009",
-        "GOAT-026"
+        "GOAT-025"
       ],
       "uiKeywords": [
         "미술관",
@@ -953,21 +962,21 @@
       "coveragePlaceIds": [
         "GOAT-009",
         "GOAT-013",
-        "GOAT-026"
+        "GOAT-025"
       ],
       "candidatePlaceIds": [
         "GOAT-009",
         "GOAT-013",
-        "GOAT-026",
+        "GOAT-025",
         "GOAT-002",
-        "GOAT-036",
-        "GOAT-021",
-        "GOAT-054",
+        "GOAT-034",
+        "GOAT-020",
+        "GOAT-050",
         "GOAT-001"
       ],
       "candidateCount": 8,
       "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_ARCH_02",
@@ -1000,8 +1009,8 @@
       ],
       "examplePlaceIds": [
         "GOAT-002",
-        "GOAT-027",
-        "GOAT-036"
+        "GOAT-026",
+        "GOAT-034"
       ],
       "uiKeywords": [
         "랜드마크",
@@ -1012,22 +1021,23 @@
       "isActive": true,
       "coveragePlaceIds": [
         "GOAT-002",
-        "GOAT-027",
-        "GOAT-036"
+        "GOAT-026",
+        "GOAT-034"
       ],
       "candidatePlaceIds": [
         "GOAT-002",
-        "GOAT-027",
-        "GOAT-036",
+        "GOAT-026",
+        "GOAT-034",
         "GOAT-003",
-        "GOAT-053",
-        "GOAT-015",
+        "GOAT-049",
+        "GOAT-014",
         "GOAT-010",
-        "GOAT-009"
+        "GOAT-009",
+        "GOAT-055"
       ],
-      "candidateCount": 8,
+      "candidateCount": 9,
       "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_ARCH_03",
@@ -1061,7 +1071,7 @@
       ],
       "examplePlaceIds": [
         "GOAT-010",
-        "GOAT-058"
+        "GOAT-054"
       ],
       "uiKeywords": [
         "협곡",
@@ -1072,20 +1082,20 @@
       "isActive": true,
       "coveragePlaceIds": [
         "GOAT-010",
-        "GOAT-058"
+        "GOAT-054"
       ],
       "candidatePlaceIds": [
         "GOAT-010",
-        "GOAT-058",
-        "GOAT-057",
-        "GOAT-040",
-        "GOAT-026",
-        "GOAT-036",
-        "GOAT-051"
+        "GOAT-054",
+        "GOAT-053",
+        "GOAT-038",
+        "GOAT-025",
+        "GOAT-034",
+        "GOAT-047"
       ],
       "candidateCount": 7,
       "coverageCount": 2,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_RESORT_01",
@@ -1119,7 +1129,8 @@
       ],
       "examplePlaceIds": [
         "GOAT-003",
-        "GOAT-053"
+        "GOAT-049",
+        "GOAT-055"
       ],
       "uiKeywords": [
         "산토리니",
@@ -1130,22 +1141,24 @@
       "isActive": true,
       "coveragePlaceIds": [
         "GOAT-003",
-        "GOAT-053",
-        "GOAT-054"
+        "GOAT-049",
+        "GOAT-050",
+        "GOAT-055"
       ],
       "candidatePlaceIds": [
         "GOAT-003",
-        "GOAT-053",
-        "GOAT-054",
+        "GOAT-049",
+        "GOAT-050",
+        "GOAT-024",
         "GOAT-025",
-        "GOAT-026",
-        "GOAT-047",
-        "GOAT-046",
-        "GOAT-002"
+        "GOAT-043",
+        "GOAT-042",
+        "GOAT-002",
+        "GOAT-055"
       ],
-      "candidateCount": 8,
-      "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateCount": 9,
+      "coverageCount": 4,
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_RESORT_02",
@@ -1177,9 +1190,9 @@
         "대중교통"
       ],
       "examplePlaceIds": [
-        "GOAT-046",
-        "GOAT-047",
-        "GOAT-054"
+        "GOAT-042",
+        "GOAT-043",
+        "GOAT-050"
       ],
       "uiKeywords": [
         "발리",
@@ -1189,23 +1202,24 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-046",
-        "GOAT-047",
-        "GOAT-056"
+        "GOAT-042",
+        "GOAT-043",
+        "GOAT-052"
       ],
       "candidatePlaceIds": [
-        "GOAT-046",
-        "GOAT-047",
-        "GOAT-056",
+        "GOAT-042",
+        "GOAT-043",
+        "GOAT-052",
+        "GOAT-040",
         "GOAT-044",
-        "GOAT-048",
-        "GOAT-025",
-        "GOAT-053",
+        "GOAT-024",
+        "GOAT-049",
+        "GOAT-051",
         "GOAT-055"
       ],
-      "candidateCount": 8,
+      "candidateCount": 9,
       "coverageCount": 3,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     },
     {
       "referenceCardId": "REF_RESORT_03",
@@ -1235,9 +1249,9 @@
         "자차"
       ],
       "examplePlaceIds": [
-        "GOAT-052",
-        "GOAT-053",
-        "GOAT-049"
+        "GOAT-048",
+        "GOAT-049",
+        "GOAT-045"
       ],
       "uiKeywords": [
         "숙소",
@@ -1247,21 +1261,29 @@
       ],
       "isActive": true,
       "coveragePlaceIds": [
-        "GOAT-052"
+        "GOAT-048",
+        "GOAT-059"
       ],
       "candidatePlaceIds": [
-        "GOAT-052",
+        "GOAT-048",
         "GOAT-007",
         "GOAT-008",
+        "GOAT-032",
         "GOAT-033",
-        "GOAT-034",
+        "GOAT-045",
+        "GOAT-014",
         "GOAT-049",
-        "GOAT-015",
-        "GOAT-053"
+        "GOAT-055",
+        "GOAT-059"
       ],
-      "candidateCount": 8,
-      "coverageCount": 1,
-      "candidateSelectionRule": "candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
+      "candidateCount": 10,
+      "coverageCount": 2,
+      "candidateSelectionRule": "운영 자격 필터 통과 후 candidatePlaceIds 안에서 기본 점수를 계산하되, 2번/3번 카드에서는 coveragePlaceIds와 낮은 노출 수 장소를 우선 보정한다."
     }
-  ]
+  ],
+  "managementSummary": {
+    "activePlaceCount": 61,
+    "pendingPlaceCount": 3,
+    "totalManagedPlaceCount": 61
+  }
 }

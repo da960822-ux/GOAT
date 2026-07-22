@@ -122,9 +122,23 @@ export interface GoatDayCourseResult {
   warnings: string[];
   debug?: {
     llmModel?: string;
+    llmRequestedModel?: string;
+    llmHttpStatus?: number;
+    llmLatencyMs?: number;
+    llmAttempts?: number;
     rawLlmText?: string;
     llmError?: string;
     tourApiError?: string;
+    tourApiDiagnostics?: {
+      httpStatuses: number[];
+      latencyMs: number;
+      requestCount: number;
+      successfulRequestCount: number;
+      failedRequestCount: number;
+      rawCandidateCount: number;
+      filteredCandidateCount: number;
+      coordinateCandidateCount: number;
+    };
     candidatesPassedToLlm?: TourApiNearbyCandidate[];
   };
 }

@@ -45,7 +45,10 @@ export interface RecommendationExposureRecord {
 
 export interface RecommendationExposureRepository {
   /** rerollOfRequestId가 들어왔을 때 직전 카드 3개를 강제 제외하기 위한 조회. */
-  findPlaceIdsByRequestId(requestId: string): Promise<string[]>;
+  findPlaceIdsByRequestId(
+    requestId: string,
+    scope?: Pick<RecommendationExposureQuery, "userId" | "sessionId">,
+  ): Promise<string[]>;
 
   /** 엔진의 recentExposureByPlaceId, totalExposureByPlaceId, themeAverageExposure에 그대로 넘길 통계 조회. */
   getExposureStats(query: RecommendationExposureQuery): Promise<Required<ExposureStats>>;
@@ -103,27 +106,55 @@ function buildThemeAverageExposure(records: RecommendationExposureRecord[]): Rec
 export class InMemoryRecommendationExposureRepository implements RecommendationExposureRepository {
   private readonly records: RecommendationExposureRecord[] = [];
   private nextId = 1;
+  private readonly maxRecords: number;
+  private readonly ttlMs: number;
 
-  constructor(initialRecords: RecommendationExposureRecord[] = []) {
+  constructor(
+    initialRecords: RecommendationExposureRecord[] = [],
+    options: { maxRecords?: number; ttlMs?: number } = {},
+  ) {
     this.records.push(...initialRecords);
     this.nextId = initialRecords.length + 1;
+    this.maxRecords = Math.max(3, Math.floor(options.maxRecords ?? 12_000));
+    this.ttlMs = Math.max(60_000, Math.floor(options.ttlMs ?? 24 * 60 * 60 * 1000));
+    this.prune();
   }
 
-  async findPlaceIdsByRequestId(requestId: string): Promise<string[]> {
+  private prune(now = Date.now()): void {
+    const cutoff = now - this.ttlMs;
+    const fresh = this.records.filter((record) => {
+      const timestamp = Date.parse(record.createdAt);
+      return !Number.isFinite(timestamp) || timestamp >= cutoff;
+    });
+    const bounded = fresh.slice(Math.max(0, fresh.length - this.maxRecords));
+    this.records.splice(0, this.records.length, ...bounded);
+  }
+
+  async findPlaceIdsByRequestId(
+    requestId: string,
+    scope: Pick<RecommendationExposureQuery, "userId" | "sessionId"> = {},
+  ): Promise<string[]> {
+    this.prune();
     return this.records
       .filter((record) => record.requestId === requestId)
+      .filter((record) => scope.userId || scope.sessionId
+        ? matchesUserOrSession(record, scope)
+        : !record.userId && !record.sessionId)
       .sort((a, b) => a.rankNo - b.rankNo)
       .map((record) => record.placeId);
   }
 
   async getExposureStats(query: RecommendationExposureQuery): Promise<Required<ExposureStats>> {
+    this.prune();
     const recentLimit = query.recentLimit ?? 20;
 
-    const scopedRecentRecords = this.records
-      .filter((record) => matchesUserOrSession(record, query))
-      .filter((record) => matchesReferenceScope(record, query))
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-      .slice(0, recentLimit);
+    const scopedRecentRecords = query.userId || query.sessionId
+      ? this.records
+        .filter((record) => matchesUserOrSession(record, query))
+        .filter((record) => matchesReferenceScope(record, query))
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+        .slice(0, recentLimit)
+      : [];
 
     return {
       recentExposureByPlaceId: countByPlaceId(scopedRecentRecords),
@@ -133,6 +164,7 @@ export class InMemoryRecommendationExposureRepository implements RecommendationE
   }
 
   async saveExposures(input: SaveRecommendationExposuresInput): Promise<void> {
+    this.prune();
     const createdAt = input.createdAt instanceof Date
       ? input.createdAt.toISOString()
       : input.createdAt ?? new Date().toISOString();
@@ -152,6 +184,7 @@ export class InMemoryRecommendationExposureRepository implements RecommendationE
         createdAt,
       });
     }
+    this.prune();
   }
 
   /** 테스트/디버깅용. 운영 코드에서는 직접 records를 만지지 말고 repository 메서드를 사용한다. */

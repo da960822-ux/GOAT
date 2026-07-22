@@ -413,7 +413,7 @@
       ],
       "best_time": "오후",
       "accessibility": {
-        "public_transport": "중",
+        "public_transport": "상",
         "car": "상"
       },
       "recommendation_use": "가족·사진스팟 추천",
@@ -498,7 +498,7 @@
       "best_time": "오전",
       "accessibility": {
         "public_transport": "하",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "목장형 코스 추천",
       "note": "평창 대관령 목장권역과 별도 장소로 관리",
@@ -701,7 +701,7 @@
       ],
       "best_time": "오후",
       "accessibility": {
-        "public_transport": "중",
+        "public_transport": "하",
         "car": "상"
       },
       "recommendation_use": "건축·사진스팟 추천",
@@ -786,7 +786,7 @@
       "best_time": "오전",
       "accessibility": {
         "public_transport": "하",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "가족·동물교감 추천",
       "note": "입장권 확인 필요",
@@ -827,8 +827,8 @@
       ],
       "best_time": "오전",
       "accessibility": {
-        "public_transport": "중",
-        "car": "상"
+        "public_transport": "하",
+        "car": "중"
       },
       "recommendation_use": "숲길·겨울 코스 추천",
       "note": "계절·입산 통제 확인 필요",
@@ -868,7 +868,7 @@
       ],
       "best_time": "오전",
       "accessibility": {
-        "public_transport": "중",
+        "public_transport": "상",
         "car": "상"
       },
       "recommendation_use": "조용한 감성스팟 추천",
@@ -880,44 +880,6 @@
     },
     {
       "place_id": "GOAT-014",
-      "place_name": "한반도섬",
-      "city": "양구군",
-      "region_group": "북부내륙권",
-      "primaryTheme": "숲·정원·자연휴식 무드",
-      "mood_tags": [
-        "자연친화",
-        "탁트임",
-        "힐링",
-        "여유로움",
-        "조용함"
-      ],
-      "sceneTags": [
-        "호수",
-        "산책로"
-      ],
-      "place_type": "호수/랜드아트",
-      "photo_point": "데크길, 호수 반영, 섬 실루엣",
-      "purpose_tags": [
-        "산책·힐링",
-        "사진·포토스팟"
-      ],
-      "season_tags": [
-        "가을"
-      ],
-      "best_time": "오후",
-      "accessibility": {
-        "public_transport": "중",
-        "car": "상"
-      },
-      "recommendation_use": "SNS 화제 스팟 추천",
-      "note": "해외감성보다는 화제성 중심",
-      "latitude": 38.1306932194,
-      "longitude": 127.9828295908,
-      "address": "강원특별자치도 양구군 양구읍 한반도섬길 76",
-      "coordinateSource": "KTO_SEARCH"
-    },
-    {
-      "place_id": "GOAT-015",
       "place_name": "알펜시아 리조트",
       "city": "평창군",
       "region_group": "고원권",
@@ -947,7 +909,7 @@
       ],
       "best_time": "저녁",
       "accessibility": {
-        "public_transport": "상",
+        "public_transport": "중",
         "car": "상"
       },
       "recommendation_use": "겨울 리조트 코스 추천",
@@ -958,7 +920,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-016",
+      "place_id": "GOAT-015",
       "place_name": "육백마지기",
       "city": "평창군",
       "region_group": "고원권",
@@ -989,7 +951,7 @@
       "best_time": "새벽",
       "accessibility": {
         "public_transport": "하",
-        "car": "상"
+        "car": "하"
       },
       "recommendation_use": "새벽·고원 포토스팟 추천",
       "note": "도로·기상 확인 필요",
@@ -999,7 +961,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-017",
+      "place_id": "GOAT-016",
       "place_name": "대관령양떼목장",
       "city": "평창군",
       "region_group": "고원권",
@@ -1041,7 +1003,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-018",
+      "place_id": "GOAT-017",
       "place_name": "하늘목장",
       "city": "평창군",
       "region_group": "고원권",
@@ -1071,7 +1033,7 @@
       ],
       "best_time": "오전",
       "accessibility": {
-        "public_transport": "중",
+        "public_transport": "하",
         "car": "상"
       },
       "recommendation_use": "목장 코스 추천",
@@ -1082,7 +1044,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-019",
+      "place_id": "GOAT-018",
       "place_name": "삼양라운드힐",
       "city": "평창군",
       "region_group": "고원권",
@@ -1114,7 +1076,7 @@
       ],
       "best_time": "오전",
       "accessibility": {
-        "public_transport": "중",
+        "public_transport": "하",
         "car": "상"
       },
       "recommendation_use": "목장·설원 코스 추천",
@@ -1125,7 +1087,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-020",
+      "place_id": "GOAT-019",
       "place_name": "발왕산 천년주목숲길·애니포레",
       "city": "평창군",
       "region_group": "고원권",
@@ -1167,7 +1129,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-021",
+      "place_id": "GOAT-020",
       "place_name": "삼탄아트마인",
       "city": "정선군",
       "region_group": "고원권",
@@ -1207,7 +1169,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-022",
+      "place_id": "GOAT-021",
       "place_name": "민둥산",
       "city": "정선군",
       "region_group": "고원권",
@@ -1236,8 +1198,8 @@
       ],
       "best_time": "오후",
       "accessibility": {
-        "public_transport": "중",
-        "car": "상"
+        "public_transport": "상",
+        "car": "중"
       },
       "recommendation_use": "가을 트레킹 추천",
       "note": "등산 난이도 정보 필요",
@@ -1247,7 +1209,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-023",
+      "place_id": "GOAT-022",
       "place_name": "매봉산 바람의 언덕",
       "city": "태백시",
       "region_group": "고원권",
@@ -1278,7 +1240,7 @@
       "best_time": "새벽",
       "accessibility": {
         "public_transport": "하",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "일출·고원 포토스팟 추천",
       "note": "도로 통제·기상 확인 필요",
@@ -1288,7 +1250,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-024",
+      "place_id": "GOAT-023",
       "place_name": "태기산",
       "city": "횡성군",
       "region_group": "고원권",
@@ -1317,7 +1279,7 @@
       "best_time": "오전",
       "accessibility": {
         "public_transport": "하",
-        "car": "상"
+        "car": "하"
       },
       "recommendation_use": "겨울 설경 코스 추천",
       "note": "겨울 도로상태 확인 필요",
@@ -1327,7 +1289,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-025",
+      "place_id": "GOAT-024",
       "place_name": "안목해변 카페거리",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1358,7 +1320,7 @@
       "best_time": "저녁",
       "accessibility": {
         "public_transport": "상",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "해변 카페 코스 추천",
       "note": "대중교통 접근성 좋음",
@@ -1368,7 +1330,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-026",
+      "place_id": "GOAT-025",
       "place_name": "하슬라아트월드",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1409,7 +1371,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-027",
+      "place_id": "GOAT-026",
       "place_name": "정동진 썬크루즈 리조트",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1451,7 +1413,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-028",
+      "place_id": "GOAT-027",
       "place_name": "BTS 버스정류장",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1481,7 +1443,7 @@
       "best_time": "새벽",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "K팝 팬 코스 추천",
       "note": "해외감성보다 글로벌 화제성 중심",
@@ -1491,7 +1453,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-029",
+      "place_id": "GOAT-028",
       "place_name": "정동진 철길 건널목",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1521,8 +1483,8 @@
       ],
       "best_time": "오전",
       "accessibility": {
-        "public_transport": "중",
-        "car": "상"
+        "public_transport": "상",
+        "car": "중"
       },
       "recommendation_use": "일본 소도시 감성 추천",
       "note": "안전 촬영 안내 필요",
@@ -1532,7 +1494,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-030",
+      "place_id": "GOAT-029",
       "place_name": "안반데기",
       "city": "강릉시",
       "region_group": "고원권",
@@ -1564,7 +1526,7 @@
       "best_time": "야간",
       "accessibility": {
         "public_transport": "하",
-        "car": "상"
+        "car": "하"
       },
       "recommendation_use": "별보기·고원 코스 추천",
       "note": "기상·도로 확인 필요",
@@ -1574,7 +1536,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-031",
+      "place_id": "GOAT-030",
       "place_name": "금진해변·헌화로 드라이브 코스",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1617,7 +1579,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-032",
+      "place_id": "GOAT-031",
       "place_name": "교동 소품샵 거리",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1646,8 +1608,8 @@
       ],
       "best_time": "오후",
       "accessibility": {
-        "public_transport": "중",
-        "car": "상"
+        "public_transport": "상",
+        "car": "중"
       },
       "recommendation_use": "골목 산책 추천",
       "note": "개별 매장 변동성 큼",
@@ -1657,7 +1619,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH_REPRESENTATIVE"
     },
     {
-      "place_id": "GOAT-033",
+      "place_id": "GOAT-032",
       "place_name": "휴식 료칸 풀빌라",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1696,7 +1658,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-034",
+      "place_id": "GOAT-033",
       "place_name": "유메모리 리조트",
       "city": "강릉시",
       "region_group": "동해안권",
@@ -1736,46 +1698,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-035",
-      "place_name": "월화거리",
-      "city": "강릉시",
-      "region_group": "동해안권",
-      "primaryTheme": "레트로·시장·항구 무드",
-      "mood_tags": [
-        "레트로",
-        "빈티지",
-        "로컬감성",
-        "활기",
-        "낭만적",
-        "도시적"
-      ],
-      "sceneTags": [
-        "야간거리",
-        "산책로"
-      ],
-      "place_type": "야간거리/산책로",
-      "photo_point": "조명 산책로, 먹거리, 버스킹 분위기",
-      "purpose_tags": [
-        "먹거리·야간탐방",
-        "산책·힐링"
-      ],
-      "season_tags": [
-        "사계절"
-      ],
-      "best_time": "저녁",
-      "accessibility": {
-        "public_transport": "상",
-        "car": "상"
-      },
-      "recommendation_use": "야간 대안 코스 추천",
-      "note": "식당 중심 데이터와 분리 필요",
-      "latitude": 37.755846288051,
-      "longitude": 128.897418452855,
-      "address": "강원특별자치도 강릉시 금성로11번길 9",
-      "coordinateSource": "KTO_SEARCH"
-    },
-    {
-      "place_id": "GOAT-036",
+      "place_id": "GOAT-034",
       "place_name": "무릉별유천지",
       "city": "동해시",
       "region_group": "동해안권",
@@ -1816,7 +1739,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-037",
+      "place_id": "GOAT-035",
       "place_name": "어달삼거리",
       "city": "동해시",
       "region_group": "동해안권",
@@ -1847,7 +1770,7 @@
       "best_time": "오전",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "일본 소도시 감성 추천",
       "note": "도로 촬영 안전 안내 필요",
@@ -1857,7 +1780,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-038",
+      "place_id": "GOAT-036",
       "place_name": "묵호항 일대",
       "city": "동해시",
       "region_group": "동해안권",
@@ -1887,8 +1810,8 @@
       ],
       "best_time": "저녁",
       "accessibility": {
-        "public_transport": "중",
-        "car": "상"
+        "public_transport": "상",
+        "car": "중"
       },
       "recommendation_use": "야간 항구 코스 추천",
       "note": "식당 중심 데이터와 분리 필요",
@@ -1898,7 +1821,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-039",
+      "place_id": "GOAT-037",
       "place_name": "묵호등대·논골담길",
       "city": "동해시",
       "region_group": "동해안권",
@@ -1928,7 +1851,7 @@
       "best_time": "저녁",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "브랜딩 후보 코스 추천",
       "note": "논골담길/묵호등대 중복 통합",
@@ -1938,7 +1861,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-040",
+      "place_id": "GOAT-038",
       "place_name": "외옹치 바다향기로",
       "city": "속초시",
       "region_group": "동해안권",
@@ -1970,7 +1893,7 @@
       "best_time": "오전",
       "accessibility": {
         "public_transport": "상",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "해안 산책 추천",
       "note": "안전점검·통제 여부 확인 필요",
@@ -1980,48 +1903,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-041",
-      "place_name": "속초 서점 투어 골목",
-      "city": "속초시",
-      "region_group": "동해안권",
-      "primaryTheme": "일본 소도시·골목 무드",
-      "mood_tags": [
-        "일본소도시감성",
-        "일본감성",
-        "로컬감성",
-        "조용함",
-        "힐링",
-        "아늑함",
-        "아기자기함"
-      ],
-      "sceneTags": [
-        "골목",
-        "서점",
-        "실내공간"
-      ],
-      "place_type": "서점/골목",
-      "photo_point": "동아서점, 완벽한 날들 등 서점 동선",
-      "purpose_tags": [
-        "카페·실내휴식",
-        "산책·힐링"
-      ],
-      "season_tags": [
-        "사계절"
-      ],
-      "best_time": "오후",
-      "accessibility": {
-        "public_transport": "상",
-        "car": "중"
-      },
-      "recommendation_use": "조용한 실내 대안 코스 추천",
-      "note": "개별 서점 운영시간 확인 필요",
-      "latitude": 38.200360484,
-      "longitude": 128.581400751,
-      "address": "강원특별자치도 속초시 중앙로 45",
-      "coordinateSource": "KTO_SEARCH"
-    },
-    {
-      "place_id": "GOAT-042",
+      "place_id": "GOAT-039",
       "place_name": "카페 흰다정",
       "city": "속초시",
       "region_group": "동해안권",
@@ -2061,47 +1943,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-043",
-      "place_name": "속초 관광수산시장·대포항",
-      "city": "속초시",
-      "region_group": "동해안권",
-      "primaryTheme": "레트로·시장·항구 무드",
-      "mood_tags": [
-        "레트로",
-        "로컬감성",
-        "빈티지",
-        "청량함",
-        "활기",
-        "도시적"
-      ],
-      "sceneTags": [
-        "항구",
-        "시장",
-        "야간거리"
-      ],
-      "place_type": "시장/항구",
-      "photo_point": "시장 골목, 항구 야경, 여행자 밀집 분위기",
-      "purpose_tags": [
-        "먹거리·야간탐방",
-        "사진·포토스팟"
-      ],
-      "season_tags": [
-        "사계절"
-      ],
-      "best_time": "저녁",
-      "accessibility": {
-        "public_transport": "상",
-        "car": "상"
-      },
-      "recommendation_use": "야간·먹거리 코스 추천",
-      "note": "식당 데이터와 분리 관리 필요",
-      "latitude": 38.2039356903525,
-      "longitude": 128.590522986422,
-      "address": "강원특별자치도 속초시 중앙로147번길 12",
-      "coordinateSource": "KTO_SEARCH"
-    },
-    {
-      "place_id": "GOAT-044",
+      "place_id": "GOAT-040",
       "place_name": "서피비치",
       "city": "양양군",
       "region_group": "동해안권",
@@ -2132,7 +1974,7 @@
       "best_time": "오후",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "서핑·비치 포토스팟 추천",
       "note": "성수기 혼잡도 반영 필요",
@@ -2142,7 +1984,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-045",
+      "place_id": "GOAT-041",
       "place_name": "죽도해변·인구해변·양리단길",
       "city": "양양군",
       "region_group": "동해안권",
@@ -2173,7 +2015,7 @@
       "best_time": "저녁",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "서프타운 권역 추천",
       "note": "개별 업장보다 권역으로 관리",
@@ -2183,7 +2025,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-046",
+      "place_id": "GOAT-042",
       "place_name": "두둥실",
       "city": "양양군",
       "region_group": "동해안권",
@@ -2223,7 +2065,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-047",
+      "place_id": "GOAT-043",
       "place_name": "에이프레임(A-Frame)",
       "city": "고성군",
       "region_group": "동해안권",
@@ -2264,7 +2106,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-048",
+      "place_id": "GOAT-044",
       "place_name": "아야진해수욕장",
       "city": "고성군",
       "region_group": "동해안권",
@@ -2295,7 +2137,7 @@
       "best_time": "한낮",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "해변 코스 추천",
       "note": "기상·수질·주차 확인 필요",
@@ -2305,7 +2147,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-049",
+      "place_id": "GOAT-045",
       "place_name": "켄싱턴리조트 설악밸리",
       "city": "고성군",
       "region_group": "동해안권",
@@ -2347,7 +2189,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-050",
+      "place_id": "GOAT-046",
       "place_name": "하늬라벤더팜",
       "city": "고성군",
       "region_group": "동해안권",
@@ -2387,7 +2229,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-051",
+      "place_id": "GOAT-047",
       "place_name": "능파대",
       "city": "고성군",
       "region_group": "동해안권",
@@ -2417,7 +2259,7 @@
       "best_time": "오후",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "지질·해안 포토스팟 추천",
       "note": "안전 안내 필요",
@@ -2427,7 +2269,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-052",
+      "place_id": "GOAT-048",
       "place_name": "사유의 숲",
       "city": "삼척시",
       "region_group": "동해안권",
@@ -2466,7 +2308,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-053",
+      "place_id": "GOAT-049",
       "place_name": "쏠비치 삼척·산토리니 광장",
       "city": "삼척시",
       "region_group": "동해안권",
@@ -2507,7 +2349,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-054",
+      "place_id": "GOAT-050",
       "place_name": "라메종드마리",
       "city": "삼척시",
       "region_group": "동해안권",
@@ -2548,7 +2390,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-055",
+      "place_id": "GOAT-051",
       "place_name": "장호항",
       "city": "삼척시",
       "region_group": "동해안권",
@@ -2579,7 +2421,7 @@
       "best_time": "한낮",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "해양 액티비티·포토스팟 추천",
       "note": "용화해변과 연계 가능",
@@ -2589,7 +2431,7 @@
       "coordinateSource": "KTO_SEARCH"
     },
     {
-      "place_id": "GOAT-056",
+      "place_id": "GOAT-052",
       "place_name": "용화해변",
       "city": "삼척시",
       "region_group": "동해안권",
@@ -2620,7 +2462,7 @@
       "best_time": "한낮",
       "accessibility": {
         "public_transport": "중",
-        "car": "상"
+        "car": "중"
       },
       "recommendation_use": "장호항 연계 대안 코스 추천",
       "note": "장호항과 별도 장소로 관리",
@@ -2630,7 +2472,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-057",
+      "place_id": "GOAT-053",
       "place_name": "초곡용굴촛대바위길",
       "city": "삼척시",
       "region_group": "동해안권",
@@ -2672,7 +2514,7 @@
       "coordinateSource": "KAKAO_MAP_SEARCH"
     },
     {
-      "place_id": "GOAT-058",
+      "place_id": "GOAT-054",
       "place_name": "한탄강 주상절리길",
       "city": "철원군",
       "region_group": "북부내륙권",
@@ -2713,6 +2555,384 @@
       "longitude": 127.299988912714,
       "address": "강원특별자치도 철원군 갈말읍 군탄리 산 78-2",
       "coordinateSource": "KTO_SEARCH"
+    },
+    {
+      "place_id": "GOAT-055",
+      "place_name": "쏠비치 양양",
+      "city": "양양군",
+      "region_group": "동해안권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "지중해감성",
+        "유럽감성",
+        "프리미엄",
+        "휴양감",
+        "이국적",
+        "낭만적",
+        "탁트임"
+      ],
+      "sceneTags": [
+        "리조트",
+        "광장",
+        "바다",
+        "해안산책로"
+      ],
+      "place_type": "리조트/광장",
+      "photo_point": "스페인풍 백색 건물과 붉은 지붕, 베누스 광장, 동해 전망",
+      "purpose_tags": [
+        "숙소·리조트",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "저녁",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "리조트·사진스팟 추천",
+      "note": "한국관광공사에서 주차 500면과 주소를 확인함. 대중교통 접근 등급은 확인 자료가 부족함. 좌표는 2026-07-21 카카오 주소 검색으로 확인함. 해안 산책로·해변 출입은 기상과 운영 상황에 따라 변동 가능.",
+      "latitude": 38.0882317882525,
+      "longitude": 128.666280393724,
+      "address": "강원특별자치도 양양군 손양면 선사유적로 678",
+      "coordinateSource": "KAKAO_MAP_SEARCH",
+      "verification_status": "active_verified",
+      "sourceUrls": [
+        "https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=85034",
+        "https://sonolc.sonohotelsresorts.com/daemyung.sb.yy.introduce.location.ds/dmparse.dm",
+        "https://www.sonohotelsresorts.com/solbeach_yy/facilitiesviewall/detail/ADD00000586"
+      ],
+      "source_checked_at": "2026-07-14"
+    },
+    {
+      "place_id": "GOAT-056",
+      "place_name": "허브나라농원",
+      "city": "평창군",
+      "region_group": "고원권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "유럽감성",
+        "자연친화",
+        "힐링",
+        "여유로움",
+        "조용함",
+        "컬러풀",
+        "아기자기함"
+      ],
+      "sceneTags": [
+        "정원",
+        "꽃밭",
+        "산책로",
+        "카페"
+      ],
+      "place_type": "정원/농장",
+      "photo_point": "셰익스피어 가든, 팔레트 가든, 허브 온실과 계곡 산책로",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟",
+        "카페·실내휴식"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "중"
+      },
+      "recommendation_use": "꽃밭·정원 코스 추천",
+      "note": "한국관광공사에서 주소, 자체 주차장, 5~10월 09:00~18:00 및 11~4월 09:00~17:30 운영을 확인함. 11~4월 화요일 휴무. 대중교통 등급은 확인 자료가 부족함. 좌표는 2026-07-21 카카오 주소 검색으로 확인함.",
+      "latitude": 37.6358068272973,
+      "longitude": 128.342643965316,
+      "address": "강원특별자치도 평창군 봉평면 흥정계곡길 225",
+      "coordinateSource": "KAKAO_MAP_SEARCH",
+      "verification_status": "active_verified",
+      "sourceUrls": [
+        "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=104740",
+        "https://access.visitkorea.or.kr/ms/detail.do?cotId=1f801032-7d8f-40bb-9e9f-44ffcc0b385d"
+      ],
+      "source_checked_at": "2026-07-14"
+    },
+    {
+      "place_id": "GOAT-057",
+      "place_name": "로미지안가든",
+      "city": "정선군",
+      "region_group": "고원권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "알프스감성",
+        "유럽감성",
+        "자연친화",
+        "힐링",
+        "조용함",
+        "탁트임",
+        "웅장함"
+      ],
+      "sceneTags": [
+        "정원",
+        "산",
+        "숲",
+        "산책로",
+        "전망대"
+      ],
+      "place_type": "수목원/정원",
+      "photo_point": "가시버시성, 삼합수 전망대, 산악 정원과 금강송 숲길",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "하",
+        "car": "중"
+      },
+      "recommendation_use": "꽃밭·정원 코스 추천",
+      "note": "한국관광공사에서 주소·09:00~17:00 운영·주차를, 정선군 버스정보에서 로미지안가든 정류장 운행을 확인함. 좌표는 2026-07-21 카카오 주소 검색으로 확인함.",
+      "latitude": 37.4426940910256,
+      "longitude": 128.641237027708,
+      "address": "강원특별자치도 정선군 북평면 어도원길 12",
+      "coordinateSource": "KAKAO_MAP_SEARCH",
+      "verification_status": "active_verified",
+      "sourceUrls": [
+        "https://korean.visitkorea.or.kr/detail/rem_detail.do?cotid=e3f2c6ec-37d4-455a-a37c-295126a36d11",
+        "https://korean.visitkorea.or.kr/detail/rem_detail.do?cotid=5a7d8d42-e7e6-40f2-b1a9-4aa99e1bc411",
+        "https://bis.jeongseon.go.kr/qna/write?mode=R&qnaSeq=564"
+      ],
+      "source_checked_at": "2026-07-14"
+    },
+    {
+      "place_id": "GOAT-058",
+      "place_name": "고석정 꽃밭",
+      "city": "철원군",
+      "region_group": "북부내륙권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "유럽감성",
+        "자연친화",
+        "컬러풀",
+        "여유로움",
+        "힐링",
+        "탁트임"
+      ],
+      "sceneTags": [
+        "꽃밭",
+        "산책로",
+        "포토존"
+      ],
+      "place_type": "정원/농장",
+      "photo_point": "계절 초화류가 펼쳐진 대형 꽃밭과 산책 동선",
+      "purpose_tags": [
+        "사진·포토스팟",
+        "산책·힐링"
+      ],
+      "season_tags": [
+        "봄"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "꽃밭·정원 코스 추천",
+      "note": "철원군 공식 자료에서 2026년 봄 운영(5월 15일~6월 14일, 낙화에 따라 조기 종료 가능)과 주소·주차를 확인함. 2026년 하반기 운영기간은 2026-07-14 현재 미공개이므로 확인된 날짜 범위 밖에서는 추천하지 않음. 대중교통 등급은 확인 자료가 부족함. 좌표는 2026-07-21 카카오 주소 검색으로 확인함.",
+      "latitude": 38.1882273230829,
+      "longitude": 127.295506161815,
+      "address": "강원특별자치도 철원군 동송읍 태봉로 1769",
+      "coordinateSource": "KAKAO_MAP_SEARCH",
+      "verification_status": "active_verified",
+      "operatingCondition": {
+        "type": "date_ranges",
+        "status": "verified",
+        "timezone": "Asia/Seoul",
+        "openDateRanges": [
+          {
+            "startDate": "2026-05-15",
+            "endDate": "2026-06-14",
+            "label": "2026년 봄 운영"
+          }
+        ],
+        "requiresExactDate": true,
+        "unknownDatePolicy": "exclude",
+        "sourceUrl": "https://www.cwg.go.kr/tour/contents.do?key=1823",
+        "checkedAt": "2026-07-14",
+        "note": "공식 운영 종료일은 6월 14일이었으나 초화류 낙화로 6월 7일 정식 종료 후 6월 14일까지 개방 운영. 하반기 일정 미확정."
+      },
+      "sourceUrls": [
+        "https://www.cwg.go.kr/tour/contents.do?key=1823",
+        "https://www.cwg.go.kr/tour/selectBbsNttView.do?bbsNo=76&key=668&nttNo=279357",
+        "https://english.visitkorea.or.kr/svc/whereToGo/locIntrdn/rgnContentsView.do?vcontsId=216232"
+      ],
+      "source_checked_at": "2026-07-14"
+    },
+    {
+      "place_id": "GOAT-059",
+      "place_name": "파크로쉬 리조트 앤 웰니스",
+      "city": "정선군",
+      "region_group": "고원권",
+      "primaryTheme": "휴양·카페·이국공간 무드",
+      "mood_tags": [
+        "프리미엄",
+        "휴양감",
+        "힐링",
+        "조용함",
+        "자연친화",
+        "알프스감성",
+        "아늑함"
+      ],
+      "sceneTags": [
+        "리조트",
+        "산",
+        "숲",
+        "실내공간",
+        "전망대"
+      ],
+      "place_type": "리조트/숙소",
+      "photo_point": "가리왕산 전망, 자연 소재 건축, 웰니스 공간과 로쉬카페",
+      "purpose_tags": [
+        "숙소·리조트",
+        "산책·힐링",
+        "카페·실내휴식"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오후",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "숙소·리조트 추천",
+      "note": "정선군은 투숙객 대상 웰니스 프로그램과 리조트 부대시설을 안내하고, 공식 사이트는 로쉬카페 운영을 안내함. 비투숙객이 실제 이용 가능한 구역과 프로그램 범위는 공식 문구만으로 확정할 수 없어 검증 대기.",
+      "latitude": 37.4747340909924,
+      "longitude": 128.611150688854,
+      "address": "강원특별자치도 정선군 북평면 중봉길 9-12",
+      "coordinateSource": "KAKAO_MAP_SEARCH",
+      "verification_status": "active_verified",
+      "verification_items": [
+        "비투숙객이 실제 이용할 수 있는 구역",
+        "웰니스 프로그램·스파·라운지의 투숙객 전용 여부"
+      ],
+      "sourceUrls": [
+        "https://www.jeongseon.go.kr/tour/jeongseontour/attractions?contentSeq=254799&mode=read",
+        "https://park-roche.com/dining/cafe",
+        "https://park-roche.com/wellness-club/wellness-club"
+      ],
+      "source_checked_at": "2026-07-14"
+    },
+    {
+      "place_id": "GOAT-060",
+      "place_name": "켄싱턴호텔 평창 프렌치가든",
+      "city": "평창군",
+      "region_group": "고원권",
+      "primaryTheme": "숲·정원·자연휴식 무드",
+      "mood_tags": [
+        "유럽감성",
+        "자연친화",
+        "컬러풀",
+        "여유로움",
+        "힐링",
+        "아기자기함"
+      ],
+      "sceneTags": [
+        "정원",
+        "꽃밭",
+        "산책로",
+        "리조트"
+      ],
+      "place_type": "수목원/정원",
+      "photo_point": "프랑스 빌랑드리 모티브 자수정원, 허브가든과 호텔 정원 산책로",
+      "purpose_tags": [
+        "산책·힐링",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "봄",
+        "여름",
+        "가을"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "꽃밭·정원 코스 추천",
+      "note": "호텔 공식 페이지에서 2만 평 프랑스식 정원, 외부 위치, 24시간 표기와 주소를 확인함. 무료 입장 범위와 계절별 조경 상태는 명시가 부족해 검증 대기.",
+      "latitude": 37.6898180662834,
+      "longitude": 128.597813988889,
+      "address": "강원특별자치도 평창군 진부면 진고개로 231",
+      "coordinateSource": "KAKAO_MAP_SEARCH",
+      "verification_status": "active_verified",
+      "verification_items": [
+        "비투숙객 무료 입장 범위",
+        "계절별 조경·개화 상태",
+        "유료 체험과 일반 정원 관람 범위 구분"
+      ],
+      "sourceUrls": [
+        "https://www.kensington.co.kr/hpc/sub_facilities/detail?idx=113",
+        "https://www.kensington.co.kr/hpc/branch_info",
+        "https://kensington.co.kr/hpc/promotion/dining_view?seq=758&sort=1"
+      ],
+      "source_checked_at": "2026-07-14"
+    },
+    {
+      "place_id": "GOAT-061",
+      "place_name": "델피노·소노펠리체 델피노",
+      "city": "고성군",
+      "region_group": "동해안권",
+      "primaryTheme": "알프스·고원·목장 무드",
+      "mood_tags": [
+        "알프스감성",
+        "프리미엄",
+        "탁트임",
+        "자연친화",
+        "휴양감",
+        "웅장함",
+        "힐링"
+      ],
+      "sceneTags": [
+        "리조트",
+        "산",
+        "전망대",
+        "카페"
+      ],
+      "place_type": "리조트/숙소",
+      "photo_point": "울산바위 전망, 알파인 리조트 외관과 더 엠브로시아 카페",
+      "purpose_tags": [
+        "숙소·리조트",
+        "카페·실내휴식",
+        "사진·포토스팟"
+      ],
+      "season_tags": [
+        "사계절"
+      ],
+      "best_time": "오전",
+      "accessibility": {
+        "public_transport": "중",
+        "car": "상"
+      },
+      "recommendation_use": "리조트·사진스팟 추천",
+      "note": "소노 공식 페이지에서 설악·울산바위 전망과 더 엠브로시아 카페, 리조트 주소를 확인함. 전망 카페 및 비투숙객 접근 공간을 정확한 장소 단위로 확정할 수 없어 검증 대기.",
+      "latitude": 38.2131162786595,
+      "longitude": 128.493440366843,
+      "address": "강원특별자치도 고성군 토성면 미시령옛길 1153",
+      "coordinateSource": "KAKAO_MAP_SEARCH",
+      "verification_status": "active_verified",
+      "verification_items": [
+        "더 엠브로시아 비투숙객 이용 가능 여부",
+        "전망 공간의 정확한 건물·층·운영시간",
+        "델피노와 소노펠리체 델피노의 추천 단위 분리 필요성"
+      ],
+      "sourceUrls": [
+        "https://www.sonohotelsresorts.com/calm_dp/diningviewall",
+        "https://www.sonohotelsresorts.com/village_dp/highlight",
+        "https://mice.sonohotelsresorts.com/daemyung.dp.room.dpsfinfo.ds/dmparse.dm"
+      ],
+      "source_checked_at": "2026-07-14"
     }
-  ]
+  ],
+  "pending_places": []
 }

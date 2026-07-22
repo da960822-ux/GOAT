@@ -71,6 +71,10 @@ export interface LegacyRecommendationScoreBreakdown {
   duplicatePenalty: number;
   selectionScore: number;
   displayScore: number;
+  originDistanceBonus?: number;
+  exposurePenalty?: number;
+  coverageBoost?: number;
+  lowExposureBoost?: number;
 }
 
 export interface RecommendationCard {
@@ -83,15 +87,27 @@ export interface RecommendationCard {
   safetyNotes: string[];
   weatherFit: string;
   parkingInfo: string;
+  /** 카드 간 또는 출발지 기준 이동 정보. 점수 반영 여부는 from에 따라 다르다. */
+  routeInfo?: {
+    from: "ORIGIN" | "FIRST_CARD";
+    fromLabel: string;
+    distanceKm: number;
+    durationMin?: number;
+    source: "KAKAO_ROUTE" | "HAVERSINE";
+    estimated: boolean;
+    scoreApplied: boolean;
+  };
 }
 
 export interface RecommendationResult {
+  /** 서버가 생성한 추천 요청 ID. 다시 추천 시 rerollOfRequestId로 전달한다. */
+  requestId?: string;
   moodId: string;
   referenceCardId?: string;
   appliedTags: string[];
   seedPoolSize: number;
   candidatePoolSize: number;
-  poolPolicy: "ALL58" | "PRIMARY43";
+  poolPolicy: "ALL61" | "PRIMARY43";
   poolReason: string;
   fallbackUsed: boolean;
   adaptivePoolRetryUsed: boolean;
@@ -101,14 +117,16 @@ export interface RecommendationResult {
   warnings?: string[];
   warningDetails?: RecommendationWarning[];
   decisionAudit?: RecommendationDecisionAudit;
-  policyVersion?: "goat-score-v1";
+  policyVersion?: "goat-score-v2";
+  originStatus?: "APPLIED" | "SKIPPED" | "UNAVAILABLE";
+  originNotice?: string;
 }
 
 export type Companion = "혼자" | "연인" | "친구" | "가족";
 export type Transport = "자차" | "대중교통" | "도보중심";
 export type VisitTime = "새벽" | "오전" | "한낮" | "오후" | "일몰" | "저녁" | "야간" | "밤/새벽";
 export type TravelPurpose = "가볍게 산책" | "사진 위주" | "액티비티" | "조용한 휴식";
-export type OriginType = "current" | "region" | "skip";
+export type OriginType = "current" | "region" | "address" | "skip";
 
 export interface TravelOrigin {
   type: OriginType;

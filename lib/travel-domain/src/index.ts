@@ -1,8 +1,11 @@
 export {
   getRecommendations,
+  getRecommendationsWithExposure,
+  getRouteCandidatePlaces,
   getAlternatives,
   getPlaceById,
   moodCategories,
+  referenceCards,
   createGoatRecommendation,
   createGoatCourseRecommendation,
 } from "./recommendationService";
@@ -10,8 +13,24 @@ export type {
   CreateGoatRecommendationParams,
   RecommendationServiceBody,
   RecommendationServiceContext,
+  ExposureRecommendationOptions,
 } from "./recommendationService";
-export { recommendGoatPlaces, getRecommendedPlaceIds } from "./goatRecommendationEngine";
+export {
+  RECOMMENDATION_POLICY_VERSION,
+  recommendGoatPlaces,
+  getRecommendedPlaceIds,
+} from "./goatRecommendationEngine";
+export {
+  ACCESSIBILITY_RECOMMENDATION_POINTS,
+  evaluateCarAccessibility,
+  evaluatePublicTransportAccessibility,
+  getAccessibilityRecommendationScore,
+} from "./accessibilityScoringPolicy";
+export type {
+  AccessibilityEvaluation,
+  CarEvaluationInput,
+  PublicTransportEvaluationInput,
+} from "./accessibilityScoringPolicy";
 export * from "./recommendationExposureRepository";
 export * from "./courseRecommendationTypes";
 export { createGoatDayCourse } from "./courseRecommendationService";
@@ -21,8 +40,8 @@ export { buildKakaoMapSearchUrl, buildKakaoStaticMapResult } from "./kakaoStatic
 export type {
   Companion,
   DataStatus,
-  MoodCategory,
   LegacyRecommendationScoreBreakdown,
+  MoodCategory,
   OriginType,
   Place,
   RecommendationCard,

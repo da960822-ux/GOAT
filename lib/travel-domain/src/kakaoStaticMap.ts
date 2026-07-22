@@ -19,7 +19,9 @@ export function buildKakaoMapSearchUrl(keyword: string): string {
 }
 
 export function buildKakaoStaticMapResult(stops: CourseStop[], fallbackKeyword: string): StaticMapResult {
-  const appKey = getEnv("KAKAO_JAVASCRIPT_KEY") ?? getEnv("KAKAO_REST_API_KEY") ?? getEnv("KAKAO_MAP_KEY");
+  // REST API keys are server credentials and must never be embedded in a client-side SDK URL.
+  // KAKAO_MAP_KEY is retained as a backwards-compatible alias only for a public JavaScript key.
+  const appKey = getEnv("KAKAO_JAVASCRIPT_KEY") ?? getEnv("KAKAO_MAP_KEY");
   const withCoords = stops.filter(hasCoordinates);
 
   if (!appKey || withCoords.length === 0) {

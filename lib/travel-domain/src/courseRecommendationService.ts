@@ -7,7 +7,10 @@ import {
   TourApiNearbyCandidate,
 } from "./courseRecommendationTypes";
 import { callOpenRouterCoursePlanner } from "./openRouterCourseLlm";
-import { fetchVisitKoreaContentLabNearbyCandidates } from "./tourApiClient";
+import {
+  fetchVisitKoreaContentLabNearbyCandidates,
+  type VisitKoreaNearbyDiagnostics,
+} from "./tourApiClient";
 import { buildKakaoStaticMapResult } from "./kakaoStaticMap";
 
 function toNumber(value: unknown): number | undefined {
@@ -26,30 +29,51 @@ function getPlaceCoordinates(place: GoatPlace): { lat: number; lng: number } | n
   return null;
 }
 
+function distanceMeters(
+  from: { lat: number; lng: number },
+  to: { lat: number; lng: number },
+): number {
+  const radiusMeters = 6_371_000;
+  const toRadians = (value: number) => (value * Math.PI) / 180;
+  const dLat = toRadians(to.lat - from.lat);
+  const dLng = toRadians(to.lng - from.lng);
+  const lat1 = toRadians(from.lat);
+  const lat2 = toRadians(to.lat);
+  const haversine = Math.sin(dLat / 2) ** 2
+    + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
+  return Math.round(2 * radiusMeters * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine)));
+}
+
 function findSelectedPlace(dataset: GoatPlaceDataset, selectedPlaceId: string): GoatPlace | undefined {
   return dataset.places.find((place) => place.place_id === selectedPlaceId);
 }
 
 function localFallbackCandidates(dataset: GoatPlaceDataset, selectedPlace: GoatPlace): TourApiNearbyCandidate[] {
+  const selectedCoords = getPlaceCoordinates(selectedPlace);
   return dataset.places
     .filter((place) => place.place_id !== selectedPlace.place_id)
     .filter((place) => place.city === selectedPlace.city || place.region_group === selectedPlace.region_group)
-    .slice(0, 12)
-    .map((place) => ({
-      id: place.place_id,
-      title: place.place_name,
-      category: place.place_type.includes("카페")
-        ? "CAFE"
-        : place.place_type.includes("시장") || place.place_type.includes("항구")
-          ? "MARKET"
-          : "TOUR",
-      address: typeof place.address === "string" ? place.address : undefined,
-      overview: `${place.primaryTheme} / ${place.photo_point} / ${place.recommendation_use}`,
-      mapX: toNumber(place.longitude ?? place.lng),
-      mapY: toNumber(place.latitude ?? place.lat),
-      source: "LOCAL_DB",
-      raw: place,
-    }));
+    .map((place) => {
+      const coords = getPlaceCoordinates(place);
+      return {
+        id: place.place_id,
+        title: place.place_name,
+        category: place.place_type.includes("카페")
+          ? "CAFE" as const
+          : place.place_type.includes("시장") || place.place_type.includes("항구")
+            ? "MARKET" as const
+            : "TOUR" as const,
+        address: typeof place.address === "string" ? place.address : undefined,
+        overview: `${place.primaryTheme} / ${place.photo_point} / ${place.recommendation_use}`,
+        mapX: coords?.lng,
+        mapY: coords?.lat,
+        distanceMeters: selectedCoords && coords ? distanceMeters(selectedCoords, coords) : undefined,
+        source: "LOCAL_DB" as const,
+        raw: place,
+      };
+    })
+    .sort((a, b) => (a.distanceMeters ?? Number.MAX_SAFE_INTEGER) - (b.distanceMeters ?? Number.MAX_SAFE_INTEGER))
+    .slice(0, 12);
 }
 
 function mapSelectedPlaceToStop(selectedPlace: GoatPlace): CourseStop {
@@ -97,6 +121,50 @@ function candidateToStop(candidate: TourApiNearbyCandidate, order: number, reaso
   };
 }
 
+/** Keeps the selected place first and orders coordinate-bearing stops by nearest neighbour. */
+export function sortCourseStopsByNearestNeighbor(stops: CourseStop[]): CourseStop[] {
+  if (stops.length <= 1) return stops.map((stop, index) => ({ ...stop, order: index + 1 }));
+  const [start, ...remainingInput] = stops;
+  const ordered = [start];
+  const remaining = [...remainingInput];
+  let current = start;
+
+  while (remaining.length > 0) {
+    const currentCoords = typeof current.lat === "number" && Number.isFinite(current.lat)
+      && typeof current.lng === "number" && Number.isFinite(current.lng)
+      ? { lat: current.lat, lng: current.lng }
+      : null;
+    if (!currentCoords) {
+      ordered.push(...remaining);
+      break;
+    }
+
+    let nearestIndex = -1;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+    for (let index = 0; index < remaining.length; index += 1) {
+      const candidate = remaining[index];
+      if (
+        typeof candidate.lat !== "number" || !Number.isFinite(candidate.lat)
+        || typeof candidate.lng !== "number" || !Number.isFinite(candidate.lng)
+      ) continue;
+      const candidateDistance = distanceMeters(currentCoords, { lat: candidate.lat, lng: candidate.lng });
+      if (candidateDistance < nearestDistance) {
+        nearestDistance = candidateDistance;
+        nearestIndex = index;
+      }
+    }
+
+    if (nearestIndex < 0) {
+      ordered.push(...remaining);
+      break;
+    }
+    current = remaining.splice(nearestIndex, 1)[0];
+    ordered.push(current);
+  }
+
+  return ordered.map((stop, index) => ({ ...stop, order: index + 1 }));
+}
+
 function pickConditions(request: GoatDayCourseRequest) {
   return {
     primaryTheme: request.primaryTheme,
@@ -136,8 +204,10 @@ function buildRuleBasedCourse(params: {
   const picked = [tour, cafe, food]
     .filter((candidate): candidate is TourApiNearbyCandidate => Boolean(candidate))
     .slice(0, 3);
-  const stops = [selected, ...picked.map((candidate, index) => candidateToStop(candidate, index + 2))]
-    .map((stop, index) => ({ ...stop, order: index + 1 }));
+  const stops = sortCourseStopsByNearestNeighbor([
+    selected,
+    ...picked.map((candidate, index) => candidateToStop(candidate, index + 2)),
+  ]);
 
   return {
     status: "DONE",
@@ -178,14 +248,23 @@ function buildStopsFromLlm(
     })
     .filter((stop): stop is CourseStop => Boolean(stop));
 
-  return [selectedStop, ...llmStops].map((stop, index) => ({ ...stop, order: index + 1 }));
+  return sortCourseStopsByNearestNeighbor([selectedStop, ...llmStops]);
+}
+
+function normalizedTitle(value: string): string {
+  return value.normalize("NFKC").toLocaleLowerCase().replace(/[\s\p{P}\p{S}]+/gu, "");
 }
 
 async function resolveNearbyCandidates(params: {
   request: GoatDayCourseRequest;
   selectedPlace: GoatPlace;
   dataset: GoatPlaceDataset;
-}): Promise<{ candidates: TourApiNearbyCandidate[]; warning?: string; tourApiError?: string }> {
+}): Promise<{
+  candidates: TourApiNearbyCandidate[];
+  warning?: string;
+  tourApiError?: string;
+  tourApiDiagnostics?: VisitKoreaNearbyDiagnostics;
+}> {
   if (params.request.nearbyCandidates?.length) {
     return {
       candidates: params.request.nearbyCandidates.map((candidate) => ({
@@ -193,6 +272,10 @@ async function resolveNearbyCandidates(params: {
         source: candidate.source ?? "FRONTEND_PROVIDED",
       })),
     };
+  }
+
+  if (params.request.forceRuleBasedFallback) {
+    return { candidates: localFallbackCandidates(params.dataset, params.selectedPlace) };
   }
 
   const coords = getPlaceCoordinates(params.selectedPlace);
@@ -203,20 +286,38 @@ async function resolveNearbyCandidates(params: {
     };
   }
 
+  let tourApiDiagnostics: VisitKoreaNearbyDiagnostics | undefined;
   try {
+    const selectedTitle = normalizedTitle(params.selectedPlace.place_name);
+    const nearby = (await fetchVisitKoreaContentLabNearbyCandidates({
+      mapX: coords.lng,
+      mapY: coords.lat,
+      radiusMeters: params.request.radiusMeters ?? 3000,
+      maxResults: 20,
+      onDiagnostics: (diagnostics) => {
+        tourApiDiagnostics = diagnostics;
+      },
+    })).filter((candidate) =>
+      candidate.id !== params.selectedPlace.place_id
+      && normalizedTitle(candidate.title) !== selectedTitle
+    );
+    if (nearby.length === 0) {
+      return {
+        candidates: localFallbackCandidates(params.dataset, params.selectedPlace),
+        warning: "한국관광공사 OpenAPI 주변 후보가 0건이어서 로컬 후보 fallback을 사용했습니다.",
+        tourApiDiagnostics,
+      };
+    }
     return {
-      candidates: await fetchVisitKoreaContentLabNearbyCandidates({
-        mapX: coords.lng,
-        mapY: coords.lat,
-        radiusMeters: params.request.radiusMeters ?? 3000,
-        maxResults: 20,
-      }),
+      candidates: nearby,
+      tourApiDiagnostics,
     };
   } catch (error) {
     return {
       candidates: localFallbackCandidates(params.dataset, params.selectedPlace),
       warning: "한국관광공사 OpenAPI 호출 실패로 로컬 후보 fallback을 사용했습니다.",
       tourApiError: error instanceof Error ? error.message : "TOUR_API_UNKNOWN_ERROR",
+      tourApiDiagnostics,
     };
   }
 }
@@ -256,7 +357,7 @@ export async function createGoatDayCourse(
   const warnings = resolved.warning ? [resolved.warning] : [];
 
   if (request.forceRuleBasedFallback || candidates.length === 0) {
-    return buildRuleBasedCourse({
+    const fallback = buildRuleBasedCourse({
       selectedPlace,
       candidates,
       request,
@@ -264,6 +365,14 @@ export async function createGoatDayCourse(
         ? "forceRuleBasedFallback=true 요청으로 LLM을 호출하지 않았습니다."
         : "주변 후보가 없어 선택 장소 단독 코스로 fallback했습니다.",
     });
+    return request.debug ? {
+      ...fallback,
+      debug: {
+        tourApiError: resolved.tourApiError,
+        tourApiDiagnostics: resolved.tourApiDiagnostics,
+        candidatesPassedToLlm: candidates,
+      },
+    } : fallback;
   }
 
   try {
@@ -278,7 +387,7 @@ export async function createGoatDayCourse(
       status: "DONE",
       resultType: "COURSE",
       mode: "LLM_OPENROUTER",
-      message: "OpenRouter GPT-4o mini LLM 프롬프트 기반 하루 코스 생성 완료",
+      message: "OpenRouter LLM 프롬프트 기반 하루 코스 생성 완료",
       selectedPlace: pickSelectedPlaceSummary(selectedPlace),
       conditions: pickConditions(request),
       nearbyCandidateCount: candidates.length,
@@ -291,8 +400,13 @@ export async function createGoatDayCourse(
       warnings,
       debug: request.debug ? {
         llmModel: llm.model,
+        llmRequestedModel: llm.requestedModel,
+        llmHttpStatus: llm.httpStatus,
+        llmLatencyMs: llm.latencyMs,
+        llmAttempts: llm.attempts,
         rawLlmText: llm.rawText,
         tourApiError: resolved.tourApiError,
+        tourApiDiagnostics: resolved.tourApiDiagnostics,
         candidatesPassedToLlm: candidates,
       } : undefined,
     };
@@ -310,6 +424,7 @@ export async function createGoatDayCourse(
         llmModel: request.llmModel ?? "openai/gpt-4o-mini",
         llmError: error instanceof Error ? error.message : "LLM_UNKNOWN_ERROR",
         tourApiError: resolved.tourApiError,
+        tourApiDiagnostics: resolved.tourApiDiagnostics,
         candidatesPassedToLlm: candidates,
       } : undefined,
     };
