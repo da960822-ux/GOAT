@@ -152,6 +152,8 @@ export const recommendationSessionsTable = pgTable(
     fallbackUsed: boolean("fallback_used").default(false).notNull(),
     fallbackReason: text("fallback_reason"),
     decisionAudit: jsonb("decision_audit").$type<unknown>(),
+    originStatus: text("origin_status"),
+    originNotice: text("origin_notice"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -179,6 +181,10 @@ export const recommendationSessionsTable = pgTable(
     decisionAuditCheck: check(
       "recommendation_sessions_decision_audit_check",
       sql`${table.decisionAudit} is null or jsonb_typeof(${table.decisionAudit}) = 'object'`,
+    ),
+    originStatusCheck: check(
+      "recommendation_sessions_origin_status_check",
+      sql`${table.originStatus} is null or ${table.originStatus} in ('APPLIED', 'SKIPPED', 'UNAVAILABLE')`,
     ),
   }),
 ).enableRLS();
@@ -242,6 +248,16 @@ export const recommendationSessionPlacesTable = pgTable(
     moodScore: integer("mood_score"),
     conditionScore: integer("condition_score"),
     baseScore: integer("base_score"),
+    originDistanceBonus: integer("origin_distance_bonus"),
+    routeInfo: jsonb("route_info").$type<{
+      from: "ORIGIN" | "FIRST_CARD";
+      fromLabel: string;
+      distanceKm: number;
+      durationMin?: number;
+      source: "KAKAO_ROUTE" | "HAVERSINE";
+      estimated: boolean;
+      scoreApplied: boolean;
+    }>(),
     routeDistanceBonus: integer("route_distance_bonus"),
     duplicatePenalty: integer("duplicate_penalty"),
     exposurePenalty: integer("exposure_penalty"),
@@ -280,6 +296,14 @@ export const recommendationSessionPlacesTable = pgTable(
       "recommendation_session_places_base_score_check",
       sql`${table.baseScore} is null or ${table.baseScore} between 0 and 90`,
     ),
+    originDistanceBonusCheck: check(
+      "recommendation_session_places_origin_distance_bonus_check",
+      sql`${table.originDistanceBonus} is null or ${table.originDistanceBonus} between 0 and 10`,
+    ),
+    routeInfoCheck: check(
+      "recommendation_session_places_route_info_check",
+      sql`${table.routeInfo} is null or jsonb_typeof(${table.routeInfo}) = 'object'`,
+    ),
     routeDistanceBonusCheck: check(
       "recommendation_session_places_route_distance_bonus_check",
       sql`${table.routeDistanceBonus} is null or ${table.routeDistanceBonus} between 0 and 10`,
@@ -302,7 +326,7 @@ export const recommendationSessionPlacesTable = pgTable(
     ),
     selectionScoreCheck: check(
       "recommendation_session_places_selection_score_check",
-      sql`${table.selectionScore} is null or ${table.selectionScore} between -11 and 106`,
+      sql`${table.selectionScore} is null or ${table.selectionScore} between -11 and 116`,
     ),
     displayScoreCheck: check(
       "recommendation_session_places_display_score_check",

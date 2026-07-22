@@ -31,9 +31,22 @@ import {
 
 export type RecommendationConditions = Record<string, unknown>;
 
+export type StoredRouteInfo = {
+  from: "ORIGIN" | "FIRST_CARD";
+  fromLabel: string;
+  distanceKm: number;
+  durationMin?: number;
+  source: "KAKAO_ROUTE" | "HAVERSINE";
+  estimated: boolean;
+  scoreApplied: boolean;
+};
+
 export type RecommendationData = {
   recommendationId: string;
   conditions: RecommendationConditions;
+  policyVersion: string;
+  originStatus: "APPLIED" | "SKIPPED" | "UNAVAILABLE" | null;
+  originNotice: string | null;
   cards: Array<{
     placeId: string;
     name: string;
@@ -42,13 +55,9 @@ export type RecommendationData = {
     rank: number;
     role: string;
     score: number;
-    scoreSummary: {
-      moodScore: number;
-      conditionScore: number;
-      baseScore: number;
-      displayScore: number;
-    } | null;
+    scoreSummary: ReturnType<typeof toPublicScoreSummary> | null;
     scoreDetails: ReturnType<typeof toPublicScoreDetails> | null;
+    routeInfo: StoredRouteInfo | null;
     reason: string;
     reasons: string[];
     cautions: string[];
@@ -80,6 +89,30 @@ export function hashRecommendationRequest(
   return createHash("sha256")
     .update(JSON.stringify(stableValue(conditions)))
     .digest("hex");
+}
+
+export async function getOwnedRecommendationPlaceIds(
+  userId: string,
+  recommendationId: string,
+): Promise<string[] | null> {
+  const rows = await db
+    .select({ placeId: recommendationSessionPlacesTable.placeId })
+    .from(recommendationSessionPlacesTable)
+    .innerJoin(
+      recommendationSessionsTable,
+      eq(
+        recommendationSessionPlacesTable.recommendationId,
+        recommendationSessionsTable.id,
+      ),
+    )
+    .where(
+      and(
+        eq(recommendationSessionsTable.id, recommendationId),
+        eq(recommendationSessionsTable.userId, userId),
+      ),
+    )
+    .orderBy(asc(recommendationSessionPlacesTable.rank));
+  return rows.length > 0 ? rows.map(({ placeId }) => placeId) : null;
 }
 
 export async function reserveRecommendationRequest(input: {
@@ -156,9 +189,12 @@ export async function completeRecommendationRequest(input: {
   userId: string;
   conditions: RecommendationConditions;
   cards: GoatRecommendationCard[];
-  policyVersion: "goat-score-v1";
+  policyVersion: "goat-score-v2";
   decisionAudit: RecommendationDecisionAudit;
   warnings: RecommendationWarning[];
+  originStatus?: "APPLIED" | "SKIPPED" | "UNAVAILABLE";
+  originNotice?: string;
+  routeInfoByPlaceId?: Record<string, StoredRouteInfo | undefined>;
 }): Promise<string> {
   const decisionAudit = parseRecommendationDecisionAudit(input.decisionAudit);
   const cards = input.cards.map((card) => ({
@@ -176,6 +212,8 @@ export async function completeRecommendationRequest(input: {
         fallbackUsed: decisionAudit.fallback.card3PurposeFallbackUsed,
         fallbackReason: decisionAudit.fallback.reason ?? null,
         decisionAudit,
+        originStatus: input.originStatus ?? null,
+        originNotice: input.originNotice ?? null,
       })
       .returning({ id: recommendationSessionsTable.id });
     if (!session) throw new Error("RECOMMENDATION_SESSION_INSERT_FAILED");
@@ -194,6 +232,20 @@ export async function completeRecommendationRequest(input: {
         moodScore: score.moodScore.total,
         conditionScore: score.conditionScore.total,
         baseScore: score.baseScore,
+        originDistanceBonus: score.originDistanceBonus,
+        routeInfo: input.routeInfoByPlaceId?.[card.placeId] ?? (typeof score.routeDistanceKm === "number"
+          ? {
+              from: "FIRST_CARD",
+              fromLabel: "1번 장소에서",
+              distanceKm: score.routeDistanceKm,
+              ...(typeof score.routeDurationMin === "number"
+                ? { durationMin: score.routeDurationMin }
+                : {}),
+              source: score.routeDistanceSource === "KAKAO_ROUTE" ? "KAKAO_ROUTE" : "HAVERSINE",
+              estimated: score.routeDistanceSource !== "KAKAO_ROUTE",
+              scoreApplied: card.rank > 1,
+            }
+          : null),
         routeDistanceBonus: score.routeDistanceBonus,
         duplicatePenalty: score.duplicatePenalty,
         exposurePenalty: score.exposurePenalty,
@@ -313,6 +365,9 @@ export async function getRecommendationData(
   return {
     recommendationId: session.id,
     conditions: session.conditions,
+    policyVersion: session.policyVersion,
+    originStatus: session.originStatus as RecommendationData["originStatus"],
+    originNotice: session.originNotice,
     cards: places.map((saved, index) => {
       const current = currentPlaces[index];
       const bestSeasons = splitSeasons(current?.best_season);
@@ -343,6 +398,7 @@ export async function getRecommendationData(
         scoreDetails: persistedScore
           ? toPublicScoreDetails(persistedScore)
           : null,
+        routeInfo: saved.routeInfo ?? null,
         reason: saved.reasons.join(" "),
         reasons: saved.reasons,
         cautions: saved.cautions,
