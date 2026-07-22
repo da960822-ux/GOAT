@@ -3,7 +3,6 @@ export {
   getAlternatives,
   getPlaceById,
   moodCategories,
-  referenceCards,
   createGoatRecommendation,
   createGoatCourseRecommendation,
 } from "./recommendationService";
@@ -14,7 +13,6 @@ export type {
 } from "./recommendationService";
 export { recommendGoatPlaces, getRecommendedPlaceIds } from "./goatRecommendationEngine";
 export * from "./recommendationExposureRepository";
-export * from "./photoRecommendationAdapter";
 export * from "./courseRecommendationTypes";
 export { createGoatDayCourse } from "./courseRecommendationService";
 export { buildGoatCoursePlannerPrompt, callOpenRouterCoursePlanner } from "./openRouterCourseLlm";
@@ -24,6 +22,7 @@ export type {
   Companion,
   DataStatus,
   MoodCategory,
+  LegacyRecommendationScoreBreakdown,
   OriginType,
   Place,
   RecommendationCard,

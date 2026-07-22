@@ -11,6 +11,7 @@ import type { RecommendCourseRequestTransportType } from './recommendCourseReque
 import type { RecommendCourseRequestTravelPurpose } from './recommendCourseRequestTravelPurpose';
 
 export interface RecommendCourseRequest {
+  recommendationId?: string;
   /** @minLength 1 */
   selectedPlaceId: string;
   primaryTheme: RecommendCourseRequestPrimaryTheme;

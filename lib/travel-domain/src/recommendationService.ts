@@ -2,7 +2,10 @@ import moodCategoryData from "./data/mood-categories.json";
 import placesDatasetData from "./data/goat_simplified_scoring_tags_v10_accessibility_merged.json";
 import referenceDatasetData from "./data/goat_reference_cards_v2_balanced.json";
 import { createGoatDayCourse } from "./courseRecommendationService";
-import { recommendGoatPlaces } from "./goatRecommendationEngine";
+import {
+  RECOMMENDATION_POLICY_VERSION,
+  recommendGoatPlaces,
+} from "./goatRecommendationEngine";
 import type { GoatDayCourseRequest, GoatDayCourseResult } from "./courseRecommendationTypes";
 import type {
   GoatPlace,
@@ -25,26 +28,6 @@ const placesDataset = placesDatasetData as GoatPlaceDataset;
 const referenceDataset = referenceDatasetData as GoatReferenceCardDataset;
 const sourcePlaces = placesDataset.places;
 export const moodCategories = moodCategoryData as MoodCategory[];
-
-export const referenceCards = referenceDataset.reference_cards
-  .filter((card) => card.isActive !== false)
-  .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
-  .map((card) => ({
-    referenceCardId: card.referenceCardId,
-    displayOrder: card.displayOrder,
-    title: card.title,
-    subtitle: card.subtitle,
-    primaryTheme: String(card.primaryTheme),
-    sceneTags: card.sceneTags,
-    moodTags: card.mood_tags,
-    recommendedPurpose: card.recommendedPurpose ?? [],
-    recommendedBestTime: card.recommendedBestTime ?? [],
-    recommendedTransport: card.recommendedTransport ?? [],
-    examplePlaceIds: card.examplePlaceIds ?? [],
-    uiKeywords: card.uiKeywords ?? [],
-    candidateCount: card.candidateCount ?? card.candidatePlaceIds?.length ?? 0,
-    coverageCount: card.coverageCount ?? card.coveragePlaceIds?.length ?? 0,
-  }));
 
 export type RecommendationRequestOptions = {
   referenceCardId?: string;
@@ -351,12 +334,17 @@ export function getRecommendations(
     candidatePoolSize: result.resultData.debug?.candidatePoolSize ?? sourcePlaces.length,
     poolPolicy: "ALL58",
     poolReason: "GOAT reference card 기반 58개 장소 추천 엔진을 사용했습니다.",
-    fallbackUsed: false,
+    fallbackUsed:
+      result.resultData.decisionAudit?.fallback.card3PurposeFallbackUsed ??
+      false,
     adaptivePoolRetryUsed: false,
     recommendations: result.resultData.cards.map(toLegacyRecommendation),
     cards: result.resultData.cards,
     alternatives: result.resultData.alternatives,
     warnings: result.resultData.warnings.map((warning) => warning.code),
+    warningDetails: result.resultData.warnings,
+    decisionAudit: result.resultData.decisionAudit,
+    policyVersion: RECOMMENDATION_POLICY_VERSION,
   };
 }
 

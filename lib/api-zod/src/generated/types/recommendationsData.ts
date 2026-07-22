@@ -5,9 +5,8 @@
  * Korean Travel Guide API
  * OpenAPI spec version: 0.3.0
  */
+import type { GoatRecommendationCard } from './goatRecommendationCard';
 import type { Recommendation } from './recommendation';
-import type { RecommendationsDataAlternativesItem } from './recommendationsDataAlternativesItem';
-import type { RecommendationsDataCardsItem } from './recommendationsDataCardsItem';
 import type { RecommendationsDataPoolPolicy } from './recommendationsDataPoolPolicy';
 
 export interface RecommendationsData {
@@ -33,7 +32,7 @@ export interface RecommendationsData {
      * @minItems 3
      * @maxItems 3
      */
-  cards?: RecommendationsDataCardsItem[];
-  alternatives?: RecommendationsDataAlternativesItem[];
+  cards?: GoatRecommendationCard[];
+  alternatives?: GoatRecommendationCard[];
   warnings?: string[];
 }

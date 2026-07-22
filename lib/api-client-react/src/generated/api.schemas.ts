@@ -11,8 +11,9 @@ export interface HealthStatus {
 
 export interface ApiSuccessBase {
   success: true;
-  code: 'SUCCESS';
+  code: string;
   message: string;
+  requestId?: string;
 }
 
 export interface ErrorResponse {
@@ -20,27 +21,11 @@ export interface ErrorResponse {
   code: string;
   message: string;
   data: unknown | null;
+  requestId?: string;
 }
 
 export interface KtoProxyError {
   error: string;
-}
-
-export interface ReferenceCard {
-  referenceCardId: string;
-  displayOrder?: number;
-  title: string;
-  subtitle?: string;
-  primaryTheme: string;
-  sceneTags: string[];
-  moodTags: string[];
-  recommendedPurpose?: string[];
-  recommendedBestTime?: string[];
-  recommendedTransport?: string[];
-  examplePlaceIds?: string[];
-  uiKeywords: string[];
-  candidateCount?: number;
-  coverageCount?: number;
 }
 
 export interface Mood {
@@ -48,12 +33,10 @@ export interface Mood {
   name: string;
   description: string;
   keywords: string[];
-  referenceCards?: ReferenceCard[];
 }
 
 export interface MoodsData {
   moods: Mood[];
-  referenceCards: ReferenceCard[];
 }
 
 export type MoodsSuccessResponse = ApiSuccessBase & {
@@ -239,6 +222,7 @@ export const RecommendCourseRequestTransportType = {
 } as const;
 
 export interface RecommendCourseRequest {
+  recommendationId?: string;
   /** @minLength 1 */
   selectedPlaceId: string;
   primaryTheme: RecommendCourseRequestPrimaryTheme;
@@ -304,6 +288,248 @@ export interface Place {
   description?: string;
 }
 
+export interface RecommendationMatchDetail {
+  requested: string[];
+  matched: string[];
+  /** @minimum 0 */
+  count: number;
+  /** @minimum 0 */
+  score: number;
+}
+
+export interface RecommendationThemeScoreDetail {
+  requested?: string;
+  placeTheme: string;
+  matched: boolean;
+  /**
+     * @minimum 0
+     * @maximum 18
+     */
+  score: number;
+}
+
+export interface RecommendationPurposeScoreDetail {
+  requested?: string;
+  placePurposeTags: string[];
+  matched: boolean;
+  /**
+     * @minimum 0
+     * @maximum 20
+     */
+  score: number;
+}
+
+export interface RecommendationAccessibilityScoreDetail {
+  transportType?: string;
+  grade?: string;
+  /**
+     * @minimum 0
+     * @maximum 12
+     */
+  score: number;
+  inferred?: boolean;
+  note?: string;
+}
+
+export type RecommendationSeasonScoreDetailMatchType = typeof RecommendationSeasonScoreDetailMatchType[keyof typeof RecommendationSeasonScoreDetailMatchType];
+
+
+export const RecommendationSeasonScoreDetailMatchType = {
+  current: 'current',
+  all_season: 'all_season',
+  none: 'none',
+  not_requested: 'not_requested',
+} as const;
+
+export interface RecommendationSeasonScoreDetail {
+  requested?: string;
+  placeSeasonTags: string[];
+  matchType: RecommendationSeasonScoreDetailMatchType;
+  /**
+     * @minimum 0
+     * @maximum 13
+     */
+  score: number;
+}
+
+/**
+ * User-safe summary. Internal exposure and candidate-selection adjustments are not exposed here.
+ */
+export interface RecommendationScoreSummary {
+  /**
+     * @minimum 0
+     * @maximum 45
+     */
+  moodScore: number;
+  /**
+     * @minimum 0
+     * @maximum 45
+     */
+  conditionScore: number;
+  /**
+     * @minimum 0
+     * @maximum 90
+     */
+  baseScore: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  displayScore: number;
+}
+
+export interface RecommendationScoreDetails {
+  theme: RecommendationThemeScoreDetail;
+  moodTags: RecommendationMatchDetail;
+  sceneTags: RecommendationMatchDetail;
+  purpose: RecommendationPurposeScoreDetail;
+  accessibility: RecommendationAccessibilityScoreDetail;
+  season: RecommendationSeasonScoreDetail;
+}
+
+export interface LegacyRecommendationScoreBreakdown {
+  tag: number;
+  sceneSpecific: number;
+  region: number;
+  lodgingIntent: number;
+  season: number;
+  time: number;
+  weather: number;
+  companion: number;
+  travelPurpose: number;
+  transport: number;
+  dataStatus: number;
+  directMatchCount: number;
+  baseScore: number;
+  routeDistanceBonus: number;
+  duplicatePenalty: number;
+  selectionScore: number;
+  displayScore: number;
+}
+
+export type GoatMoodScoreBreakdownPlaceTypeHint = {
+  matchedHints: string[];
+  /**
+     * @minimum 0
+     * @maximum 3
+     */
+  score: number;
+  note: string;
+};
+
+export interface GoatMoodScoreBreakdown {
+  /**
+     * @minimum 0
+     * @maximum 45
+     */
+  total: number;
+  theme: RecommendationThemeScoreDetail;
+  moodTags: RecommendationMatchDetail;
+  sceneTags: RecommendationMatchDetail;
+  placeTypeHint: GoatMoodScoreBreakdownPlaceTypeHint;
+}
+
+export interface GoatConditionScoreBreakdown {
+  /**
+     * @minimum 0
+     * @maximum 45
+     */
+  total: number;
+  purpose: RecommendationPurposeScoreDetail;
+  accessibility: RecommendationAccessibilityScoreDetail;
+  season: RecommendationSeasonScoreDetail;
+}
+
+export interface GoatScoreBreakdown {
+  moodScore: GoatMoodScoreBreakdown;
+  conditionScore: GoatConditionScoreBreakdown;
+  /**
+     * @minimum 0
+     * @maximum 90
+     */
+  baseScore: number;
+  /**
+     * @minimum 0
+     * @maximum 10
+     */
+  routeDistanceBonus: number;
+  /**
+     * @minimum 0
+     * @maximum 6
+     */
+  duplicatePenalty: number;
+  /**
+     * @minimum 0
+     * @maximum 5
+     */
+  exposurePenalty: number;
+  /**
+     * @minimum 0
+     * @maximum 3
+     */
+  coverageBoost: number;
+  /**
+     * @minimum 0
+     * @maximum 3
+     */
+  lowExposureBoost: number;
+  /**
+     * @minimum -11
+     * @maximum 106
+     */
+  selectionScore: number;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  displayScore: number;
+}
+
+export type GoatRecommendationCardRole = typeof GoatRecommendationCardRole[keyof typeof GoatRecommendationCardRole];
+
+
+export const GoatRecommendationCardRole = {
+  BEST_SCENE: 'BEST_SCENE',
+  SAME_MOOD_ALTERNATIVE: 'SAME_MOOD_ALTERNATIVE',
+  CONDITION_FIT_ALTERNATIVE: 'CONDITION_FIT_ALTERNATIVE',
+} as const;
+
+export type GoatRecommendationCardAccessibility = {
+  public_transport?: string;
+  car?: string;
+  walk?: string;
+};
+
+export interface GoatRecommendationCard {
+  /**
+     * @minimum 1
+     * @maximum 3
+     */
+  rank: number;
+  role: GoatRecommendationCardRole;
+  roleLabel: string;
+  placeId: string;
+  placeName: string;
+  city: string;
+  regionGroup: string;
+  primaryTheme: string;
+  placeType: string;
+  photoPoint: string;
+  recommendationUse: string;
+  bestTime: string;
+  seasonTags: string[];
+  purposeTags: string[];
+  accessibility: GoatRecommendationCardAccessibility;
+  note?: string;
+  /** @nullable */
+  imageUrl?: string | null;
+  /** @nullable */
+  address?: string | null;
+  score: GoatScoreBreakdown;
+  reasons: string[];
+  cautions: string[];
+}
+
 export type RecommendationRole = typeof RecommendationRole[keyof typeof RecommendationRole];
 
 
@@ -313,15 +539,13 @@ export const RecommendationRole = {
   조건_맞춤: '조건 맞춤',
 } as const;
 
-export type RecommendationScoreBreakdown = {[key: string]: number};
-
 export interface Recommendation {
   place: Place;
   role: RecommendationRole;
   score: number;
   reason: string;
   matchedTags: string[];
-  scoreBreakdown: RecommendationScoreBreakdown;
+  scoreBreakdown: LegacyRecommendationScoreBreakdown;
   safetyNotes: string[];
   weatherFit: string;
   parkingInfo: string;
@@ -334,10 +558,6 @@ export const RecommendationsDataPoolPolicy = {
   ALL58: 'ALL58',
   PRIMARY43: 'PRIMARY43',
 } as const;
-
-export type RecommendationsDataCardsItem = { [key: string]: unknown };
-
-export type RecommendationsDataAlternativesItem = { [key: string]: unknown };
 
 export interface RecommendationsData {
   moodId: string;
@@ -362,13 +582,196 @@ export interface RecommendationsData {
      * @minItems 3
      * @maxItems 3
      */
-  cards?: RecommendationsDataCardsItem[];
-  alternatives?: RecommendationsDataAlternativesItem[];
+  cards?: GoatRecommendationCard[];
+  alternatives?: GoatRecommendationCard[];
   warnings?: string[];
 }
 
 export type RecommendationsSuccessResponse = ApiSuccessBase & {
   data: RecommendationsData;
+};
+
+export type RecommendationCardResponseRole = typeof RecommendationCardResponseRole[keyof typeof RecommendationCardResponseRole];
+
+
+export const RecommendationCardResponseRole = {
+  BEST_SCENE: 'BEST_SCENE',
+  SAME_MOOD_ALTERNATIVE: 'SAME_MOOD_ALTERNATIVE',
+  CONDITION_FIT_ALTERNATIVE: 'CONDITION_FIT_ALTERNATIVE',
+} as const;
+
+/**
+ * @nullable
+ */
+export type RecommendationCardResponseSeasonBadge = { [key: string]: unknown } | null;
+
+/**
+ * @nullable
+ */
+export type RecommendationCardResponseFeedback = typeof RecommendationCardResponseFeedback[keyof typeof RecommendationCardResponseFeedback] | null;
+
+
+export const RecommendationCardResponseFeedback = {
+  LIKE: 'LIKE',
+  DISLIKE: 'DISLIKE',
+} as const;
+
+export type VisitConcentrationLevel = typeof VisitConcentrationLevel[keyof typeof VisitConcentrationLevel];
+
+
+export const VisitConcentrationLevel = {
+  low: 'low',
+  medium: 'medium',
+  high: 'high',
+  unknown: 'unknown',
+} as const;
+
+export type VisitConcentrationSource = typeof VisitConcentrationSource[keyof typeof VisitConcentrationSource];
+
+
+export const VisitConcentrationSource = {
+  KTO_VISIT_CONCENTRATION: 'KTO_VISIT_CONCENTRATION',
+  fallback: 'fallback',
+} as const;
+
+export interface VisitConcentration {
+  level: VisitConcentrationLevel;
+  /** @nullable */
+  label: string | null;
+  /** @nullable */
+  concentrationRate: number | null;
+  /** @nullable */
+  baseDate: string | null;
+  source: VisitConcentrationSource;
+}
+
+export interface RecommendationCardResponse {
+  placeId: string;
+  name: string;
+  region: string;
+  /** @nullable */
+  imageUrl: string | null;
+  /**
+     * @minimum 1
+     * @maximum 3
+     */
+  rank: number;
+  role: RecommendationCardResponseRole;
+  /**
+     * @minimum 0
+     * @maximum 100
+     */
+  score: number;
+  scoreSummary: RecommendationScoreSummary | null;
+  scoreDetails: RecommendationScoreDetails | null;
+  reason: string;
+  reasons: string[];
+  cautions: string[];
+  bestSeasons: string[];
+  /** @nullable */
+  seasonBadge: RecommendationCardResponseSeasonBadge;
+  crowd: VisitConcentration;
+  bookmarked: boolean;
+  /** @nullable */
+  feedback: RecommendationCardResponseFeedback;
+}
+
+export type RecommendationDataConditions = { [key: string]: unknown };
+
+/**
+ * @nullable
+ */
+export type RecommendationDataCourse = { [key: string]: unknown } | null;
+
+export interface RecommendationData {
+  recommendationId: string;
+  conditions: RecommendationDataConditions;
+  /**
+     * @minItems 3
+     * @maxItems 3
+     */
+  cards: RecommendationCardResponse[];
+  /** @nullable */
+  course: RecommendationDataCourse;
+  createdAt: string;
+}
+
+export type RecommendationDataSuccessResponse = ApiSuccessBase & {
+  data: RecommendationData;
+};
+
+export type RecentRecommendationsSuccessResponseData = {
+  items: RecommendationData[];
+  /** @nullable */
+  nextCursor: string | null;
+};
+
+export type RecentRecommendationsSuccessResponse = ApiSuccessBase & {
+  data: RecentRecommendationsSuccessResponseData;
+};
+
+export interface BookmarkRequest {
+  /** @pattern ^GOAT-\\d{3}$ */
+  placeId: string;
+}
+
+export type BookmarkStatusSuccessResponseData = {
+  placeId: string;
+  bookmarked: boolean;
+};
+
+export type BookmarkStatusSuccessResponse = ApiSuccessBase & {
+  data: BookmarkStatusSuccessResponseData;
+};
+
+export type BookmarksSuccessResponseDataItemsItem = { [key: string]: unknown };
+
+export type BookmarksSuccessResponseData = {
+  items: BookmarksSuccessResponseDataItemsItem[];
+};
+
+export type BookmarksSuccessResponse = ApiSuccessBase & {
+  data: BookmarksSuccessResponseData;
+};
+
+export type FeedbackRequestType = typeof FeedbackRequestType[keyof typeof FeedbackRequestType];
+
+
+export const FeedbackRequestType = {
+  LIKE: 'LIKE',
+  DISLIKE: 'DISLIKE',
+} as const;
+
+/**
+ * @nullable
+ */
+export type FeedbackRequestReasonCode = typeof FeedbackRequestReasonCode[keyof typeof FeedbackRequestReasonCode] | null;
+
+
+export const FeedbackRequestReasonCode = {
+  TOO_FAR: 'TOO_FAR',
+  NOT_MY_MOOD: 'NOT_MY_MOOD',
+  TRANSPORT_DIFFICULT: 'TRANSPORT_DIFFICULT',
+  ALREADY_VISITED: 'ALREADY_VISITED',
+  TOO_CROWDED: 'TOO_CROWDED',
+  OTHER: 'OTHER',
+} as const;
+
+export interface FeedbackRequest {
+  type: FeedbackRequestType;
+  /** @nullable */
+  reasonCode?: FeedbackRequestReasonCode;
+  /**
+     * @maxLength 500
+     * @nullable
+     */
+  reasonText?: string | null;
+}
+
+export type FeedbackSuccessResponseData = { [key: string]: unknown };
+
+export type FeedbackSuccessResponse = ApiSuccessBase & {
+  data: FeedbackSuccessResponseData;
 };
 
 export type CourseStopType = typeof CourseStopType[keyof typeof CourseStopType];
@@ -480,49 +883,20 @@ export type RecommendCourseSuccessResponse = ApiSuccessBase & {
   data: RecommendCourseData;
 };
 
-export type AnalyzeImageRequestMimeType = typeof AnalyzeImageRequestMimeType[keyof typeof AnalyzeImageRequestMimeType];
-
-
-export const AnalyzeImageRequestMimeType = {
-  'image/jpeg': 'image/jpeg',
-  'image/png': 'image/png',
-  'image/webp': 'image/webp',
-} as const;
-
-export interface AnalyzeImageRequest {
-  /**
-     * Base64-encoded JPEG, PNG, or WebP image. Recommended max decoded size is 10MB.
-     * @minLength 1
-     */
-  imageBase64: string;
-  mimeType: AnalyzeImageRequestMimeType;
-  debug?: boolean;
-}
-
-export interface AnalyzeImageData {
-  primaryMood: string;
-  moodTags: string[];
-  matchedSceneTags: string[];
-  /**
-     * @minimum 0
-     * @maximum 1
-     */
-  confidence?: number;
-  recommendedMoodId?: string;
-  isEstimated: boolean;
-  warnings?: string[];
-}
-
-export type AnalyzeImageSuccessResponse = ApiSuccessBase & {
-  data: AnalyzeImageData;
-};
-
 export interface PlaceData {
   place: Place;
 }
 
 export type PlaceSuccessResponse = ApiSuccessBase & {
   data: PlaceData;
+};
+
+export type GetRecentRecommendationsParams = {
+/**
+ * @minimum 1
+ * @maximum 20
+ */
+limit?: number;
 };
 
 export type ProxyKtoParams = {

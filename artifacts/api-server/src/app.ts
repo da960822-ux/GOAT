@@ -7,7 +7,6 @@ import { logger } from "./lib/logger";
 import { errorHandler, notFoundHandler } from "./lib/api-response";
 
 const app: Express = express();
-app.disable("x-powered-by");
 
 const trustProxy = process.env.TRUST_PROXY;
 if (trustProxy) {
@@ -67,14 +66,8 @@ app.use(
   }),
 );
 app.use(cookieParser());
-app.use((_, res, next) => {
-  res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-  res.setHeader("Permissions-Policy", "geolocation=(), microphone=(), camera=()");
-  next();
-});
-app.use(express.json({ limit: "64kb" }));
-app.use(express.urlencoded({ extended: true, limit: "20kb", parameterLimit: 100 }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 app.use(notFoundHandler);

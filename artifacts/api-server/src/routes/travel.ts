@@ -1,15 +1,24 @@
-import { Router, type IRouter } from "express";
+import {
+  Router,
+  type IRouter,
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import {
   createGoatCourseRecommendation,
   getPlaceById,
   getRecommendations,
   moodCategories,
-  referenceCards,
   type TravelPreferences,
 } from "@workspace/travel-domain";
 import { z } from "zod";
 import { ApiError } from "../lib/api-response";
-import { createRateLimiter } from "../lib/rate-limit";
+import { getOptionalAuthenticatedUser } from "../lib/auth-context";
+import {
+  recommendationContainsPlace,
+  saveRecommendedCourse,
+} from "../lib/recommendation-store";
 
 const router: IRouter = Router();
 
@@ -18,51 +27,99 @@ const readPositiveInt = (value: string | undefined, fallback: number) => {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 };
 
-const RECOMMEND_RATE_LIMIT_WINDOW_MS = readPositiveInt(
-  process.env.RECOMMEND_RATE_LIMIT_WINDOW_SECONDS,
-  60,
-) * 1000;
-const recommendRateLimit = createRateLimiter({
-  windowMs: RECOMMEND_RATE_LIMIT_WINDOW_MS,
-  max: readPositiveInt(process.env.RECOMMEND_RATE_LIMIT_MAX, 30),
-});
-const courseRateLimit = createRateLimiter({
-  windowMs: RECOMMEND_RATE_LIMIT_WINDOW_MS,
-  max: readPositiveInt(process.env.COURSE_RATE_LIMIT_MAX, 8),
-});
-
-const defaultLlmModel = process.env.OPENROUTER_DEFAULT_MODEL?.trim() || "openai/gpt-4o-mini";
-const allowedLlmModels = new Set(
-  (process.env.OPENROUTER_ALLOWED_MODELS ?? defaultLlmModel)
-    .split(",")
-    .map((model) => model.trim())
-    .filter(Boolean),
+const RECOMMEND_RATE_LIMIT_WINDOW_MS =
+  readPositiveInt(process.env.RECOMMEND_RATE_LIMIT_WINDOW_SECONDS, 60) * 1000;
+const RECOMMEND_RATE_LIMIT_MAX = readPositiveInt(
+  process.env.RECOMMEND_RATE_LIMIT_MAX,
+  30,
 );
-const isDebugEnabled = process.env.ALLOW_RECOMMENDATION_DEBUG === "true";
+const recommendRateLimitStore = new Map<
+  string,
+  { count: number; resetAt: number }
+>();
+
+const recommendRateLimit = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const now = Date.now();
+  const key = req.ip || "unknown";
+  const existing = recommendRateLimitStore.get(key);
+
+  if (!existing || existing.resetAt <= now) {
+    recommendRateLimitStore.set(key, {
+      count: 1,
+      resetAt: now + RECOMMEND_RATE_LIMIT_WINDOW_MS,
+    });
+    next();
+    return;
+  }
+
+  existing.count += 1;
+
+  if (existing.count > RECOMMEND_RATE_LIMIT_MAX) {
+    res.setHeader(
+      "Retry-After",
+      Math.ceil((existing.resetAt - now) / 1000).toString(),
+    );
+    next(
+      new ApiError(
+        429,
+        "RATE_LIMITED",
+        "Too many recommendation requests. Please try again later.",
+      ),
+    );
+    return;
+  }
+
+  next();
+};
 
 const requestSchema = z
   .object({
     moodId: z.string().min(1).optional(),
     referenceCardId: z.string().min(1).optional(),
-    travelPurpose: z.enum([
-      "사진·포토스팟",
-      "산책·힐링",
-      "카페·실내휴식",
-      "전시·건축관람",
-      "체험·액티비티",
-      "먹거리·야간탐방",
-      "숙소·리조트",
-    ]).optional(),
+    travelPurpose: z
+      .enum([
+        "사진·포토스팟",
+        "산책·힐링",
+        "카페·실내휴식",
+        "전시·건축관람",
+        "체험·액티비티",
+        "먹거리·야간탐방",
+        "숙소·리조트",
+      ])
+      .optional(),
     transportType: z.enum(["자차", "대중교통", "도보중심"]).optional(),
-    visitTime: z.enum(["새벽", "오전", "한낮", "오후", "저녁", "야간"]).optional(),
+    visitTime: z
+      .enum(["새벽", "오전", "한낮", "오후", "저녁", "야간"])
+      .optional(),
     currentMonth: z.number().int().min(1).max(12).optional(),
     debug: z.boolean().optional(),
     preferences: z
       .object({
         companion: z.enum(["혼자", "연인", "친구", "가족"]),
         transport: z.enum(["자차", "대중교통", "도보중심"]),
-        visitTime: z.enum(["새벽", "오전", "한낮", "오후", "일몰", "저녁", "야간", "밤/새벽"]).nullable().optional(),
-        purpose: z.enum(["가볍게 산책", "사진 위주", "액티비티", "조용한 휴식"]),
+        visitTime: z
+          .enum([
+            "새벽",
+            "오전",
+            "한낮",
+            "오후",
+            "일몰",
+            "저녁",
+            "야간",
+            "밤/새벽",
+          ])
+          .nullable()
+          .optional(),
+        purpose: z.enum([
+          "가볍게 산책",
+          "사진 위주",
+          "액티비티",
+          "조용한 휴식",
+        ]),
       })
       .strict()
       .optional(),
@@ -75,10 +132,14 @@ const requestSchema = z
       })
       .strict()
       .optional(),
-    excludeIds: z.array(z.string().min(1)).max(58).refine(
-      (ids) => new Set(ids).size === ids.length,
-      "excludeIds에는 중복된 장소 ID를 넣을 수 없습니다.",
-    ).optional(),
+    excludeIds: z
+      .array(z.string().min(1))
+      .max(58)
+      .refine(
+        (ids) => new Set(ids).size === ids.length,
+        "excludeIds에는 중복된 장소 ID를 넣을 수 없습니다.",
+      )
+      .optional(),
   })
   .strict()
   .refine((body) => body.moodId || body.referenceCardId, {
@@ -88,6 +149,7 @@ const requestSchema = z
 
 const courseRequestSchema = z
   .object({
+    recommendationId: z.string().uuid().optional(),
     selectedPlaceId: z.string().min(1),
     primaryTheme: z.enum([
       "바다·해안 무드",
@@ -101,15 +163,17 @@ const courseRequestSchema = z
     userMoodTags: z.array(z.string().min(1)).max(10).optional(),
     userSceneTags: z.array(z.string().min(1)).max(10).optional(),
     companionType: z.enum(["혼자", "친구", "연인", "가족"]).optional(),
-    travelPurpose: z.enum([
-      "사진·포토스팟",
-      "산책·힐링",
-      "카페·실내휴식",
-      "전시·건축관람",
-      "체험·액티비티",
-      "먹거리·야간탐방",
-      "숙소·리조트",
-    ]).optional(),
+    travelPurpose: z
+      .enum([
+        "사진·포토스팟",
+        "산책·힐링",
+        "카페·실내휴식",
+        "전시·건축관람",
+        "체험·액티비티",
+        "먹거리·야간탐방",
+        "숙소·리조트",
+      ])
+      .optional(),
     transportType: z.enum(["자차", "대중교통", "도보중심"]).optional(),
     radiusMeters: z.number().int().min(100).max(20000).optional(),
     maxCandidatesForLlm: z.number().int().min(1).max(20).optional(),
@@ -135,27 +199,22 @@ function escapeHtml(value: unknown): string {
     .replace(/'/g, "&#39;");
 }
 
-function serializeForInlineScript(value: unknown): string {
-  return JSON.stringify(value)
-    .replace(/</g, "\\u003c")
-    .replace(/>/g, "\\u003e")
-    .replace(/&/g, "\\u0026")
-    .replace(/\u2028/g, "\\u2028")
-    .replace(/\u2029/g, "\\u2029");
-}
-
 function parseCourseMapMarkers(value: string) {
   const parsed = JSON.parse(value) as unknown;
   if (!Array.isArray(parsed)) throw new Error("markers must be an array");
   return parsed.slice(0, 12).map((marker) => {
-    if (!marker || typeof marker !== "object") throw new Error("invalid marker");
+    if (!marker || typeof marker !== "object")
+      throw new Error("invalid marker");
     const record = marker as Record<string, unknown>;
     const lat = Number(record.lat);
     const lng = Number(record.lng);
-    if (!Number.isFinite(lat) || !Number.isFinite(lng)) throw new Error("invalid marker coordinates");
+    if (!Number.isFinite(lat) || !Number.isFinite(lng))
+      throw new Error("invalid marker coordinates");
     return {
-      order: Number.isFinite(Number(record.order)) ? Number(record.order) : undefined,
-      title: String(record.title ?? "").slice(0, 120),
+      order: Number.isFinite(Number(record.order))
+        ? Number(record.order)
+        : undefined,
+      title: String(record.title ?? ""),
       lat,
       lng,
     };
@@ -173,9 +232,7 @@ router.get("/moods", (_req, res) => {
         name,
         description,
         keywords,
-        referenceCards: referenceCards.filter((card) => card.primaryTheme === name),
       })),
-      referenceCards,
     },
   });
 });
@@ -183,13 +240,26 @@ router.get("/moods", (_req, res) => {
 router.get("/course-map", (req, res, next) => {
   const parsed = courseMapQuerySchema.safeParse(req.query);
   if (!parsed.success) {
-    next(new ApiError(400, "INVALID_REQUEST", "지도 요청값이 올바르지 않습니다.", parsed.error.flatten()));
+    next(
+      new ApiError(
+        400,
+        "INVALID_REQUEST",
+        "지도 요청값이 올바르지 않습니다.",
+        parsed.error.flatten(),
+      ),
+    );
     return;
   }
 
   const kakaoJavascriptKey = process.env.KAKAO_JAVASCRIPT_KEY?.trim();
   if (!kakaoJavascriptKey) {
-    next(new ApiError(500, "KAKAO_JAVASCRIPT_KEY_MISSING", "Kakao JavaScript 키가 설정되지 않았습니다."));
+    next(
+      new ApiError(
+        500,
+        "KAKAO_JAVASCRIPT_KEY_MISSING",
+        "Kakao JavaScript 키가 설정되지 않았습니다.",
+      ),
+    );
     return;
   }
 
@@ -197,19 +267,25 @@ router.get("/course-map", (req, res, next) => {
   try {
     markers = parseCourseMapMarkers(parsed.data.markers);
   } catch {
-    next(new ApiError(400, "INVALID_REQUEST", "지도 마커 요청값이 올바르지 않습니다."));
+    next(
+      new ApiError(
+        400,
+        "INVALID_REQUEST",
+        "지도 마커 요청값이 올바르지 않습니다.",
+      ),
+    );
     return;
   }
 
-  const markerJson = serializeForInlineScript(markers);
+  const markerJson = JSON.stringify(markers);
   const markerHtml = markers
-    .map((marker) => `<li><strong>${escapeHtml(marker.order ?? "")}</strong> ${escapeHtml(marker.title)}</li>`)
+    .map(
+      (marker) =>
+        `<li><strong>${escapeHtml(marker.order ?? "")}</strong> ${escapeHtml(marker.title)}</li>`,
+    )
     .join("");
 
-  res
-    .status(200)
-    .type("html")
-    .send(`<!doctype html>
+  res.status(200).type("html").send(`<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
@@ -301,11 +377,6 @@ router.post("/recommend-from-tags", recommendRateLimit, (req, res, next) => {
     return;
   }
 
-  if (parsed.data.debug && !isDebugEnabled) {
-    next(new ApiError(403, "DEBUG_NOT_ALLOWED", "Debug responses are disabled."));
-    return;
-  }
-
   const mood = parsed.data.moodId
     ? moodCategories.find(({ id }) => id === parsed.data.moodId)
     : undefined;
@@ -339,11 +410,14 @@ router.post("/recommend-from-tags", recommendRateLimit, (req, res, next) => {
     message: "추천 장소를 조회했습니다.",
     data: {
       ...result,
+      decisionAudit: undefined,
+      warningDetails: undefined,
+      policyVersion: undefined,
     },
   });
 });
 
-router.post("/recommend-course", courseRateLimit, async (req, res, next) => {
+router.post("/recommend-course", recommendRateLimit, async (req, res, next) => {
   const parsed = courseRequestSchema.safeParse(req.body);
   if (!parsed.success) {
     next(
@@ -357,24 +431,80 @@ router.post("/recommend-course", courseRateLimit, async (req, res, next) => {
     return;
   }
 
-  if (parsed.data.debug && !isDebugEnabled) {
-    next(new ApiError(403, "DEBUG_NOT_ALLOWED", "Debug responses are disabled."));
-    return;
-  }
-
-  if (parsed.data.llmModel && !allowedLlmModels.has(parsed.data.llmModel)) {
-    next(new ApiError(400, "LLM_MODEL_NOT_ALLOWED", "The requested LLM model is not allowed."));
-    return;
-  }
-
   try {
-    const result = await createGoatCourseRecommendation({
-      ...parsed.data,
-      llmModel: parsed.data.llmModel ?? defaultLlmModel,
-    });
-    if (result.status === "FAILED") {
-      next(new ApiError(400, result.failReason ?? "COURSE_RECOMMENDATION_FAILED", result.message));
+    const user = parsed.data.recommendationId
+      ? await getOptionalAuthenticatedUser(req)
+      : null;
+    if (parsed.data.recommendationId && !user) {
+      next(
+        new ApiError(
+          401,
+          "UNAUTHORIZED",
+          "Authentication is required to save a course.",
+        ),
+      );
       return;
+    }
+    if (
+      parsed.data.recommendationId &&
+      user &&
+      !(await recommendationContainsPlace(
+        user.id,
+        parsed.data.recommendationId,
+        parsed.data.selectedPlaceId,
+      ))
+    ) {
+      next(
+        new ApiError(
+          404,
+          "RECOMMENDATION_NOT_FOUND",
+          "Recommendation place not found.",
+        ),
+      );
+      return;
+    }
+
+    const result = await createGoatCourseRecommendation(parsed.data);
+    if (result.status === "FAILED") {
+      next(
+        new ApiError(
+          400,
+          result.failReason ?? "COURSE_RECOMMENDATION_FAILED",
+          result.message,
+        ),
+      );
+      return;
+    }
+
+    if (parsed.data.recommendationId) {
+      const storedCourse = {
+        status: result.status,
+        resultType: result.resultType,
+        mode: result.mode,
+        courseTitle: result.courseTitle,
+        summary: result.summary,
+        selectedPlace: result.selectedPlace,
+        stops: result.stops.map((stop) => ({
+          order: stop.order,
+          id: stop.id,
+          type: stop.type,
+          category: stop.category,
+          stayMinutes: stop.stayMinutes,
+          reason: stop.reason,
+          source: stop.source,
+          ...(stop.source?.startsWith("GOAT") ? { title: stop.title } : {}),
+        })),
+        staticMap: result.staticMap,
+        warnings: result.warnings,
+      } as Record<string, unknown>;
+      await saveRecommendedCourse({
+        recommendationId: parsed.data.recommendationId,
+        selectedPlaceId: parsed.data.selectedPlaceId,
+        title: result.courseTitle ?? "GOAT day course",
+        summary: result.summary,
+        mode: result.mode,
+        course: storedCourse,
+      });
     }
 
     res.json({
@@ -388,7 +518,9 @@ router.post("/recommend-course", courseRateLimit, async (req, res, next) => {
       new ApiError(
         500,
         "COURSE_RECOMMENDATION_FAILED",
-        error instanceof Error ? error.message : "하루 코스 생성 중 오류가 발생했습니다.",
+        error instanceof Error
+          ? error.message
+          : "하루 코스 생성 중 오류가 발생했습니다.",
       ),
     );
   }

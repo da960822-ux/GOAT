@@ -10,18 +10,15 @@ declare const fetch: (input: string, init: {
   method: string;
   headers: Record<string, string>;
   body: string;
-  signal?: unknown;
 }) => Promise<{
   ok: boolean;
   status: number;
   text(): Promise<string>;
   json(): Promise<unknown>;
 }>;
-declare const AbortSignal: { timeout(ms: number): unknown };
 
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 const DEFAULT_MODEL = "openai/gpt-4o-mini";
-const REQUEST_TIMEOUT_MS = 15_000;
 
 function getOpenRouterKey(): string | undefined {
   const key = process.env.OPENROUTER_API_KEY;
@@ -118,7 +115,7 @@ export async function callOpenRouterCoursePlanner(params: {
   const apiKey = getOpenRouterKey();
   if (!apiKey) throw new Error("OPENROUTER_API_KEY_MISSING");
 
-  const model = params.model ?? (process.env.OPENROUTER_DEFAULT_MODEL?.trim() || DEFAULT_MODEL);
+  const model = params.model ?? DEFAULT_MODEL;
   const prompt = buildGoatCoursePlannerPrompt(params);
   const response = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
     method: "POST",
@@ -137,7 +134,6 @@ export async function callOpenRouterCoursePlanner(params: {
         { role: "user", content: prompt },
       ],
     }),
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
 
   if (!response.ok) {

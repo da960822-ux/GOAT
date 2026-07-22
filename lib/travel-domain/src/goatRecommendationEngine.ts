@@ -21,6 +21,8 @@ import {
   TransportType,
 } from "./goatRecommendationTypes";
 
+export const RECOMMENDATION_POLICY_VERSION = "goat-score-v1" as const;
+
 declare const process: {
   env?: Record<string, string | undefined>;
   getBuiltinModule?: (moduleName: string) => unknown;
@@ -949,6 +951,9 @@ export function recommendGoatPlaces(
     }
 
     const decisionAudit: RecommendationDecisionAudit = {
+      schemaVersion: 1,
+      policyVersion: RECOMMENDATION_POLICY_VERSION,
+      candidateCount: candidatePool.length,
       fallback: {
         card3PurposeFallbackUsed,
         reason: card3FallbackReason,

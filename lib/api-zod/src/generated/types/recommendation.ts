@@ -5,9 +5,9 @@
  * Korean Travel Guide API
  * OpenAPI spec version: 0.3.0
  */
+import type { LegacyRecommendationScoreBreakdown } from './legacyRecommendationScoreBreakdown';
 import type { Place } from './place';
 import type { RecommendationRole } from './recommendationRole';
-import type { RecommendationScoreBreakdown } from './recommendationScoreBreakdown';
 
 export interface Recommendation {
   place: Place;
@@ -15,7 +15,7 @@ export interface Recommendation {
   score: number;
   reason: string;
   matchedTags: string[];
-  scoreBreakdown: RecommendationScoreBreakdown;
+  scoreBreakdown: LegacyRecommendationScoreBreakdown;
   safetyNotes: string[];
   weatherFit: string;
   parkingInfo: string;

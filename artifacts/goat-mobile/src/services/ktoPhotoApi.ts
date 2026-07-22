@@ -6,7 +6,13 @@
  * Results from another city/province are rejected.
  */
 
-import { ktoFetch, getAuthParams, extractItems, isRemoteImageAvailable } from './ktoApi';
+import {
+  ktoFetch,
+  getAuthParams,
+  extractItems,
+  isRemoteImageAvailable,
+  normalizeKtoImageUrl,
+} from './ktoApi';
 import { KTOPhotoResult } from './ktoTypes';
 import { getKtoSearchTerms, isRelevantKtoResult } from './ktoPlaceSearch';
 
@@ -53,7 +59,8 @@ async function fetchByKeyword(keyword: string, city: string): Promise<KTOPhotoRe
   );
 
   for (const item of candidates) {
-    const imageUrl = item.galWebImageUrl ?? item.galThumbnailImageUrl ?? null;
+    const rawImageUrl = item.galWebImageUrl ?? item.galThumbnailImageUrl ?? null;
+    const imageUrl = rawImageUrl ? normalizeKtoImageUrl(rawImageUrl) : null;
     if (!imageUrl || !(await isRemoteImageAvailable(imageUrl))) {
       continue;
     }

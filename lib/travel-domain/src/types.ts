@@ -1,4 +1,8 @@
-import type { RecommendationCard as GoatRecommendationCard } from "./goatRecommendationTypes";
+import type {
+  RecommendationCard as GoatRecommendationCard,
+  RecommendationDecisionAudit,
+  RecommendationWarning,
+} from "./goatRecommendationTypes";
 
 export type DataStatus = "confirmed" | "needs_verification" | "future_candidate";
 
@@ -49,13 +53,33 @@ export interface MoodEngineInput {
 
 export type RecommendationRole = "장면 최적" | "같은 분위기 대안" | "조건 맞춤";
 
+export interface LegacyRecommendationScoreBreakdown {
+  tag: number;
+  sceneSpecific: number;
+  region: number;
+  lodgingIntent: number;
+  season: number;
+  time: number;
+  weather: number;
+  companion: number;
+  travelPurpose: number;
+  transport: number;
+  dataStatus: number;
+  directMatchCount: number;
+  baseScore: number;
+  routeDistanceBonus: number;
+  duplicatePenalty: number;
+  selectionScore: number;
+  displayScore: number;
+}
+
 export interface RecommendationCard {
   place: Place;
   role: RecommendationRole;
   score: number;
   reason: string;
   matchedTags: string[];
-  scoreBreakdown: Record<string, number>;
+  scoreBreakdown: LegacyRecommendationScoreBreakdown;
   safetyNotes: string[];
   weatherFit: string;
   parkingInfo: string;
@@ -75,6 +99,9 @@ export interface RecommendationResult {
   cards?: GoatRecommendationCard[];
   alternatives?: GoatRecommendationCard[];
   warnings?: string[];
+  warningDetails?: RecommendationWarning[];
+  decisionAudit?: RecommendationDecisionAudit;
+  policyVersion?: "goat-score-v1";
 }
 
 export type Companion = "혼자" | "연인" | "친구" | "가족";

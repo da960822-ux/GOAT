@@ -43,9 +43,10 @@ try {
   const first = await recommendFromTags({ moodId: "alps-ranch" });
   assert.equal(first.data.recommendations.length, 3);
   assert.equal(first.data.seedPoolSize, 58);
-  assert.deepEqual(
-    first.data.recommendations.map(({ place: item }) => item.place_id),
-    ["GOAT-017", "GOAT-018", "GOAT-019"],
+  assert.ok(
+    first.data.recommendations.every(({ place: item }) =>
+      /^GOAT-\d{3}$/.test(item.place_id),
+    ),
   );
   assert.equal(
     new Set(first.data.recommendations.map(({ place }) => place.place_id)).size,

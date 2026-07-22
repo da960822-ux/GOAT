@@ -13,6 +13,8 @@ tags:
   - name: images
   - name: places
   - name: kto
+  - name: bookmarks
+  - name: feedback
 paths:
   /healthz:
     get:
@@ -68,12 +70,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: Debug responses are disabled by the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
   /recommend-course:
     post:
       operationId: recommendCourse
@@ -104,52 +100,198 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-        "403":
-          description: Debug responses are disabled by the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  /analyze-image:
+  /recommendations:
     post:
-      operationId: analyzeImage
-      tags: [images]
-      summary: Analyze an uploaded travel photo and map it to GOAT mood tags
-      description: >
-        Accepts one image from an authenticated client. The server should derive
-        the user id from the JWT/session if persisted data is needed; clients
-        must not submit user_id in the request body.
+      operationId: createRecommendation
+      tags: [recommendations]
+      summary: Create and persist a recommendation for the authenticated user
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: true
+          schema: { type: string, format: uuid }
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AnalyzeImageRequest"
+              $ref: "#/components/schemas/RecommendFromTagsRequest"
+      responses:
+        "201":
+          description: Recommendation created
+          content:
+            application/json:
+              schema:
+                {
+                  $ref: "#/components/schemas/RecommendationDataSuccessResponse",
+                }
+        "200":
+          description: Existing idempotent result replayed
+          content:
+            application/json:
+              schema:
+                {
+                  $ref: "#/components/schemas/RecommendationDataSuccessResponse",
+                }
+        "409":
+          description: Idempotency conflict or request in progress
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+  /recommendations/recent:
+    get:
+      operationId: getRecentRecommendations
+      tags: [recommendations]
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 20, default: 1 }
       responses:
         "200":
-          description: Image mood analysis result
+          description: Recent recommendations
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AnalyzeImageSuccessResponse"
-        "400":
-          description: Invalid image payload
+                {
+                  $ref: "#/components/schemas/RecentRecommendationsSuccessResponse",
+                }
+  /recommendations/{recommendationId}:
+    parameters:
+      - in: path
+        name: recommendationId
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      operationId: getRecommendation
+      tags: [recommendations]
+      security: [{ sessionCookie: [] }]
+      responses:
+        "200":
+          description: Saved recommendation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: Authentication required when saving analysis history
+                {
+                  $ref: "#/components/schemas/RecommendationDataSuccessResponse",
+                }
+    delete:
+      operationId: deleteRecommendation
+      tags: [recommendations]
+      security: [{ sessionCookie: [] }]
+      responses:
+        "200":
+          description: Recommendation deleted
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ApiSuccessBase" }
+  /bookmarks:
+    get:
+      operationId: getBookmarks
+      tags: [bookmarks]
+      security: [{ sessionCookie: [] }]
+      responses:
+        "200":
+          description: Bookmark list
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BookmarksSuccessResponse" }
+    post:
+      operationId: saveBookmark
+      tags: [bookmarks]
+      security: [{ sessionCookie: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BookmarkRequest" }
+      responses:
+        "200":
+          description: Bookmark saved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "413":
-          description: Image payload too large
+                { $ref: "#/components/schemas/BookmarkStatusSuccessResponse" }
+  /bookmarks/{placeId}:
+    delete:
+      operationId: deleteBookmark
+      tags: [bookmarks]
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - in: path
+          name: placeId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Bookmark removed
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                { $ref: "#/components/schemas/BookmarkStatusSuccessResponse" }
+  /bookmarks/{placeId}/status:
+    get:
+      operationId: getBookmarkStatus
+      tags: [bookmarks]
+      security: [{ sessionCookie: [] }]
+      parameters:
+        - in: path
+          name: placeId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Bookmark status
+          content:
+            application/json:
+              schema:
+                { $ref: "#/components/schemas/BookmarkStatusSuccessResponse" }
+  /recommendations/{recommendationId}/places/{placeId}/feedback:
+    parameters:
+      - in: path
+        name: recommendationId
+        required: true
+        schema: { type: string, format: uuid }
+      - in: path
+        name: placeId
+        required: true
+        schema: { type: string }
+    get:
+      operationId: getRecommendationFeedback
+      tags: [feedback]
+      security: [{ sessionCookie: [] }]
+      responses:
+        "200":
+          description: Feedback state
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FeedbackSuccessResponse" }
+    put:
+      operationId: putRecommendationFeedback
+      tags: [feedback]
+      security: [{ sessionCookie: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/FeedbackRequest" }
+      responses:
+        "200":
+          description: Feedback saved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FeedbackSuccessResponse" }
+    delete:
+      operationId: deleteRecommendationFeedback
+      tags: [feedback]
+      security: [{ sessionCookie: [] }]
+      responses:
+        "200":
+          description: Feedback cleared
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/FeedbackSuccessResponse" }
   /places/{id}:
     get:
       operationId: getPlace
@@ -241,6 +383,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/KtoProxyError"
 components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: goat.sid
   schemas:
     HealthStatus:
       type: object
@@ -256,8 +403,9 @@ components:
           const: true
         code:
           type: string
-          const: SUCCESS
         message:
+          type: string
+        requestId:
           type: string
       required: [success, code, message]
     ErrorResponse:
@@ -272,6 +420,8 @@ components:
           type: string
         data:
           nullable: true
+        requestId:
+          type: string
       required: [success, code, message, data]
     KtoProxyError:
       type: object
@@ -292,57 +442,7 @@ components:
           type: array
           items:
             type: string
-        referenceCards:
-          type: array
-          items:
-            $ref: "#/components/schemas/ReferenceCard"
       required: [id, name, description, keywords]
-    ReferenceCard:
-      type: object
-      properties:
-        referenceCardId:
-          type: string
-        displayOrder:
-          type: integer
-        title:
-          type: string
-        subtitle:
-          type: string
-        primaryTheme:
-          type: string
-        sceneTags:
-          type: array
-          items:
-            type: string
-        moodTags:
-          type: array
-          items:
-            type: string
-        recommendedPurpose:
-          type: array
-          items:
-            type: string
-        recommendedBestTime:
-          type: array
-          items:
-            type: string
-        recommendedTransport:
-          type: array
-          items:
-            type: string
-        examplePlaceIds:
-          type: array
-          items:
-            type: string
-        uiKeywords:
-          type: array
-          items:
-            type: string
-        candidateCount:
-          type: integer
-        coverageCount:
-          type: integer
-      required: [referenceCardId, title, primaryTheme, sceneTags, moodTags, uiKeywords]
     MoodsData:
       type: object
       properties:
@@ -350,11 +450,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Mood"
-        referenceCards:
-          type: array
-          items:
-            $ref: "#/components/schemas/ReferenceCard"
-      required: [moods, referenceCards]
+      required: [moods]
     MoodsSuccessResponse:
       allOf:
         - $ref: "#/components/schemas/ApiSuccessBase"
@@ -410,7 +506,16 @@ components:
           minLength: 1
         travelPurpose:
           type: string
-          enum: [사진·포토스팟, 산책·힐링, 카페·실내휴식, 전시·건축관람, 체험·액티비티, 먹거리·야간탐방, 숙소·리조트]
+          enum:
+            [
+              사진·포토스팟,
+              산책·힐링,
+              카페·실내휴식,
+              전시·건축관람,
+              체험·액티비티,
+              먹거리·야간탐방,
+              숙소·리조트,
+            ]
         transportType:
           type: string
           enum: [자차, 대중교통, 도보중심]
@@ -438,12 +543,24 @@ components:
     RecommendCourseRequest:
       type: object
       properties:
+        recommendationId:
+          type: string
+          format: uuid
         selectedPlaceId:
           type: string
           minLength: 1
         primaryTheme:
           type: string
-          enum: [바다·해안 무드, 일본 소도시·골목 무드, 알프스·고원·목장 무드, 숲·정원·자연휴식 무드, 레트로·시장·항구 무드, 건축·전시·랜드마크 무드, 휴양·카페·이국공간 무드]
+          enum:
+            [
+              바다·해안 무드,
+              일본 소도시·골목 무드,
+              알프스·고원·목장 무드,
+              숲·정원·자연휴식 무드,
+              레트로·시장·항구 무드,
+              건축·전시·랜드마크 무드,
+              휴양·카페·이국공간 무드,
+            ]
         userMoodTags:
           type: array
           maxItems: 10
@@ -461,7 +578,16 @@ components:
           enum: [혼자, 친구, 연인, 가족]
         travelPurpose:
           type: string
-          enum: [사진·포토스팟, 산책·힐링, 카페·실내휴식, 전시·건축관람, 체험·액티비티, 먹거리·야간탐방, 숙소·리조트]
+          enum:
+            [
+              사진·포토스팟,
+              산책·힐링,
+              카페·실내휴식,
+              전시·건축관람,
+              체험·액티비티,
+              먹거리·야간탐방,
+              숙소·리조트,
+            ]
         transportType:
           type: string
           enum: [자차, 대중교통, 도보중심]
@@ -479,10 +605,8 @@ components:
           type: string
           minLength: 1
           maxLength: 120
-          description: Optional model from the server-side OPENROUTER_ALLOWED_MODELS allowlist.
         debug:
           type: boolean
-          description: Available only when ALLOW_RECOMMENDATION_DEBUG=true on the server.
       required: [selectedPlaceId, primaryTheme]
       additionalProperties: false
     Place:
@@ -531,6 +655,241 @@ components:
         - data_status
         - recommendation_use
         - note
+    RecommendationMatchDetail:
+      type: object
+      properties:
+        requested:
+          type: array
+          items: { type: string }
+        matched:
+          type: array
+          items: { type: string }
+        count: { type: integer, minimum: 0 }
+        score: { type: number, minimum: 0 }
+      required: [requested, matched, count, score]
+      additionalProperties: false
+    RecommendationThemeScoreDetail:
+      type: object
+      properties:
+        requested: { type: string }
+        placeTheme: { type: string }
+        matched: { type: boolean }
+        score: { type: number, minimum: 0, maximum: 18 }
+      required: [placeTheme, matched, score]
+      additionalProperties: false
+    RecommendationPurposeScoreDetail:
+      type: object
+      properties:
+        requested: { type: string }
+        placePurposeTags:
+          type: array
+          items: { type: string }
+        matched: { type: boolean }
+        score: { type: number, minimum: 0, maximum: 20 }
+      required: [placePurposeTags, matched, score]
+      additionalProperties: false
+    RecommendationAccessibilityScoreDetail:
+      type: object
+      properties:
+        transportType: { type: string }
+        grade: { type: string }
+        score: { type: number, minimum: 0, maximum: 12 }
+        inferred: { type: boolean }
+        note: { type: string }
+      required: [score]
+      additionalProperties: false
+    RecommendationSeasonScoreDetail:
+      type: object
+      properties:
+        requested: { type: string }
+        placeSeasonTags:
+          type: array
+          items: { type: string }
+        matchType:
+          type: string
+          enum: [current, all_season, none, not_requested]
+        score: { type: number, minimum: 0, maximum: 13 }
+      required: [placeSeasonTags, matchType, score]
+      additionalProperties: false
+    RecommendationScoreSummary:
+      type: object
+      description: User-safe summary. Internal exposure and candidate-selection adjustments are not exposed here.
+      properties:
+        moodScore: { type: integer, minimum: 0, maximum: 45 }
+        conditionScore: { type: integer, minimum: 0, maximum: 45 }
+        baseScore: { type: integer, minimum: 0, maximum: 90 }
+        displayScore: { type: integer, minimum: 0, maximum: 100 }
+      required: [moodScore, conditionScore, baseScore, displayScore]
+      additionalProperties: false
+    RecommendationScoreDetails:
+      type: object
+      properties:
+        theme: { $ref: "#/components/schemas/RecommendationThemeScoreDetail" }
+        moodTags: { $ref: "#/components/schemas/RecommendationMatchDetail" }
+        sceneTags: { $ref: "#/components/schemas/RecommendationMatchDetail" }
+        purpose: { $ref: "#/components/schemas/RecommendationPurposeScoreDetail" }
+        accessibility: { $ref: "#/components/schemas/RecommendationAccessibilityScoreDetail" }
+        season: { $ref: "#/components/schemas/RecommendationSeasonScoreDetail" }
+      required: [theme, moodTags, sceneTags, purpose, accessibility, season]
+      additionalProperties: false
+    LegacyRecommendationScoreBreakdown:
+      type: object
+      properties:
+        tag: { type: number }
+        sceneSpecific: { type: number }
+        region: { type: number }
+        lodgingIntent: { type: number }
+        season: { type: number }
+        time: { type: number }
+        weather: { type: number }
+        companion: { type: number }
+        travelPurpose: { type: number }
+        transport: { type: number }
+        dataStatus: { type: number }
+        directMatchCount: { type: number }
+        baseScore: { type: number }
+        routeDistanceBonus: { type: number }
+        duplicatePenalty: { type: number }
+        selectionScore: { type: number }
+        displayScore: { type: number }
+      required:
+        [
+          tag,
+          sceneSpecific,
+          region,
+          lodgingIntent,
+          season,
+          time,
+          weather,
+          companion,
+          travelPurpose,
+          transport,
+          dataStatus,
+          directMatchCount,
+          baseScore,
+          routeDistanceBonus,
+          duplicatePenalty,
+          selectionScore,
+          displayScore,
+        ]
+      additionalProperties: false
+    GoatMoodScoreBreakdown:
+      type: object
+      properties:
+        total: { type: integer, minimum: 0, maximum: 45 }
+        theme: { $ref: "#/components/schemas/RecommendationThemeScoreDetail" }
+        moodTags: { $ref: "#/components/schemas/RecommendationMatchDetail" }
+        sceneTags: { $ref: "#/components/schemas/RecommendationMatchDetail" }
+        placeTypeHint:
+          type: object
+          properties:
+            matchedHints:
+              type: array
+              items: { type: string }
+            score: { type: number, minimum: 0, maximum: 3 }
+            note: { type: string }
+          required: [matchedHints, score, note]
+          additionalProperties: false
+      required: [total, theme, moodTags, sceneTags, placeTypeHint]
+      additionalProperties: false
+    GoatConditionScoreBreakdown:
+      type: object
+      properties:
+        total: { type: integer, minimum: 0, maximum: 45 }
+        purpose: { $ref: "#/components/schemas/RecommendationPurposeScoreDetail" }
+        accessibility: { $ref: "#/components/schemas/RecommendationAccessibilityScoreDetail" }
+        season: { $ref: "#/components/schemas/RecommendationSeasonScoreDetail" }
+      required: [total, purpose, accessibility, season]
+      additionalProperties: false
+    GoatScoreBreakdown:
+      type: object
+      properties:
+        moodScore: { $ref: "#/components/schemas/GoatMoodScoreBreakdown" }
+        conditionScore: { $ref: "#/components/schemas/GoatConditionScoreBreakdown" }
+        baseScore: { type: integer, minimum: 0, maximum: 90 }
+        routeDistanceBonus: { type: integer, minimum: 0, maximum: 10 }
+        duplicatePenalty: { type: integer, minimum: 0, maximum: 6 }
+        exposurePenalty: { type: integer, minimum: 0, maximum: 5 }
+        coverageBoost: { type: integer, minimum: 0, maximum: 3 }
+        lowExposureBoost: { type: integer, minimum: 0, maximum: 3 }
+        selectionScore: { type: integer, minimum: -11, maximum: 106 }
+        displayScore: { type: integer, minimum: 0, maximum: 100 }
+      required:
+        [
+          moodScore,
+          conditionScore,
+          baseScore,
+          routeDistanceBonus,
+          duplicatePenalty,
+          exposurePenalty,
+          coverageBoost,
+          lowExposureBoost,
+          selectionScore,
+          displayScore,
+        ]
+      additionalProperties: false
+    GoatRecommendationCard:
+      type: object
+      properties:
+        rank: { type: integer, minimum: 1, maximum: 3 }
+        role:
+          type: string
+          enum: [BEST_SCENE, SAME_MOOD_ALTERNATIVE, CONDITION_FIT_ALTERNATIVE]
+        roleLabel: { type: string }
+        placeId: { type: string }
+        placeName: { type: string }
+        city: { type: string }
+        regionGroup: { type: string }
+        primaryTheme: { type: string }
+        placeType: { type: string }
+        photoPoint: { type: string }
+        recommendationUse: { type: string }
+        bestTime: { type: string }
+        seasonTags:
+          type: array
+          items: { type: string }
+        purposeTags:
+          type: array
+          items: { type: string }
+        accessibility:
+          type: object
+          properties:
+            public_transport: { type: string }
+            car: { type: string }
+            walk: { type: string }
+          additionalProperties: false
+        note: { type: string }
+        imageUrl: { type: [string, "null"] }
+        address: { type: [string, "null"] }
+        score: { $ref: "#/components/schemas/GoatScoreBreakdown" }
+        reasons:
+          type: array
+          items: { type: string }
+        cautions:
+          type: array
+          items: { type: string }
+      required:
+        [
+          rank,
+          role,
+          roleLabel,
+          placeId,
+          placeName,
+          city,
+          regionGroup,
+          primaryTheme,
+          placeType,
+          photoPoint,
+          recommendationUse,
+          bestTime,
+          seasonTags,
+          purposeTags,
+          accessibility,
+          score,
+          reasons,
+          cautions,
+        ]
+      additionalProperties: false
     Recommendation:
       type: object
       properties:
@@ -548,9 +907,7 @@ components:
           items:
             type: string
         scoreBreakdown:
-          type: object
-          additionalProperties:
-            type: number
+          $ref: "#/components/schemas/LegacyRecommendationScoreBreakdown"
         safetyNotes:
           type: array
           items:
@@ -560,7 +917,17 @@ components:
         parkingInfo:
           type: string
       required:
-        [place, role, score, reason, matchedTags, scoreBreakdown, safetyNotes, weatherFit, parkingInfo]
+        [
+          place,
+          role,
+          score,
+          reason,
+          matchedTags,
+          scoreBreakdown,
+          safetyNotes,
+          weatherFit,
+          parkingInfo,
+        ]
     RecommendationsData:
       type: object
       properties:
@@ -599,19 +966,27 @@ components:
           minItems: 3
           maxItems: 3
           items:
-            type: object
-            additionalProperties: true
+            $ref: "#/components/schemas/GoatRecommendationCard"
         alternatives:
           type: array
           items:
-            type: object
-            additionalProperties: true
+            $ref: "#/components/schemas/GoatRecommendationCard"
         warnings:
           type: array
           items:
             type: string
       required:
-        [moodId, appliedTags, seedPoolSize, candidatePoolSize, poolPolicy, poolReason, fallbackUsed, adaptivePoolRetryUsed, recommendations]
+        [
+          moodId,
+          appliedTags,
+          seedPoolSize,
+          candidatePoolSize,
+          poolPolicy,
+          poolReason,
+          fallbackUsed,
+          adaptivePoolRetryUsed,
+          recommendations,
+        ]
     RecommendationsSuccessResponse:
       allOf:
         - $ref: "#/components/schemas/ApiSuccessBase"
@@ -619,6 +994,177 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/RecommendationsData"
+          required: [data]
+    RecommendationCardResponse:
+      type: object
+      properties:
+        placeId: { type: string }
+        name: { type: string }
+        region: { type: string }
+        imageUrl: { type: [string, "null"] }
+        rank: { type: integer, minimum: 1, maximum: 3 }
+        role:
+          type: string
+          enum: [BEST_SCENE, SAME_MOOD_ALTERNATIVE, CONDITION_FIT_ALTERNATIVE]
+        score: { type: integer, minimum: 0, maximum: 100 }
+        scoreSummary:
+          oneOf:
+            - $ref: "#/components/schemas/RecommendationScoreSummary"
+            - type: "null"
+        scoreDetails:
+          oneOf:
+            - $ref: "#/components/schemas/RecommendationScoreDetails"
+            - type: "null"
+        reason: { type: string }
+        reasons:
+          type: array
+          items: { type: string }
+        cautions:
+          type: array
+          items: { type: string }
+        bestSeasons:
+          type: array
+          items: { type: string }
+        seasonBadge:
+          type: [object, "null"]
+          additionalProperties: true
+        crowd:
+          $ref: "#/components/schemas/VisitConcentration"
+        bookmarked: { type: boolean }
+        feedback:
+          type: [string, "null"]
+          enum: [LIKE, DISLIKE, null]
+      required:
+        [
+          placeId,
+          name,
+          region,
+          imageUrl,
+          rank,
+          role,
+          score,
+          scoreSummary,
+          scoreDetails,
+          reason,
+          reasons,
+          cautions,
+          bestSeasons,
+          seasonBadge,
+          crowd,
+          bookmarked,
+          feedback,
+        ]
+    VisitConcentration:
+      type: object
+      properties:
+        level:
+          type: string
+          enum: [low, medium, high, unknown]
+        label: { type: [string, "null"] }
+        concentrationRate: { type: [number, "null"] }
+        baseDate: { type: [string, "null"] }
+        source:
+          type: string
+          enum: [KTO_VISIT_CONCENTRATION, fallback]
+      required: [level, label, concentrationRate, baseDate, source]
+    RecommendationData:
+      type: object
+      properties:
+        recommendationId: { type: string, format: uuid }
+        conditions:
+          type: object
+          additionalProperties: true
+        cards:
+          type: array
+          minItems: 3
+          maxItems: 3
+          items: { $ref: "#/components/schemas/RecommendationCardResponse" }
+        course:
+          type: [object, "null"]
+          additionalProperties: true
+        createdAt: { type: string, format: date-time }
+      required: [recommendationId, conditions, cards, course, createdAt]
+    RecommendationDataSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data: { $ref: "#/components/schemas/RecommendationData" }
+          required: [data]
+    RecentRecommendationsSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items: { $ref: "#/components/schemas/RecommendationData" }
+                nextCursor: { type: [string, "null"] }
+              required: [items, nextCursor]
+          required: [data]
+    BookmarkRequest:
+      type: object
+      properties:
+        placeId: { type: string, pattern: '^GOAT-\\d{3}$' }
+      required: [placeId]
+      additionalProperties: false
+    BookmarkStatusSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                placeId: { type: string }
+                bookmarked: { type: boolean }
+              required: [placeId, bookmarked]
+          required: [data]
+    BookmarksSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    additionalProperties: true
+              required: [items]
+          required: [data]
+    FeedbackRequest:
+      type: object
+      properties:
+        type: { type: string, enum: [LIKE, DISLIKE] }
+        reasonCode:
+          type: [string, "null"]
+          enum:
+            [
+              TOO_FAR,
+              NOT_MY_MOOD,
+              TRANSPORT_DIFFICULT,
+              ALREADY_VISITED,
+              TOO_CROWDED,
+              OTHER,
+              null,
+            ]
+        reasonText: { type: [string, "null"], maxLength: 500 }
+      required: [type]
+      additionalProperties: false
+    FeedbackSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              type: object
+              additionalProperties: true
           required: [data]
     CourseStop:
       type: object
@@ -693,7 +1239,19 @@ components:
           type: array
           items:
             type: string
-      required: [status, resultType, mode, message, selectedPlace, conditions, nearbyCandidateCount, stops, staticMap, warnings]
+      required:
+        [
+          status,
+          resultType,
+          mode,
+          message,
+          selectedPlace,
+          conditions,
+          nearbyCandidateCount,
+          stops,
+          staticMap,
+          warnings,
+        ]
     RecommendCourseSuccessResponse:
       allOf:
         - $ref: "#/components/schemas/ApiSuccessBase"
@@ -701,55 +1259,6 @@ components:
           properties:
             data:
               $ref: "#/components/schemas/RecommendCourseData"
-          required: [data]
-    AnalyzeImageRequest:
-      type: object
-      properties:
-        imageBase64:
-          type: string
-          minLength: 1
-          description: Base64-encoded JPEG, PNG, or WebP image. Recommended max decoded size is 10MB.
-        mimeType:
-          type: string
-          enum: [image/jpeg, image/png, image/webp]
-        debug:
-          type: boolean
-          default: false
-      required: [imageBase64, mimeType]
-      additionalProperties: false
-    AnalyzeImageData:
-      type: object
-      properties:
-        primaryMood:
-          type: string
-        moodTags:
-          type: array
-          items:
-            type: string
-        matchedSceneTags:
-          type: array
-          items:
-            type: string
-        confidence:
-          type: number
-          minimum: 0
-          maximum: 1
-        recommendedMoodId:
-          type: string
-        isEstimated:
-          type: boolean
-        warnings:
-          type: array
-          items:
-            type: string
-      required: [primaryMood, moodTags, matchedSceneTags, isEstimated]
-    AnalyzeImageSuccessResponse:
-      allOf:
-        - $ref: "#/components/schemas/ApiSuccessBase"
-        - type: object
-          properties:
-            data:
-              $ref: "#/components/schemas/AnalyzeImageData"
           required: [data]
     PlaceData:
       type: object
