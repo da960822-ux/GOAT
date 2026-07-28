@@ -19,7 +19,7 @@ catalogs:
       specifier: ^5.90.21
       version: 5.100.9
     '@types/node':
-      specifier: ^25.3.3
+      specifier: ^25.6.2
       version: 25.6.2
     '@vitejs/plugin-react':
       specifier: ^5.0.4
@@ -226,6 +226,9 @@ importers:
       '@babel/core':
         specifier: ^7.25.2
         version: 7.29.0
+      '@babel/plugin-transform-react-jsx':
+        specifier: 7.29.7
+        version: 7.29.7(@babel/core@7.29.0)
       '@expo-google-fonts/inter':
         specifier: ^0.4.0
         version: 0.4.2
@@ -250,6 +253,9 @@ importers:
       '@tanstack/react-query':
         specifier: 'catalog:'
         version: 5.100.9(react@19.1.0)
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.6.2
       '@types/react':
         specifier: 19.1.17
         version: 19.1.17

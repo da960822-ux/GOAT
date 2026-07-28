@@ -46,7 +46,7 @@ catalog:
   '@replit/vite-plugin-runtime-error-modal': ^0.0.6
   '@tailwindcss/vite': ^4.1.14
   '@tanstack/react-query': ^5.90.21
-  '@types/node': ^25.3.3
+  '@types/node': ^25.6.2
   # Keep React types aligned with Expo SDK 54's React 19.1 runtime.
   '@types/react': 19.1.17
   '@types/react-dom': 19.1.11

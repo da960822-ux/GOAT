@@ -125,7 +125,21 @@ export function sanitizeInternalRedirect(value: unknown) {
 }
 
 export function getSuccessRedirect(redirectTo: string | null) {
-  return redirectTo ?? process.env.AUTH_SUCCESS_REDIRECT_URL ?? "/";
+  const configuredRedirect = process.env.AUTH_SUCCESS_REDIRECT_URL?.trim();
+
+  if (!redirectTo) {
+    return configuredRedirect || "/";
+  }
+
+  if (!configuredRedirect) {
+    return redirectTo;
+  }
+
+  try {
+    return new URL(redirectTo, configuredRedirect).toString();
+  } catch {
+    return redirectTo;
+  }
 }
 
 export function getFailureRedirect() {
