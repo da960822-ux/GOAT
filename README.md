@@ -22,6 +22,18 @@
 무드를 고르면 강원도 여행지 3곳을 카드로 추천해줍니다.
 동행, 이동수단, 방문 목적, 현재 위치까지 반영한 개인화 추천입니다.
 
+## 화면 미리보기
+
+<p align="center">
+  <img src="docs/readme/screenshots/home.png" alt="홈 화면" width="200" />
+  <img src="docs/readme/screenshots/mood-selection.png" alt="감성 선택" width="200" />
+  <img src="docs/readme/screenshots/reference-selection.png" alt="닮은 여행지 찾기" width="200" />
+  <img src="docs/readme/screenshots/travel-preference.png" alt="여행 조건 입력" width="200" />
+</p>
+<p align="center">
+  <sub>홈 · 감성으로 찾기 · 사진으로 닮은 여행지 찾기 · 여행 조건 입력</sub>
+</p>
+
 ## 주요 기능
 
 - **감성 선택** — 잔잔한 / 웅장한 / 로맨틱 / 힐링 / 액티비티 / 레트로 중 선택
