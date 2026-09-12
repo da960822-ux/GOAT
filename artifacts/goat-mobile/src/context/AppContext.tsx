@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import type { Mood, RecommendCourseData } from '@workspace/api-client-react';
+import type { Mood, PublicRecommendationData, PublicSelection, RecommendCourseData } from '@workspace/api-client-react';
 import type { ReferenceCardId, RecommendationSelection } from '@workspace/travel-domain/catalog';
 import { TravelPreferences, TravelOrigin } from '../types/preferences';
 import type { RecommendationAttempt, RecommendationSession } from '../services/recommendationApi';
@@ -15,6 +15,8 @@ interface AppContextValue {
   course: RecommendCourseData | null;
   pendingAttempt: RecommendationAttempt | null;
   origin: TravelOrigin | null;
+  publicSelection: PublicSelection | null;
+  publicRecommendation: PublicRecommendationData | null;
   setSelectedMood: (mood: Mood | null) => void;
   setSelectedReferenceCardId: (referenceCardId: ReferenceCardId | null) => void;
   setTravelPreferences: (prefs: TravelPreferences) => void;
@@ -22,6 +24,8 @@ interface AppContextValue {
   setCourse: (course: RecommendCourseData | null) => void;
   setPendingAttempt: (attempt: RecommendationAttempt | null) => void;
   setOrigin: (origin: TravelOrigin | null) => void;
+  setPublicSelection: (selection: PublicSelection | null) => void;
+  setPublicRecommendation: (recommendation: PublicRecommendationData | null) => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -35,6 +39,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [course, setCourse] = useState<RecommendCourseData | null>(null);
   const [pendingAttempt, setPendingAttempt] = useState<RecommendationAttempt | null>(null);
   const [origin, setOrigin] = useState<TravelOrigin | null>(null);
+  const [publicSelection, setPublicSelection] = useState<PublicSelection | null>(null);
+  const [publicRecommendation, setPublicRecommendation] = useState<PublicRecommendationData | null>(null);
 
   const selectMood = (mood: Mood | null) => {
     setSelectedMood(mood);
@@ -60,6 +66,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         course,
         pendingAttempt,
         origin,
+        publicSelection,
+        publicRecommendation,
         setSelectedMood: selectMood,
         setSelectedReferenceCardId: selectReference,
         setTravelPreferences,
@@ -67,6 +75,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setCourse,
         setPendingAttempt,
         setOrigin,
+        setPublicSelection,
+        setPublicRecommendation,
       }}
     >
       {children}

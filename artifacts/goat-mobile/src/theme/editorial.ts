@@ -7,14 +7,16 @@ export const palette = {
   ivory: "#F6F2E9",
   paper: "#FFFCF6",
   sage: "#DDE3DA",
-  sageDark: "#788B82",
+  sageDark: "#526A60",
   line: "#D9D9CF",
   ink: "#18322D",
-  muted: "#6F7C76",
+  muted: "#5B6962",
   white: "#FFFFFF",
   coral: "#E87A5D",
   kakao: "#FEE500",
   error: "#A3493F",
+  errorSurface: "#FCECEA",
+  errorBorder: "#E4B4AA",
 };
 
 export const fonts = {

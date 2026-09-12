@@ -1,40 +1,100 @@
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useMemo, useState } from "react";
-import { Alert, Linking, Pressable, ScrollView, Share, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { ActivityIndicator, Alert, Modal, Pressable, ScrollView, Share, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { deleteBookmark, getBookmarkStatus, getPlace, recommendCourse, saveBookmark, type Place } from "@workspace/api-client-react";
+import { buildPublicPlaceShare, getPlace, getPlacePhotos, type Place, type PlacePhotosData } from "@workspace/api-client-react";
 import { BrandIcon } from "@/src/components/BrandIcon";
-import { PrimaryButton } from "@/src/components/editorial/UI";
+import { DecisionSheet } from "@/src/components/discovery";
+import { API_BASE_URL } from "@/src/config/api";
 import { useApp } from "@/src/context/AppContext";
-import { showcasePlaces } from "@/src/data/editorialContent";
-import { usePlacePhoto } from "@/src/hooks/usePlacePhoto";
-import { useTourInfo } from "@/src/hooks/useTourInfo";
-import { useVisitConcentration } from "@/src/hooks/useVisitConcentration";
+import { localSceneStore } from "@/src/services/deviceSceneStore";
+import { openKakaoMap } from "@/src/services/mapLink";
 import { fonts, palette, radius } from "@/src/theme/editorial";
 
 export default function DetailScreen() {
-  const { id = "" } = useLocalSearchParams<{ id: string }>(); const router = useRouter(); const insets = useSafeAreaInsets(); const { recommendationSession, travelPreferences, setCourse } = useApp();
-  const local = showcasePlaces.find((x) => x.id === id) ?? showcasePlaces[0]; const card = recommendationSession?.cards.find((x) => x.placeId === id); const [apiPlace, setApiPlace] = useState<Place | null>(null); const [saved, setSaved] = useState(card?.bookmarked ?? false); const [busy, setBusy] = useState(false);
-  useEffect(() => { getPlace(id).then((r) => setApiPlace(r.data.place)).catch(() => undefined); getBookmarkStatus(id).then((r) => setSaved(r.data.bookmarked)).catch(() => undefined); }, [id]);
-  const name = apiPlace?.place_name ?? card?.name ?? local.name; const city = apiPlace?.city ?? card?.region ?? local.area; const { photo } = usePlacePhoto(name, apiPlace?.primary_mood ?? "", apiPlace?.mood_tags ?? [], city); const { info } = useTourInfo(name, city); const { concentration } = useVisitConcentration(name, city);
-  const heroSource = useMemo(() => (photo?.imageSource as never) ?? (photo?.imageUrl ? { uri: photo.imageUrl } : apiPlace?.imageUrl ? { uri: apiPlace.imageUrl } : card?.imageUrl ? { uri: card.imageUrl } : local.image), [apiPlace?.imageUrl, card?.imageUrl, local.image, photo]);
-  const address = info?.address ?? apiPlace?.address ?? local.address; const crowd = card?.crowd.level === "unknown" ? "정보 없음" : card?.crowd.label ?? concentration?.trendLabel ?? local.crowd;
-  const toggle = async () => { setBusy(true); try { saved ? await deleteBookmark(id) : await saveBookmark({ placeId: id }); setSaved(!saved); } catch { Alert.alert("저장하지 못했어요"); } finally { setBusy(false); } };
-  const createCourse = async () => { setBusy(true); try { const result = await recommendCourse({ recommendationId: recommendationSession?.recommendationId, selectedPlaceId: id, primaryTheme: (apiPlace?.primary_mood || "바다·해안 무드") as never, companionType: travelPreferences?.companion, travelPurpose: (travelPreferences?.purpose === "사진 위주" ? "사진·포토스팟" : travelPreferences?.purpose === "액티비티" ? "체험·액티비티" : "휴식·산책") as never, transportType: travelPreferences?.transport }); setCourse(result.data); router.push("/map" as never); } catch { Alert.alert("하루 코스를 만들지 못했어요", "잠시 후 다시 시도해 주세요."); } finally { setBusy(false); } };
-  const openMap = () => Linking.openURL(`https://map.kakao.com/link/search/${encodeURIComponent(name)}`).catch(() => undefined);
-  return <View style={styles.screen}><ScrollView contentContainerStyle={{ paddingBottom: 106 + insets.bottom }} showsVerticalScrollIndicator={false}>
-    <View style={styles.hero}><Image accessibilityLabel={`${name} 풍경`} source={heroSource} style={StyleSheet.absoluteFillObject} contentFit="cover" /><View style={styles.scrim} /><Pressable accessibilityLabel="뒤로 가기" onPress={() => router.back()} style={[styles.back, { top: insets.top + 10 }]}><BrandIcon name="back" color={palette.white} /></Pressable><View style={[styles.topActions, { top: insets.top + 10 }]}><Pressable accessibilityLabel="지도에서 보기" onPress={openMap} style={styles.heroAction}><BrandIcon name="map" color={palette.white} size={20} /></Pressable><Pressable accessibilityLabel="공유" onPress={() => Share.share({ message: `${name} - GOAT` })} style={styles.heroAction}><BrandIcon name="share" color={palette.white} size={20} /></Pressable><Pressable accessibilityLabel={saved ? "저장 취소" : "저장"} disabled={busy} onPress={toggle} style={styles.heroAction}><BrandIcon name="bookmark" color={palette.white} size={20} filled={saved} /></Pressable></View><View style={styles.heroCopy}><Text style={styles.area}>{city}</Text><Text style={styles.name}>{name}</Text><Text style={styles.kicker}>{card?.reason ?? apiPlace?.recommendation_use ?? local.kicker}</Text></View></View>
-    <View style={styles.body}><View style={styles.matchRow}><View style={styles.matchLead}><Text style={styles.mini}>이곳을 고른 이유</Text><Text style={styles.matchCopy}>고른 분위기와 여행 방식에 잘 어울려요.</Text></View><View style={styles.matchScore}><Text style={styles.match}>{Math.round(card?.score ?? local.match)}<Text style={styles.percent}>%</Text></Text><Text style={styles.matchCaption}>어울림</Text></View></View>
-      <Text style={styles.description}>{info?.overview ?? apiPlace?.description ?? local.description}</Text><View style={styles.tags}>{(apiPlace?.mood_tags ?? local.tags).slice(0, 4).map((tag) => <Text key={tag} style={styles.tag}>#{tag}</Text>)}</View>
-      <View style={styles.infoGrid}><Info icon="time" label="추천 시간" value={apiPlace?.best_time ?? local.bestTime} /><Info icon="transport" label="이동 방법" value={travelPreferences?.transport ?? local.transport} /><Info icon="crowd" label="혼잡도" value={crowd} /><Info icon="location" label="출발지 거리" value={card?.routeInfo ? `${card.routeInfo.distanceKm.toFixed(1)}km · ${card.routeInfo.durationMin ?? ""}분` : "정보 없음"} /></View>
-      <Section title="이곳의 이야기"><Text style={styles.sectionBody}>{info?.usageTime ?? "이용 시간과 방문 전 안내는 공식 채널에서 확인해 주세요."}</Text>{info?.phone && <Text style={styles.sectionBody}>{info.phone}</Text>}</Section>
-      <Section title="사진이 가장 좋은 순간"><NumberLine number={1} text={apiPlace?.photo_point ?? local.photoPoints[0]} /><NumberLine number={2} text={local.photoPoints[1]} /></Section>
-      {card?.cautions.length ? <Section title="방문 전 확인"><View style={styles.caution}><BrandIcon name="warning" color={palette.error} /><Text style={styles.cautionText}>{card.cautions.join("\n")}</Text></View></Section> : null}
-      <Section title="찾아가는 길"><Pressable accessibilityLabel="카카오맵에서 장소 열기" onPress={openMap} style={styles.mapBlock}><View style={styles.mapPin}><BrandIcon name="location" size={24} color={palette.paper} /></View><View style={styles.mapText}><Text style={styles.mapLabel}>카카오맵에서 보기</Text><Text style={styles.address}>{address}</Text></View><BrandIcon name="arrow-right" size={19} color={palette.forest} /></Pressable></Section>
-    </View></ScrollView><View style={[styles.bottom, { paddingBottom: Math.max(insets.bottom, 12) }]}><PrimaryButton label="하루 코스 만들기" icon="course" loading={busy} onPress={createCourse} style={{ flex: 1 }} /></View></View>;
+  const { id = "", selectionId: routeSelectionId = "" } = useLocalSearchParams<{ id: string; selectionId?: string }>();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { publicRecommendation } = useApp();
+  const selectionId = routeSelectionId || publicRecommendation?.selectionId || "";
+  const card = publicRecommendation?.cards.find((item) => item.placeId === id);
+  const [place, setPlace] = useState<Place | null>(null);
+  const [photos, setPhotos] = useState<PlacePhotosData | null>(null);
+  const [state, setState] = useState<"loading" | "content" | "error">("loading");
+  const [galleryVisible, setGalleryVisible] = useState(false);
+  const [decisionVisible, setDecisionVisible] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "loading" | "saved" | "error">("idle");
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const decisionTriggerRef = useRef<View>(null);
+
+  useEffect(() => {
+    let active = true;
+    setState("loading");
+    const placeRequest = getPlace(id);
+    const photoRequest = selectionId ? getPlacePhotos({ placeId: id, selectionId }) : Promise.reject(new Error("missing selection"));
+    Promise.allSettled([placeRequest, photoRequest]).then(([placeResult, photoResult]) => {
+      if (!active) return;
+      if (placeResult.status === "fulfilled") setPlace(placeResult.value.data.place);
+      if (photoResult.status === "fulfilled") setPhotos(photoResult.value.data);
+      setState(placeResult.status === "fulfilled" ? "content" : "error");
+    });
+    return () => { active = false; };
+  }, [id, selectionId]);
+
+  const restriction = useMemo(() => { const note = place?.note?.trim(); return note && /(예약|투숙|입장|출입|통제|휴장|운영)/.test(note) ? note : null; }, [place?.note]);
+  const hero = photos?.placeHero?.url ?? card?.placeHero?.url ?? place?.imageUrl;
+  const attributions = (photos?.sourceAttributions ?? card?.sourceAttributions ?? []).map((source) => [source.label, source.author].filter(Boolean).join(" ")).join(", ");
+
+  const openMap = () => { if (place) void openKakaoMap(place, place.lat != null && place.lng != null ? { lat: place.lat, lng: place.lng } : undefined); };
+  const save = async () => {
+    if (!place || !selectionId) return;
+    setSaveStatus("loading");
+    try { await localSceneStore.saveScene({ placeId: id, selectionId, selected: true }); setSaveStatus("saved"); } catch { setSaveStatus("error"); }
+  };
+  const share = async () => {
+    if (!place || !API_BASE_URL) { Alert.alert("공개 링크를 만들 수 없어요", "운영 웹 주소 연결이 필요해요."); return; }
+    const payload = buildPublicPlaceShare(API_BASE_URL, id, place.place_name);
+    try { await Share.share({ title: payload.title, message: payload.message, url: payload.url }); } catch { setShareUrl(payload.url); }
+  };
+
+  if (state === "loading") return <View style={styles.center}><ActivityIndicator color={palette.forest} /><Text style={styles.stateText}>장소 정보를 불러오는 중이에요</Text></View>;
+  if (state === "error" || !place) return <View style={styles.center}><Text style={styles.stateTitle}>장소 정보를 불러오지 못했어요</Text><Pressable accessibilityRole="button" onPress={() => router.back()} style={styles.backAction}><Text style={styles.backActionText}>추천으로 돌아가기</Text></Pressable></View>;
+
+  return <View style={styles.screen}>
+    <ScrollView contentInsetAdjustmentBehavior="automatic" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 + insets.bottom }}>
+      <View style={styles.hero}>{hero ? <Image source={{ uri: hero }} style={StyleSheet.absoluteFillObject} contentFit="cover" accessibilityLabel={`${place.place_name} 실제 풍경`} /> : <View style={styles.photoFallback}><BrandIcon name="image" size={42} color={palette.forestSoft} /><Text style={styles.photoFallbackText}>확보된 대표 사진이 없어요</Text></View>}<View style={styles.scrim} /><Pressable accessibilityRole="button" accessibilityLabel="추천으로 돌아가기" onPress={() => router.back()} style={[styles.back, { top: insets.top + 10 }]}><BrandIcon name="back" color={palette.white} /></Pressable><View style={styles.heroCopy}><Text style={styles.region}>{place.city}</Text><Text style={styles.name}>{place.place_name}</Text><Text style={styles.summary}>{card?.differenceNote ?? place.recommendation_use}</Text></View></View>
+      <View style={styles.body}>
+        {restriction ? <View style={styles.restriction}><BrandIcon name="warning" size={19} color={palette.error} /><Text style={styles.restrictionText}>{restriction}</Text></View> : null}
+        <Section title="장면과 닮은 점">{card?.matchedFeatures.length ? card.matchedFeatures.map((feature) => <View key={feature} style={styles.feature}><BrandIcon name="check" size={16} color={palette.forest} /><Text style={styles.featureText}>{feature}</Text></View>) : <Text style={styles.bodyText}>확인된 특징 정보가 없어요.</Text>}</Section>
+        {card?.differenceNote ? <Section title="알려진 차이"><Text style={styles.bodyText}>{card.differenceNote}</Text></Section> : null}
+        <Section title="사진 포인트"><Text style={styles.bodyText}>{place.photo_point || "확인된 사진 포인트가 없어요."}</Text></Section>
+        <Section title="실제 사진"><Pressable accessibilityRole="button" accessibilityLabel={`${place.place_name} 실제 사진 더 보기`} onPress={() => setGalleryVisible(true)} style={styles.galleryAction}><Text style={styles.galleryActionText}>실제 사진 더 보기</Text><Text style={styles.galleryStatus}>{galleryCopy(photos)}</Text><BrandIcon name="arrow-right" color={palette.forest} /></Pressable></Section>
+        <Section title="이용 정보"><Info label="추천 시간" value={place.best_time || "확인 필요"} /><Info label="주소" value={place.address || "확인 필요"} /><Info label="이동 정보" value={place.accessibility || "확인 필요"} /></Section>
+        {attributions ? <Text style={styles.attribution}>사진 출처: {attributions}</Text> : null}
+      </View>
+    </ScrollView>
+    <View style={[styles.bottom, { paddingBottom: Math.max(insets.bottom, 12) }]}><Pressable ref={decisionTriggerRef} accessibilityRole="button" onPress={() => { setSaveStatus("idle"); setShareUrl(null); setDecisionVisible(true); }} style={styles.choose}><Text style={styles.chooseText}>여기로 갈래요</Text><BrandIcon name="arrow-right" color={palette.white} /></Pressable></View>
+    <Gallery visible={galleryVisible} name={place.place_name} photos={photos} onClose={() => setGalleryVisible(false)} />
+    <DecisionSheet visible={decisionVisible} returnFocusRef={decisionTriggerRef} selectedPlace={{ region: place.city, name: place.place_name }} criticalRestriction={restriction} saveStatus={saveStatus} saveError="저장하지 못했어요. 다시 시도해 주세요." onOpenMap={openMap} onSave={() => void save()} onShare={() => void share()} onClose={() => setDecisionVisible(false)}>{shareUrl ? <View style={styles.shareFallback}><Text style={styles.shareFallbackLabel}>공유 링크</Text><Text selectable style={styles.shareFallbackUrl}>{shareUrl}</Text></View> : null}</DecisionSheet>
+  </View>;
 }
-function Info({ icon, label, value }: { icon: string; label: string; value: string }) { return <View style={styles.info}><BrandIcon name={icon} size={20} /><Text style={styles.infoLabel}>{label}</Text><Text style={styles.infoValue} numberOfLines={2}>{value}</Text></View>; }
+
 function Section({ title, children }: { title: string; children: React.ReactNode }) { return <View style={styles.section}><Text style={styles.sectionTitle}>{title}</Text>{children}</View>; }
-function NumberLine({ number, text }: { number: number; text: string }) { return <View style={styles.numberLine}><Text style={styles.number}>{String(number).padStart(2, "0")}</Text><Text style={styles.numberText}>{text}</Text></View>; }
-const styles = StyleSheet.create({ screen: { flex: 1, backgroundColor: palette.ivory }, hero: { height: 520, backgroundColor: palette.forest }, scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(6,30,25,.35)" }, back: { position: "absolute", left: 16, width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(8,34,28,.42)" }, topActions: { position: "absolute", right: 14, flexDirection: "row", gap: 8 }, heroAction: { width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(8,34,28,.42)" }, heroCopy: { position: "absolute", left: 23, right: 23, bottom: 32 }, area: { fontFamily: fonts.medium, fontSize: 12, color: "rgba(255,255,255,.82)" }, name: { marginTop: 7, fontFamily: fonts.serif, fontSize: 34, color: palette.white, letterSpacing: -1.2 }, kicker: { marginTop: 8, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.white }, body: { padding: 22 }, matchRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingBottom: 22, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: palette.line }, matchLead: { flex: 1 }, mini: { fontFamily: fonts.semibold, fontSize: 11, color: palette.forestSoft }, matchCopy: { marginTop: 6, fontFamily: fonts.medium, fontSize: 13, color: palette.ink }, matchScore: { alignItems: "flex-end" }, match: { fontFamily: fonts.serifRegular, fontSize: 39, color: palette.forest }, percent: { fontFamily: fonts.body, fontSize: 13 }, matchCaption: { marginTop: -3, fontFamily: fonts.medium, fontSize: 9, color: palette.muted }, description: { paddingVertical: 24, fontFamily: fonts.body, fontSize: 15, lineHeight: 26, color: palette.ink }, tags: { flexDirection: "row", flexWrap: "wrap", gap: 8 }, tag: { fontFamily: fonts.medium, fontSize: 12, color: palette.forest, paddingHorizontal: 11, paddingVertical: 7, borderRadius: 20, backgroundColor: palette.sage, overflow: "hidden" }, infoGrid: { marginTop: 29, flexDirection: "row", flexWrap: "wrap", borderTopWidth: 1, borderLeftWidth: 1, borderColor: palette.line, borderRadius: radius.md, overflow: "hidden" }, info: { width: "50%", minHeight: 112, padding: 15, borderRightWidth: 1, borderBottomWidth: 1, borderColor: palette.line, backgroundColor: palette.paper }, infoLabel: { marginTop: 8, fontFamily: fonts.body, fontSize: 11, color: palette.muted }, infoValue: { marginTop: 3, fontFamily: fonts.semibold, fontSize: 13, color: palette.ink }, section: { paddingTop: 38 }, sectionTitle: { marginBottom: 16, fontFamily: fonts.serif, fontSize: 22, color: palette.ink }, sectionBody: { marginBottom: 7, fontFamily: fonts.body, fontSize: 14, lineHeight: 22, color: palette.ink }, numberLine: { flexDirection: "row", gap: 14, paddingVertical: 14, borderTopWidth: StyleSheet.hairlineWidth, borderColor: palette.line, alignItems: "center" }, number: { fontFamily: fonts.serifRegular, fontSize: 20, color: palette.forest }, numberText: { flex: 1, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.ink }, caution: { flexDirection: "row", gap: 10, padding: 15, borderRadius: 12, backgroundColor: "#F7E9E5" }, cautionText: { flex: 1, fontFamily: fonts.body, fontSize: 13, lineHeight: 21, color: palette.error }, mapBlock: { minHeight: 112, borderRadius: radius.md, backgroundColor: palette.sage, padding: 17, flexDirection: "row", alignItems: "center", gap: 12 }, mapPin: { width: 43, height: 43, borderRadius: 22, alignItems: "center", justifyContent: "center", backgroundColor: palette.forest }, mapText: { flex: 1 }, mapLabel: { fontFamily: fonts.semibold, fontSize: 11, color: palette.forestSoft }, address: { marginTop: 5, fontFamily: fonts.medium, fontSize: 13, lineHeight: 19, color: palette.ink }, bottom: { position: "absolute", left: 0, right: 0, bottom: 0, minHeight: 80, paddingHorizontal: 16, paddingTop: 11, backgroundColor: palette.paper, borderTopWidth: StyleSheet.hairlineWidth, borderColor: palette.line, flexDirection: "row" } });
+function Info({ label, value }: { label: string; value: string }) { return <View style={styles.info}><Text style={styles.infoLabel}>{label}</Text><Text selectable style={styles.infoValue}>{value}</Text></View>; }
+function galleryCopy(photos: PlacePhotosData | null) { if (!photos) return "사진 정보를 확인하지 못했어요"; if (photos.galleryStatus === "AVAILABLE") return `${photos.evidenceImages.length}장`; if (photos.galleryStatus === "ERROR") return "다시 시도해 주세요"; return "확보된 추가 사진이 없어요"; }
+function Gallery({ visible, name, photos, onClose }: { visible: boolean; name: string; photos: PlacePhotosData | null; onClose: () => void }) {
+  const images = photos?.evidenceImages ?? [];
+  const { width } = useWindowDimensions();
+  return <Modal visible={visible} animationType="fade" onRequestClose={onClose}><View style={styles.gallery}><View style={styles.galleryHead}><Text style={styles.galleryTitle}>{name} 실제 사진</Text><Pressable accessibilityRole="button" accessibilityLabel="사진 닫기" onPress={onClose} style={styles.galleryClose}><BrandIcon name="close" color={palette.white} /></Pressable></View>{images.length ? <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>{images.map((image) => <View key={image.url} style={[styles.galleryPage, { width }]}><Image source={{ uri: image.url }} style={StyleSheet.absoluteFillObject} contentFit="contain" accessibilityLabel={`${name} 실제 사진`} /><Text style={styles.galleryCredit}>{[image.attribution.label, image.attribution.author].filter(Boolean).join(" ")}</Text></View>)}</ScrollView> : <View style={styles.galleryEmpty}><Text style={styles.galleryEmptyText}>{photos?.galleryStatus === "ERROR" ? "사진을 불러오지 못했어요." : "확보된 추가 사진이 없어요."}</Text></View>}</View></Modal>;
+}
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: palette.ivory }, center: { flex: 1, alignItems: "center", justifyContent: "center", gap: 12, padding: 28, backgroundColor: palette.ivory }, stateText: { fontFamily: fonts.body, fontSize: 15, color: palette.muted }, stateTitle: { fontFamily: fonts.serif, fontSize: 21, textAlign: "center", color: palette.ink }, backAction: { minHeight: 48, paddingHorizontal: 20, justifyContent: "center", borderRadius: radius.md, backgroundColor: palette.forest }, backActionText: { fontFamily: fonts.semibold, color: palette.white },
+  hero: { minHeight: 380, justifyContent: "flex-end", backgroundColor: palette.sage }, photoFallback: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", gap: 10 }, photoFallbackText: { fontFamily: fonts.medium, fontSize: 14, color: palette.forestSoft }, scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(9,31,25,.36)" }, back: { position: "absolute", left: 14, width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(9,31,25,.46)" }, heroCopy: { padding: 22, gap: 6 }, region: { fontFamily: fonts.semibold, fontSize: 13, color: palette.sage }, name: { fontFamily: fonts.serif, fontSize: 31, lineHeight: 41, color: palette.white }, summary: { fontFamily: fonts.body, fontSize: 15, lineHeight: 23, color: palette.white },
+  body: { padding: 20, gap: 8 }, restriction: { flexDirection: "row", gap: 9, padding: 14, borderRadius: radius.sm, backgroundColor: "#FCECEA", borderWidth: 1, borderColor: "#E4B4AA" }, restrictionText: { flex: 1, fontFamily: fonts.medium, fontSize: 14, lineHeight: 21, color: palette.error }, section: { paddingTop: 24, gap: 10 }, sectionTitle: { fontFamily: fonts.serif, fontSize: 21, color: palette.ink }, feature: { flexDirection: "row", alignItems: "flex-start", gap: 8 }, featureText: { flex: 1, fontFamily: fonts.medium, fontSize: 15, lineHeight: 22, color: palette.forest }, bodyText: { fontFamily: fonts.body, fontSize: 15, lineHeight: 24, color: palette.ink },
+  galleryAction: { minHeight: 70, padding: 14, flexDirection: "row", alignItems: "center", gap: 10, borderRadius: radius.md, backgroundColor: palette.paper, borderWidth: 1, borderColor: palette.line }, galleryActionText: { flex: 1, fontFamily: fonts.semibold, fontSize: 15, color: palette.forest }, galleryStatus: { fontFamily: fonts.body, fontSize: 12, color: palette.muted }, info: { paddingVertical: 12, gap: 4, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: palette.line }, infoLabel: { fontFamily: fonts.medium, fontSize: 12, color: palette.muted }, infoValue: { fontFamily: fonts.body, fontSize: 15, lineHeight: 23, color: palette.ink }, attribution: { paddingTop: 22, fontFamily: fonts.body, fontSize: 12, lineHeight: 18, color: palette.muted },
+  bottom: { position: "absolute", left: 0, right: 0, bottom: 0, paddingHorizontal: 16, paddingTop: 10, backgroundColor: palette.paper, borderTopWidth: StyleSheet.hairlineWidth, borderColor: palette.line }, choose: { minHeight: 54, paddingHorizontal: 20, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, borderRadius: radius.pill, backgroundColor: palette.forest }, chooseText: { fontFamily: fonts.semibold, fontSize: 16, color: palette.white },
+  gallery: { flex: 1, backgroundColor: palette.forestDeep }, galleryHead: { paddingTop: 48, minHeight: 106, paddingHorizontal: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, galleryTitle: { fontFamily: fonts.serif, fontSize: 20, color: palette.white }, galleryClose: { width: 48, height: 48, alignItems: "center", justifyContent: "center" }, galleryPage: { flex: 1, justifyContent: "flex-end", padding: 20 }, galleryCredit: { fontFamily: fonts.body, fontSize: 12, color: palette.white }, galleryEmpty: { flex: 1, alignItems: "center", justifyContent: "center" }, galleryEmptyText: { fontFamily: fonts.body, fontSize: 15, color: palette.white },
+  shareFallback: { gap: 4, padding: 12, borderRadius: radius.sm, backgroundColor: palette.ivory }, shareFallbackLabel: { fontFamily: fonts.semibold, fontSize: 12, color: palette.forest }, shareFallbackUrl: { fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: palette.ink },
+});
