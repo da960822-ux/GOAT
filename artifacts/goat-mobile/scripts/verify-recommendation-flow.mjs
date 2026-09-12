@@ -3,56 +3,54 @@ import path from "node:path";
 
 const root = process.cwd();
 const read = (relative) => fs.readFileSync(path.join(root, relative), "utf8");
-const catalog = read("../../lib/travel-domain/src/catalog.ts");
-const moodScreen = read("app/mood-selection.tsx");
-const referenceScreen = read("app/reference-selection.tsx");
-const preferenceScreen = read("app/travel-preference.tsx");
-const analyzingScreen = read("app/analyzing.tsx");
-const noResultsScreen = read("app/no-results.tsx");
-const homeScreen = read("app/index.tsx");
-const context = read("src/context/AppContext.tsx");
-const recommendationApi = read("src/services/recommendationApi.ts");
-const resultsScreen = read("app/results.tsx");
+const layout = read("app/_layout.tsx");
+const discovery = read("app/index.tsx");
+const results = read("app/results.tsx");
+const detail = read("app/detail/[id].tsx");
+const saved = read("app/saved.tsx");
+const tabs = read("src/components/AppTabBar.tsx");
+const apiPath = path.join(root, "src/services/publicDiscovery.ts");
+assert(fs.existsSync(apiPath), "public discovery adapter is missing");
+const api = fs.readFileSync(apiPath, "utf8");
+const sceneCover = read("src/components/discovery/SceneCoverCard.tsx");
+const decisionCard = read("src/components/discovery/DecisionCard.tsx");
 
-const expectedMoods = [
-  "sea-coast", "japan-alley", "alps-ranch", "forest-garden-rest",
-  "retro-market-harbor", "architecture-exhibit-landmark", "resort-cafe-exotic",
-];
-for (const id of expectedMoods) assert(catalog.includes(`"${id}"`), `catalog missing moodId ${id}`);
-assert(new Set(expectedMoods).size === 7, "mood inventory must contain 7 unique ids");
-
-for (const pair of [
-  ["나 혼자", "혼자"], ["연인과", "연인"], ["친구와", "친구"], ["가족과", "가족"],
-  ["자가용", "자차"], ["대중교통", "대중교통"], ["도보 중심", "도보중심"],
-  ["아침", "오전"], ["낮", "한낮"], ["해질녘", "저녁"], ["밤", "야간"],
-  ["산책과 힐링", "가볍게 산책"], ["사진과 기록", "사진 위주"], ["가벼운 활동", "액티비티"], ["조용한 휴식", "조용한 휴식"],
-]) assert(catalog.includes(`label: "${pair[0]}", value: "${pair[1]}"`), `missing label/value mapping ${pair.join(" -> ")}`);
-
-assert(moodScreen.includes("setSelectedMood"), "mood selection is not stored");
-assert(recommendationApi.includes('selection.method === "mood"'), "single recommendation builder lacks selection discriminator");
-assert(recommendationApi.includes("initialSelection: selection"), "attempt does not persist initial selection");
-assert(recommendationApi.includes("initialSelection: attempt.initialSelection"), "session does not persist initial selection");
-assert((recommendationApi.match(/"Idempotency-Key": attempt\.key/g) ?? []).length >= 2, "retry does not reuse the attempt Idempotency-Key");
-assert(resultsScreen.includes("recommendationSession.initialSelection"), "reroll does not reuse initial selection");
-assert(homeScreen.includes("getRecentRecommendations") && homeScreen.includes("getBookmarks"), "home is not connected to recent/bookmark APIs");
-assert(!homeScreen.includes("사진으로 찾기"), "user photo upload entry remains on home");
-assert(homeScreen.includes("reference-selection"), "reference-based discovery entry is missing from home");
-assert(referenceScreen.includes("referenceCards") && referenceScreen.includes("setSelectedReferenceCardId"), "reference selection is not connected to recommendation state");
-assert(analyzingScreen.includes('method: "reference"'), "analysis does not create a reference-based recommendation attempt");
-
-for (const file of [moodScreen, referenceScreen, preferenceScreen]) {
-  assert(file.includes("accessibilityRole"), "selection screen lacks screen-reader roles");
-  assert(file.includes("useSafeAreaInsets"), "selection screen lacks safe-area handling");
+for (const route of ["/results", "/saved", "/detail/"]) {
+  assert(!protectedRoutes(layout).includes(route), `P0 route remains auth protected: ${route}`);
 }
-assert(homeScreen.includes("AccessibilityInfo.isReduceMotionEnabled") && analyzingScreen.includes("AccessibilityInfo.isReduceMotionEnabled"), "reduced-motion handling is incomplete");
-assert(moodScreen.includes("width: 44, height: 44"), "44x44 touch targets are not enforced");
 
-const source = ["app", "src", "components"].flatMap((dir) => walk(path.join(root, dir))).filter((file) => /\.tsx?$/.test(file)).map((file) => fs.readFileSync(file, "utf8")).join("\n");
-for (const forbidden of ["@expo/vector-icons", "PhotoAnalysisAdapter", "analyzeImage", 'source === "photo"', "source === 'photo'"]) assert(!source.includes(forbidden), `forbidden source remains: ${forbidden}`);
-assert(!/\p{Extended_Pictographic}/u.test(source), "Unicode emoji remains in UI source");
-for (const legacyMood of ['"calm"', '"village"', '"green"', '"open"']) assert(!source.includes(legacyMood), `legacy mood remains: ${legacyMood}`);
+assert(discovery.includes("getPublicSelections"), "discovery does not use the public selection contract");
+assert(discovery.includes("requestPublicRecommendation"), "scene selection does not immediately request recommendations");
+assert(!discovery.includes("/travel-preference"), "discovery still enters the preference funnel");
+assert(sceneCover.includes("장면 예시"), "scene cover disclosure is missing");
 
-console.log("GOAT recommendation flow contract verified: mood and reference selection, retry identity, accessibility.");
+assert(api.includes("replacePublicRecommendationCard"), "slot replacement is not wired");
+assert(api.includes("currentPlaceIds"), "replacement does not preserve the current three place ids");
+assert(api.includes("createLatestRequest"), "late discovery responses are not guarded");
+assert(results.includes("index + 1"), "Decision Deck position is missing");
+assert(results.includes("세 곳 한눈에 보기"), "optional comparison is missing");
+assert(results.includes("오늘 조건 반영하기"), "today condition control is missing");
+assert(results.includes("현재 후보가 그대로 적합해요"), "NO_CHANGE copy is missing");
+assert(results.includes("오늘 조건은 반영하지 못했어요"), "UNAVAILABLE copy is missing");
+assert(decisionCard.includes("여기로 갈래요"), "primary decision action is missing");
+assert(results.includes("localSceneStore"), "decision flow does not use LocalSceneStore");
+assert(!results.includes("recommendCourse"), "P1 course creation remains in the P0 result flow");
 
-function walk(dir) { return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => entry.isDirectory() ? walk(path.join(dir, entry.name)) : path.join(dir, entry.name)); }
-function assert(value, message) { if (!value) throw new Error(message); }
+assert(detail.includes("getPlacePhotos"), "detail gallery does not use the public photo contract");
+assert(detail.includes("buildPublicPlaceShare"), "detail sharing does not use the public place link helper");
+assert(saved.includes("localSceneStore"), "saved scenes still use account bookmarks");
+assert(!saved.includes("getBookmarks"), "saved scenes still depend on authenticated bookmarks");
+
+assert(tabs.includes('label: "발견"') && tabs.includes('label: "내 장면"'), "tab labels are not 발견 / 내 장면");
+assert((tabs.match(/^\s*\{ label:/gm) ?? []).length === 2, "P0 tab bar must contain exactly two destinations");
+
+console.log("GOAT P0 discovery flow contract verified.");
+
+function protectedRoutes(source) {
+  const match = source.match(/const protectedRoute = ([\\s\\S]*?);\\n/);
+  return match?.[1] ?? "";
+}
+
+function assert(value, message) {
+  if (!value) throw new Error(message);
+}

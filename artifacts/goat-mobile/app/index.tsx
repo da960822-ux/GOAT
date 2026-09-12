@@ -1,65 +1,112 @@
-import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
-import { AccessibilityInfo, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getBookmarks, getRecentRecommendations } from "@workspace/api-client-react";
+import { getPublicSelections, type PublicSelection } from "@workspace/api-client-react";
 import { AppTabBar } from "@/src/components/AppTabBar";
 import { BrandIcon } from "@/src/components/BrandIcon";
+import { SceneCoverCard } from "@/src/components/discovery";
 import { GoatMark } from "@/src/components/editorial/Brand";
-import { useAuth } from "@/src/context/AuthContext";
-import { editorialImages, showcasePlaces } from "@/src/data/editorialContent";
+import { useApp } from "@/src/context/AppContext";
+import { localSceneStore } from "@/src/services/deviceSceneStore";
+import { requestPublicRecommendation } from "@/src/services/publicDiscovery";
 import { fonts, palette, radius } from "@/src/theme/editorial";
 
-const landingImage = require("@/assets/images/editorial/landing-coast.png");
-const savedFallback = [
-  { name: "대관령 능선", image: editorialImages.hills }, { name: "속초 항구", image: editorialImages.harbor },
-  { name: "정선 골목", image: editorialImages.village }, { name: "고성 숲길", image: editorialImages.forest },
-];
-type HomeApiPlace = { id: string; name: string; region: string; imageUrl: string | null };
+export default function DiscoveryScreen() {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { setPublicSelection, setPublicRecommendation } = useApp();
+  const [selections, setSelections] = useState<PublicSelection[]>([]);
+  const [state, setState] = useState<"loading" | "content" | "error">("loading");
+  const [expanded, setExpanded] = useState(false);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const visibleSelections = useMemo(() => expanded ? selections : selections.slice(0, 6), [expanded, selections]);
 
-export default function HomeScreen() {
-  const router = useRouter(); const insets = useSafeAreaInsets(); const { session } = useAuth();
-  const [activities, setActivities] = useState(false); const [menu, setMenu] = useState(false); const [reducedMotion, setReducedMotion] = useState(false);
-  const [recentCount, setRecentCount] = useState(0); const [bookmarkCount, setBookmarkCount] = useState(0);
-  const [recentItems, setRecentItems] = useState<HomeApiPlace[]>([]); const [bookmarkItems, setBookmarkItems] = useState<HomeApiPlace[]>([]);
-  useEffect(() => {
-    if (!session) { setRecentCount(0); setBookmarkCount(0); setRecentItems([]); setBookmarkItems([]); return; }
-    Promise.allSettled([getRecentRecommendations({ limit: 3 }), getBookmarks()]).then(([recent, saved]) => {
-      if (recent.status === "fulfilled") { const items = recent.value.data.items; setRecentCount(items.length); setRecentItems(items.flatMap((item) => item.cards.slice(0, 1).map((card) => ({ id: card.placeId, name: card.name, region: card.region, imageUrl: card.imageUrl })))); }
-      if (saved.status === "fulfilled") { const items = saved.value.data.items as Array<{ placeId?: string; name?: string; region?: string; imageUrl?: string | null }>; setBookmarkCount(items.length); setBookmarkItems(items.flatMap((item) => item.placeId && item.name ? [{ id: item.placeId, name: item.name, region: item.region ?? "강원", imageUrl: item.imageUrl ?? null }] : [])); }
-    });
-  }, [session]);
-  useEffect(() => { AccessibilityInfo.isReduceMotionEnabled().then(setReducedMotion); }, []);
-  const toAuthRoute = (next: string) => session ? router.push(next as never) : router.push({ pathname: "/login", params: { next } } as never);
+  const load = useCallback(async () => {
+    setState("loading");
+    try {
+      const response = await getPublicSelections();
+      setSelections(response.data.selections);
+      setState("content");
+    } catch {
+      setState("error");
+    }
+  }, []);
+
+  useEffect(() => { void load(); }, [load]);
+
+  const choose = async (selection: PublicSelection) => {
+    if (selection.availability !== "AVAILABLE") {
+      Alert.alert("이 장면은 아직 준비 중이에요", "다른 장면을 골라주세요.");
+      return;
+    }
+    setBusyId(selection.selectionId);
+    try {
+      const recommendation = await requestPublicRecommendation({ selectionId: selection.selectionId, mode: "SCENE" });
+      if (recommendation.cards.length !== 3) throw new Error("Expected exactly three recommendation cards.");
+      setPublicSelection(selection);
+      setPublicRecommendation(recommendation);
+      void localSceneStore.saveDraft({
+        selectionId: recommendation.selectionId,
+        placeIds: recommendation.cards.map((card) => card.placeId),
+        seenIds: recommendation.cards.map((card) => card.placeId),
+        mode: recommendation.mode,
+        catalogVersion: recommendation.catalogVersion,
+        policyVersion: recommendation.policyVersion,
+        revision: recommendation.revision,
+      }).catch(() => undefined);
+      router.push("/results");
+    } catch {
+      Alert.alert("세 곳을 불러오지 못했어요", "연결을 확인하고 다시 시도해 주세요.");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
   return <View style={styles.screen}>
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 92 + insets.bottom }}>
-      <View style={styles.hero}>
-        <Image source={landingImage} style={StyleSheet.absoluteFillObject} contentFit="cover" contentPosition="center" accessibilityLabel="소나무 숲과 해안이 이어지는 강원도 풍경" />
-        <View style={styles.haze} />
-        <View style={[styles.header, { paddingTop: Math.max(insets.top, 18) }]}><Pressable accessibilityRole="button" accessibilityLabel="메뉴" onPress={() => setMenu(true)} style={styles.headerButton}><BrandIcon name="menu" size={25} /></Pressable><GoatMark /><Pressable accessibilityRole="button" accessibilityLabel="최근 활동" onPress={() => setActivities(true)} style={styles.headerButton}><BrandIcon name="notification" size={24} />{recentCount + bookmarkCount > 0 && <View style={styles.noticeDot} />}</Pressable></View>
-        <View style={styles.heroCopy}><View style={styles.pin}><BrandIcon name="location" size={17} /><Text style={styles.pinText}>강원도의 특별한 순간</Text></View><Text style={styles.heroTitle}>해외여행 같은{`\n`}장면을 강원에서</Text><Text style={styles.heroBody}>보고 싶은 분위기를 고르면 GOAT가{`\n`}강원 여행지 3곳을 추천해드려요.</Text></View>
-        <View style={styles.heroActions}>
-          <Pressable accessibilityRole="button" accessibilityLabel="감성으로 강원 여행지 고르기" onPress={() => router.push("/mood-selection")} style={({ pressed }) => [styles.action, styles.primaryAction, pressed && styles.pressed]}><BrandIcon name="mood" color={palette.white} /><Text style={styles.primaryActionText}>감성으로 고르기</Text><BrandIcon name="arrow-right" color={palette.white} size={18} /></Pressable>
-          <Pressable accessibilityRole="button" accessibilityLabel="닮은 여행지 찾기" onPress={() => router.push("/reference-selection")} style={({ pressed }) => [styles.action, styles.secondaryAction, pressed && styles.pressed]}><BrandIcon name="image" color={palette.forest} /><Text style={styles.secondaryActionText}>닮은 여행지 찾기</Text><BrandIcon name="arrow-right" color={palette.forest} size={18} /></Pressable>
-        </View>
-      </View>
-      <View style={styles.content}><SectionTitle title="최근 추천" onPress={() => toAuthRoute("/recommendations")} /><View style={styles.recentRow}>{showcasePlaces.map((place, index) => { const item = recentItems[index]; const id = item?.id ?? place.id; return <Pressable key={id} accessibilityRole="button" accessibilityLabel={`${item?.name ?? place.name} 상세 보기`} onPress={() => toAuthRoute(`/detail/${id}`)} style={[styles.recentCard, index === 0 && styles.recentCardLead]}><Image source={item?.imageUrl ? { uri: item.imageUrl } : place.image} style={StyleSheet.absoluteFillObject} contentFit="cover" /><View style={styles.cardShade} /><View style={styles.pill}><Text style={styles.pillText}>{index === 0 ? "오늘의 장면" : "함께 보기"}</Text></View><View style={styles.cardCopy}><Text numberOfLines={1} style={styles.cardName}>{item?.name ?? place.name}</Text><Text style={styles.cardArea}>{item?.region ?? place.area.split(" ").at(-1)}</Text></View></Pressable>; })}</View>
-      <SectionTitle title="저장한 곳" onPress={() => toAuthRoute("/saved")} /><View style={styles.savedRow}>{savedFallback.map((fallback, index) => { const item = bookmarkItems[index]; return <Pressable key={item?.id ?? fallback.name} accessibilityRole="button" accessibilityLabel={`${item?.name ?? fallback.name} 상세 보기`} onPress={() => item ? router.push(`/detail/${item.id}` as never) : toAuthRoute("/saved")} style={styles.savedCard}><Image source={item?.imageUrl ? { uri: item.imageUrl } : fallback.image} style={StyleSheet.absoluteFillObject} contentFit="cover" /><View style={styles.savedBookmark}><BrandIcon name="bookmark" size={16} color={palette.white} /></View></Pressable>; })}</View></View>
-    </ScrollView>
+    <View style={[styles.header, { paddingTop: Math.max(insets.top, 14) }]}><GoatMark /><Pressable accessibilityRole="button" accessibilityLabel="이용 안내" onPress={() => router.push("/guide")} style={styles.headerButton}><BrandIcon name="info" size={21} color={palette.forest} /></Pressable></View>
+    {state === "loading" ? <ScreenState title="장면을 불러오는 중이에요"><ActivityIndicator color={palette.forest} /></ScreenState>
+      : state === "error" ? <ScreenState title="장면을 불러오지 못했어요" body="잠시 후 다시 시도해 주세요." action="다시 시도" onPress={load} />
+      : selections.length === 0 ? <ScreenState title="지금 고를 수 있는 장면이 없어요" body="새로운 장면을 준비하고 있어요." action="다시 확인" onPress={load} />
+      : <FlatList
+          data={visibleSelections}
+          keyExtractor={(item) => item.selectionId}
+          contentInsetAdjustmentBehavior="automatic"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 116 + insets.bottom, gap: 16 }}
+          ListHeaderComponent={<View style={styles.intro}><Text style={styles.kicker}>가고 싶은 장면, 강원에서 찾아보세요.</Text><Text style={styles.title}>오늘 보고 싶은{`\n`}장면은 무엇인가요?</Text><Text style={styles.description}>하나만 고르면 실제 사진과 함께 어울리는 세 곳을 바로 보여드릴게요.</Text></View>}
+          renderItem={({ item, index }) => {
+            const cover = item.sceneCover;
+            const photo = cover.kind === "PHOTO" ? cover.photo : null;
+            const picturedPlaceName = cover.kind === "PHOTO" ? cover.picturedPlaceName : "선택 결과가 아닌 분위기 예시";
+            const attribution = cover.kind === "PHOTO" ? cover.sourceAttributions.map((source) => [source.label, source.author].filter(Boolean).join(" ")).join(", ") : null;
+            return <View><SceneCoverCard number={index + 1} title={item.title} description={item.availability === "AVAILABLE" ? item.description : `${item.description} · 준비 중`} picturedPlaceName={picturedPlaceName} imageUri={photo?.url} attribution={attribution} selected={busyId === item.selectionId} disabled={item.availability !== "AVAILABLE" || busyId !== null} onPress={() => void choose(item)} />{busyId === item.selectionId ? <View style={styles.busy} accessibilityLiveRegion="polite"><ActivityIndicator size="small" color={palette.forest} /><Text style={styles.busyText}>어울리는 세 곳을 찾고 있어요</Text></View> : null}</View>;
+          }}
+          ListFooterComponent={selections.length > 6 ? <Pressable accessibilityRole="button" accessibilityState={{ expanded }} onPress={() => setExpanded((value) => !value)} style={styles.more}><Text style={styles.moreText}>{expanded ? "대표 장면만 보기" : `장면 ${selections.length - 6}개 더 보기`}</Text><BrandIcon name="arrow-right" size={18} color={palette.forest} /></Pressable> : null}
+        />}
     <AppTabBar />
-    <InfoSheet visible={activities} onClose={() => setActivities(false)} title="최근 활동"><Text style={styles.sheetText}>{session ? `최근 추천 ${recentCount}개 · 저장 ${bookmarkCount}개` : "로그인하면 최근 추천과 저장한 장소를 한 곳에서 확인할 수 있어요."}</Text></InfoSheet>
-    <InfoSheet visible={menu} onClose={() => setMenu(false)} title="GOAT"><MenuItem icon="info" label="이용 안내" onPress={() => { setMenu(false); router.push("/guide"); }} /><MenuItem icon="database" label="데이터 출처" onPress={() => { setMenu(false); router.push("/data-source"); }} /></InfoSheet>
   </View>;
 }
 
-function SectionTitle({ title, onPress }: { title: string; onPress: () => void }) { return <View style={styles.sectionHead}><View style={styles.titleRow}><Text style={styles.sectionTitle}>{title}</Text><BrandIcon name="heart" size={16} color={palette.muted} /></View><Pressable accessibilityRole="button" accessibilityLabel={`${title} 전체 보기`} onPress={onPress} style={styles.moreButton}><Text style={styles.more}>전체보기</Text><BrandIcon name="arrow-right" size={15} color={palette.muted} /></Pressable></View>; }
-function MenuItem({ icon, label, onPress }: { icon: "info" | "database"; label: string; onPress: () => void }) { return <Pressable accessibilityRole="button" onPress={onPress} style={styles.menuItem}><BrandIcon name={icon} /><Text style={styles.menuText}>{label}</Text></Pressable>; }
-function InfoSheet({ visible, onClose, title, children }: { visible: boolean; onClose: () => void; title: string; children: React.ReactNode }) { return <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}><Pressable style={styles.backdrop} onPress={onClose}><Pressable style={styles.sheet} onPress={(event) => event.stopPropagation()}><View style={styles.sheetHead}><Text style={styles.sheetTitle}>{title}</Text><Pressable accessibilityRole="button" accessibilityLabel="닫기" onPress={onClose} style={styles.close}><BrandIcon name="close" /></Pressable></View>{children}</Pressable></Pressable></Modal>; }
+function ScreenState({ title, body, action, onPress, children }: { title: string; body?: string; action?: string; onPress?: () => void; children?: React.ReactNode }) {
+  return <View style={styles.state} accessibilityLiveRegion="polite"><Text style={styles.stateTitle}>{title}</Text>{body ? <Text style={styles.stateBody}>{body}</Text> : null}{children}{action && onPress ? <Pressable accessibilityRole="button" onPress={onPress} style={styles.retry}><Text style={styles.retryText}>{action}</Text></Pressable> : null}</View>;
+}
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: palette.ivory }, hero: { height: 492, overflow: "hidden", backgroundColor: palette.ivory }, haze: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(246,242,233,.2)" }, header: { minHeight: 92, paddingHorizontal: 17, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, headerButton: { width: 48, height: 48, alignItems: "center", justifyContent: "center" }, noticeDot: { position: "absolute", top: 8, right: 9, width: 7, height: 7, borderRadius: 4, backgroundColor: palette.forest },
-  heroCopy: { position: "absolute", top: 136, left: 22, right: 20 }, pin: { flexDirection: "row", gap: 7, alignItems: "center" }, pinText: { fontFamily: fonts.medium, fontSize: 13, color: palette.ink }, heroTitle: { marginTop: 20, fontFamily: fonts.serifRegular, fontSize: 32, lineHeight: 44, letterSpacing: -1.2, color: palette.forestDeep }, heroBody: { marginTop: 10, fontFamily: fonts.body, fontSize: 13.5, lineHeight: 22, color: "#52615D" }, heroActions: { position: "absolute", left: 22, right: 22, bottom: 20, gap: 9 }, action: { minHeight: 53, borderRadius: 13, flexDirection: "row", gap: 7, alignItems: "center", justifyContent: "center" }, primaryAction: { backgroundColor: palette.forest }, primaryActionText: { fontFamily: fonts.semibold, fontSize: 15, color: palette.white }, secondaryAction: { backgroundColor: "rgba(255,252,246,.9)", borderWidth: 1, borderColor: "rgba(23,63,54,.32)" }, secondaryActionText: { fontFamily: fonts.semibold, fontSize: 15, color: palette.forest }, pressed: { opacity: .86, transform: [{ scale: .99 }] },
-  content: { paddingTop: 8 }, sectionHead: { height: 37, paddingHorizontal: 22, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, titleRow: { flexDirection: "row", alignItems: "center", gap: 7 }, sectionTitle: { fontFamily: fonts.serif, fontSize: 18, color: palette.ink }, moreButton: { minHeight: 40, flexDirection: "row", alignItems: "center" }, more: { fontFamily: fonts.medium, fontSize: 11.5, color: palette.muted }, recentRow: { paddingHorizontal: 22, flexDirection: "row", flexWrap: "wrap", gap: 10 }, recentCard: { width: "48.5%", height: 132, borderRadius: radius.sm, overflow: "hidden", backgroundColor: palette.forest }, recentCardLead: { width: "100%", height: 198 }, cardShade: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(10,30,24,.27)" }, pill: { position: "absolute", top: 11, left: 11, paddingHorizontal: 8, paddingVertical: 5, borderRadius: radius.pill, backgroundColor: "rgba(255,255,255,.23)" }, pillText: { fontFamily: fonts.medium, fontSize: 9, color: palette.white }, cardCopy: { position: "absolute", left: 12, right: 10, bottom: 12 }, cardName: { fontFamily: fonts.serif, fontSize: 15, color: palette.white }, cardArea: { marginTop: 4, fontFamily: fonts.body, fontSize: 10, color: palette.white }, savedRow: { paddingHorizontal: 22, flexDirection: "row", gap: 9 }, savedCard: { flex: 1, aspectRatio: .95, borderRadius: radius.sm, overflow: "hidden", backgroundColor: palette.sage }, savedBookmark: { position: "absolute", top: 7, right: 7, width: 25, height: 25, borderRadius: 13, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(14,38,32,.34)" },
-  backdrop: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(9,30,25,.45)" }, sheet: { padding: 22, paddingBottom: 40, backgroundColor: palette.paper, borderTopLeftRadius: 22, borderTopRightRadius: 22 }, sheetHead: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }, sheetTitle: { fontFamily: fonts.serif, fontSize: 22, color: palette.ink }, close: { width: 44, height: 44, alignItems: "center", justifyContent: "center" }, sheetText: { fontFamily: fonts.body, fontSize: 14, lineHeight: 22, color: palette.muted }, menuItem: { minHeight: 54, flexDirection: "row", alignItems: "center", gap: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: palette.line }, menuText: { fontFamily: fonts.medium, fontSize: 15, color: palette.ink },
+  screen: { flex: 1, backgroundColor: palette.ivory },
+  header: { minHeight: 76, paddingHorizontal: 20, paddingBottom: 8, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  headerButton: { width: 48, height: 48, alignItems: "center", justifyContent: "center", borderRadius: radius.pill, backgroundColor: palette.paper },
+  intro: { paddingTop: 16, paddingBottom: 12, gap: 10 },
+  kicker: { fontFamily: fonts.semibold, fontSize: 14, lineHeight: 21, color: palette.forestSoft },
+  title: { fontFamily: fonts.serif, fontSize: 31, lineHeight: 42, letterSpacing: -1.1, color: palette.ink },
+  description: { maxWidth: 340, fontFamily: fonts.body, fontSize: 15, lineHeight: 23, color: palette.muted },
+  busy: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8 },
+  busyText: { fontFamily: fonts.medium, fontSize: 13, color: palette.forest },
+  more: { minHeight: 52, marginTop: 4, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, borderRadius: radius.md, borderWidth: 1, borderColor: palette.line, backgroundColor: palette.paper },
+  moreText: { fontFamily: fonts.semibold, fontSize: 14, color: palette.forest },
+  state: { flex: 1, paddingHorizontal: 28, paddingBottom: 90, alignItems: "center", justifyContent: "center", gap: 12 },
+  stateTitle: { fontFamily: fonts.serif, fontSize: 21, lineHeight: 29, textAlign: "center", color: palette.ink },
+  stateBody: { fontFamily: fonts.body, fontSize: 15, lineHeight: 23, textAlign: "center", color: palette.muted },
+  retry: { minHeight: 48, paddingHorizontal: 20, borderRadius: radius.md, justifyContent: "center", backgroundColor: palette.forest },
+  retryText: { fontFamily: fonts.semibold, fontSize: 15, color: palette.white },
 });

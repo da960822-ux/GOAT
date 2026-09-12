@@ -15,6 +15,8 @@ export const palette = {
   coral: "#E87A5D",
   kakao: "#FEE500",
   error: "#A3493F",
+  errorSurface: "#FCECEA",
+  errorBorder: "#E4B4AA",
 };
 
 export const fonts = {
