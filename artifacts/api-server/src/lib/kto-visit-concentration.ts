@@ -34,17 +34,24 @@ export type VisitConcentration = {
   source: "KTO_VISIT_CONCENTRATION" | "fallback";
 };
 
+export type NormalizedVisitConcentration = VisitConcentration & {
+  comparison: "SUPPORTED" | "UNSUPPORTED";
+  reason?: "CONCENTRATION_COMPARABILITY_UNSUPPORTED" | "CONCENTRATION_PLACE_OR_DATE_UNCONFIRMED";
+};
+
 type CacheEntry = { data: VisitConcentration; expiresAt: number };
 
 const cache = new Map<string, CacheEntry>();
 const inFlight = new Map<string, Promise<VisitConcentration>>();
 
-const fallback = (): VisitConcentration => ({
+const fallback = (): NormalizedVisitConcentration => ({
   level: "unknown",
   label: null,
   concentrationRate: null,
   baseDate: null,
   source: "fallback",
+  comparison: "UNSUPPORTED",
+  reason: "CONCENTRATION_PLACE_OR_DATE_UNCONFIRMED",
 });
 
 function normalizeCity(city: string): string {
@@ -54,18 +61,10 @@ function normalizeCity(city: string): string {
 export function classifyConcentrationRate(
   rawValue: unknown,
 ): VisitConcentration["level"] {
-  if (rawValue === null || rawValue === undefined || rawValue === "") {
-    return "unknown";
-  }
-  const parsed =
-    typeof rawValue === "number"
-      ? rawValue
-      : Number.parseFloat(String(rawValue));
-  if (!Number.isFinite(parsed)) return "unknown";
-  const percentage = parsed <= 1 ? parsed * 100 : parsed;
-  if (percentage >= 70) return "high";
-  if (percentage >= 40) return "medium";
-  return "low";
+  // The endpoint response alone does not establish a cross-place unit or threshold.
+  // Do not manufacture a percent scale from a raw rate.
+  void rawValue;
+  return "unknown";
 }
 
 function labelForLevel(level: VisitConcentration["level"]): string | null {
@@ -85,6 +84,46 @@ function extractItems(data: unknown): Array<Record<string, unknown>> {
   return Array.isArray(item)
     ? (item as Array<Record<string, unknown>>)
     : [item as Record<string, unknown>];
+}
+
+function kstDate(now = new Date()) {
+  const values = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+  const get = (type: Intl.DateTimeFormatPartTypes) =>
+    values.find((part) => part.type === type)?.value ?? "";
+  return `${get("year")}${get("month")}${get("day")}`;
+}
+
+/**
+ * KTO's response does not currently document a shared comparison scale for cnctrRate.
+ * Keep the provider fact without turning it into an invented ranking input.
+ */
+export function normalizeVisitConcentration(
+  items: Array<Record<string, unknown>>,
+  placeName: string,
+  now = new Date(),
+): NormalizedVisitConcentration {
+  const targetName = placeName.trim();
+  const targetDate = kstDate(now);
+  const item = items.find(
+    (candidate) =>
+      String(candidate.tAtsNm ?? "").trim() === targetName
+      && String(candidate.baseYmd ?? "") === targetDate,
+  );
+  if (!item) return fallback();
+  return {
+    level: "unknown",
+    label: null,
+    concentrationRate: null,
+    baseDate: targetDate,
+    source: "KTO_VISIT_CONCENTRATION",
+    comparison: "UNSUPPORTED",
+    reason: "CONCENTRATION_COMPARABILITY_UNSUPPORTED",
+  };
 }
 
 function trimCache() {
@@ -125,15 +164,14 @@ async function fetchVisitConcentration(
     const items = extractItems(await response.json());
     if (!items.length) return fallback();
 
-    const rawValue = items[0]?.cnctrRate;
-    const level = classifyConcentrationRate(rawValue);
-    const parsedRate = Number.parseFloat(String(rawValue));
+    const normalized = normalizeVisitConcentration(items, placeName);
+    // Public contract exposes only the normalized display shape; comparison facts stay B-internal.
     return {
-      level,
-      label: labelForLevel(level),
-      concentrationRate: Number.isFinite(parsedRate) ? parsedRate : null,
-      baseDate: items[0]?.baseYmd ? String(items[0].baseYmd) : null,
-      source: "KTO_VISIT_CONCENTRATION",
+      level: normalized.level,
+      label: normalized.label,
+      concentrationRate: normalized.concentrationRate,
+      baseDate: normalized.baseDate,
+      source: normalized.source,
     };
   } catch {
     return fallback();
