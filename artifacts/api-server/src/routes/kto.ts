@@ -28,6 +28,7 @@ const ALLOWED_KTO_PATHS = new Set([
   "PhotoContestService1/getPhotoContestList1",
   "KorService2/searchKeyword2",
   "KorService2/detailCommon2",
+  "KorService2/detailImage2",
   "KorService2/detailIntro2",
   "LocalGovTourInfoService1/getLocalGovTourInfo1",
   "TatsCnctrRateService/tatsCnctrRatedList",
