@@ -150,14 +150,14 @@ export function selectSceneCover(
       fallbackReason: "NO_PHOTO",
     };
   }
-  const eligible = photos.filter(
+  const samePlaceMatches = photos.filter(
     (photo) =>
       photo.url.startsWith("https://") &&
       photo.placeVerified &&
-      photo.rightsConfirmed &&
       !isInappropriateMetadata(photo) &&
       termsMatch(photo, required),
   );
+  const eligible = samePlaceMatches.filter((photo) => photo.rightsConfirmed);
   const selected = selectPlacePhotos(input, eligible).placeHero;
 
   if (selected) {
@@ -175,7 +175,11 @@ export function selectSceneCover(
     selectionId: input.selectionId,
     kind: "EDITORIAL",
     token: `editorial:${input.selectionId}`,
-    fallbackReason: photos.length ? "IDENTITY_UNKNOWN" : "NO_PHOTO",
+    fallbackReason: samePlaceMatches.some((photo) => !photo.rightsConfirmed)
+      ? "RIGHTS_UNKNOWN"
+      : photos.length
+        ? "IDENTITY_UNKNOWN"
+        : "NO_PHOTO",
   };
 }
 

@@ -3,6 +3,7 @@ import {
   normalizeShortTermForecast,
   latestKmaBase,
   summarizeTodayContext,
+  toDiscoveryWeatherCondition,
   toKmaGrid,
 } from "../src/services/today-context";
 import { normalizeVisitConcentration } from "../src/lib/kto-visit-concentration";
@@ -56,5 +57,21 @@ assert.equal(
     conditionedPlaceIds: ["a"],
   }).todayStatus,
   "UNAVAILABLE",
+);
+assert.deepEqual(toDiscoveryWeatherCondition(forecast), {
+  status: "COMPARABLE",
+  comparisonKey: "202609131000/202609131100",
+  preference: 1,
+});
+assert.deepEqual(
+  toDiscoveryWeatherCondition({
+    factor: "WEATHER",
+    status: "SKIPPED",
+    reason: "PROVIDER_NOT_CONFIGURED",
+    windowStartKst: null,
+    windowEndKst: null,
+    hours: [],
+  }),
+  { status: "UNAVAILABLE", reason: "NO_DATA" },
 );
 console.log("Today context verification passed.");

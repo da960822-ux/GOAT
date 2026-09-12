@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { BrandIcon } from "@/src/components/BrandIcon";
@@ -26,10 +26,12 @@ export type DecisionCardProps = {
 
 export function DecisionCard({ index, total, region, name, summary, features, imageUri, criticalRestriction, attribution, replacementState = "available", replacementHint, replacementDisabled = false, onDetails, onReplace, onChoose }: DecisionCardProps) {
   const chooseRef = useRef<View>(null);
+  const [imageFailed, setImageFailed] = useState(false);
+  useEffect(() => setImageFailed(false), [imageUri]);
   const replacementUnavailable = replacementState === "unavailable";
   return <View style={styles.card}>
     <View style={styles.hero}>
-      {imageUri ? <Image source={{ uri: imageUri }} contentFit="cover" style={styles.image} accessibilityLabel="" /> : <View style={styles.fallback} accessibilityElementsHidden><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
+      {imageUri && !imageFailed ? <Image source={{ uri: imageUri }} contentFit="cover" style={styles.image} accessibilityLabel={`${name} 실제 풍경`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessibilityElementsHidden><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
       <View style={styles.heroScrim} pointerEvents="none" />
       <Text style={styles.counter}>{index} / {total}</Text>
       <View style={styles.heroCopy}><Text style={styles.region}>{region}</Text><Text style={styles.name}>{name}</Text></View>

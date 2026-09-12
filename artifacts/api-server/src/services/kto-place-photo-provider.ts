@@ -129,10 +129,15 @@ async function fetchUncachedKtoPlacePhotos(
   placeName: string,
   city: string,
 ): Promise<ProviderPhoto[]> {
-  const [galleryItems, searchItems] = await Promise.all([
+  const [galleryResult, searchResult] = await Promise.allSettled([
     request(PHOTO_GALLERY_PATH, { keyword: placeName, numOfRows: "20", pageNo: "1" }),
     request(KOR_SEARCH_PATH, { keyword: placeName, numOfRows: "10", pageNo: "1" }),
   ]);
+  if (galleryResult.status === "rejected" && searchResult.status === "rejected") {
+    throw galleryResult.reason;
+  }
+  const galleryItems = galleryResult.status === "fulfilled" ? galleryResult.value : [];
+  const searchItems = searchResult.status === "fulfilled" ? searchResult.value : [];
 
   const gallery = galleryItems
     .filter((item) => knownPlace(placeName, city, item))
@@ -150,7 +155,7 @@ async function fetchUncachedKtoPlacePhotos(
     subImageYN: "Y",
     numOfRows: "20",
     pageNo: "1",
-  });
+  }).catch(() => []);
   return [
     ...gallery,
     ...detailItems.map(detailPhoto).filter((photo): photo is ProviderPhoto => photo !== null),

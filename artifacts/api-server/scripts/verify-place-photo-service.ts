@@ -43,6 +43,10 @@ if (cover.kind === "PHOTO") assert.equal(cover.picturedPlaceId, input.placeId);
 const fallback = selectSceneCover(input, [{ ...photos[0], url: "http://example.com/nope.jpg" }]);
 assert.equal(fallback.kind, "EDITORIAL");
 
+const rightsFallback = selectSceneCover(input, [{ ...photos[0], rightsConfirmed: false }]);
+assert.equal(rightsFallback.kind, "EDITORIAL");
+if (rightsFallback.kind === "EDITORIAL") assert.equal(rightsFallback.fallbackReason, "RIGHTS_UNKNOWN");
+
 const rejected = selectPlacePhotos(input, [{ ...photos[0], placeVerified: false }]);
 assert.equal(rejected.placeHero, null);
 

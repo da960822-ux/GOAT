@@ -1,3 +1,5 @@
+import type { NormalizedCandidateConditions } from "@workspace/travel-domain";
+
 const KMA_FORECAST_URL =
   "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
 
@@ -63,6 +65,23 @@ export type WeatherForecast = ContextFactorResult & {
     windSpeedMps: number | null;
   }>;
 };
+
+/** Converts B's provider result into the normalized boundary consumed by A. */
+export function toDiscoveryWeatherCondition(
+  forecast: WeatherForecast,
+): NonNullable<NormalizedCandidateConditions["weather"]> {
+  if (forecast.status !== "APPLIED" || !forecast.windowStartKst || !forecast.windowEndKst) {
+    return {
+      status: "UNAVAILABLE",
+      reason: forecast.reason === "PROVIDER_UNAVAILABLE" ? "TIMEOUT" : "NO_DATA",
+    };
+  }
+  return {
+    status: "COMPARABLE",
+    comparisonKey: `${forecast.windowStartKst}/${forecast.windowEndKst}`,
+    preference: forecast.hours.filter(({ precipitation }) => precipitation === "NONE").length,
+  };
+}
 
 type KmaItem = {
   category?: unknown;
