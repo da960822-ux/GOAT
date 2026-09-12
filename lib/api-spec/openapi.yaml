@@ -15,6 +15,7 @@ tags:
   - name: kto
   - name: bookmarks
   - name: feedback
+  - name: discovery
 paths:
   /healthz:
     get:
@@ -40,6 +41,135 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MoodsSuccessResponse"
+  /selections:
+    get:
+      operationId: getPublicSelections
+      tags: [discovery]
+      summary: Get public scene and mood selections
+      responses:
+        "200":
+          description: Public selections
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicSelectionsSuccessResponse" }
+  /scene-cover:
+    get:
+      operationId: getSceneCover
+      tags: [discovery, images]
+      summary: Get the photo-first or editorial cover for a selection
+      parameters:
+        - name: selectionId
+          in: query
+          required: true
+          schema: { type: string, minLength: 1 }
+      responses:
+        "200":
+          description: Scene cover
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SceneCoverSuccessResponse" }
+        "404":
+          description: Selection not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+  /place-photos:
+    get:
+      operationId: getPlacePhotos
+      tags: [discovery, images]
+      summary: Get verified photos for the same recommended place
+      parameters:
+        - name: placeId
+          in: query
+          required: true
+          schema: { type: string, minLength: 1 }
+        - name: selectionId
+          in: query
+          required: true
+          schema: { type: string, minLength: 1 }
+      responses:
+        "200":
+          description: Place photos or an explicit empty status
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PlacePhotosSuccessResponse" }
+        "404":
+          description: Place or selection not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+        "502":
+          description: Photo provider request failed
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+  /public/recommendations:
+    post:
+      operationId: createPublicRecommendation
+      tags: [discovery, recommendations]
+      summary: Create a guest recommendation without persisting account history
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PublicRecommendationRequest" }
+      responses:
+        "200":
+          description: Three public recommendation cards
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicRecommendationSuccessResponse" }
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+        "422":
+          description: Selection cannot produce three valid places
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+        "429":
+          description: Too many recommendation requests
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+  /public/recommendations/replace:
+    post:
+      operationId: replacePublicRecommendationCard
+      tags: [discovery, recommendations]
+      summary: Replace one card while preserving the other two
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ReplacePublicRecommendationRequest" }
+      responses:
+        "200":
+          description: Recommendation with one successful replacement
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicRecommendationSuccessResponse" }
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+        "409":
+          description: Stale revision or comparison snapshot
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+        "422":
+          description: No replacement or no improving candidate
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
+        "429":
+          description: Too many replacement requests
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublicDiscoveryErrorResponse" }
   /recommend-from-tags:
     post:
       operationId: recommendFromTags
@@ -520,6 +650,268 @@ components:
             data:
               $ref: "#/components/schemas/MoodsData"
           required: [data]
+    DiscoveryMode:
+      type: string
+      enum: [SCENE, TODAY]
+    DiscoveryTransportType:
+      type: string
+      description: Omit this field when the user has not selected transport.
+      enum: [CAR, PUBLIC_TRANSIT]
+    MatchType:
+      type: string
+      enum: [EXACT, SIMILAR, EXPANDED]
+    SceneFitBand:
+      type: string
+      enum: [RICH, BASE]
+    ReplaceReason:
+      type: string
+      enum: [ANY, LESS_RAIN, LESS_CROWDED, BETTER_PUBLIC_TRANSIT]
+    TodayStatus:
+      type: string
+      enum: [NOT_REQUESTED, APPLIED, NO_CHANGE, UNAVAILABLE]
+    TodayFactor:
+      type: string
+      enum: [WEATHER, VISIT_CONCENTRATION]
+    SourceAttribution:
+      type: object
+      properties:
+        label: { type: string, minLength: 1 }
+        author: { type: string }
+        license: { type: string }
+        sourceUrl: { type: string, format: uri }
+      required: [label]
+      additionalProperties: false
+    PhotoAsset:
+      type: object
+      properties:
+        photoId: { type: string, minLength: 1 }
+        placeId: { type: string, minLength: 1 }
+        provider: { type: string, enum: [KTO_PHOTO, KTO_TOUR_INFO, OWNED] }
+        sourceRef: { type: string, minLength: 1 }
+        url: { type: string, format: uri }
+        title: { type: string }
+        keywords:
+          type: array
+          items: { type: string }
+        photographyLocation: { type: string }
+        attribution: { $ref: "#/components/schemas/SourceAttribution" }
+        licenseStatus: { type: string, enum: [CONFIRMED, UNKNOWN] }
+        cropPermission: { type: string, enum: [ALLOWED, DENIED, UNKNOWN] }
+        identityStatus: { type: string, enum: [MATCHED, UNCERTAIN] }
+        contentFit: { type: string, enum: [cover, contain] }
+        cacheEnabled: { type: boolean }
+        shareAllowed: { type: boolean }
+      required: [photoId, placeId, provider, sourceRef, url, keywords, attribution, licenseStatus, cropPermission, identityStatus, contentFit, cacheEnabled, shareAllowed]
+      additionalProperties: false
+    SceneCoverPhoto:
+      type: object
+      properties:
+        selectionId: { type: string, minLength: 1 }
+        kind: { type: string, const: PHOTO }
+        photo: { $ref: "#/components/schemas/PhotoAsset" }
+        picturedPlaceId: { type: string, minLength: 1 }
+        picturedPlaceName: { type: string, minLength: 1 }
+        sourceAttributions:
+          type: array
+          minItems: 1
+          items: { $ref: "#/components/schemas/SourceAttribution" }
+      required: [selectionId, kind, photo, picturedPlaceId, picturedPlaceName, sourceAttributions]
+      additionalProperties: false
+    SceneCoverEditorial:
+      type: object
+      properties:
+        selectionId: { type: string, minLength: 1 }
+        kind: { type: string, const: EDITORIAL }
+        token: { type: string, minLength: 1 }
+        fallbackReason: { type: string, enum: [NO_PHOTO, RIGHTS_UNKNOWN, IDENTITY_UNKNOWN, PROVIDER_ERROR] }
+      required: [selectionId, kind, token, fallbackReason]
+      additionalProperties: false
+    SceneCover:
+      oneOf:
+        - $ref: "#/components/schemas/SceneCoverPhoto"
+        - $ref: "#/components/schemas/SceneCoverEditorial"
+      discriminator:
+        propertyName: kind
+    PublicSelection:
+      type: object
+      properties:
+        selectionId: { type: string, minLength: 1 }
+        kind: { type: string, enum: [MOOD, SCENE] }
+        title: { type: string, minLength: 1 }
+        description: { type: string }
+        availability: { type: string, enum: [AVAILABLE, RULE_INCOMPLETE, SELECTION_UNAVAILABLE] }
+        sceneCover: { $ref: "#/components/schemas/SceneCover" }
+      required: [selectionId, kind, title, description, availability, sceneCover]
+      additionalProperties: false
+    PublicSelectionsSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                selections:
+                  type: array
+                  items: { $ref: "#/components/schemas/PublicSelection" }
+              required: [selections]
+              additionalProperties: false
+          required: [data]
+    SceneCoverSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data: { $ref: "#/components/schemas/SceneCover" }
+          required: [data]
+    GalleryStatus:
+      type: string
+      enum: [NOT_REQUESTED, AVAILABLE, EMPTY, ERROR]
+    PlacePhotosData:
+      type: object
+      properties:
+        selectionId: { type: string, minLength: 1 }
+        placeId: { type: string, minLength: 1 }
+        placeHero:
+          oneOf:
+            - $ref: "#/components/schemas/PhotoAsset"
+            - type: "null"
+        evidenceImages:
+          type: array
+          items: { $ref: "#/components/schemas/PhotoAsset" }
+        galleryStatus: { $ref: "#/components/schemas/GalleryStatus" }
+        sourceAttributions:
+          type: array
+          items: { $ref: "#/components/schemas/SourceAttribution" }
+      required: [selectionId, placeId, placeHero, evidenceImages, galleryStatus, sourceAttributions]
+      additionalProperties: false
+    PlacePhotosSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data: { $ref: "#/components/schemas/PlacePhotosData" }
+          required: [data]
+    RecommendationCondition:
+      type: object
+      properties:
+        factor: { type: string, enum: [WEATHER, VISIT_CONCENTRATION, TRANSPORT] }
+        status: { type: string, enum: [KNOWN, UNKNOWN] }
+        message: { type: string, minLength: 1 }
+      required: [factor, status, message]
+      additionalProperties: false
+    SkippedTodayFactor:
+      type: object
+      properties:
+        factor: { $ref: "#/components/schemas/TodayFactor" }
+        reason: { type: string, enum: [TIMEOUT, NO_DATA, NOT_COMPARABLE, SINGLE_CANDIDATE, INVALID_DATA] }
+      required: [factor, reason]
+      additionalProperties: false
+    PublicRecommendationCard:
+      type: object
+      properties:
+        placeId: { type: string, minLength: 1 }
+        matchType: { $ref: "#/components/schemas/MatchType" }
+        sceneFitBand: { $ref: "#/components/schemas/SceneFitBand" }
+        matchedFeatures:
+          type: array
+          uniqueItems: true
+          items: { type: string }
+        differenceNote: { type: [string, "null"] }
+        placeHero:
+          oneOf:
+            - $ref: "#/components/schemas/PhotoAsset"
+            - type: "null"
+        galleryStatus: { $ref: "#/components/schemas/GalleryStatus" }
+        conditions:
+          type: array
+          items: { $ref: "#/components/schemas/RecommendationCondition" }
+        sourceAttributions:
+          type: array
+          items: { $ref: "#/components/schemas/SourceAttribution" }
+        replacementCount: { type: integer, minimum: 0 }
+        replaceOptions:
+          type: array
+          uniqueItems: true
+          items: { $ref: "#/components/schemas/ReplaceReason" }
+        canReplace: { type: boolean }
+      required: [placeId, matchType, sceneFitBand, matchedFeatures, differenceNote, placeHero, galleryStatus, conditions, sourceAttributions, replacementCount, replaceOptions, canReplace]
+      additionalProperties: false
+    PublicRecommendationData:
+      type: object
+      properties:
+        policyVersion: { type: string, const: goat-discovery-r4 }
+        catalogVersion: { type: string, minLength: 1 }
+        selectionId: { type: string, minLength: 1 }
+        mode: { $ref: "#/components/schemas/DiscoveryMode" }
+        cards:
+          type: array
+          minItems: 3
+          maxItems: 3
+          items: { $ref: "#/components/schemas/PublicRecommendationCard" }
+        revision: { type: integer, minimum: 0 }
+        snapshotAt: { type: string, format: date-time }
+        todayStatus: { $ref: "#/components/schemas/TodayStatus" }
+        appliedFactors:
+          type: array
+          uniqueItems: true
+          items: { $ref: "#/components/schemas/TodayFactor" }
+        skippedFactors:
+          type: array
+          items: { $ref: "#/components/schemas/SkippedTodayFactor" }
+        partialApplied: { type: boolean }
+      required: [policyVersion, catalogVersion, selectionId, mode, cards, revision, snapshotAt, todayStatus, appliedFactors, skippedFactors, partialApplied]
+      additionalProperties: false
+    PublicRecommendationRequest:
+      type: object
+      properties:
+        selectionId: { type: string, minLength: 1 }
+        mode: { $ref: "#/components/schemas/DiscoveryMode" }
+        transportType: { $ref: "#/components/schemas/DiscoveryTransportType" }
+      required: [selectionId]
+      additionalProperties: false
+    ReplacePublicRecommendationRequest:
+      type: object
+      properties:
+        selectionId: { type: string, minLength: 1 }
+        mode: { $ref: "#/components/schemas/DiscoveryMode" }
+        transportType: { $ref: "#/components/schemas/DiscoveryTransportType" }
+        revision: { type: integer, minimum: 0 }
+        snapshotAt: { type: string, format: date-time }
+        currentPlaceIds:
+          type: array
+          minItems: 3
+          maxItems: 3
+          uniqueItems: true
+          items: { type: string, minLength: 1 }
+        targetSlot: { type: integer, minimum: 1, maximum: 3 }
+        seenIds:
+          type: array
+          maxItems: 61
+          uniqueItems: true
+          items: { type: string, minLength: 1 }
+        replaceReason: { $ref: "#/components/schemas/ReplaceReason" }
+      required: [selectionId, mode, revision, snapshotAt, currentPlaceIds, targetSlot, seenIds, replaceReason]
+      additionalProperties: false
+    PublicRecommendationSuccessResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiSuccessBase"
+        - type: object
+          properties:
+            data: { $ref: "#/components/schemas/PublicRecommendationData" }
+          required: [data]
+    PublicDiscoveryErrorResponse:
+      type: object
+      properties:
+        success: { type: boolean, const: false }
+        code:
+          type: string
+          enum: [INVALID_REQUEST, SELECTION_NOT_FOUND, PLACE_NOT_FOUND, SELECTION_UNAVAILABLE, NO_REPLACEMENT, NO_IMPROVING_CANDIDATE, REVISION_CONFLICT, STALE_REQUEST, PHOTO_PROVIDER_FAILED, RATE_LIMITED]
+        message: { type: string }
+        requestId: { type: string }
+        details: {}
+      required: [success, code, message]
+      additionalProperties: false
     TravelPreferences:
       type: object
       properties:

@@ -30,19 +30,28 @@ import type {
   FeedbackSuccessResponse,
   GeocodeOriginRequest,
   GeocodeOriginSuccessResponse,
+  GetPlacePhotosParams,
   GetRecentRecommendationsParams,
+  GetSceneCoverParams,
   HealthStatus,
   KtoProxyError,
   MoodsSuccessResponse,
+  PlacePhotosSuccessResponse,
   PlaceSuccessResponse,
   ProxyKto200,
   ProxyKtoParams,
+  PublicDiscoveryErrorResponse,
+  PublicRecommendationRequest,
+  PublicRecommendationSuccessResponse,
+  PublicSelectionsSuccessResponse,
   RecentRecommendationsSuccessResponse,
   RecommendCourseRequest,
   RecommendCourseSuccessResponse,
   RecommendFromTagsRequest,
   RecommendationDataSuccessResponse,
-  RecommendationsSuccessResponse
+  RecommendationsSuccessResponse,
+  ReplacePublicRecommendationRequest,
+  SceneCoverSuccessResponse
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -210,6 +219,393 @@ export function useGetMoods<TData = Awaited<ReturnType<typeof getMoods>>, TError
 
 
 
+
+export const getGetPublicSelectionsUrl = () => {
+
+
+
+
+  return `/api/selections`
+}
+
+/**
+ * @summary Get public scene and mood selections
+ */
+export const getPublicSelections = async ( options?: RequestInit): Promise<PublicSelectionsSuccessResponse> => {
+
+  return customFetch<PublicSelectionsSuccessResponse>(getGetPublicSelectionsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPublicSelectionsQueryKey = () => {
+    return [
+    `/api/selections`
+    ] as const;
+    }
+
+
+export const getGetPublicSelectionsQueryOptions = <TData = Awaited<ReturnType<typeof getPublicSelections>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPublicSelections>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPublicSelectionsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublicSelections>>> = ({ signal }) => getPublicSelections({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPublicSelections>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPublicSelectionsQueryResult = NonNullable<Awaited<ReturnType<typeof getPublicSelections>>>
+export type GetPublicSelectionsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get public scene and mood selections
+ */
+
+export function useGetPublicSelections<TData = Awaited<ReturnType<typeof getPublicSelections>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPublicSelections>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPublicSelectionsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetSceneCoverUrl = (params: GetSceneCoverParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/scene-cover?${stringifiedParams}` : `/api/scene-cover`
+}
+
+/**
+ * @summary Get the photo-first or editorial cover for a selection
+ */
+export const getSceneCover = async (params: GetSceneCoverParams, options?: RequestInit): Promise<SceneCoverSuccessResponse> => {
+
+  return customFetch<SceneCoverSuccessResponse>(getGetSceneCoverUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSceneCoverQueryKey = (params?: GetSceneCoverParams,) => {
+    return [
+    `/api/scene-cover`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetSceneCoverQueryOptions = <TData = Awaited<ReturnType<typeof getSceneCover>>, TError = ErrorType<PublicDiscoveryErrorResponse>>(params: GetSceneCoverParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSceneCover>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSceneCoverQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSceneCover>>> = ({ signal }) => getSceneCover(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSceneCover>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSceneCoverQueryResult = NonNullable<Awaited<ReturnType<typeof getSceneCover>>>
+export type GetSceneCoverQueryError = ErrorType<PublicDiscoveryErrorResponse>
+
+
+/**
+ * @summary Get the photo-first or editorial cover for a selection
+ */
+
+export function useGetSceneCover<TData = Awaited<ReturnType<typeof getSceneCover>>, TError = ErrorType<PublicDiscoveryErrorResponse>>(
+ params: GetSceneCoverParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSceneCover>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSceneCoverQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetPlacePhotosUrl = (params: GetPlacePhotosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/place-photos?${stringifiedParams}` : `/api/place-photos`
+}
+
+/**
+ * @summary Get verified photos for the same recommended place
+ */
+export const getPlacePhotos = async (params: GetPlacePhotosParams, options?: RequestInit): Promise<PlacePhotosSuccessResponse> => {
+
+  return customFetch<PlacePhotosSuccessResponse>(getGetPlacePhotosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetPlacePhotosQueryKey = (params?: GetPlacePhotosParams,) => {
+    return [
+    `/api/place-photos`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetPlacePhotosQueryOptions = <TData = Awaited<ReturnType<typeof getPlacePhotos>>, TError = ErrorType<PublicDiscoveryErrorResponse>>(params: GetPlacePhotosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPlacePhotos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPlacePhotosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPlacePhotos>>> = ({ signal }) => getPlacePhotos(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPlacePhotos>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPlacePhotosQueryResult = NonNullable<Awaited<ReturnType<typeof getPlacePhotos>>>
+export type GetPlacePhotosQueryError = ErrorType<PublicDiscoveryErrorResponse>
+
+
+/**
+ * @summary Get verified photos for the same recommended place
+ */
+
+export function useGetPlacePhotos<TData = Awaited<ReturnType<typeof getPlacePhotos>>, TError = ErrorType<PublicDiscoveryErrorResponse>>(
+ params: GetPlacePhotosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPlacePhotos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetPlacePhotosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getCreatePublicRecommendationUrl = () => {
+
+
+
+
+  return `/api/public/recommendations`
+}
+
+/**
+ * @summary Create a guest recommendation without persisting account history
+ */
+export const createPublicRecommendation = async (publicRecommendationRequest: PublicRecommendationRequest, options?: RequestInit): Promise<PublicRecommendationSuccessResponse> => {
+
+  return customFetch<PublicRecommendationSuccessResponse>(getCreatePublicRecommendationUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      publicRecommendationRequest,)
+  }
+);}
+
+
+
+
+export const getCreatePublicRecommendationMutationOptions = <TError = ErrorType<PublicDiscoveryErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPublicRecommendation>>, TError,{data: BodyType<PublicRecommendationRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createPublicRecommendation>>, TError,{data: BodyType<PublicRecommendationRequest>}, TContext> => {
+
+const mutationKey = ['createPublicRecommendation'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPublicRecommendation>>, {data: BodyType<PublicRecommendationRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createPublicRecommendation(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreatePublicRecommendationMutationResult = NonNullable<Awaited<ReturnType<typeof createPublicRecommendation>>>
+    export type CreatePublicRecommendationMutationBody = BodyType<PublicRecommendationRequest>
+    export type CreatePublicRecommendationMutationError = ErrorType<PublicDiscoveryErrorResponse>
+
+    /**
+ * @summary Create a guest recommendation without persisting account history
+ */
+export const useCreatePublicRecommendation = <TError = ErrorType<PublicDiscoveryErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPublicRecommendation>>, TError,{data: BodyType<PublicRecommendationRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createPublicRecommendation>>,
+        TError,
+        {data: BodyType<PublicRecommendationRequest>},
+        TContext
+      > => {
+      return useMutation(getCreatePublicRecommendationMutationOptions(options));
+    }
+
+export const getReplacePublicRecommendationCardUrl = () => {
+
+
+
+
+  return `/api/public/recommendations/replace`
+}
+
+/**
+ * @summary Replace one card while preserving the other two
+ */
+export const replacePublicRecommendationCard = async (replacePublicRecommendationRequest: ReplacePublicRecommendationRequest, options?: RequestInit): Promise<PublicRecommendationSuccessResponse> => {
+
+  return customFetch<PublicRecommendationSuccessResponse>(getReplacePublicRecommendationCardUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      replacePublicRecommendationRequest,)
+  }
+);}
+
+
+
+
+export const getReplacePublicRecommendationCardMutationOptions = <TError = ErrorType<PublicDiscoveryErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof replacePublicRecommendationCard>>, TError,{data: BodyType<ReplacePublicRecommendationRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof replacePublicRecommendationCard>>, TError,{data: BodyType<ReplacePublicRecommendationRequest>}, TContext> => {
+
+const mutationKey = ['replacePublicRecommendationCard'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof replacePublicRecommendationCard>>, {data: BodyType<ReplacePublicRecommendationRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  replacePublicRecommendationCard(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReplacePublicRecommendationCardMutationResult = NonNullable<Awaited<ReturnType<typeof replacePublicRecommendationCard>>>
+    export type ReplacePublicRecommendationCardMutationBody = BodyType<ReplacePublicRecommendationRequest>
+    export type ReplacePublicRecommendationCardMutationError = ErrorType<PublicDiscoveryErrorResponse>
+
+    /**
+ * @summary Replace one card while preserving the other two
+ */
+export const useReplacePublicRecommendationCard = <TError = ErrorType<PublicDiscoveryErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof replacePublicRecommendationCard>>, TError,{data: BodyType<ReplacePublicRecommendationRequest>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof replacePublicRecommendationCard>>,
+        TError,
+        {data: BodyType<ReplacePublicRecommendationRequest>},
+        TContext
+      > => {
+      return useMutation(getReplacePublicRecommendationCardMutationOptions(options));
+    }
 
 export const getRecommendFromTagsUrl = () => {
 
