@@ -213,7 +213,7 @@ export async function getShortTermForecast(
   coordinates: { latitude?: number; longitude?: number },
   now = new Date(),
 ): Promise<WeatherForecast> {
-  const serviceKey = process.env.KMA_SERVICE_KEY?.trim();
+  const serviceKey = process.env.KMA_SERVICE_KEY?.trim() || process.env.KTO_SERVICE_KEY?.trim();
   if (!serviceKey) return skippedWeather("PROVIDER_NOT_CONFIGURED");
   if (!Number.isFinite(coordinates.latitude) || !Number.isFinite(coordinates.longitude)) {
     return skippedWeather("MISSING_COORDINATES");

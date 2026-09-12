@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import {
+  getShortTermForecast,
   normalizeShortTermForecast,
   latestKmaBase,
   summarizeTodayContext,
@@ -74,4 +75,31 @@ assert.deepEqual(
   }),
   { status: "UNAVAILABLE", reason: "NO_DATA" },
 );
+
+const originalFetch = globalThis.fetch;
+const originalKmaKey = process.env.KMA_SERVICE_KEY;
+const originalKtoKey = process.env.KTO_SERVICE_KEY;
+try {
+  delete process.env.KMA_SERVICE_KEY;
+  process.env.KTO_SERVICE_KEY = "shared-data-go-kr-key";
+  let requestedKey = "";
+  globalThis.fetch = (async (input) => {
+    requestedKey = new URL(String(input)).searchParams.get("serviceKey") ?? "";
+    return new Response(JSON.stringify({ response: { body: { items: { item: [
+      { fcstDate: "20260913", fcstTime: "1000", category: "PTY", fcstValue: "0" },
+    ] } } } }), { status: 200, headers: { "Content-Type": "application/json" } });
+  }) as typeof fetch;
+  assert.equal((await getShortTermForecast({ latitude: 37.8813, longitude: 127.7298 }, now)).status, "APPLIED");
+  assert.equal(requestedKey, "shared-data-go-kr-key");
+
+  process.env.KMA_SERVICE_KEY = "dedicated-kma-key";
+  assert.equal((await getShortTermForecast({ latitude: 37.8813, longitude: 127.7298 }, now)).status, "APPLIED");
+  assert.equal(requestedKey, "dedicated-kma-key");
+} finally {
+  globalThis.fetch = originalFetch;
+  if (originalKmaKey === undefined) delete process.env.KMA_SERVICE_KEY;
+  else process.env.KMA_SERVICE_KEY = originalKmaKey;
+  if (originalKtoKey === undefined) delete process.env.KTO_SERVICE_KEY;
+  else process.env.KTO_SERVICE_KEY = originalKtoKey;
+}
 console.log("Today context verification passed.");
