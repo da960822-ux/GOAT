@@ -32,6 +32,7 @@ export type PlacePhotoInput = {
   selectionId: string;
   requiredPhotoTerms?: string[];
   preferredPhotoTerms?: string[];
+  photoPointTerms?: string[];
 };
 
 type SelectionResult = {
@@ -58,6 +59,11 @@ const isInappropriateMetadata = (photo: ProviderPhoto) =>
 const termsMatch = (photo: ProviderPhoto, terms: string[]) => {
   const text = normalize(metadataText(photo));
   return terms.every((term) => text.includes(normalize(term)));
+};
+
+const matchedTermCount = (photo: ProviderPhoto, terms: string[]) => {
+  const text = normalize(metadataText(photo));
+  return terms.filter((term) => text.includes(normalize(term))).length;
 };
 
 const toAsset = (input: PlacePhotoInput, photo: ProviderPhoto): PhotoAsset => ({
@@ -108,10 +114,19 @@ export function selectPlacePhotos(
     return true;
   });
 
-  const preferred = input.preferredPhotoTerms?.length
-    ? usable.filter((photo) => termsMatch(photo, input.preferredPhotoTerms!))
-    : [];
-  const ordered = [...preferred, ...usable.filter((photo) => !preferred.includes(photo))];
+  const required = input.requiredPhotoTerms ?? [];
+  const preferred = input.preferredPhotoTerms ?? [];
+  const photoPoint = input.photoPointTerms ?? [];
+  const ordered = [...usable].sort((left, right) => {
+    const leftRequired = required.length ? matchedTermCount(left, required) : 0;
+    const rightRequired = required.length ? matchedTermCount(right, required) : 0;
+    const leftRequiredRank = leftRequired === required.length ? 2 : leftRequired ? 1 : 0;
+    const rightRequiredRank = rightRequired === required.length ? 2 : rightRequired ? 1 : 0;
+    return rightRequiredRank - leftRequiredRank
+      || matchedTermCount(right, preferred) - matchedTermCount(left, preferred)
+      || Number(termsMatch(right, photoPoint)) - Number(termsMatch(left, photoPoint))
+      || photoId(left).localeCompare(photoId(right));
+  });
   const evidenceImages = ordered.map((photo) => toAsset(input, photo));
 
   return {

@@ -5,6 +5,7 @@ const PHOTO_GALLERY_PATH = "PhotoGalleryService1/gallerySearchList1";
 const KOR_SEARCH_PATH = "KorService2/searchKeyword2";
 const KOR_DETAIL_IMAGE_PATH = "KorService2/detailImage2";
 const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+const providerRightsConfirmed = process.env.KTO_PHOTO_RIGHTS_CONFIRMED === "true";
 
 type KtoItem = Record<string, unknown>;
 
@@ -80,7 +81,9 @@ const galleryPhoto = (item: KtoItem): ProviderPhoto | null => {
     sourceRef,
     url,
     placeVerified: true,
-    rightsConfirmed: true,
+    // The API payload itself does not grant reuse rights. E enables this only
+    // after the operating policy for this provider has been confirmed.
+    rightsConfirmed: providerRightsConfirmed,
     title: value(item, "galTitle") || undefined,
     photographyLocation:
       value(item, "galPhotographyLocation") || value(item, "galAddr1") || undefined,
@@ -96,7 +99,7 @@ const detailPhoto = (item: KtoItem): ProviderPhoto | null => {
     sourceRef: value(item, "serialnum") || url,
     url,
     placeVerified: true,
-    rightsConfirmed: true,
+    rightsConfirmed: providerRightsConfirmed,
     title: value(item, "imgname") || undefined,
   };
 };
