@@ -1,3 +1,20 @@
+import moodCategoryData from "./data/mood-categories.json";
+import placesDatasetData from "./data/goat_simplified_scoring_tags_v10_accessibility_merged.json";
+import referenceDatasetData from "./data/goat_reference_cards_v2_balanced.json";
+import {
+  buildDiscoverySession,
+  canonicalFeatureId,
+  computeSelectionAvailability,
+  rankDiscoveryCandidates,
+  type CatalogSelection,
+  type DiscoveryPlace,
+  type SelectionDefinition,
+} from "./discoveryRecommendation";
+import type {
+  GoatPlaceDataset,
+  GoatReferenceCardDataset,
+} from "./goatRecommendationTypes";
+
 export const MOOD_IDS = [
   "sea-coast",
   "japan-alley",
@@ -35,6 +52,30 @@ export const REFERENCE_CARD_IDS = [
 ] as const;
 
 export type ReferenceCardId = (typeof REFERENCE_CARD_IDS)[number];
+
+const SCENE_PROTECTED_FEATURES = {
+  REF_SEA_01: ["바다"],
+  REF_SEA_02: ["바다"],
+  REF_SEA_03: ["바다"],
+  REF_JP_01: ["정원"],
+  REF_JP_02: ["바다"],
+  REF_JP_03: ["골목"],
+  REF_ALPS_01: ["목장"],
+  REF_ALPS_02: ["고원"],
+  REF_ALPS_03: ["고원"],
+  REF_NATURE_01: ["숲"],
+  REF_NATURE_02: ["정원"],
+  REF_NATURE_03: ["호수"],
+  REF_RETRO_01: ["항구"],
+  REF_RETRO_02: ["카페"],
+  REF_RETRO_03: ["산업유산"],
+  REF_ARCH_01: ["미술관"],
+  REF_ARCH_02: ["랜드마크"],
+  REF_ARCH_03: ["협곡"],
+  REF_RESORT_01: ["카페"],
+  REF_RESORT_02: ["카페"],
+  REF_RESORT_03: ["숙소"],
+} as const satisfies Record<ReferenceCardId, readonly string[]>;
 
 export type RecommendationSelection =
   | {
@@ -115,4 +156,132 @@ export function isMoodId(value: string): value is MoodId {
 
 export function isReferenceCardId(value: string): value is ReferenceCardId {
   return (REFERENCE_CARD_IDS as readonly string[]).includes(value);
+}
+
+export const DISCOVERY_CATALOG_VERSION = "goat-catalog-r4" as const;
+
+const discoveryPlaces = (placesDatasetData as GoatPlaceDataset)
+  .places as DiscoveryPlace[];
+const discoveryReferenceCards = (
+  referenceDatasetData as GoatReferenceCardDataset
+).reference_cards;
+const themeToMoodId = new Map(
+  moodCategoryData.map(({ id, name }) => [name, id]),
+);
+
+function selectionFeatures(values: string[]): string[] {
+  return Array.from(new Set(values.map(canonicalFeatureId).filter(Boolean)));
+}
+
+function withoutRequired(required: string[], supporting: string[]): string[] {
+  const requiredSet = new Set(required);
+  return selectionFeatures(supporting).filter(
+    (feature) => !requiredSet.has(feature),
+  );
+}
+
+function exactCoverCandidates(selection: SelectionDefinition): string[] {
+  return rankDiscoveryCandidates({
+    selection,
+    places: discoveryPlaces,
+    mode: "SCENE",
+  })
+    .filter(({ matchType }) => matchType === "EXACT")
+    .map(({ placeId }) => placeId)
+    .slice(0, 2);
+}
+
+const moodSelections: SelectionDefinition[] = moodCategoryData.map(
+  (mood, index) => {
+    const themeFeature = `theme:${mood.name}`;
+    const selection: SelectionDefinition = {
+      selectionId: mood.id,
+      kind: "MOOD",
+      title: mood.name,
+      description: mood.description,
+      featuredOrder: index + 1,
+      parentMoodId: null,
+      protectedFeatures: [themeFeature],
+      requiredFeatures: [themeFeature],
+      supportingFeatures: withoutRequired(
+        [themeFeature],
+        [
+          ...(mood.engineInput.sceneTags ?? []),
+          ...(mood.engineInput.moodTags ?? []),
+        ],
+      ),
+      allowedExpansion: [],
+      sceneCoverCandidates: [],
+      sceneCoverToken: mood.id,
+    };
+    selection.sceneCoverCandidates = exactCoverCandidates(selection);
+    return selection;
+  },
+);
+
+const sceneSelections: SelectionDefinition[] = discoveryReferenceCards.map(
+  (card) => {
+    const requiredFeatures = selectionFeatures(card.sceneTags);
+    const selection: SelectionDefinition = {
+      selectionId: card.referenceCardId,
+      kind: "SCENE",
+      title: card.title,
+      description: card.subtitle ?? "",
+      featuredOrder: card.displayOrder ?? Number.MAX_SAFE_INTEGER,
+      parentMoodId: themeToMoodId.get(String(card.primaryTheme)) ?? null,
+      protectedFeatures: isReferenceCardId(card.referenceCardId)
+        ? [...SCENE_PROTECTED_FEATURES[card.referenceCardId]]
+        : [],
+      requiredFeatures,
+      supportingFeatures: withoutRequired(requiredFeatures, [
+        ...card.mood_tags,
+        ...(card.uiKeywords ?? []),
+      ]),
+      // 확장은 의미를 바꾸는 규칙이므로 추정 생성하지 않는다. 합의된 규칙만 여기에 추가한다.
+      allowedExpansion: [],
+      sceneCoverCandidates: [],
+      sceneCoverToken:
+        themeToMoodId.get(String(card.primaryTheme)) ?? card.referenceCardId,
+    };
+    selection.sceneCoverCandidates = exactCoverCandidates(selection);
+    return selection;
+  },
+);
+
+export const discoverySelectionCatalog: CatalogSelection[] = [
+  ...moodSelections,
+  ...sceneSelections,
+].map((selection) => {
+  const availability = computeSelectionAvailability(selection, discoveryPlaces);
+  let initialReplacementAvailable = false;
+  if (availability.enabled) {
+    const session = buildDiscoverySession({
+      selection,
+      places: discoveryPlaces,
+      request: { selectionId: selection.selectionId, mode: "SCENE" },
+      snapshotAt: "1970-01-01T00:00:00.000Z",
+    });
+    initialReplacementAvailable = session.cards.some(
+      ({ canReplace }) => canReplace,
+    );
+  }
+  return { ...selection, ...availability, initialReplacementAvailable };
+});
+
+export const publicDiscoverySelections = discoverySelectionCatalog
+  .filter(({ enabled }) => enabled)
+  .sort(
+    (a, b) =>
+      Number(b.initialReplacementAvailable) -
+        Number(a.initialReplacementAvailable) ||
+      a.featuredOrder - b.featuredOrder ||
+      a.selectionId.localeCompare(b.selectionId),
+  );
+
+export function getDiscoverySelection(
+  selectionId: string,
+): CatalogSelection | undefined {
+  return discoverySelectionCatalog.find(
+    (selection) => selection.selectionId === selectionId,
+  );
 }
