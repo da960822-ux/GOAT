@@ -28,17 +28,17 @@ export function SceneCoverCard({ number, title, description, picturedPlaceName, 
       onPress={onPress}
       style={({ pressed }) => [styles.card, selected && styles.selected, disabled && styles.disabled, pressed && styles.pressed]}
     >
-      {imageUri ? <Image source={{ uri: imageUri }} contentFit="cover" style={styles.image} accessibilityLabel="" /> : <View style={styles.fallback} accessibilityElementsHidden>
+      {imageUri ? <Image source={{ uri: imageUri }} contentFit="cover" style={styles.image} accessible={false} importantForAccessibility="no-hide-descendants" /> : <View style={styles.fallback} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <BrandIcon name="image" size={32} color={palette.forestSoft} />
         <Text style={styles.fallbackLabel}>장면을 상상해 보세요</Text>
       </View>}
       <View style={styles.scrim} pointerEvents="none" />
-      <View style={styles.copy}>
+      <View style={styles.copy} accessible={false} importantForAccessibility="no-hide-descendants">
         <Text style={styles.number}>{String(number).padStart(2, "0")}</Text>
-        <Text style={styles.title}>{title}</Text>
+        <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
-      <View style={styles.caption}>
+      <View style={styles.caption} accessible={false} importantForAccessibility="no-hide-descendants">
         <Text style={styles.captionText}>{caption}</Text>
         {attribution ? <Text style={styles.attribution}>{attribution}</Text> : null}
       </View>

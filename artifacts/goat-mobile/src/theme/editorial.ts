@@ -23,9 +23,9 @@ export const fonts = {
   serif: "NotoSerifKR_600SemiBold",
   serifRegular: "NotoSerifKR_400Regular",
   body: "PretendardRegular",
-  medium: "PretendardMedium",
+  medium: "PretendardRegular",
   semibold: "PretendardSemiBold",
-  bold: "PretendardBold",
+  bold: "PretendardSemiBold",
 };
 
 export const radius = { sm: 10, md: 16, lg: 24, pill: 999 };

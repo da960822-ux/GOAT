@@ -3,7 +3,7 @@ import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getPlace, type Place } from "@workspace/api-client-react";
+import { getPlace, getPlacePhotos, type Place } from "@workspace/api-client-react";
 import { AppTabBar } from "@/src/components/AppTabBar";
 import { BrandIcon } from "@/src/components/BrandIcon";
 import { Header } from "@/src/components/Header";
@@ -11,7 +11,7 @@ import { localSceneStore } from "@/src/services/deviceSceneStore";
 import type { SavedScene } from "@/src/services/localSceneStore";
 import { fonts, palette, radius } from "@/src/theme/editorial";
 
-type SceneRow = SavedScene & { place: Place | null };
+type SceneRow = SavedScene & { place: Place | null; photoUri: string | null };
 
 export default function SavedScreen() {
   const router = useRouter();
@@ -24,12 +24,15 @@ export default function SavedScreen() {
     try {
       const scenes = await localSceneStore.getScenes();
       const rows = await Promise.all(scenes.map(async (scene) => {
-        try {
-          const response = await getPlace(scene.placeId);
-          return { ...scene, place: response.data.place };
-        } catch {
-          return { ...scene, place: null };
-        }
+        const [placeResult, photoResult] = await Promise.allSettled([
+          getPlace(scene.placeId),
+          getPlacePhotos({ placeId: scene.placeId, selectionId: scene.selectionId }),
+        ]);
+        const place = placeResult.status === "fulfilled" ? placeResult.value.data.place : null;
+        const photoUri = photoResult.status === "fulfilled"
+          ? photoResult.value.data.placeHero?.url ?? photoResult.value.data.evidenceImages[0]?.url ?? place?.imageUrl ?? null
+          : place?.imageUrl ?? null;
+        return { ...scene, place, photoUri };
       }));
       setItems(rows);
       setState("content");
@@ -66,7 +69,7 @@ export default function SavedScreen() {
           renderItem={({ item }) => {
             const name = item.place?.place_name ?? "장소 정보를 확인할 수 없어요";
             const region = item.place?.city ?? "저장된 장면";
-            return <View style={styles.row}><Pressable accessibilityRole="button" accessibilityLabel={`${name} 상세 보기`} onPress={() => router.push({ pathname: "/detail/[id]", params: { id: item.placeId, selectionId: item.selectionId } })} style={({ pressed }) => [styles.rowMain, pressed && styles.pressed]}><View style={styles.thumbnail}>{item.place?.imageUrl ? <Image source={{ uri: item.place.imageUrl }} style={StyleSheet.absoluteFillObject} contentFit="cover" accessibilityLabel={`${name} 풍경`} /> : <BrandIcon name="location" size={24} color={palette.forest} />}</View><View style={styles.copy}><Text style={styles.name}>{name}</Text><Text style={styles.region}>{region}</Text><Text style={styles.date}>{formatDate(item.savedAt)}</Text></View></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`${name} 삭제`} onPress={() => remove(item)} style={styles.remove}><BrandIcon name="delete" size={19} color={palette.error} /></Pressable></View>;
+            return <View style={styles.row}><Pressable accessibilityRole="button" accessibilityLabel={`${name} 상세 보기`} onPress={() => router.push({ pathname: "/detail/[id]", params: { id: item.placeId, selectionId: item.selectionId } })} style={({ pressed }) => [styles.rowMain, pressed && styles.pressed]}><View style={styles.thumbnail}>{item.photoUri ? <Image source={{ uri: item.photoUri }} style={StyleSheet.absoluteFillObject} contentFit="cover" accessible={false} importantForAccessibility="no-hide-descendants" /> : <BrandIcon name="location" size={24} color={palette.forest} />}</View><View style={styles.copy}><Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.name}>{name}</Text><Text style={styles.region}>{region}</Text><Text style={styles.date}>{formatDate(item.savedAt)}</Text></View></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`${name} 삭제`} onPress={() => remove(item)} style={styles.remove}><BrandIcon name="delete" size={19} color={palette.error} /></Pressable></View>;
           }}
         />}
     <AppTabBar />

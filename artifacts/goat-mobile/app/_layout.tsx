@@ -69,9 +69,7 @@ export default function RootLayout() {
     NotoSerifKR_400Regular,
     NotoSerifKR_600SemiBold,
     PretendardRegular: require("@/assets/fonts/Pretendard-Regular.ttf"),
-    PretendardMedium: require("@/assets/fonts/Pretendard-Medium.ttf"),
     PretendardSemiBold: require("@/assets/fonts/Pretendard-SemiBold.ttf"),
-    PretendardBold: require("@/assets/fonts/Pretendard-Bold.ttf"),
   });
 
   useEffect(() => {
