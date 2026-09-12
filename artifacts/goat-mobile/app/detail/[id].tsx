@@ -1,6 +1,6 @@
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, Alert, Modal, Pressable, ScrollView, Share, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { buildPublicPlaceShare, getPlace, getPlacePhotos, type Place, type PlacePhotosData } from "@workspace/api-client-react";
@@ -26,6 +26,7 @@ export default function DetailScreen() {
   const [decisionVisible, setDecisionVisible] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "loading" | "saved" | "error">("idle");
   const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const decisionTriggerRef = useRef<View>(null);
 
   useEffect(() => {
     let active = true;
@@ -73,9 +74,9 @@ export default function DetailScreen() {
         {attributions ? <Text style={styles.attribution}>사진 출처: {attributions}</Text> : null}
       </View>
     </ScrollView>
-    <View style={[styles.bottom, { paddingBottom: Math.max(insets.bottom, 12) }]}><Pressable accessibilityRole="button" onPress={() => { setSaveStatus("idle"); setShareUrl(null); setDecisionVisible(true); }} style={styles.choose}><Text style={styles.chooseText}>여기로 갈래요</Text><BrandIcon name="arrow-right" color={palette.white} /></Pressable></View>
+    <View style={[styles.bottom, { paddingBottom: Math.max(insets.bottom, 12) }]}><Pressable ref={decisionTriggerRef} accessibilityRole="button" onPress={() => { setSaveStatus("idle"); setShareUrl(null); setDecisionVisible(true); }} style={styles.choose}><Text style={styles.chooseText}>여기로 갈래요</Text><BrandIcon name="arrow-right" color={palette.white} /></Pressable></View>
     <Gallery visible={galleryVisible} name={place.place_name} photos={photos} onClose={() => setGalleryVisible(false)} />
-    <DecisionSheet visible={decisionVisible} selectedPlace={{ region: place.city, name: place.place_name }} criticalRestriction={restriction} saveStatus={saveStatus} saveError="저장하지 못했어요. 다시 시도해 주세요." onOpenMap={openMap} onSave={() => void save()} onShare={() => void share()} onClose={() => setDecisionVisible(false)}>{shareUrl ? <View style={styles.shareFallback}><Text style={styles.shareFallbackLabel}>공유 링크</Text><Text selectable style={styles.shareFallbackUrl}>{shareUrl}</Text></View> : null}</DecisionSheet>
+    <DecisionSheet visible={decisionVisible} returnFocusRef={decisionTriggerRef} selectedPlace={{ region: place.city, name: place.place_name }} criticalRestriction={restriction} saveStatus={saveStatus} saveError="저장하지 못했어요. 다시 시도해 주세요." onOpenMap={openMap} onSave={() => void save()} onShare={() => void share()} onClose={() => setDecisionVisible(false)}>{shareUrl ? <View style={styles.shareFallback}><Text style={styles.shareFallbackLabel}>공유 링크</Text><Text selectable style={styles.shareFallbackUrl}>{shareUrl}</Text></View> : null}</DecisionSheet>
   </View>;
 }
 

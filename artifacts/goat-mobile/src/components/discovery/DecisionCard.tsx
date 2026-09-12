@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { BrandIcon } from "@/src/components/BrandIcon";
@@ -18,12 +18,14 @@ export type DecisionCardProps = {
   attribution?: string | null;
   replacementState?: ReplacementState;
   replacementHint?: string | null;
+  replacementDisabled?: boolean;
   onDetails: () => void;
   onReplace?: () => void;
-  onChoose: () => void;
+  onChoose: (trigger?: View | null) => void;
 };
 
-export function DecisionCard({ index, total, region, name, summary, features, imageUri, criticalRestriction, attribution, replacementState = "available", replacementHint, onDetails, onReplace, onChoose }: DecisionCardProps) {
+export function DecisionCard({ index, total, region, name, summary, features, imageUri, criticalRestriction, attribution, replacementState = "available", replacementHint, replacementDisabled = false, onDetails, onReplace, onChoose }: DecisionCardProps) {
+  const chooseRef = useRef<View>(null);
   const replacementUnavailable = replacementState === "unavailable";
   return <View style={styles.card}>
     <View style={styles.hero}>
@@ -34,15 +36,15 @@ export function DecisionCard({ index, total, region, name, summary, features, im
     </View>
     <View style={styles.content}>
       <Text style={styles.summary}>{summary}</Text>
-      <View style={styles.features}>{features.slice(0, 3).map((feature) => <View key={feature} style={styles.feature}><BrandIcon name="check" size={15} color={palette.forest} /><Text style={styles.featureText}>{feature}</Text></View>)}</View>
+      <View style={styles.features}>{features.slice(0, 2).map((feature) => <View key={feature} style={styles.feature}><BrandIcon name="check" size={15} color={palette.forest} /><Text style={styles.featureText}>{feature}</Text></View>)}</View>
       {criticalRestriction ? <View style={styles.restriction}><BrandIcon name="warning" size={18} color={palette.error} /><Text style={styles.restrictionText}>{criticalRestriction}</Text></View> : null}
-      {attribution ? <Text style={styles.attribution}>{attribution}</Text> : null}
-      {replacementHint ? <Text style={styles.replacementHint}>{replacementHint}</Text> : null}
+      <Pressable ref={chooseRef} accessibilityRole="button" accessibilityLabel={`${name}로 결정하기`} onPress={() => onChoose(chooseRef.current)} style={({ pressed }) => [styles.primaryButton, pressed && styles.pressed]}><Text style={styles.primaryText}>여기로 갈래요</Text><BrandIcon name="arrow-right" size={18} color={palette.white} /></Pressable>
       <View style={styles.actions}>
         <Pressable accessibilityRole="button" accessibilityLabel={`${name} 자세히 보기`} onPress={onDetails} style={({ pressed }) => [styles.detailButton, pressed && styles.pressed]}><Text style={styles.detailText}>자세히 보기</Text><BrandIcon name="arrow-right" size={17} color={palette.forest} /></Pressable>
-        {replacementUnavailable ? <Text accessibilityLiveRegion="polite" style={styles.unavailable}>교체할 수 있는 곳이 없어요</Text> : <Pressable accessibilityRole="button" accessibilityLabel="다른 곳 보기" accessibilityState={{ busy: replacementState === "loading" }} disabled={replacementState === "loading" || !onReplace} onPress={onReplace} style={({ pressed }) => [styles.replaceButton, (replacementState === "loading" || !onReplace) && styles.disabled, pressed && styles.pressed]}>{replacementState === "loading" ? <ActivityIndicator color={palette.forest} /> : <><BrandIcon name="refresh" size={17} color={palette.forest} /><Text style={styles.replaceText}>다른 곳 보기</Text></>}</Pressable>}
+        {replacementUnavailable ? <Text accessibilityLiveRegion="polite" style={styles.unavailable}>교체할 수 있는 곳이 없어요</Text> : <Pressable accessibilityRole="button" accessibilityLabel="다른 곳 보기" accessibilityState={{ busy: replacementState === "loading", disabled: replacementDisabled }} disabled={replacementState === "loading" || replacementDisabled || !onReplace} onPress={onReplace} style={({ pressed }) => [styles.replaceButton, (replacementState === "loading" || replacementDisabled || !onReplace) && styles.disabled, pressed && styles.pressed]}>{replacementState === "loading" ? <ActivityIndicator color={palette.forest} /> : <><BrandIcon name="refresh" size={17} color={palette.forest} /><Text style={styles.replaceText}>다른 곳 보기</Text></>}</Pressable>}
       </View>
-      <Pressable accessibilityRole="button" accessibilityLabel={`${name}로 결정하기`} onPress={onChoose} style={({ pressed }) => [styles.primaryButton, pressed && styles.pressed]}><Text style={styles.primaryText}>여기로 갈래요</Text><BrandIcon name="arrow-right" size={18} color={palette.white} /></Pressable>
+      {replacementHint ? <Text style={styles.replacementHint}>{replacementHint}</Text> : null}
+      {attribution ? <Text style={styles.attribution}>{attribution}</Text> : null}
     </View>
   </View>;
 }

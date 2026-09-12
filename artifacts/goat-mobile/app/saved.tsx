@@ -66,11 +66,7 @@ export default function SavedScreen() {
           renderItem={({ item }) => {
             const name = item.place?.place_name ?? "장소 정보를 확인할 수 없어요";
             const region = item.place?.city ?? "저장된 장면";
-            return <Pressable accessibilityRole="button" accessibilityLabel={`${name} 상세 보기`} onPress={() => router.push({ pathname: "/detail/[id]", params: { id: item.placeId, selectionId: item.selectionId } })} style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
-              <View style={styles.thumbnail}>{item.place?.imageUrl ? <Image source={{ uri: item.place.imageUrl }} style={StyleSheet.absoluteFillObject} contentFit="cover" accessibilityLabel={`${name} 풍경`} /> : <BrandIcon name="location" size={24} color={palette.forest} />}</View>
-              <View style={styles.copy}><Text style={styles.name}>{name}</Text><Text style={styles.region}>{region}</Text><Text style={styles.date}>{formatDate(item.savedAt)}</Text></View>
-              <Pressable accessibilityRole="button" accessibilityLabel={`${name} 삭제`} hitSlop={4} onPress={(event) => { event.stopPropagation(); remove(item); }} style={styles.remove}><BrandIcon name="delete" size={19} color={palette.error} /></Pressable>
-            </Pressable>;
+            return <View style={styles.row}><Pressable accessibilityRole="button" accessibilityLabel={`${name} 상세 보기`} onPress={() => router.push({ pathname: "/detail/[id]", params: { id: item.placeId, selectionId: item.selectionId } })} style={({ pressed }) => [styles.rowMain, pressed && styles.pressed]}><View style={styles.thumbnail}>{item.place?.imageUrl ? <Image source={{ uri: item.place.imageUrl }} style={StyleSheet.absoluteFillObject} contentFit="cover" accessibilityLabel={`${name} 풍경`} /> : <BrandIcon name="location" size={24} color={palette.forest} />}</View><View style={styles.copy}><Text style={styles.name}>{name}</Text><Text style={styles.region}>{region}</Text><Text style={styles.date}>{formatDate(item.savedAt)}</Text></View></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`${name} 삭제`} onPress={() => remove(item)} style={styles.remove}><BrandIcon name="delete" size={19} color={palette.error} /></Pressable></View>;
           }}
         />}
     <AppTabBar />
@@ -88,7 +84,8 @@ function formatDate(value: string) {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: palette.ivory },
   storageNotice: { paddingHorizontal: 20, paddingBottom: 16, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.muted },
-  row: { minHeight: 104, padding: 12, flexDirection: "row", alignItems: "center", gap: 12, borderRadius: radius.md, backgroundColor: palette.paper, borderWidth: StyleSheet.hairlineWidth, borderColor: palette.line },
+  row: { minHeight: 104, padding: 12, flexDirection: "row", alignItems: "center", gap: 4, borderRadius: radius.md, backgroundColor: palette.paper, borderWidth: StyleSheet.hairlineWidth, borderColor: palette.line },
+  rowMain: { minHeight: 80, flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
   pressed: { opacity: 0.75 },
   thumbnail: { width: 76, height: 76, overflow: "hidden", alignItems: "center", justifyContent: "center", borderRadius: radius.sm, backgroundColor: palette.sage },
   copy: { flex: 1, gap: 3 },
