@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "hello": "tsx ./src/hello.ts",
     "verify:kakao": "tsx ./src/verifyKakaoLocation.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
