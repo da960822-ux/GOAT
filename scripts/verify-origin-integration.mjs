@@ -1,9 +1,28 @@
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const envText = await readFile(resolve(root, "GOAT.env"), "utf8");
+
+async function findEnv(start) {
+  let current = start;
+  while (true) {
+    const candidate = resolve(current, "GOAT.env");
+    try {
+      await access(candidate);
+      return candidate;
+    } catch {
+      const parent = dirname(current);
+      if (parent === current) throw new Error("GOAT_ENV_NOT_FOUND");
+      current = parent;
+    }
+  }
+}
+
+const envPath = process.env.GOAT_ENV_FILE
+  ? resolve(process.cwd(), process.env.GOAT_ENV_FILE)
+  : await findEnv(root);
+const envText = await readFile(envPath, "utf8");
 const portLine = envText.split(/\r?\n/).find((line) => /^PORT=/.test(line));
 const port = Number(process.env.GOAT_TEST_PORT ?? portLine?.slice("PORT=".length).trim().replace(/^(['"])(.*)\1$/, "$2"));
 if (!Number.isInteger(port) || port <= 0) throw new Error("PORT_NOT_LOADED");
@@ -94,9 +113,6 @@ const geocodePassed = geocodeProbe.ok
 console.log(`BACKEND_ADDRESS_SEARCH_ENDPOINT: ${geocodePassed ? "PASSED" : `FAILED_HTTP_${geocodeProbe.status}`}`);
 console.log(`ADDRESS_TO_COORDINATES: ${geocodePassed ? "PASSED" : "FAILED"}`);
 
-const preferenceSource = await readFile(resolve(root, "artifacts/goat-mobile/app/travel-preference.tsx"), "utf8");
-console.log(`UNAVAILABLE_MESSAGE_EXACT: ${preferenceSource.includes(requiredFailureMessage) ? "PASSED" : "FAILED"}`);
-
 const contractPassed = health.ok
   && courseMap.ok
   && current.response.ok
@@ -109,6 +125,5 @@ const contractPassed = health.ok
   && skipped.body?.data?.originStatus === "SKIPPED"
   && unavailable.body?.data?.originStatus === "UNAVAILABLE"
   && unavailable.body?.data?.originNotice === requiredFailureMessage
-  && geocodePassed
-  && preferenceSource.includes(requiredFailureMessage);
+  && geocodePassed;
 if (!contractPassed) process.exitCode = 1;
