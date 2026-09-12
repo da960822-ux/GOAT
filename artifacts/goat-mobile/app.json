@@ -22,6 +22,7 @@
     },
     "android": {
       "package": "com.goattravel.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/goat-logo-full.png",
         "backgroundColor": "#F6F2E9"

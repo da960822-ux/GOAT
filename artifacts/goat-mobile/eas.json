@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 7.0.0"
+    "version": ">= 7.0.0",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -12,15 +13,22 @@
     },
     "preview": {
       "distribution": "internal",
+      "environment": "production",
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "credentialsSource": "remote"
       },
       "ios": {
         "simulator": false
       }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "environment": "production",
+      "android": {
+        "buildType": "app-bundle",
+        "credentialsSource": "remote"
+      }
     }
   },
   "submit": {
