@@ -4,7 +4,12 @@
 
 ## 기준과 범위
 
-우선순위는 현재 사용자 지시, `GOAT_서비스_수정기획안.md`, `GOAT_실행리스트.md`, 이 파일 순서다. 두 기준 문서는 기본 checkout의 상위 workspace 폴더에 있다.
+계획의 절대 우선순위는 아래 두 파일이다.
+
+1. `C:\Users\jung\Documents\ChatGPT\New project 2\GOAT_서비스_수정기획안.md`
+2. `C:\Users\jung\Documents\ChatGPT\New project 2\GOAT_실행리스트.md`
+
+현재 사용자 지시가 가장 우선하며, 그 다음은 위 두 파일, 마지막이 이 파일이다. 저장소 내부의 README·과거 설계·handoff·구현 보고·아카이브는 계획 입력으로 사용하지 않는다. 코드와 OpenAPI는 구현 상태의 증거이지 새 범위를 만드는 계획서가 아니다.
 
 - 기존 Expo/Express 구조와 장소 61개, 기존 ID를 유지한다.
 - P0만 구현한다. P0와 배포 가능한 산출물이 연결되기 전 P1/P2, AI, 계정 동기화, 신규 장소·공급자, 생성 이미지를 시작하지 않는다.
@@ -16,20 +21,20 @@
 
 - 모든 worktree 생성, merge, rebase, 충돌 해결, 통합 검증은 Captain이 수행한다.
 - 작업 에이전트는 자기 브랜치에만 커밋하고 다른 브랜치를 병합하지 않는다.
-- 현재는 D와 E worktree만 사용한다.
-  - `codex/d-contract-storage`: `.worktrees/d-contract-storage`
-  - `codex/e-release-baseline`: `.worktrees/e-release-baseline`
-- D 계약을 Captain이 `develop`에 통합한 뒤에만 최신 `develop`에서 A/B/C worktree를 만든다.
-- E는 D와 병렬로 BASE-01을 진행할 수 있다. E 변경을 먼저 통합할 필요가 생기면 Captain이 D와의 충돌 여부를 확인한다.
+- D Contract/Storage와 E Release-baseline은 `develop`에 통합 완료된 기준선이다. 기존 D/E worktree에서는 새 기능을 진행하지 않는다.
+- A/B/C는 통합된 최신 `develop`에서 시작한다.
+  - `codex/a-catalog-recommendation`: `.worktrees/a-catalog-recommendation`
+  - `codex/b-public-data-photo`: `.worktrees/b-public-data-photo`
+  - `codex/c-mobile-ux`: `.worktrees/c-mobile-ux`
+- A/B/C는 D가 확정한 OpenAPI·생성 타입·저장 인터페이스를 소비하며 직접 변경하지 않는다.
 
 ## 실행 순서
 
-1. D가 최소 공통 계약과 기기 저장 경계를 고정한다.
-2. E가 독립적으로 workspace, 기준 build, 환경·release 기반을 정리한다.
-3. Captain이 D를 검토·통합한다. 준비된 E baseline도 충돌 검토 후 통합할 수 있다.
-4. 그 시점의 최신 `develop`에서 A/B/C worktree를 만든다.
-5. A/B/C는 확정 계약을 소비만 하며 공통 계약을 각자 변경하지 않는다.
-6. Captain이 A/B/C를 순차 통합하고 E가 최종 운영 연결과 release 검증을 마친다.
+1. 완료: D 최소 공통 계약과 기기 저장 경계 통합.
+2. 완료: E workspace·기준 build·Android release baseline 통합.
+3. 현재: 최신 `develop`에서 A/B/C를 병렬 진행한다.
+4. Captain이 A/B/C를 검토·순차 통합한다.
+5. E가 통합된 P0의 운영 연결과 최종 release 검증을 마친다.
 
 ## 작업군 소유권
 
@@ -68,6 +73,6 @@ D는 구현 세부가 아니라 아래 입출력만 먼저 고정한다.
 ## 검증과 보고
 
 - 기준 명령은 `pnpm run typecheck`와 `pnpm run build`다.
-- 현재 production build는 mockup Vite 설정이 `PORT`를 요구해 실패하는 상태다. E는 환경변수 없이도 기준 build가 재현되도록 BASE-01에서 해결하고 실제 결과를 남긴다.
+- 통합 기준선에서 환경변수 없이 `pnpm run typecheck`와 `pnpm run build`가 통과해야 한다.
 - 기능별 최소 회귀 스크립트만 추가·실행한다. 수행하지 않은 API, 권리, 설치, 성능 검증을 성공으로 기록하지 않는다.
 - 보고는 변경 작업 ID, 변경 파일, 실행 결과, 남은 blocker만 짧게 남긴다.
