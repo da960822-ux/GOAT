@@ -215,7 +215,7 @@ export default function ResultsScreen() {
     if (publicRecommendation.todayStatus === "APPLIED")
       return "오늘 조건을 반영했어요";
     if (publicRecommendation.todayStatus === "NO_CHANGE")
-      return "현재 추천 장소와 같아요";
+      return "오늘 조건을 반영해도 추천 장소가 그대로예요";
     return "오늘 조건은 반영하지 못했어요";
   }, [publicRecommendation]);
 
@@ -951,7 +951,7 @@ function attributionFor(card: DisplayCard) {
 }
 function todayStatusCopy(data: PublicRecommendationData) {
   if (data.todayStatus === "APPLIED") return "오늘 조건을 반영했어요";
-  if (data.todayStatus === "NO_CHANGE") return "현재 추천 장소와 같아요";
+  if (data.todayStatus === "NO_CHANGE") return "오늘 조건을 반영해도 추천 장소가 그대로예요";
   if (data.todayStatus === "UNAVAILABLE")
     return "오늘 조건은 반영하지 못했어요";
   return "오늘 조건 반영하기";

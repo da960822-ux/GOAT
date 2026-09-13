@@ -1,6 +1,7 @@
 import React from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import Svg, { Circle, Line, Path, Polyline, Rect } from "react-native-svg";
+import { SymbolView, type SFSymbol } from "expo-symbols";
 import Animated, {
   cancelAnimation,
   useAnimatedStyle,
@@ -39,6 +40,16 @@ const aliases: Partial<Record<BrandIconName, BrandIconName>> = {
   "external-link": "external", calendar: "time",
 };
 
+// Use the platform's native symbol language on iOS for standard actions. Custom
+// GOAT marks (course, mood, transport) keep their authored SVG on every platform.
+const SF_SYMBOLS: Partial<Record<BrandIconName | string, SFSymbol>> = {
+  menu: "line.3.horizontal", notification: "bell", location: "location", home: "house.fill",
+  map: "map", bookmark: "bookmark", user: "person", back: "chevron.left", share: "square.and.arrow.up",
+  search: "magnifyingglass", time: "clock", heart: "heart", camera: "camera", delete: "trash",
+  check: "checkmark", close: "xmark", refresh: "arrow.clockwise", info: "info.circle", mail: "envelope",
+  external: "arrow.up.right.square", warning: "exclamationmark.triangle", people: "person.2",
+};
+
 export function BrandIcon({ name, size = 24, color = "#173F36", filled = false, strokeWidth = 1.8, style, motion }:
   { name: BrandIconName | string; size?: number; color?: string; filled?: boolean; strokeWidth?: number; style?: StyleProp<ViewStyle>; motion?: "pulse" | "spin" }) {
   const reducedMotion = useReducedMotion();
@@ -63,6 +74,12 @@ export function BrandIcon({ name, size = 24, color = "#173F36", filled = false, 
       : {});
   const icon = aliases[name as BrandIconName] ?? name;
   const common = { stroke: color, strokeWidth, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, fill: "none" };
+  const sfName = process.env.EXPO_OS === "ios" ? SF_SYMBOLS[icon] : undefined;
+  if (sfName) {
+    return <Animated.View style={[{ width: size, height: size }, style, motionStyle]}>
+      <SymbolView name={sfName} tintColor={color} weight={filled ? "semibold" : "regular"} resizeMode="scaleAspectFit" style={{ width: size, height: size }} />
+    </Animated.View>;
+  }
   let content: React.ReactNode;
   switch (icon) {
     case "menu": content = <><Line x1="4" y1="7" x2="20" y2="7" {...common}/><Line x1="4" y1="12" x2="16" y2="12" {...common}/><Line x1="4" y1="17" x2="20" y2="17" {...common}/></>; break;

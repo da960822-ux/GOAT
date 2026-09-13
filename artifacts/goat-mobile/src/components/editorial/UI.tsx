@@ -39,7 +39,7 @@ export function SectionEyebrow({ children, light = false }: { children: React.Re
   return <Text style={[styles.eyebrow, light && { color: palette.sage }]}>{children}</Text>;
 }
 
-const FLOW_STEPS = ["분위기 선택", "여행 조건", "추천 결과"];
+const FLOW_STEPS = ["감성 선택", "여행 조건", "추천 결과"];
 
 export function FlowProgress({ currentStep }: { currentStep: 1 | 2 | 3 }) {
   return <View accessible accessibilityRole="progressbar" accessibilityValue={{ min: 1, max: 3, now: currentStep }} accessibilityLabel={`여행 추천 ${currentStep}단계`} style={styles.progress} importantForAccessibility="yes">
