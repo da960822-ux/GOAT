@@ -36,9 +36,9 @@ export function BottomCTA({ label, onPress, disabled = false, subtitle }: Bottom
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 12,
-    paddingHorizontal: 20,
-    borderTopWidth: 1,
+    paddingTop: 16,
+    paddingHorizontal: 24,
+    borderTopWidth: 0,
   },
   subtitle: {
     fontSize: 13,
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   btn: {
-    minHeight: 48,
-    borderRadius: 14,
+    minHeight: 56,
+    borderRadius: 18,
     paddingVertical: 16,
     alignItems: 'center',
   },

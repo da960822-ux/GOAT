@@ -17,6 +17,7 @@ import {
   publicDiscoverySelections,
   rankDiscoveryCandidates,
   replaceDiscoveryCard,
+  restoreDiscoverySession,
   type DiscoverySession,
   type NormalizedConditionsByPlaceId,
 } from "@workspace/travel-domain";
@@ -27,11 +28,17 @@ import {
   replacePublicRecommendationCardSchema,
 } from "../contracts/public-discovery";
 import { ApiError, getRequestId } from "../lib/api-response";
+import { googlePlacesContentEnabled } from "../lib/feature-flags";
 import { createRateLimiter } from "../lib/rate-limit";
 import { getCuratedPlacePhotos } from "../services/curated-place-photos";
+import { fetchGooglePlacePhotos } from "../services/google-place-photo-provider";
+import { getGooglePlacePhotoSelection } from "../services/google-place-photo-selections";
 import { fetchKtoPlacePhotos } from "../services/kto-place-photo-provider";
 import { selectPlacePhotos, selectSceneCover } from "../services/place-photo-service";
-import { getShortTermForecast, toDiscoveryWeatherCondition } from "../services/today-context";
+import {
+  assembleTodayConditions,
+  getShortTermForecast,
+} from "../services/today-context";
 
 const router: IRouter = Router();
 const places = goatPlacesDataset.places;
@@ -78,13 +85,21 @@ function photoInput(selectionId: string, placeId: string) {
 async function selectPhotos(selectionId: string, placeId: string, provider = true) {
   const { input, place } = photoInput(selectionId, placeId);
   const curated = getCuratedPlacePhotos(placeId);
-  const remote = provider
-    ? await fetchKtoPlacePhotos(place.place_name, place.city).catch((error) => {
-        if (curated.length) return [];
+  const googleSelection = googlePlacesContentEnabled()
+    ? getGooglePlacePhotoSelection(placeId)
+    : undefined;
+  const [ktoRemote, googleRemote] = provider
+    ? await Promise.all([
+      fetchKtoPlacePhotos(place.place_name, place.city).catch((error) => {
+        if (curated.length || googleSelection) return [];
         throw error;
-      })
-    : [];
-  return selectPlacePhotos(input, [...curated, ...remote]);
+      }),
+      googleSelection
+        ? fetchGooglePlacePhotos(placeId, googleSelection.googlePlaceId, googleSelection.candidateIndexes).catch(() => [])
+        : Promise.resolve([]),
+    ])
+    : [[], []];
+  return selectPlacePhotos(input, [...googleRemote, ...curated, ...ktoRemote]);
 }
 
 async function publicData(session: DiscoverySession) {
@@ -161,16 +176,15 @@ async function todayConditions(
     mode: "SCENE",
     transportType,
   }).slice(0, 8);
-  return Object.fromEntries(await Promise.all(comparison.map(async ({ place }) => {
-    const weather = await getShortTermForecast({
+  return assembleTodayConditions(
+    comparison.map(({ place }) => ({
+      placeId: place.place_id,
+      placeName: place.place_name,
+      city: place.city,
       latitude: number(place.latitude ?? place.lat),
       longitude: number(place.longitude ?? place.lng),
-    });
-    return [place.place_id, {
-      weather: toDiscoveryWeatherCondition(weather),
-      visitConcentration: { status: "UNAVAILABLE" as const, reason: "NOT_COMPARABLE" as const },
-    }];
-  })));
+    })),
+  );
 }
 
 router.get("/selections", (_req, res) => {
@@ -267,17 +281,24 @@ router.post("/public/recommendations", limit, async (req, res, next) => {
     const normalizedConditions = mode === "TODAY"
       ? await todayConditions(selection, parsed.data.transportType)
       : undefined;
-    const session = buildDiscoverySession({
-      selection,
-      places,
-      request: {
-        selectionId: selection.selectionId,
-        mode,
-        ...(parsed.data.transportType ? { transportType: parsed.data.transportType } : {}),
-        ...(normalizedConditions ? { normalizedConditions } : {}),
-      },
-      snapshotAt: new Date().toISOString(),
-    });
+    const request = {
+      selectionId: selection.selectionId,
+      mode,
+      ...(parsed.data.transportType ? { transportType: parsed.data.transportType } : {}),
+      ...(normalizedConditions ? { normalizedConditions } : {}),
+    };
+    const snapshotAt = new Date().toISOString();
+    const session = parsed.data.restoreDraft
+      ? restoreDiscoverySession({
+          selection,
+          places,
+          request,
+          snapshotAt,
+          currentPlaceIds: parsed.data.restoreDraft.placeIds,
+          seenIds: parsed.data.restoreDraft.seenIds,
+          revision: parsed.data.restoreDraft.revision,
+        })
+      : buildDiscoverySession({ selection, places, request, snapshotAt });
     remember(session);
     res.json(CreatePublicRecommendationResponse.parse({
       success: true,

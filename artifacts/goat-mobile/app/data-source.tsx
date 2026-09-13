@@ -1,4 +1,5 @@
 import React from 'react';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
@@ -13,7 +14,7 @@ export default function DataSourceScreen() {
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="데이터 출처 안내" onBack={() => router.back()} />
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView entering={FadeInDown.duration(320)} contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={[styles.intro, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
           <Text style={[styles.introText, { color: colors.mutedForeground }]}>
             GOAT는 자체 정리한 강원 장소 데이터와 한국관광공사·Google Maps·기상청 데이터를 구분해 사용합니다.
@@ -120,7 +121,7 @@ export default function DataSourceScreen() {
         </View>
 
         <View style={styles.spacer} />
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 }
@@ -161,16 +162,16 @@ function ApiBlock({
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  intro: { margin: spacing.lg, padding: spacing.md, borderRadius: radius.md, borderWidth: 1 },
-  introText: { fontSize: 14, fontFamily: fonts.body, lineHeight: 23 },
-  block: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, borderBottomWidth: 1 },
+  intro: { marginHorizontal: spacing.lg, marginTop: spacing.sm, marginBottom: spacing.md, padding: 18, borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth },
+  introText: { fontSize: 15, fontFamily: fonts.body, lineHeight: 24 },
+  block: { paddingHorizontal: spacing.lg, paddingVertical: 26, borderBottomWidth: StyleSheet.hairlineWidth },
   blockHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
-  blockTitle: { fontSize: 18, fontFamily: fonts.serif },
+  blockTitle: { fontSize: 20, lineHeight: 28, fontFamily: fonts.serif },
   sourceLine: { marginBottom: 12 },
   sourceText: { fontSize: 12, lineHeight: 18, fontFamily: fonts.medium },
   itemRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 8, gap: 10 },
   dot: { width: 5, height: 5, borderRadius: 3, marginTop: 8 },
-  itemText: { flex: 1, fontSize: 14, fontFamily: fonts.body, lineHeight: 22 },
-  noteText: { fontSize: 12, fontFamily: fonts.body, lineHeight: 20, marginTop: 4 },
+  itemText: { flex: 1, fontSize: 15, fontFamily: fonts.body, lineHeight: 24 },
+  noteText: { fontSize: 13, fontFamily: fonts.body, lineHeight: 21, marginTop: 6 },
   spacer: { height: 32 },
 });

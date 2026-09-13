@@ -35,21 +35,21 @@ export function Header({ title, onBack, right }: HeaderProps) {
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: 1,
-    paddingBottom: 12,
+    borderBottomWidth: 0,
+    paddingBottom: 8,
   },
   inner: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
   },
   left: { width: 48 },
   right: { width: 48, alignItems: 'flex-end' },
   backBtn: {
     width: 48,
     height: 48,
-    borderRadius: 24,
-    borderWidth: 1,
+    borderRadius: 16,
+    borderWidth: 0,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -25,6 +25,9 @@ import {
 } from "../services/kakao-location";
 import { createRecommendationPreview } from "../services/recommendation-orchestrator";
 import { createGoatCourseRecommendation } from "../services/course-recommendation";
+import { fetchOfficialTourInfo } from "../services/kto-official-tour-info";
+import { fetchExternalPlaceInfo } from "../services/place-external-info";
+import { getPlaceCurrentWeather } from "../services/place-current-weather";
 
 const router: IRouter = Router();
 
@@ -87,7 +90,7 @@ const geocodeRateLimit = createRateLimiter({
   max: readPositiveInt(process.env.GEOCODE_RATE_LIMIT_MAX, 20),
 });
 const isDebugEnabled = process.env.ALLOW_RECOMMENDATION_DEBUG === "true";
-const defaultLlmModel = process.env.OPENROUTER_DEFAULT_MODEL?.trim() || "openai/gpt-4o-mini";
+const defaultLlmModel = process.env.OPENROUTER_DEFAULT_MODEL?.trim() || "google/gemini-3.7-flash";
 const allowedLlmModels = new Set(
   (process.env.OPENROUTER_ALLOWED_MODELS ?? defaultLlmModel)
     .split(",")
@@ -168,6 +171,10 @@ const requestSchema = z
   .refine((body) => body.moodId || body.referenceCardId, {
     message: "moodId 또는 referenceCardId 중 하나는 필수입니다.",
     path: ["moodId"],
+  })
+  .refine((body) => body.origin?.type !== "current", {
+    message: "현재 GPS 위치는 사용하지 않습니다. 직접 입력한 출발지를 선택해 주세요.",
+    path: ["origin", "type"],
   });
 
 const courseRequestSchema = z
@@ -599,19 +606,23 @@ router.post("/recommend-course", recommendRateLimit, async (req, res, next) => {
   }
 });
 
-router.get("/places/:id", (req, res, next) => {
+router.get("/places/:id", async (req, res, next) => {
   const place = getPlaceById(req.params.id);
   if (!place) {
     next(new ApiError(404, "PLACE_NOT_FOUND", "장소를 찾을 수 없습니다."));
     return;
   }
 
-  res.json({
-    success: true,
-    code: "SUCCESS",
-    message: "장소를 조회했습니다.",
-    data: { place },
-  });
+  try {
+    const [officialTourInfo, externalPlaceInfo] = await Promise.all([
+      fetchOfficialTourInfo(req.params.id).catch(() => null),
+      fetchExternalPlaceInfo(req.params.id, place).catch(() => null),
+    ]);
+    const latitude = officialTourInfo?.latitude ?? externalPlaceInfo?.latitude ?? Number(place.lat);
+    const longitude = officialTourInfo?.longitude ?? externalPlaceInfo?.longitude ?? Number(place.lng);
+    const currentWeather = await getPlaceCurrentWeather({ latitude, longitude });
+    res.json({ success: true, code: "SUCCESS", message: "장소를 조회했습니다.", data: { place, officialTourInfo, externalPlaceInfo, currentWeather } });
+  } catch (error) { next(error); }
 });
 
 export default router;

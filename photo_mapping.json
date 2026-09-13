@@ -1,0 +1,222 @@
+[
+  {
+    "place_id": "GOAT-001",
+    "place_name": "제이드가든",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "확인된 6장 모두 일반 숲길·야생화 장면으로, 이탈리안 웨딩가든·벽돌 게이트·수로와 해외 정원 감성을 식별할 수 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-002",
+    "place_name": "레고랜드 코리아 리조트",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "장소·도시가 함께 확인되는 공식 관광사진 후보 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-003",
+    "place_name": "춘천 산토리니",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "흰 종탑과 지중해 감성을 확인할 수 있는 공식 관광사진 후보 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-004",
+    "place_name": "해피초원목장",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "초원 능선·방목 장면으로 장소가 확인되는 공식 관광사진 후보 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-006",
+    "place_name": "교토정원",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "일본식 정원·다다미 공간으로 장소가 확인되는 공식 관광사진 후보 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-009",
+    "place_name": "뮤지엄 SAN",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "워터가든·콘크리트 동선으로 장소가 확인되는 공식 관광사진 후보 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-010",
+    "place_name": "소금산 그랜드밸리",
+    "photoId": "2545211",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/11/2545211.jpg",
+    "photographer": "한국관광공사 김지호",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 91,
+    "reason": "협곡을 가로지르는 출렁다리와 굽은 물길이 한 화면에 들어와 해외 산악 협곡 같은 장면과 포토포인트를 동시에 선명하게 전달함",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-011",
+    "place_name": "알파카월드",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "라틴빌리지·숲길·동물 교감 장면으로 장소가 확인되는 공식 관광사진 후보 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-012",
+    "place_name": "원대리 자작나무숲",
+    "photoId": "1840370",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/70/1840370.jpg",
+    "photographer": "한국관광공사 박은경",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 92,
+    "reason": "흰 수간이 화면 전체에서 반복되어 북유럽 숲의 원근감과 고요함이 즉시 읽히며 모바일 크롭에도 핵심 패턴이 유지됨",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-013",
+    "place_name": "인제성당",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "서양식 성당 외관과 인제 위치를 함께 확인할 수 있는 공식 관광사진 후보 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-015",
+    "place_name": "육백마지기",
+    "photoId": "2778521",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/21/2778521.jpg",
+    "photographer": "강원지사 모먼트스튜디오",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 93,
+    "reason": "겹겹의 산과 황금빛 고원, 작은 성당, 굽은 데크가 알프스 산촌 같은 장면을 만들고 고원 능선 포토포인트를 강하게 보여줌",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-016",
+    "place_name": "대관령양떼목장",
+    "photoId": "3567289",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/89/3567289.jpg",
+    "photographer": "신동하",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 95,
+    "reason": "가을 숲 사이의 선명한 초원과 양떼, 굽은 목장길이 스위스 목장 같은 깊이와 색 대비를 만들며 장소 특징이 즉시 식별됨",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-017",
+    "place_name": "하늘목장",
+    "photoId": "2028799",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/99/2028799.jpg",
+    "photographer": "한국관광공사 이범수",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 86,
+    "reason": "풍력발전기와 초원길, 트랙터 마차가 유럽 고원 농장 같은 장면을 만들며 모바일 카드에서도 주제가 크게 유지됨",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-018",
+    "place_name": "삼양라운드힐",
+    "photoId": "1126777",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/77/1126777.jpg",
+    "photographer": "한국관광공사 김지호",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 88,
+    "reason": "완만한 초원과 능선 위 풍력발전기가 홋카이도·북유럽 고원 같은 규모감을 주며 광활한 목장 포토포인트와 일치함",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-019",
+    "place_name": "발왕산 천년주목숲길·애니포레",
+    "photoId": "2446102",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/02/2446102.jpg",
+    "photographer": "이상윤",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 93,
+    "reason": "상고대가 덮인 고산 침엽수와 케이블카, 원거리 산세가 북유럽 설산의 장면을 강하게 만들고 고산 전망을 명확히 전달함",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-020",
+    "place_name": "삼탄아트마인",
+    "photoId": "2461653",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/53/2461653.jpg",
+    "photographer": "BOKEH",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 84,
+    "reason": "긴 레일과 낡은 배관, 거친 실내 질감이 유럽 산업유산 미술관 같은 분위기를 만들고 수직갱·녹슨 설비 포인트에 가장 근접함",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-021",
+    "place_name": "민둥산",
+    "photoId": "2516886",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/86/2516886.jpg",
+    "photographer": "한국관광공사 김지호",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 95,
+    "reason": "억새 능선을 따라 휘어지는 길과 겹산 원근감이 해외 고원 트레킹 장면처럼 보이며 카드 중앙에 강한 진입선을 형성함",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-022",
+    "place_name": "매봉산 바람의 언덕",
+    "photoId": "1093183",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/83/1093183.jpg",
+    "photographer": "한국관광공사 김지호",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 82,
+    "reason": "안개 속 풍력발전기와 고랭지 배추밭이 이국적인 고원 로드트립 분위기를 만들며 핵심 포토포인트를 한 장에 포함함",
+    "fallback": false
+  },
+  {
+    "place_id": "GOAT-023",
+    "place_name": "태기산",
+    "photoId": null,
+    "imageUrl": null,
+    "photographer": null,
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아",
+    "score": 0,
+    "reason": "상고대·눈꽃 능선과 횡성 위치를 함께 확인할 수 있는 공식 관광사진 후보 없음",
+    "fallback": true
+  },
+  {
+    "place_id": "GOAT-024",
+    "place_name": "안목해변 카페거리",
+    "photoId": "2617262",
+    "imageUrl": "https://tong.visitkorea.or.kr/cms2/website/62/2617262.jpg",
+    "photographer": "테마상품팀 IR 스튜디오",
+    "source": "한국관광공사 관광사진 정보 API / 포토코리아 (공공누리 제1유형)",
+    "score": 88,
+    "reason": "바다 바로 앞 테라스와 흰 커튼이 해외 비치클럽 같은 휴양감을 주고 해변 전면 카페라는 장소 특성을 한눈에 전달함",
+    "fallback": false
+  }
+]

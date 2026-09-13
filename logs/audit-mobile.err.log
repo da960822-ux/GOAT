@@ -1,0 +1,16 @@
+Failed to construct transformer:  Error: Failed to start watch mode.
+    at Timeout._onTimeout (C:\Users\jung\Documents\ChatGPT\New project 2\GOAT\node_modules\.pnpm\metro-file-map@0.83.3_supports-color@8.1.1\node_modules\metro-file-map\src\Watcher.js:161:24)
+    at listOnTimeout (node:internal/timers:635:17)
+    at processTimers (node:internal/timers:571:7)
+C:\Users\jung\Documents\ChatGPT\New project 2\GOAT\node_modules\.pnpm\@expo+cli@54.0.24_expo-rout_5b94940207e9093b92de624967a76160\node_modules\@expo\cli\build\src\utils\errors.js:130
+    throw error;
+    ^
+
+TypeError: Cannot read properties of undefined (reading 'getSha1')
+    at ensureFileSystemPatched (C:\Users\jung\Documents\ChatGPT\New project 2\GOAT\node_modules\.pnpm\react-native-css-interop@0._0e5e9fc33e23593be82069a1693d694e\node_modules\react-native-css-interop\src\metro\index.ts:424:11)
+    at C:\Users\jung\Documents\ChatGPT\New project 2\GOAT\node_modules\.pnpm\react-native-css-interop@0._0e5e9fc33e23593be82069a1693d694e\node_modules\react-native-css-interop\src\metro\index.ts:238:17
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at listOnTimeout (node:internal/timers:597:9)
+    at processTimers (node:internal/timers:571:7)
+
+Node.js v24.19.0

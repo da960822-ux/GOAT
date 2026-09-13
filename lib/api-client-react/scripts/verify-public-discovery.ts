@@ -15,6 +15,11 @@ assert.deepEqual(
     selectionId: "scene-a",
   },
 );
+
+assert.equal(
+  buildPublicPlaceShare("https://goat.example", "place-a", "장소명", "scene-a").url,
+  "https://goat.example/detail/place-a?selectionId=scene-a",
+);
 assert.equal(
   CreatePublicRecommendationBody.safeParse({
     selectionId: "scene-a",

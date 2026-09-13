@@ -1,10 +1,12 @@
 import React from 'react';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
 import { fonts, radius, spacing } from '@/src/theme/editorial';
+import { MotionPressable } from '@/src/components/MotionPressable';
 
 const LINKS = [
   { label: 'GOAT 소개', icon: 'info' as const, path: '/about' },
@@ -23,9 +25,9 @@ export default function ServiceScreen() {
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="서비스 안내" onBack={() => router.back()} />
 
-      <View style={styles.list}>
+      <Animated.View entering={FadeInDown.duration(320)} style={styles.intro}><Text accessibilityRole="header" style={[styles.introTitle, { color: colors.foreground }]}>GOAT를 더 알아보기</Text><Text style={[styles.introBody, { color: colors.mutedForeground }]}>여행을 고르는 데 필요한 안내와 출처를 한곳에서 확인하세요.</Text></Animated.View><Animated.View entering={FadeInDown.delay(100).duration(320)} style={styles.list}>
         {LINKS.map((item, i) => (
-          <TouchableOpacity
+          <MotionPressable
             key={item.path}
             style={[
               styles.row,
@@ -33,7 +35,6 @@ export default function ServiceScreen() {
               i === 0 && { borderTopWidth: 1, borderTopColor: colors.border },
             ]}
             onPress={() => router.push(item.path as any)}
-            activeOpacity={0.7}
             accessibilityRole="button"
             accessibilityLabel={`${item.label} 열기`}
           >
@@ -42,24 +43,27 @@ export default function ServiceScreen() {
             </View>
             <Text style={[styles.label, { color: colors.foreground }]}>{item.label}</Text>
             <Feather name="chevron-right" size={16} color={colors.mutedForeground} />
-          </TouchableOpacity>
+          </MotionPressable>
         ))}
-      </View>
+      </Animated.View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  list: { marginTop: spacing.md },
+  intro: { paddingHorizontal: spacing.lg, paddingTop: spacing.sm, paddingBottom: spacing.lg },
+  introTitle: { fontFamily: fonts.serif, fontSize: 22, lineHeight: 30 },
+  introBody: { marginTop: 6, fontFamily: fonts.body, fontSize: 14, lineHeight: 22 },
+  list: { marginTop: spacing.sm },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 64,
+    minHeight: 72,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     gap: 14,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   iconWrap: {
     width: 44,

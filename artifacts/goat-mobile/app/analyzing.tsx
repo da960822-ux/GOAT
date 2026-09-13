@@ -9,14 +9,16 @@ import type { RecommendationSelection } from "@workspace/travel-domain/catalog";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { AccessibilityInfo, Animated, Easing, Platform, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import Animated, { Easing, ReduceMotion, useAnimatedStyle, useReducedMotion, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function AnalyzingScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const [step, setStep] = useState(0);
-  const spin = useRef(new Animated.Value(0)).current;
+  const spin = useSharedValue(0);
+  const reducedMotion = useReducedMotion();
   const { recommendationMethod, selectedMood, selectedReferenceCardId, travelPreferences, origin, pendingAttempt, setPendingAttempt, setRecommendationSession } = useApp();
   const activeMethod = pendingAttempt?.initialSelection.method ?? recommendationMethod;
   const isReferenceFlow = activeMethod === "reference";
@@ -27,19 +29,16 @@ export default function AnalyzingScreen() {
 
   useEffect(() => {
     let active = true;
-    let animation: Animated.CompositeAnimation | null = null;
-    AccessibilityInfo.isReduceMotionEnabled().then((reduced) => {
-      if (reduced || !active) return;
-      animation = Animated.loop(Animated.timing(spin, { toValue: 1, duration: 7200, easing: Easing.linear, useNativeDriver: Platform.OS !== "web" }));
-      animation.start();
-    });
+    if (!reducedMotion) {
+      spin.set(withRepeat(withTiming(1, { duration: 7200, easing: Easing.linear, reduceMotion: ReduceMotion.System }), -1, false));
+    }
 
     let selection: RecommendationSelection | null = pendingAttempt?.initialSelection ?? null;
     if (!selection && recommendationMethod === "mood" && selectedMood) selection = { method: "mood", moodId: selectedMood.id };
     if (!selection && recommendationMethod === "reference" && selectedReferenceCardId) selection = { method: "reference", referenceCardId: selectedReferenceCardId };
     if (!selection) {
       router.replace((activeMethod === "reference" ? "/reference-selection" : "/mood-selection") as never);
-      return () => { active = false; animation?.stop(); spin.stopAnimation(); };
+      return () => { active = false; spin.set(0); };
     }
 
     const attempt = attemptRef.current ?? buildRecommendationAttempt({ selection, preferences: travelPreferences ?? undefined, origin });
@@ -67,16 +66,16 @@ export default function AnalyzingScreen() {
       }
     };
     run();
-    return () => { active = false; animation?.stop(); spin.stopAnimation(); };
-  }, [origin, recommendationMethod, router, selectedMood, selectedReferenceCardId, setPendingAttempt, setRecommendationSession, spin, travelPreferences]);
+    return () => { active = false; spin.set(0); };
+  }, [origin, recommendationMethod, router, selectedMood, selectedReferenceCardId, setPendingAttempt, setRecommendationSession, spin, travelPreferences, reducedMotion]);
 
   const analyzingImage = selectedReferenceCardId ? referenceCardImages[selectedReferenceCardId] : editorialImages.beach;
-  const rotation = spin.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] });
+  const orbitStyle = useAnimatedStyle(() => ({ transform: [{ rotate: `${spin.get() * 360}deg` }] }));
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 15, paddingBottom: insets.bottom + 26 }]}>
       <View style={styles.lockup}><GoatMark /></View>
       <View style={styles.hero}>
-        <Animated.View style={[styles.orbit, { transform: [{ rotate: rotation }] }]}><View style={styles.orbitDot} /></Animated.View>
+        <Animated.View style={[styles.orbit, orbitStyle]}><View style={styles.orbitDot} /></Animated.View>
         <View style={styles.photo}><Image source={analyzingImage} style={StyleSheet.absoluteFillObject} contentFit="cover" accessibilityLabel="선택한 감성과 어울리는 강원 풍경" /></View>
       </View>
       <Text style={styles.eyebrow}>{isReferenceFlow ? "선택한 장면을 살피는 중" : "여행의 결을 찾는 중"}</Text>

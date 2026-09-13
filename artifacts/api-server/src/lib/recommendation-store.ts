@@ -28,8 +28,11 @@ import {
   toPublicScoreDetails,
   toPublicScoreSummary,
 } from "./recommendation-audit";
+import { redactRecommendationConditions } from "./recommendation-condition-privacy";
+import type { RecommendationConditions } from "./recommendation-condition-privacy";
 
-export type RecommendationConditions = Record<string, unknown>;
+export { redactRecommendationConditions } from "./recommendation-condition-privacy";
+export type { RecommendationConditions } from "./recommendation-condition-privacy";
 
 export type StoredRouteInfo = {
   from: "ORIGIN" | "FIRST_CARD";

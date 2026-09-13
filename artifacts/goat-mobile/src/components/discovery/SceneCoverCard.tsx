@@ -15,11 +15,12 @@ export type SceneCoverCardProps = {
   imageCachePolicy?: "none" | "memory-disk";
   attribution?: string | null;
   selected?: boolean;
+  featured?: boolean;
   disabled?: boolean;
   onPress: () => void;
 };
 
-export function SceneCoverCard({ number, title, description, picturedPlaceName, imageUri, imageSource, imageCachePolicy = "none", attribution, selected = false, disabled = false, onPress }: SceneCoverCardProps) {
+export function SceneCoverCard({ number, title, description, picturedPlaceName, imageUri, imageSource, imageCachePolicy = "none", attribution, selected = false, featured = false, disabled = false, onPress }: SceneCoverCardProps) {
   const caption = picturedPlaceName;
   const source = imageSource ?? (imageUri ? { uri: imageUri } : null);
   return (
@@ -30,7 +31,7 @@ export function SceneCoverCard({ number, title, description, picturedPlaceName, 
       accessibilityState={{ selected, disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [styles.card, selected && styles.selected, disabled && styles.disabled, pressed && styles.pressed]}
+      style={({ pressed }) => [styles.card, featured && styles.featured, selected && styles.selected, disabled && styles.disabled, pressed && styles.pressed]}
     >
       {source ? <Image source={source} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessible={false} importantForAccessibility="no-hide-descendants" /> : <View style={styles.fallback} accessible={false} importantForAccessibility="no-hide-descendants">
         <BrandIcon name="image" size={32} color={palette.forestSoft} />
@@ -39,7 +40,7 @@ export function SceneCoverCard({ number, title, description, picturedPlaceName, 
       <LinearGradient colors={["rgba(8,25,21,.04)", "rgba(8,25,21,.34)", "rgba(8,25,21,.84)"]} locations={[0, .5, 1]} style={styles.scrim} pointerEvents="none" />
       <View style={styles.copy} accessible={false} importantForAccessibility="no-hide-descendants">
         <Text style={styles.number}>{String(number).padStart(2, "0")}</Text>
-        <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.title}>{title}</Text>
+        <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={[styles.title, featured && styles.featuredTitle]}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.caption} accessible={false} importantForAccessibility="no-hide-descendants">
@@ -51,7 +52,8 @@ export function SceneCoverCard({ number, title, description, picturedPlaceName, 
 }
 
 const styles = StyleSheet.create({
-  card: { minHeight: 248, overflow: "hidden", borderRadius: radius.lg, backgroundColor: palette.sage, borderWidth: 1, borderColor: palette.line },
+  card: { minHeight: 276, overflow: "hidden", borderRadius: radius.lg, backgroundColor: palette.sage, borderWidth: 1, borderColor: palette.line },
+  featured: { minHeight: 356, borderRadius: 24 },
   selected: { borderColor: palette.forest, borderWidth: 2 },
   pressed: { opacity: 0.9 },
   disabled: { opacity: 0.58 },
@@ -61,7 +63,8 @@ const styles = StyleSheet.create({
   scrim: { ...StyleSheet.absoluteFillObject },
   copy: { flex: 1, justifyContent: "flex-end", padding: spacing.lg, gap: spacing.xs },
   number: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 1.4, color: palette.sage },
-  title: { fontFamily: fonts.serif, fontSize: 26, lineHeight: 34, color: palette.white },
+  title: { fontFamily: fonts.serif, fontSize: 28, lineHeight: 37, letterSpacing: -0.5, color: palette.white },
+  featuredTitle: { fontSize: 32, lineHeight: 42 },
   description: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: palette.white },
   caption: { gap: spacing.xxs, paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, backgroundColor: "rgba(15, 48, 42, 0.92)" },
   captionRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: spacing.sm },

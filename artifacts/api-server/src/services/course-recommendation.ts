@@ -5,7 +5,6 @@ import {
   CourseStop,
   GoatDayCourseRequest,
   GoatDayCourseResult,
-  LlmCoursePlannerJson,
   TourApiNearbyCandidate,
 } from "@workspace/travel-domain";
 import { buildKakaoStaticMapResult } from "./kakao-static-map";
@@ -75,7 +74,7 @@ function localFallbackCandidates(dataset: GoatPlaceDataset, selectedPlace: GoatP
       };
     })
     .sort((a, b) => (a.distanceMeters ?? Number.MAX_SAFE_INTEGER) - (b.distanceMeters ?? Number.MAX_SAFE_INTEGER))
-    .slice(0, 12);
+    .slice(0, 3);
 }
 
 function mapSelectedPlaceToStop(selectedPlace: GoatPlace): CourseStop {
@@ -205,7 +204,7 @@ function buildRuleBasedCourse(params: {
   const tour = preferred.find((candidate) => ![cafe?.id, food?.id].includes(candidate.id));
   const picked = [tour, cafe, food]
     .filter((candidate): candidate is TourApiNearbyCandidate => Boolean(candidate))
-    .slice(0, 3);
+    .slice(0, 12);
   const stops = sortCourseStopsByNearestNeighbor([
     selected,
     ...picked.map((candidate, index) => candidateToStop(candidate, index + 2)),
@@ -229,65 +228,38 @@ function buildRuleBasedCourse(params: {
   };
 }
 
-function buildStopsFromLlm(
-  selectedPlace: GoatPlace,
-  llm: LlmCoursePlannerJson,
-  candidates: TourApiNearbyCandidate[],
-): CourseStop[] {
-  const byId = new Map(candidates.map((candidate) => [candidate.id, candidate]));
-  const selectedStop = mapSelectedPlaceToStop(selectedPlace);
-  const llmStops = llm.stops
-    .filter((stop) => stop.id !== selectedPlace.place_id)
-    .map((stop, index) => {
-      const candidate = byId.get(stop.id);
-      if (!candidate) return null;
-      return {
-        ...candidateToStop(candidate, index + 2, stop.reason),
-        stayMinutes: typeof stop.stayMinutes === "number" && Number.isFinite(stop.stayMinutes)
-          ? stop.stayMinutes
-          : 45,
-      };
-    })
-    .filter((stop): stop is CourseStop => Boolean(stop));
-
-  return sortCourseStopsByNearestNeighbor([selectedStop, ...llmStops]);
-}
-
 function normalizedTitle(value: string): string {
   return value.normalize("NFKC").toLocaleLowerCase().replace(/[\s\p{P}\p{S}]+/gu, "");
 }
 
 async function resolveNearbyCandidates(params: {
-  request: GoatDayCourseRequest;
   selectedPlace: GoatPlace;
   dataset: GoatPlaceDataset;
+  request: GoatDayCourseRequest;
 }): Promise<{
   candidates: TourApiNearbyCandidate[];
   warning?: string;
   tourApiError?: string;
   tourApiDiagnostics?: VisitKoreaNearbyDiagnostics;
 }> {
-  if (params.request.nearbyCandidates?.length) {
+  const requested = params.request.nearbyCandidates?.filter(
+    (candidate) => candidate.id !== params.selectedPlace.place_id,
+  );
+  if (requested?.length) {
     return {
-      candidates: params.request.nearbyCandidates.map((candidate) => ({
-        ...candidate,
-        source: candidate.source ?? "FRONTEND_PROVIDED",
-      })),
+      candidates: requested.map((candidate) => ({ ...candidate, source: candidate.source ?? "FRONTEND_PROVIDED" })),
     };
   }
-
   if (params.request.forceRuleBasedFallback) {
     return { candidates: localFallbackCandidates(params.dataset, params.selectedPlace) };
   }
-
   const coords = getPlaceCoordinates(params.selectedPlace);
   if (!coords) {
     return {
       candidates: localFallbackCandidates(params.dataset, params.selectedPlace),
-      warning: "선택 장소 DB에 좌표가 없어 한국관광공사 반경 검색 대신 같은 city/region_group 기반 로컬 후보로 fallback했습니다.",
+      warning: "선택 장소 좌표가 없어 한국관광공사 주변 검색 대신 로컬 후보를 사용했습니다.",
     };
   }
-
   let tourApiDiagnostics: VisitKoreaNearbyDiagnostics | undefined;
   try {
     const selectedTitle = normalizedTitle(params.selectedPlace.place_name);
@@ -296,32 +268,72 @@ async function resolveNearbyCandidates(params: {
       mapY: coords.lat,
       radiusMeters: params.request.radiusMeters ?? 3000,
       maxResults: 20,
-      onDiagnostics: (diagnostics) => {
-        tourApiDiagnostics = diagnostics;
-      },
+      onDiagnostics: (diagnostics) => { tourApiDiagnostics = diagnostics; },
     })).filter((candidate) =>
       candidate.id !== params.selectedPlace.place_id
-      && normalizedTitle(candidate.title) !== selectedTitle
+      && normalizedTitle(candidate.title) !== selectedTitle,
     );
-    if (nearby.length === 0) {
-      return {
-        candidates: localFallbackCandidates(params.dataset, params.selectedPlace),
-        warning: "한국관광공사 OpenAPI 주변 후보가 0건이어서 로컬 후보 fallback을 사용했습니다.",
-        tourApiDiagnostics,
-      };
-    }
+    if (nearby.length) return { candidates: nearby, tourApiDiagnostics };
     return {
-      candidates: nearby,
+      candidates: localFallbackCandidates(params.dataset, params.selectedPlace),
+      warning: "한국관광공사 주변 후보가 없어 로컬 후보를 사용했습니다.",
       tourApiDiagnostics,
     };
   } catch (error) {
     return {
       candidates: localFallbackCandidates(params.dataset, params.selectedPlace),
-      warning: "한국관광공사 OpenAPI 호출 실패로 로컬 후보 fallback을 사용했습니다.",
+      warning: "한국관광공사 주변 검색에 실패해 로컬 후보를 사용했습니다.",
       tourApiError: error instanceof Error ? error.message : "TOUR_API_UNKNOWN_ERROR",
       tourApiDiagnostics,
     };
   }
+}
+
+function buildLlmCourse(params: {
+  selectedPlace: GoatPlace;
+  candidates: TourApiNearbyCandidate[];
+  request: GoatDayCourseRequest;
+  planner: Awaited<ReturnType<typeof callOpenRouterCoursePlanner>>;
+  warnings?: string[];
+}): GoatDayCourseResult {
+  const selected = mapSelectedPlaceToStop(params.selectedPlace);
+  const byId = new Map(params.candidates.map((candidate) => [candidate.id, candidate]));
+  const stops = params.planner.parsed.stops.map((stop, index) => {
+    if (stop.id === params.selectedPlace.place_id) {
+      return { ...selected, order: index + 1, stayMinutes: stop.stayMinutes, reason: stop.reason };
+    }
+    const candidate = byId.get(stop.id);
+    if (!candidate) throw new Error("LLM_SCHEMA_UNKNOWN_STOP_ID");
+    return { ...candidateToStop(candidate, index + 1, stop.reason), title: candidate.title, stayMinutes: stop.stayMinutes };
+  });
+  if (stops[0]?.id !== params.selectedPlace.place_id) {
+    throw new Error("LLM_SCHEMA_START_PLACE_NOT_FIRST");
+  }
+  return {
+    status: "DONE",
+    resultType: "COURSE",
+    mode: "LLM_OPENROUTER",
+    message: "Gemini가 선택 장소와 주변 후보를 바탕으로 하루 코스를 구성했습니다.",
+    selectedPlace: pickSelectedPlaceSummary(params.selectedPlace),
+    conditions: pickConditions(params.request),
+    nearbyCandidateCount: params.candidates.length,
+    courseTitle: params.planner.parsed.courseTitle,
+    summary: params.planner.parsed.summary,
+    stops,
+    staticMap: buildKakaoStaticMapResult(stops, params.selectedPlace.place_name),
+    llmPromptUsed: true,
+    failReason: null,
+    warnings: [...(params.warnings ?? []), params.planner.parsed.routeNote],
+    debug: params.request.debug ? {
+      llmModel: params.planner.model,
+      llmRequestedModel: params.planner.requestedModel,
+      llmHttpStatus: params.planner.httpStatus,
+      llmLatencyMs: params.planner.latencyMs,
+      llmAttempts: params.planner.attempts,
+      rawLlmText: params.planner.rawText,
+      candidatesPassedToLlm: params.candidates,
+    } : undefined,
+  };
 }
 
 export async function createGoatDayCourse(
@@ -354,83 +366,57 @@ export async function createGoatDayCourse(
     };
   }
 
-  const resolved = await resolveNearbyCandidates({ request, selectedPlace, dataset: placesDataset });
-  const candidates = resolved.candidates.slice(0, request.maxCandidatesForLlm ?? 12);
+  const resolved = await resolveNearbyCandidates({ selectedPlace, dataset: placesDataset, request });
+  const candidates = resolved.candidates.slice(0, Math.min(Math.max(request.maxCandidatesForLlm ?? 12, 1), 20));
   const warnings = resolved.warning ? [resolved.warning] : [];
-
-  if (request.forceRuleBasedFallback || candidates.length === 0) {
-    const fallback = buildRuleBasedCourse({
-      selectedPlace,
-      candidates,
-      request,
-      warning: request.forceRuleBasedFallback
-        ? "forceRuleBasedFallback=true 요청으로 LLM을 호출하지 않았습니다."
-        : "주변 후보가 없어 선택 장소 단독 코스로 fallback했습니다.",
-    });
-    return request.debug ? {
-      ...fallback,
-      debug: {
-        tourApiError: resolved.tourApiError,
-        tourApiDiagnostics: resolved.tourApiDiagnostics,
-        candidatesPassedToLlm: candidates,
-      },
-    } : fallback;
+  if (!request.forceRuleBasedFallback && candidates.length > 0) {
+    try {
+      const planner = await callOpenRouterCoursePlanner({
+        selectedPlace,
+        conditions: pickConditions(request),
+        candidates,
+        model: request.llmModel,
+      });
+      return buildLlmCourse({ selectedPlace, candidates, request, planner, warnings });
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "OPENROUTER_REQUEST_FAILED";
+      const fallback = buildRuleBasedCourse({
+        selectedPlace,
+        candidates,
+        request,
+        warning: `Gemini 코스 생성에 실패해 규칙 기반 코스로 전환했습니다 (${reason}).`,
+      });
+      return {
+        ...fallback,
+        warnings: [...warnings, ...fallback.warnings],
+        debug: request.debug ? {
+          ...(fallback.debug ?? {}),
+          llmModel: request.llmModel ?? "google/gemini-3.7-flash",
+          llmError: reason,
+          tourApiError: resolved.tourApiError,
+          tourApiDiagnostics: resolved.tourApiDiagnostics,
+          candidatesPassedToLlm: candidates,
+        } : undefined,
+      };
+    }
   }
-
-  try {
-    const llm = await callOpenRouterCoursePlanner({
-      selectedPlace,
-      conditions: pickConditions(request),
-      candidates,
-      model: request.llmModel,
-    });
-    const stops = buildStopsFromLlm(selectedPlace, llm.parsed, candidates);
-    return {
-      status: "DONE",
-      resultType: "COURSE",
-      mode: "LLM_OPENROUTER",
-      message: "OpenRouter LLM 프롬프트 기반 하루 코스 생성 완료",
-      selectedPlace: pickSelectedPlaceSummary(selectedPlace),
-      conditions: pickConditions(request),
-      nearbyCandidateCount: candidates.length,
-      courseTitle: llm.parsed.courseTitle,
-      summary: llm.parsed.summary,
-      stops,
-      staticMap: buildKakaoStaticMapResult(stops, selectedPlace.place_name),
-      llmPromptUsed: true,
-      failReason: null,
-      warnings,
-      debug: request.debug ? {
-        llmModel: llm.model,
-        llmRequestedModel: llm.requestedModel,
-        llmHttpStatus: llm.httpStatus,
-        llmLatencyMs: llm.latencyMs,
-        llmAttempts: llm.attempts,
-        rawLlmText: llm.rawText,
-        tourApiError: resolved.tourApiError,
-        tourApiDiagnostics: resolved.tourApiDiagnostics,
-        candidatesPassedToLlm: candidates,
-      } : undefined,
-    };
-  } catch (error) {
-    const fallback = buildRuleBasedCourse({
-      selectedPlace,
-      candidates,
-      request,
-      warning: "OpenRouter LLM 호출 또는 JSON 파싱 실패로 규칙 기반 fallback 코스를 생성했습니다.",
-    });
-    return {
-      ...fallback,
-      warnings: [...warnings, ...fallback.warnings],
-      debug: request.debug ? {
-        llmModel: request.llmModel ?? "openai/gpt-4o-mini",
-        llmError: error instanceof Error ? error.message : "LLM_UNKNOWN_ERROR",
-        tourApiError: resolved.tourApiError,
-        tourApiDiagnostics: resolved.tourApiDiagnostics,
-        candidatesPassedToLlm: candidates,
-      } : undefined,
-    };
-  }
+  const fallback = buildRuleBasedCourse({
+    selectedPlace,
+    candidates,
+    request,
+    warning: candidates.length
+      ? "LLM을 호출하지 않아 검증된 후보를 규칙 기반으로 구성했습니다."
+      : "같은 권역의 추가 장소가 없어 선택 장소를 보존한 단독 코스입니다.",
+  });
+  return request.debug ? {
+    ...fallback,
+    warnings: [...warnings, ...fallback.warnings],
+    debug: {
+      tourApiError: resolved.tourApiError,
+      tourApiDiagnostics: resolved.tourApiDiagnostics,
+      candidatesPassedToLlm: candidates,
+    },
+  } : fallback;
 }
 
 export async function createGoatCourseRecommendation(

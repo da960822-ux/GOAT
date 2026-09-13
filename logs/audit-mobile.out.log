@@ -1,0 +1,8 @@
+env: load .env.local
+env: export EXPO_PUBLIC_API_BASE_URL
+Starting project at C:\Users\jung\Documents\ChatGPT\New project 2\GOAT\artifacts\goat-mobile
+React Compiler enabled
+Starting Metro Bundler
+undefined
+C:\Users\jung\Documents\ChatGPT\New project 2\GOAT\artifacts\goat-mobile:
+[ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL] Command failed with exit code 7: expo start --web --port 8081

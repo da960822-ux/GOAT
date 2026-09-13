@@ -1,10 +1,12 @@
 import React from 'react';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { View, ScrollView, StyleSheet, Text, TouchableOpacity, Linking, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
 import { fonts, palette, radius, spacing } from '@/src/theme/editorial';
+import { MotionPressable } from '@/src/components/MotionPressable';
 
 async function openLink(url: string) {
   try {
@@ -28,18 +30,18 @@ export default function ContactScreen() {
           <View style={[styles.heroIcon, { backgroundColor: colors.primary }]}>
             <Feather name="mail" size={28} color="#FFFFFF" />
           </View>
-          <Text style={[styles.heroTitle, { color: colors.foreground }]}>무엇이든 물어보세요</Text>
+          <Text accessibilityRole="header" style={[styles.heroTitle, { color: colors.foreground }]}>무엇이든 물어보세요</Text>
           <Text style={[styles.heroSub, { color: colors.mutedForeground }]}>
             장소 정보 오류 · 앱 개선 아이디어{'\n'}협업 문의 모두 환영합니다
           </Text>
         </View>
 
+        <Animated.View entering={FadeInDown.duration(320)}>
         {CHANNELS.map((ch) => (
-          <TouchableOpacity
+          <MotionPressable
             key={ch.label}
             style={[styles.row, { borderBottomColor: colors.border }]}
             onPress={() => ch.url && openLink(ch.url)}
-            activeOpacity={ch.url ? 0.7 : 1}
             accessibilityRole={ch.url ? "link" : undefined}
             accessibilityLabel={ch.url ? `${ch.label}. ${ch.value}` : undefined}
           >
@@ -51,8 +53,9 @@ export default function ContactScreen() {
               <Text style={[styles.rowValue, { color: colors.mutedForeground }]}>{ch.value}</Text>
             </View>
             {ch.url && <Feather name="external-link" size={14} color={colors.mutedForeground} />}
-          </TouchableOpacity>
+          </MotionPressable>
         ))}
+        </Animated.View>
 
         <View style={[styles.notice, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
           <Feather name="clock" size={14} color={colors.mutedForeground} />
@@ -98,14 +101,14 @@ const CHANNELS = [
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  hero: { alignItems: 'center', padding: spacing.xl, marginBottom: 4 },
-  heroIcon: { width: 60, height: 60, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', marginBottom: 12, backgroundColor: palette.forest },
-  heroTitle: { fontSize: 20, fontFamily: fonts.serif, marginBottom: 6 },
-  heroSub: { fontSize: 13, fontFamily: fonts.body, lineHeight: 21, textAlign: 'center' },
+  hero: { alignItems: 'center', paddingHorizontal: spacing.xl, paddingTop: 34, paddingBottom: 32, marginBottom: 8 },
+  heroIcon: { width: 64, height: 64, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginBottom: 14, backgroundColor: palette.forest },
+  heroTitle: { fontSize: 23, lineHeight: 31, fontFamily: fonts.serif, marginBottom: 8 },
+  heroSub: { fontSize: 14, fontFamily: fonts.body, lineHeight: 22, textAlign: 'center' },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 76,
+    minHeight: 84,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     borderBottomWidth: 1,
@@ -113,8 +116,8 @@ const styles = StyleSheet.create({
   },
   rowIcon: { width: 48, height: 48, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center', backgroundColor: palette.sage },
   rowText: { flex: 1 },
-  rowLabel: { fontSize: 15, fontFamily: fonts.semibold, marginBottom: 2 },
-  rowValue: { fontSize: 12, fontFamily: fonts.body },
+  rowLabel: { fontSize: 16, lineHeight: 22, fontFamily: fonts.semibold, marginBottom: 3 },
+  rowValue: { fontSize: 13, lineHeight: 19, fontFamily: fonts.body },
   notice: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, margin: spacing.lg, padding: spacing.md, borderRadius: radius.md, borderWidth: 1 },
   noticeText: { flex: 1, fontSize: 13, fontFamily: fonts.body, lineHeight: 21 },
   spacer: { height: 32 },

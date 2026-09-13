@@ -961,6 +961,35 @@ export function buildDiscoverySession(params: {
   };
 }
 
+export function restoreDiscoverySession(params: {
+  selection: SelectionDefinition;
+  places: DiscoveryPlace[];
+  request: DiscoveryRequest;
+  snapshotAt: string;
+  currentPlaceIds: string[];
+  seenIds: string[];
+  revision: number;
+}): DiscoverySession {
+  if (params.currentPlaceIds.length !== 3 || new Set(params.currentPlaceIds).size !== 3)
+    throw new Error("INVALID_DRAFT");
+  const base = buildDiscoverySession(params);
+  const cards = decorateCards({
+    selection: params.selection,
+    places: params.places,
+    currentPlaceIds: params.currentPlaceIds,
+    seenIds: params.seenIds,
+    request: params.request,
+  });
+  if (cards[0]?.matchType !== "EXACT" || cards[1]?.matchType === "EXPANDED")
+    throw new Error("STALE_DRAFT");
+  return {
+    ...base,
+    cards,
+    seenIds: [...new Set([...params.seenIds, ...params.currentPlaceIds])],
+    revision: params.revision,
+  };
+}
+
 export function replaceDiscoveryCard(params: {
   selection: SelectionDefinition;
   places: DiscoveryPlace[];

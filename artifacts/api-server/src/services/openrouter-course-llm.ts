@@ -21,7 +21,7 @@ declare const AbortSignal: { timeout(ms: number): unknown };
 declare const setTimeout: (handler: () => void, ms: number) => unknown;
 
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
-const DEFAULT_MODEL = "openai/gpt-4o-mini";
+const DEFAULT_MODEL = "google/gemini-3.7-flash";
 const REQUEST_TIMEOUT_MS = 15_000;
 const DEFAULT_MAX_ATTEMPTS = 2;
 const DEFAULT_RETRY_DELAY_MS = 250;

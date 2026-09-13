@@ -5,7 +5,7 @@ import type {
 } from "@workspace/api-zod";
 
 const KTO_ATTRIBUTION: SourceAttribution = {
-  label: "한국관광공사",
+  label: "ⓒ한국관광공사",
   sourceUrl: "https://www.data.go.kr/data/15101914/openapi.do",
 };
 
@@ -16,13 +16,16 @@ export type PhotoMetadata = {
 };
 
 export type ProviderPhoto = PhotoMetadata & {
-  provider: "KTO_PHOTO" | "KTO_TOUR_INFO";
+  provider: "KTO_PHOTO" | "KTO_TOUR_INFO" | "GOOGLE_PLACES";
   sourceRef: string;
   url: string;
   placeVerified: boolean;
   rightsConfirmed: boolean;
   license?: string;
   author?: string;
+  attribution?: SourceAttribution;
+  cacheEnabled?: boolean;
+  selectionRank?: number;
 };
 
 export type PlacePhotoInput = {
@@ -75,7 +78,7 @@ const toAsset = (input: PlacePhotoInput, photo: ProviderPhoto): PhotoAsset => ({
   title: photo.title,
   keywords: photo.keywords ?? [],
   photographyLocation: photo.photographyLocation,
-  attribution: {
+  attribution: photo.attribution ?? {
     ...KTO_ATTRIBUTION,
     author: photo.author,
     license: photo.license,
@@ -83,10 +86,10 @@ const toAsset = (input: PlacePhotoInput, photo: ProviderPhoto): PhotoAsset => ({
   // KTO API records that reach this service have a confirmed, same-place
   // content record. The provider's crop/share restrictions remain conservative.
   licenseStatus: "CONFIRMED",
-  cropPermission: "DENIED",
+  cropPermission: photo.provider === "GOOGLE_PLACES" ? "UNKNOWN" : "DENIED",
   identityStatus: "MATCHED",
-  contentFit: "contain",
-  cacheEnabled: true,
+  contentFit: photo.provider === "GOOGLE_PLACES" ? "cover" : "contain",
+  cacheEnabled: photo.cacheEnabled ?? photo.provider !== "GOOGLE_PLACES",
   shareAllowed: false,
 });
 
@@ -122,7 +125,8 @@ export function selectPlacePhotos(
     const rightRequired = required.length ? matchedTermCount(right, required) : 0;
     const leftRequiredRank = leftRequired === required.length ? 2 : leftRequired ? 1 : 0;
     const rightRequiredRank = rightRequired === required.length ? 2 : rightRequired ? 1 : 0;
-    return rightRequiredRank - leftRequiredRank
+    return (left.selectionRank ?? Number.MAX_SAFE_INTEGER) - (right.selectionRank ?? Number.MAX_SAFE_INTEGER)
+      || rightRequiredRank - leftRequiredRank
       || matchedTermCount(right, preferred) - matchedTermCount(left, preferred)
       || Number(termsMatch(right, photoPoint)) - Number(termsMatch(left, photoPoint))
       || photoId(left).localeCompare(photoId(right));
@@ -133,7 +137,9 @@ export function selectPlacePhotos(
     placeHero: evidenceImages[0] ?? null,
     evidenceImages,
     galleryStatus: evidenceImages.length ? "AVAILABLE" : "EMPTY",
-    sourceAttributions: evidenceImages.length ? [KTO_ATTRIBUTION] : [],
+    sourceAttributions: evidenceImages.length
+      ? Array.from(new Map(evidenceImages.map(({ attribution }) => [attribution.label, attribution])).values())
+      : [],
   };
 }
 

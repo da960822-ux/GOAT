@@ -1,5 +1,6 @@
 import { Link, Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 
 import { useColors } from "@/hooks/useColors";
 import { GoatMark } from "@/src/components/editorial/Brand";
@@ -12,10 +13,10 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ title: "페이지를 찾을 수 없어요" }} />
       <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <View style={[styles.mark, { backgroundColor: colors.secondary }]}><GoatMark /></View>
-        <Text style={[styles.title, { color: colors.foreground }]}>
+        <Animated.View entering={FadeIn.duration(320)} style={[styles.mark, { backgroundColor: colors.secondary }]}><GoatMark /></Animated.View>
+        <Animated.Text entering={FadeInDown.delay(100).duration(320)} accessibilityRole="header" style={[styles.title, { color: colors.foreground }]}>
           요청한 화면을 찾을 수 없어요.
-        </Text>
+        </Animated.Text>
 
         <Link href="/" style={[styles.link, { backgroundColor: colors.primary }]} accessibilityRole="link">
           <Text style={[styles.linkText, { color: palette.paper }]}>
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     minHeight: 48,
     paddingHorizontal: spacing.lg,
     justifyContent: 'center',
-    borderRadius: radius.pill,
+    borderRadius: radius.md,
   },
   linkText: {
     fontSize: 14,

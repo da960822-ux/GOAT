@@ -7,10 +7,12 @@
  */
 import type { DiscoveryMode } from './discoveryMode';
 import type { DiscoveryTransportType } from './discoveryTransportType';
+import type { PublicRecommendationRequestRestoreDraft } from './publicRecommendationRequestRestoreDraft';
 
 export interface PublicRecommendationRequest {
   /** @minLength 1 */
   selectionId: string;
   mode?: DiscoveryMode;
   transportType?: DiscoveryTransportType;
+  restoreDraft?: PublicRecommendationRequestRestoreDraft;
 }

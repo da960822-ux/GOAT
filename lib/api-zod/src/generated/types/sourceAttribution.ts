@@ -10,6 +10,7 @@ export interface SourceAttribution {
   /** @minLength 1 */
   label: string;
   author?: string;
+  authorUri?: string;
   license?: string;
   sourceUrl?: string;
 }

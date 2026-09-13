@@ -1,0 +1,2571 @@
+{
+  "review": "Terra final mobile visual E2E",
+  "reviewedAt": "2026-09-13",
+  "deployment": "KTO curated place-photo mapping redeploy revalidation",
+  "browser": {
+    "tool": "Playwright CLI",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "detailContentWaitMs": 30000,
+    "imageCompletionWaitMs": 15000
+  },
+  "scope": {
+    "routes": "GOAT-001 through GOAT-061",
+    "screenshotDirectory": "output/playwright/terra-61",
+    "sourceUrlsStored": false
+  },
+  "totals": {
+    "PASS": 61,
+    "FAIL": 0,
+    "BLOCKED": 0,
+    "loadedRepresentativeImages": 51,
+    "normalFallbacks": 10,
+    "coverCropObserved": 28,
+    "photoStatuses": {
+      "200": 51,
+      "502": 10
+    },
+    "providers": {
+      "KTO": 30,
+      "GOOGLE": 21,
+      "FALLBACK": 10
+    }
+  },
+  "nonPassPlaces": [],
+  "networkNotes": {
+    "console": [
+      "Unauthenticated /api/auth/me returned 401 during public-page initialization.",
+      "Ten /api/place-photos requests returned 502; each rendered the designed fallback/error state rather than a broken image."
+    ],
+    "failedImageRequests": 0
+  },
+  "places": [
+    {
+      "id": "GOAT-001",
+      "path": "/detail/GOAT-001",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 853,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-001.png"
+    },
+    {
+      "id": "GOAT-002",
+      "path": "/detail/GOAT-002",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 901,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-002.png"
+    },
+    {
+      "id": "GOAT-003",
+      "path": "/detail/GOAT-003",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 1000,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-003.png"
+    },
+    {
+      "id": "GOAT-004",
+      "path": "/detail/GOAT-004",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-004.png"
+    },
+    {
+      "id": "GOAT-005",
+      "path": "/detail/GOAT-005",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-005.png"
+    },
+    {
+      "id": "GOAT-006",
+      "path": "/detail/GOAT-006",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-006.png"
+    },
+    {
+      "id": "GOAT-007",
+      "path": "/detail/GOAT-007",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-007.png"
+    },
+    {
+      "id": "GOAT-008",
+      "path": "/detail/GOAT-008",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 800,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-008.png"
+    },
+    {
+      "id": "GOAT-009",
+      "path": "/detail/GOAT-009",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 680,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-009.png"
+    },
+    {
+      "id": "GOAT-010",
+      "path": "/detail/GOAT-010",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 960,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-010.png"
+    },
+    {
+      "id": "GOAT-011",
+      "path": "/detail/GOAT-011",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-011.png"
+    },
+    {
+      "id": "GOAT-012",
+      "path": "/detail/GOAT-012",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 853,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-012.png"
+    },
+    {
+      "id": "GOAT-013",
+      "path": "/detail/GOAT-013",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 627,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-013.png"
+    },
+    {
+      "id": "GOAT-014",
+      "path": "/detail/GOAT-014",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-014.png"
+    },
+    {
+      "id": "GOAT-015",
+      "path": "/detail/GOAT-015",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 676,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-015.png"
+    },
+    {
+      "id": "GOAT-016",
+      "path": "/detail/GOAT-016",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-016.png"
+    },
+    {
+      "id": "GOAT-017",
+      "path": "/detail/GOAT-017",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-017.png"
+    },
+    {
+      "id": "GOAT-018",
+      "path": "/detail/GOAT-018",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 626,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-018.png"
+    },
+    {
+      "id": "GOAT-019",
+      "path": "/detail/GOAT-019",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-019.png"
+    },
+    {
+      "id": "GOAT-020",
+      "path": "/detail/GOAT-020",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-020.png"
+    },
+    {
+      "id": "GOAT-021",
+      "path": "/detail/GOAT-021",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 874,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-021.png"
+    },
+    {
+      "id": "GOAT-022",
+      "path": "/detail/GOAT-022",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 626,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-022.png"
+    },
+    {
+      "id": "GOAT-023",
+      "path": "/detail/GOAT-023",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-023.png"
+    },
+    {
+      "id": "GOAT-024",
+      "path": "/detail/GOAT-024",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-024.png"
+    },
+    {
+      "id": "GOAT-025",
+      "path": "/detail/GOAT-025",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-025.png"
+    },
+    {
+      "id": "GOAT-026",
+      "path": "/detail/GOAT-026",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 854,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-026.png"
+    },
+    {
+      "id": "GOAT-027",
+      "path": "/detail/GOAT-027",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 700,
+          "naturalHeight": 467,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-027.png"
+    },
+    {
+      "id": "GOAT-028",
+      "path": "/detail/GOAT-028",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 857,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-028.png"
+    },
+    {
+      "id": "GOAT-029",
+      "path": "/detail/GOAT-029",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 853,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-029.png"
+    },
+    {
+      "id": "GOAT-030",
+      "path": "/detail/GOAT-030",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 705,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-030.png"
+    },
+    {
+      "id": "GOAT-031",
+      "path": "/detail/GOAT-031",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-031.png"
+    },
+    {
+      "id": "GOAT-032",
+      "path": "/detail/GOAT-032",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 1600,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-032.png"
+    },
+    {
+      "id": "GOAT-033",
+      "path": "/detail/GOAT-033",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-033.png"
+    },
+    {
+      "id": "GOAT-034",
+      "path": "/detail/GOAT-034",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 705,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-034.png"
+    },
+    {
+      "id": "GOAT-035",
+      "path": "/detail/GOAT-035",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-035.png"
+    },
+    {
+      "id": "GOAT-036",
+      "path": "/detail/GOAT-036",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-036.png"
+    },
+    {
+      "id": "GOAT-037",
+      "path": "/detail/GOAT-037",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 720,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-037.png"
+    },
+    {
+      "id": "GOAT-038",
+      "path": "/detail/GOAT-038",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 853,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-038.png"
+    },
+    {
+      "id": "GOAT-039",
+      "path": "/detail/GOAT-039",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-039.png"
+    },
+    {
+      "id": "GOAT-040",
+      "path": "/detail/GOAT-040",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1280,
+          "naturalHeight": 853,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-040.png"
+    },
+    {
+      "id": "GOAT-041",
+      "path": "/detail/GOAT-041",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-041.png"
+    },
+    {
+      "id": "GOAT-042",
+      "path": "/detail/GOAT-042",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 1200,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-042.png"
+    },
+    {
+      "id": "GOAT-043",
+      "path": "/detail/GOAT-043",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 700,
+          "naturalHeight": 525,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-043.png"
+    },
+    {
+      "id": "GOAT-044",
+      "path": "/detail/GOAT-044",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 626,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-044.png"
+    },
+    {
+      "id": "GOAT-045",
+      "path": "/detail/GOAT-045",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 674,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-045.png"
+    },
+    {
+      "id": "GOAT-046",
+      "path": "/detail/GOAT-046",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-046.png"
+    },
+    {
+      "id": "GOAT-047",
+      "path": "/detail/GOAT-047",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 531,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-047.png"
+    },
+    {
+      "id": "GOAT-048",
+      "path": "/detail/GOAT-048",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 1200,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-048.png"
+    },
+    {
+      "id": "GOAT-049",
+      "path": "/detail/GOAT-049",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 418,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-049.png"
+    },
+    {
+      "id": "GOAT-050",
+      "path": "/detail/GOAT-050",
+      "status": "PASS",
+      "provider": "FALLBACK",
+      "imageCount": 0,
+      "images": [],
+      "photoRequest": {
+        "status": 502,
+        "galleryStatus": null,
+        "evidenceCount": null
+      },
+      "failedRequests": 0,
+      "fallbackVisible": true,
+      "galleryErrorVisible": true,
+      "attributionVisible": false,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "사진 API 502: UI fallback/error 상태로 정상 표시",
+      "screenshot": "output/playwright/terra-61/GOAT-050.png"
+    },
+    {
+      "id": "GOAT-051",
+      "path": "/detail/GOAT-051",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 528,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-051.png"
+    },
+    {
+      "id": "GOAT-052",
+      "path": "/detail/GOAT-052",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 626,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-052.png"
+    },
+    {
+      "id": "GOAT-053",
+      "path": "/detail/GOAT-053",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 704,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-053.png"
+    },
+    {
+      "id": "GOAT-054",
+      "path": "/detail/GOAT-054",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 627,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-054.png"
+    },
+    {
+      "id": "GOAT-055",
+      "path": "/detail/GOAT-055",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 627,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-055.png"
+    },
+    {
+      "id": "GOAT-056",
+      "path": "/detail/GOAT-056",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 900,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-056.png"
+    },
+    {
+      "id": "GOAT-057",
+      "path": "/detail/GOAT-057",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 627,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-057.png"
+    },
+    {
+      "id": "GOAT-058",
+      "path": "/detail/GOAT-058",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 705,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": false,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-058.png"
+    },
+    {
+      "id": "GOAT-059",
+      "path": "/detail/GOAT-059",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 625,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-059.png"
+    },
+    {
+      "id": "GOAT-060",
+      "path": "/detail/GOAT-060",
+      "status": "PASS",
+      "provider": "GOOGLE",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "naturalHeight": 674,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-060.png"
+    },
+    {
+      "id": "GOAT-061",
+      "path": "/detail/GOAT-061",
+      "status": "PASS",
+      "provider": "KTO",
+      "imageCount": 1,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 940,
+          "naturalHeight": 627,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 380,
+            "right": 390,
+            "bottom": 380
+          },
+          "objectFit": "cover",
+          "broken": false
+        }
+      ],
+      "photoRequest": {
+        "status": 200,
+        "galleryStatus": null,
+        "evidenceCount": 0
+      },
+      "failedRequests": 0,
+      "fallbackVisible": false,
+      "galleryErrorVisible": false,
+      "attributionVisible": true,
+      "layout": {
+        "viewportOverflow": false,
+        "nameClippedOrOffscreen": false,
+        "ctaClippedOrOffscreen": false,
+        "attributionClippedOrOffscreen": false,
+        "imageRectOverflow": false,
+        "objectFitCropObserved": true,
+        "obviousDestructiveCrop": false
+      },
+      "observation": "대표 사진 및 갤러리 상태가 정상적으로 표시됨",
+      "screenshot": "output/playwright/terra-61/GOAT-061.png"
+    }
+  ]
+}
+

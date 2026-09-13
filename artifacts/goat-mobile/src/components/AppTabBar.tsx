@@ -42,13 +42,13 @@ export function AppTabBar() {
 
 const styles = StyleSheet.create({
   bar: {
-    position: "absolute", left: 0, right: 0, bottom: 0, minHeight: 76, paddingTop: 9,
-    flexDirection: "row", backgroundColor: palette.paper, borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: palette.line, boxShadow: "0 -4px 14px rgba(15, 48, 42, 0.10)",
+    position: "absolute", left: 0, right: 0, bottom: 0, minHeight: 82, paddingTop: 12,
+    flexDirection: "row", backgroundColor: palette.paper, borderTopWidth: 0,
+    borderTopColor: palette.line, boxShadow: "0 -6px 20px rgba(15, 48, 42, 0.08)",
   },
   item: { flex: 1, minHeight: 50, alignItems: "center", justifyContent: "center", gap: 3, borderRadius: 12 },
   pressed: { opacity: 0.72 },
-  iconWell: { width: 32, height: 27, alignItems: "center", justifyContent: "center", borderRadius: 14 },
+  iconWell: { width: 38, height: 30, alignItems: "center", justifyContent: "center", borderRadius: 15 },
   iconWellActive: { backgroundColor: palette.forest },
   label: { fontFamily: fonts.medium, fontSize: 10, lineHeight: 14, color: palette.muted, letterSpacing: -0.2 },
   active: { fontFamily: fonts.semibold, color: palette.forest },

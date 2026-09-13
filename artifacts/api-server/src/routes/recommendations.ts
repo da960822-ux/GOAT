@@ -17,6 +17,7 @@ import {
   getRecentRecommendations,
   getRecommendationData,
   hashRecommendationRequest,
+  redactRecommendationConditions,
   reserveRecommendationRequest,
   type StoredRouteInfo,
 } from "../lib/recommendation-store";
@@ -67,7 +68,11 @@ const recommendationRequestSchema = z
       message: "Exactly one of moodId or referenceCardId is required.",
       path: ["moodId"],
     },
-  );
+  )
+  .refine((body) => body.origin?.type !== "current", {
+    message: "현재 GPS 위치는 사용하지 않습니다. 직접 입력한 출발지를 선택해 주세요.",
+    path: ["origin", "type"],
+  });
 
 const recentQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(20).default(1),
@@ -104,7 +109,8 @@ router.post("/recommendations", async (req, res, next) => {
       throw new ApiError(403, "DEBUG_NOT_ALLOWED", "Debug responses are disabled.");
     }
 
-    const requestHash = hashRecommendationRequest(parsed.data);
+    const persistedConditions = redactRecommendationConditions(parsed.data);
+    const requestHash = hashRecommendationRequest(persistedConditions);
     const reservation = await reserveRecommendationRequest({
       userId: user.id,
       idempotencyKey,
@@ -212,7 +218,7 @@ router.post("/recommendations", async (req, res, next) => {
     const recommendationId = await completeRecommendationRequest({
       requestRecordId: reservation.request.id,
       userId: user.id,
-      conditions: parsed.data,
+      conditions: persistedConditions,
       cards: result.cards,
       policyVersion: result.policyVersion,
       decisionAudit: result.decisionAudit,

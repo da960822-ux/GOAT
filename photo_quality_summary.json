@@ -1,0 +1,158 @@
+{
+  "total_places": 20,
+  "total_candidates": 72,
+  "counts": {
+    "GOOD": 6,
+    "BORDERLINE": 5,
+    "FAIL": 9
+  },
+  "verdicts": {
+    "GOOD": [
+      {
+        "place_id": "GOAT-010",
+        "place_name": "소금산 그랜드밸리",
+        "selected": "C",
+        "top_score": 91,
+        "reason": "C가 협곡과 출렁다리, 물길을 가장 균형 있게 담아 해외 산악 협곡의 규모감과 모바일 카드 집중도가 가장 높음"
+      },
+      {
+        "place_id": "GOAT-012",
+        "place_name": "원대리 자작나무숲",
+        "selected": "D",
+        "top_score": 92,
+        "reason": "D는 흰 자작나무의 반복 패턴과 깊이가 화면 전체를 채워 북유럽 숲을 즉시 연상시키며 모바일 크롭에도 강함"
+      },
+      {
+        "place_id": "GOAT-015",
+        "place_name": "육백마지기",
+        "selected": "A",
+        "top_score": 93,
+        "reason": "A는 황금빛 고원·겹산·작은 성당·굽은 데크가 결합되어 알프스 산촌의 장면성을 가장 강하게 만듦"
+      },
+      {
+        "place_id": "GOAT-016",
+        "place_name": "대관령양떼목장",
+        "selected": "D",
+        "top_score": 95,
+        "reason": "D는 양떼·초원·굽은 길·가을 숲을 한 장에 담아 스위스 목장 같은 풍경과 장소 식별력을 동시에 확보함"
+      },
+      {
+        "place_id": "GOAT-019",
+        "place_name": "발왕산 천년주목숲길·애니포레",
+        "selected": "A",
+        "top_score": 93,
+        "reason": "A만 설산·상고대 침엽수·케이블카·원거리 산세가 함께 보여 북유럽 고산 리조트 장면을 즉시 연상시킴"
+      },
+      {
+        "place_id": "GOAT-021",
+        "place_name": "민둥산",
+        "selected": "C",
+        "top_score": 95,
+        "reason": "C는 억새 능선을 따라 휘는 길과 겹산이 강한 진입선을 만들며 해외 고원 트레킹 카드로 바로 사용 가능함"
+      }
+    ],
+    "BORDERLINE": [
+      {
+        "place_id": "GOAT-017",
+        "place_name": "하늘목장",
+        "selected": "D",
+        "top_score": 86,
+        "reason": "D가 풍력발전기·초원길·트랙터 마차를 가장 명료하게 담지만 테마파크 차량 인상이 강해 순수 알프스 목장 감성은 제한적임"
+      },
+      {
+        "place_id": "GOAT-018",
+        "place_name": "삼양라운드힐",
+        "selected": "D",
+        "top_score": 88,
+        "reason": "D가 초원과 능선 위 풍력발전기로 홋카이도 고원 분위기를 만들지만 계절색과 시설이 평범해 메인 카드 확정에는 다소 약함"
+      },
+      {
+        "place_id": "GOAT-020",
+        "place_name": "삼탄아트마인",
+        "selected": "B",
+        "top_score": 84,
+        "reason": "B가 낡은 배관과 긴 산업 동선으로 유럽 산업유산 미술관과 가장 닮았지만 조명이 평평해 첫 화면 매력은 중간 수준임"
+      },
+      {
+        "place_id": "GOAT-022",
+        "place_name": "매봉산 바람의 언덕",
+        "selected": "B",
+        "top_score": 82,
+        "reason": "B가 안개 속 풍력발전기와 배추밭을 함께 보여 포토포인트는 충족하지만 흐린 대비와 평범한 기록 구도로 첫 화면 임팩트가 약함"
+      },
+      {
+        "place_id": "GOAT-024",
+        "place_name": "안목해변 카페거리",
+        "selected": "E",
+        "top_score": 88,
+        "reason": "E가 바다 바로 앞 테라스와 커튼으로 비치클럽 분위기를 만들지만 안목 고유의 해외 장소 연상은 충분히 강하지 않음"
+      }
+    ],
+    "FAIL": [
+      {
+        "place_id": "GOAT-001",
+        "place_name": "제이드가든",
+        "selected": null,
+        "top_score": null,
+        "reason": "후보 모두 일반 수목원 기록사진에 가깝고 이탈리안 웨딩가든·벽돌 게이트·수로가 보이지 않아 유럽 정원 연상이 약함"
+      },
+      {
+        "place_id": "GOAT-002",
+        "place_name": "레고랜드 코리아 리조트",
+        "selected": null,
+        "top_score": null,
+        "reason": "춘천 레고랜드로 검증되는 관광공사 후보가 없음"
+      },
+      {
+        "place_id": "GOAT-003",
+        "place_name": "춘천 산토리니",
+        "selected": null,
+        "top_score": null,
+        "reason": "흰 종탑과 지중해 감성을 검증할 수 있는 관광공사 후보가 없음"
+      },
+      {
+        "place_id": "GOAT-004",
+        "place_name": "해피초원목장",
+        "selected": null,
+        "top_score": null,
+        "reason": "초원 능선·방목 장면으로 장소가 검증되는 관광공사 후보가 없음"
+      },
+      {
+        "place_id": "GOAT-006",
+        "place_name": "교토정원",
+        "selected": null,
+        "top_score": null,
+        "reason": "일본식 정원·다다미 공간으로 장소가 검증되는 관광공사 후보가 없음"
+      },
+      {
+        "place_id": "GOAT-009",
+        "place_name": "뮤지엄 SAN",
+        "selected": null,
+        "top_score": null,
+        "reason": "워터가든·콘크리트 동선으로 장소가 검증되는 관광공사 후보가 없음"
+      },
+      {
+        "place_id": "GOAT-011",
+        "place_name": "알파카월드",
+        "selected": null,
+        "top_score": null,
+        "reason": "라틴빌리지·숲길·동물 교감 장면으로 장소가 검증되는 관광공사 후보가 없음"
+      },
+      {
+        "place_id": "GOAT-013",
+        "place_name": "인제성당",
+        "selected": null,
+        "top_score": null,
+        "reason": "서양식 성당 외관과 인제 위치를 함께 검증할 수 있는 관광공사 후보가 없음"
+      },
+      {
+        "place_id": "GOAT-023",
+        "place_name": "태기산",
+        "selected": null,
+        "top_score": null,
+        "reason": "상고대·눈꽃 능선과 횡성 위치를 함께 검증할 수 있는 관광공사 후보가 없음"
+      }
+    ]
+  },
+  "note": "기존 photo_mapping은 가선정 상태이며 이 리뷰만으로 최종 확정하지 않음"
+}

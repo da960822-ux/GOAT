@@ -1,0 +1,14 @@
+.worktrees/
+.playwright-cli/
+agent-skills-main/
+output/
+photo_review_contact_sheets/
+photo_source_review_samples/
+tmp/
+artifacts/goat-mobile/
+artifacts/mockup-sandbox/
+GOAT_FINAL_AI_API_RECOMMENDATION/
+*.png
+*.jpg
+*.jpeg
+*.webp

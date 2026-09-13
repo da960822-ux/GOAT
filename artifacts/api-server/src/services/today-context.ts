@@ -1,7 +1,15 @@
-import type { NormalizedCandidateConditions } from "@workspace/travel-domain";
+import type {
+  NormalizedCandidateConditions,
+  NormalizedConditionsByPlaceId,
+} from "@workspace/travel-domain";
+import {
+  getVisitConcentration,
+  type VisitConcentration,
+} from "../lib/kto-visit-concentration";
 
 const KMA_FORECAST_URL =
   "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+export const TODAY_CONTEXT_DEADLINE_MS = 3_000;
 
 export type ContextFactor = "WEATHER" | "VISIT_CONCENTRATION";
 export type ContextFactorStatus = "APPLIED" | "SKIPPED";
@@ -81,6 +89,132 @@ export function toDiscoveryWeatherCondition(
     comparisonKey: `${forecast.windowStartKst}/${forecast.windowEndKst}`,
     preference: forecast.hours.filter(({ precipitation }) => precipitation === "NONE").length,
   };
+}
+
+/**
+ * The current KTO adapter does not establish a shared cross-place scale.
+ * Preserve the provider call as context, but never manufacture a ranking input.
+ */
+export function toDiscoveryVisitConcentrationCondition(
+  concentration: VisitConcentration,
+): NonNullable<NormalizedCandidateConditions["visitConcentration"]> {
+  return {
+    status: "UNAVAILABLE",
+    reason:
+      concentration.source === "KTO_VISIT_CONCENTRATION"
+        ? "NOT_COMPARABLE"
+        : "NO_DATA",
+  };
+}
+
+export type TodayConditionCandidate = {
+  placeId: string;
+  placeName: string;
+  city: string;
+  latitude?: number;
+  longitude?: number;
+};
+
+type TodayConditionProviders = {
+  weather?: typeof getShortTermForecast;
+  visitConcentration?: typeof getVisitConcentration;
+  deadlineMs?: number;
+};
+
+export async function assembleTodayConditions(
+  candidates: TodayConditionCandidate[],
+  providers: TodayConditionProviders = {},
+): Promise<NormalizedConditionsByPlaceId> {
+  const weatherProvider = providers.weather ?? getShortTermForecast;
+  const concentrationProvider =
+    providers.visitConcentration ?? getVisitConcentration;
+  const deadlineMs = Math.max(
+    1,
+    providers.deadlineMs ?? TODAY_CONTEXT_DEADLINE_MS,
+  );
+  const timeoutCondition = { status: "UNAVAILABLE", reason: "TIMEOUT" } as const;
+  const conditions: NormalizedConditionsByPlaceId = Object.fromEntries(
+    candidates.map(({ placeId }) => [
+      placeId,
+      {
+        weather: timeoutCondition,
+        visitConcentration: timeoutCondition,
+      },
+    ]),
+  );
+  if (candidates.length === 0) return conditions;
+
+  let acceptingResults = true;
+  const setCondition = (
+    placeId: string,
+    factor: keyof NormalizedCandidateConditions,
+    value: NonNullable<NormalizedCandidateConditions[typeof factor]>,
+  ) => {
+    if (!acceptingResults) return;
+    const current = conditions[placeId];
+    if (current) current[factor] = value;
+  };
+  const tasks = candidates.flatMap((candidate) => [
+    Promise.resolve()
+      .then(() =>
+        weatherProvider({
+          latitude: candidate.latitude,
+          longitude: candidate.longitude,
+        }),
+      )
+      .then((weather) =>
+        setCondition(
+          candidate.placeId,
+          "weather",
+          toDiscoveryWeatherCondition(weather),
+        ),
+      )
+      .catch(() =>
+        setCondition(candidate.placeId, "weather", {
+          status: "UNAVAILABLE",
+          reason: "NO_DATA",
+        }),
+      ),
+    Promise.resolve()
+      .then(() => concentrationProvider(candidate.placeName, candidate.city))
+      .then((concentration) =>
+        setCondition(
+          candidate.placeId,
+          "visitConcentration",
+          toDiscoveryVisitConcentrationCondition(concentration),
+        ),
+      )
+      .catch(() =>
+        setCondition(candidate.placeId, "visitConcentration", {
+          status: "UNAVAILABLE",
+          reason: "NO_DATA",
+        }),
+      ),
+  ]);
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  await Promise.race([
+    Promise.allSettled(tasks),
+    new Promise<void>((resolve) => {
+      timer = setTimeout(resolve, deadlineMs);
+    }),
+  ]);
+  acceptingResults = false;
+  if (timer) clearTimeout(timer);
+
+  return Object.fromEntries(
+    Object.entries(conditions).map(([placeId, value]) => [
+      placeId,
+      value
+        ? {
+            weather: value.weather ? { ...value.weather } : undefined,
+            visitConcentration: value.visitConcentration
+              ? { ...value.visitConcentration }
+              : undefined,
+          }
+        : undefined,
+    ]),
+  );
 }
 
 type KmaItem = {

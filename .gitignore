@@ -42,6 +42,7 @@ GOAT.env
 /artifacts/goat-mobile/dist-web-final/
 /artifacts/goat-mobile/dist-validation/
 /artifacts/goat-mobile/.playwright-cli/
+/.playwright-cli/
 GOAT_FINAL_AI_API_RECOMMENDATION/
 /.sass-cache
 /connect.lock
@@ -72,3 +73,5 @@ start-goat-service.bat
 .env.*
 !.env.example
 GOAT.env
+.vercel
+.env*.local

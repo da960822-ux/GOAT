@@ -23,7 +23,7 @@ function isCourse(value: unknown): value is RecommendCourseData {
   return (
     Array.isArray(course.stops) &&
     course.stops.length >= 1 &&
-    course.stops.length <= 3 &&
+    course.stops.length <= 5 &&
     course.stops.every(
       (stop) =>
         stop && typeof stop.id === "string" && typeof stop.title === "string",
@@ -43,7 +43,10 @@ export async function createCourse(
     primaryTheme,
     userMoodTags: place.mood_tags.slice(0, 10),
     userSceneTags: sceneTags.slice(0, 10),
-    forceRuleBasedFallback: true,
+    // Let the API use the configured Gemini/OpenRouter course composer.
+    // The server still owns validation and can return a safe fallback when
+    // the model is unavailable.
+    forceRuleBasedFallback: false,
   });
   if (!isCourse(data) || data.stops[0]?.id !== place.place_id)
     throw new Error("INVALID_COURSE_RESULT");

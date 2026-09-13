@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import Animated, { FadeInDown, ReduceMotion, useReducedMotion } from "react-native-reanimated";
 import {
   AccessibilityInfo,
   ActivityIndicator,
@@ -61,6 +62,7 @@ export default function ResultsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
+  const reducedMotion = useReducedMotion();
   const deckRef = useRef<ScrollView>(null);
   const {
     publicSelection,
@@ -99,7 +101,7 @@ export default function ResultsScreen() {
   const compareTriggerRef = useRef<View>(null);
   const decisionTriggerRef = useRef<View>(null);
   const requestGeneration = useRef(0);
-  const cardWidth = Math.min(width - 40, 480);
+  const cardWidth = Math.min(width - 32, 480);
   const gap = 12;
 
   useEffect(() => {
@@ -473,7 +475,7 @@ export default function ResultsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 36 + insets.bottom, gap: 18 }}
       >
-        <View style={styles.intro}>
+        <Animated.View entering={reducedMotion ? undefined : FadeInDown.duration(440).reduceMotion(ReduceMotion.System)} style={styles.intro}>
           <Text
             lineBreakStrategyIOS="hangul-word"
             textBreakStrategy="balanced"
@@ -486,14 +488,15 @@ export default function ResultsScreen() {
           <Text style={styles.description}>
             사진·이동·제한을 비교한 뒤 한 곳을 고르세요.
           </Text>
-        </View>
+        </Animated.View>
+        <Animated.View entering={reducedMotion ? undefined : FadeInDown.delay(100).duration(460).reduceMotion(ReduceMotion.System)}>
         <ScrollView
           ref={deckRef}
           horizontal
           snapToInterval={cardWidth + gap}
           decelerationRate="fast"
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 20, gap }}
+          contentContainerStyle={{ paddingHorizontal: 16, gap }}
           onMomentumScrollEnd={(event) =>
             setIndex(
               Math.round(event.nativeEvent.contentOffset.x / (cardWidth + gap)),
@@ -505,6 +508,7 @@ export default function ResultsScreen() {
               <DecisionCard
                 index={cardIndex + 1}
                 total={cards.length}
+                featured={cardIndex === 0}
                 region={card.place?.city ?? "강원"}
                 name={card.place?.place_name ?? "추천 장소"}
                 summary={summaryFor(card)}
@@ -541,6 +545,7 @@ export default function ResultsScreen() {
             </View>
           ))}
         </ScrollView>
+        </Animated.View>
         <View style={styles.deckNav}>
           <Pressable
             accessibilityRole="button"
@@ -1013,7 +1018,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  intro: { paddingHorizontal: 20, paddingTop: 8, gap: 8 },
+  intro: { paddingHorizontal: 20, paddingTop: 12, gap: 10 },
   title: {
     fontFamily: fonts.serif,
     fontSize: 28,

@@ -16,7 +16,7 @@ import {
 } from "./kakao-location";
 
 const LOCATION_FAILURE_NOTICE =
-  "현재 위치를 불러오지 못했어요. 우선 거리 정보 없이 추천해드릴게요.";
+  "입력한 출발지 정보를 적용하지 못했어요. 우선 거리 정보 없이 추천해드릴게요.";
 const ROUTE_CANDIDATE_LIMIT = 8;
 const MAX_ROUTE_CALLS = 12;
 const ROUTE_CONCURRENCY = 4;

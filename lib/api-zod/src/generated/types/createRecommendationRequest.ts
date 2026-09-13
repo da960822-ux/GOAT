@@ -13,23 +13,20 @@ import type { ReferenceCardId } from './referenceCardId';
 import type { TravelOrigin } from './travelOrigin';
 import type { TravelPreferences } from './travelPreferences';
 
-export type CreateRecommendationRequest = (
-  | {
-      moodId: MoodId;
-      referenceCardId?: never;
-    }
-  | {
-      referenceCardId: ReferenceCardId;
-      moodId?: never;
-    }
-) & {
+export type CreateRecommendationRequest = ({
+  moodId: MoodId;
+  referenceCardId?: never;
+} | {
+  referenceCardId: ReferenceCardId;
+  moodId?: never;
+}) & {
   travelPurpose?: CreateRecommendationRequestTravelPurpose;
   transportType?: CreateRecommendationRequestTransportType;
   visitTime?: CreateRecommendationRequestVisitTime;
   /**
-   * @minimum 1
-   * @maximum 12
-   */
+     * @minimum 1
+     * @maximum 12
+     */
   currentMonth?: number;
   debug?: boolean;
   preferences?: TravelPreferences;

@@ -5,8 +5,14 @@
  * Korean Travel Guide API
  * OpenAPI spec version: 0.4.0
  */
+import type { CurrentWeather } from './currentWeather';
+import type { ExternalPlaceInfo } from './externalPlaceInfo';
+import type { OfficialTourInfo } from './officialTourInfo';
 import type { Place } from './place';
 
 export interface PlaceData {
   place: Place;
+  officialTourInfo: OfficialTourInfo | null;
+  externalPlaceInfo: ExternalPlaceInfo | null;
+  currentWeather: CurrentWeather | null;
 }

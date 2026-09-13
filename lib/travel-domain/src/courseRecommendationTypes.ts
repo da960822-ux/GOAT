@@ -58,7 +58,7 @@ export interface GoatDayCourseRequest extends CoursePlanningUserConditions {
   forceRuleBasedFallback?: boolean;
   /** 한국관광공사 위치기반 관광정보 조회 반경. 기본 3000m */
   radiusMeters?: number;
-  /** OpenRouter 모델명. 기본 openai/gpt-4o-mini */
+  /** OpenRouter 모델명. 기본 google/gemini-3.7-flash */
   llmModel?: string;
   /** LLM 응답 원문을 debug에 포함할지 여부. 기본 false */
   debug?: boolean;

@@ -152,7 +152,6 @@ async function fetchUncachedKtoPlacePhotos(
   const detailItems = await request(KOR_DETAIL_IMAGE_PATH, {
     contentId,
     imageYN: "Y",
-    subImageYN: "Y",
     numOfRows: "20",
     pageNo: "1",
   }).catch(() => []);

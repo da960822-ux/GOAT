@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import React from "react";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GoatMark } from "@/src/components/editorial/Brand";
@@ -16,11 +17,11 @@ export default function NetworkErrorScreen() {
     <View style={[styles.content, { paddingTop: insets.top + 18, paddingBottom: insets.bottom + 22 }]}>
       <GoatMark />
       <View style={styles.center}>
-        <View style={styles.artFrame}>
+        <Animated.View entering={FadeIn.duration(360)} style={styles.artFrame}>
           <Image source={gangwonMap} style={styles.art} contentFit="contain" accessibilityLabel="강원도 산과 바다를 담은 여행 지도" />
-        </View>
+        </Animated.View>
         <Text style={styles.code}>연결을 확인해볼게요</Text>
-        <Text style={styles.title}>잠시 연결이{`\n`}불안정해요</Text>
+        <Animated.Text entering={FadeInDown.delay(120).duration(340)} style={styles.title}>잠시 연결이{`\n`}불안정해요</Animated.Text>
         <Text style={styles.body}>입력한 조건은 그대로 보관되어 있어요.{`\n`}네트워크 상태를 확인한 뒤 다시 시도해주세요.</Text>
       </View>
       <View style={styles.actions}>

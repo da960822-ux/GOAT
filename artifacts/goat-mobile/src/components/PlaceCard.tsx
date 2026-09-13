@@ -56,7 +56,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
   const hasPhoto = !photoLoading && !!(photo?.imageUrl || photo?.imageSource);
 
   return (
-    <View style={[styles.card, { backgroundColor: '#FAFAF9', borderColor: colors.border }]}>
+    <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
 
       {/* ── Thumbnail ── */}
       {(hasPhoto || photoLoading) ? (
@@ -143,11 +143,11 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
 
         {/* Actions */}
         <View style={styles.actions}>
-          <TouchableOpacity style={styles.kakaoBtn} onPress={handleKakaoMap} activeOpacity={0.82}>
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel={`${place.place_name} 카카오맵에서 보기`} style={styles.kakaoBtn} onPress={handleKakaoMap} activeOpacity={0.82}>
             <Feather name="navigation" size={13} color="#3A1D00" />
             <Text style={styles.kakaoBtnText}>카카오맵</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.detailLink} onPress={onPress} activeOpacity={0.7}>
+          <TouchableOpacity accessibilityRole="button" accessibilityLabel={`${place.place_name} 상세 보기`} style={styles.detailLink} onPress={onPress} activeOpacity={0.7}>
             <Text style={[styles.detailLinkText, { color: colors.primary }]}>장소 열어보기</Text>
             <Feather name="arrow-right" size={13} color={colors.primary} />
           </TouchableOpacity>
@@ -166,19 +166,19 @@ function InfoPill({ icon, label, color }: { icon: string; label: string; color: 
   );
 }
 
-const THUMB_HEIGHT = 152;
+const THUMB_HEIGHT = 184;
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 20,
-    borderWidth: 1,
+    borderRadius: 18,
+    borderWidth: StyleSheet.hairlineWidth,
     marginBottom: 16,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 12,
-    elevation: 2,
+    shadowColor: '#102F28',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 3,
   },
 
   thumbWrap: { width: '100%', height: THUMB_HEIGHT, position: 'relative' },
@@ -219,11 +219,11 @@ const styles = StyleSheet.create({
 
   reason: {
     fontSize: 14, fontFamily: 'PretendardRegular',
-    lineHeight: 22, marginBottom: 12, color: '#3D3D3D',
+    lineHeight: 22, marginBottom: 14, color: '#18322D',
   },
 
   nameRow: { marginBottom: 10 },
-  placeName: { fontSize: 19, fontWeight: '700', fontFamily: 'PretendardSemiBold', marginBottom: 2 },
+  placeName: { fontSize: 21, lineHeight: 29, fontWeight: '700', fontFamily: 'PretendardSemiBold', marginBottom: 3 },
   meta: { fontSize: 12, fontFamily: 'PretendardRegular' },
 
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginBottom: 10 },
@@ -244,11 +244,13 @@ const styles = StyleSheet.create({
 
   actions: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   kakaoBtn: {
+    minHeight: 48,
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5,
     backgroundColor: '#F7E600', paddingVertical: 11, paddingHorizontal: 16, borderRadius: 10,
   },
   kakaoBtnText: { fontSize: 13, fontWeight: '700', fontFamily: 'PretendardSemiBold', color: '#3A1D00' },
   detailLink: {
+    minHeight: 48,
     flex: 1, flexDirection: 'row', alignItems: 'center',
     justifyContent: 'flex-end', gap: 4,
     paddingVertical: 11, paddingHorizontal: 4,

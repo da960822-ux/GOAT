@@ -1,6 +1,7 @@
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import Animated, { FadeInDown, ReduceMotion, useReducedMotion } from "react-native-reanimated";
 import { Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -28,12 +29,12 @@ const groups: { key: PreferenceKey; number: string; title: string; variant: "til
 
 export default function TravelPreferenceScreen() {
   const router = useRouter(); const insets = useSafeAreaInsets();
-  const { selectedMood, setTravelPreferences, setOrigin, setPendingAttempt } = useApp(); const [value, setValue] = useState<Partial<Record<PreferenceKey, string>>>({});
+  const { selectedMood, setTravelPreferences, setOrigin, setPendingAttempt } = useApp(); const [value, setValue] = useState<Partial<Record<PreferenceKey, string>>>({}); const reducedMotion = useReducedMotion();
   const [originType, setOriginType] = useState<"region" | "address" | "skip">("skip"); const [query, setQuery] = useState(""); const [originBusy, setOriginBusy] = useState(false);
   const complete = groups.every((group) => value[group.key]);
   const next = async () => { if (originType === "region" || originType === "address") { if (query.trim().length < 2) { Alert.alert("출발지를 입력해주세요"); return; } setOriginBusy(true); try { setOrigin(await resolveOrigin(query.trim(), originType)); } catch { Alert.alert("출발지를 찾지 못했어요", "다른 지역명이나 주소로 다시 시도해주세요."); return; } finally { setOriginBusy(false); } } if (originType === "skip") setOrigin({ type: "skip" }); setTravelPreferences(value as TravelPreferences); setPendingAttempt(null); router.push("/analyzing" as never); };
   const choose = (key: PreferenceKey, apiValue: string) => setValue((previous) => ({ ...previous, [key]: apiValue }));
-  return <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === "ios" ? "padding" : undefined} keyboardVerticalOffset={insets.top}><View style={{ flex: 1, paddingTop: insets.top }}><ScreenHeader title="여행 조건" />
+  return <KeyboardAvoidingView style={styles.screen} behavior={Platform.OS === "ios" ? "padding" : undefined} keyboardVerticalOffset={insets.top}><View style={{ flex: 1, paddingTop: insets.top }}><Animated.View entering={reducedMotion ? undefined : FadeInDown.duration(380).reduceMotion(ReduceMotion.System)}><ScreenHeader title="여행 조건" /></Animated.View>
     <ScrollView contentContainerStyle={[styles.content, { paddingBottom: 112 + insets.bottom }]} showsVerticalScrollIndicator={false}>
       <FlowProgress currentStep={2} /><Text style={styles.title}>여행의 결을{`\n`}알려주세요</Text><Text style={styles.description}>정답은 없어요. 오늘의 여행에 가까운 선택만 골라주세요.</Text>
       {selectedMood && <View style={styles.summary} accessibilityLabel={`선택한 감성: ${selectedMood.name}`}><BrandIcon name="mood" size={19} color={palette.forest} /><View><Text style={styles.summaryLabel}>선택한 감성</Text><Text style={styles.summaryText}>{selectedMood.name}</Text></View></View>}

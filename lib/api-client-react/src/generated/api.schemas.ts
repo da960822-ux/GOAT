@@ -151,6 +151,7 @@ export interface SourceAttribution {
   /** @minLength 1 */
   label: string;
   author?: string;
+  authorUri?: string;
   license?: string;
   sourceUrl?: string;
 }
@@ -161,6 +162,7 @@ export type PhotoAssetProvider = typeof PhotoAssetProvider[keyof typeof PhotoAss
 export const PhotoAssetProvider = {
   KTO_PHOTO: 'KTO_PHOTO',
   KTO_TOUR_INFO: 'KTO_TOUR_INFO',
+  GOOGLE_PLACES: 'GOOGLE_PLACES',
   OWNED: 'OWNED',
 } as const;
 
@@ -396,11 +398,24 @@ export interface PublicRecommendationData {
   partialApplied: boolean;
 }
 
+export type PublicRecommendationRequestRestoreDraft = {
+  /**
+     * @minItems 3
+     * @maxItems 3
+     */
+  placeIds: string[];
+  /** @maxItems 61 */
+  seenIds: string[];
+  /** @minimum 0 */
+  revision: number;
+};
+
 export interface PublicRecommendationRequest {
   /** @minLength 1 */
   selectionId: string;
   mode?: DiscoveryMode;
   transportType?: DiscoveryTransportType;
+  restoreDraft?: PublicRecommendationRequestRestoreDraft;
 }
 
 export interface ReplacePublicRecommendationRequest {
@@ -1550,8 +1565,101 @@ export type RecommendCourseSuccessResponse = ApiSuccessBase & {
   data: RecommendCourseData;
 };
 
+export interface OfficialTourInfo {
+  /** @minLength 1 */
+  contentId: string;
+  /** @minLength 1 */
+  canonicalName: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+  overview?: string;
+  parking?: string;
+  usageTime?: string;
+  restDate?: string;
+  phone?: string;
+  homepage?: string;
+  attribution: SourceAttribution;
+}
+
+export type ExternalPlaceInfoProvider = typeof ExternalPlaceInfoProvider[keyof typeof ExternalPlaceInfoProvider];
+
+
+export const ExternalPlaceInfoProvider = {
+  GOOGLE_PLACES: 'GOOGLE_PLACES',
+  GOAT_EDITORIAL: 'GOAT_EDITORIAL',
+} as const;
+
+export type ExternalPlaceInfoCoordinateSource = typeof ExternalPlaceInfoCoordinateSource[keyof typeof ExternalPlaceInfoCoordinateSource];
+
+
+export const ExternalPlaceInfoCoordinateSource = {
+  GOOGLE_PLACES: 'GOOGLE_PLACES',
+  KAKAO_MAP_SEARCH_REPRESENTATIVE: 'KAKAO_MAP_SEARCH_REPRESENTATIVE',
+} as const;
+
+export interface ExternalPlaceInfo {
+  provider: ExternalPlaceInfoProvider;
+  confidence: 'HIGH' | 'MEDIUM' | null;
+  /** @nullable */
+  canonicalName: string | null;
+  /** @nullable */
+  address: string | null;
+  /** @nullable */
+  latitude: number | null;
+  /** @nullable */
+  longitude: number | null;
+  /** @nullable */
+  businessStatus: string | null;
+  /** @nullable */
+  phone: string | null;
+  homepage: string | null;
+  openingHours: string[] | null;
+  googleMapsUri: string | null;
+  /** @nullable */
+  scopeNotice: string | null;
+  /** @nullable */
+  representativePointNotice: string | null;
+  coordinateSource: ExternalPlaceInfoCoordinateSource;
+  attribution: SourceAttribution;
+}
+
+export type CurrentWeatherSky = typeof CurrentWeatherSky[keyof typeof CurrentWeatherSky];
+
+
+export const CurrentWeatherSky = {
+  CLEAR: 'CLEAR',
+  CLOUDY: 'CLOUDY',
+  OVERCAST: 'OVERCAST',
+  UNKNOWN: 'UNKNOWN',
+} as const;
+
+export type CurrentWeatherPrecipitation = typeof CurrentWeatherPrecipitation[keyof typeof CurrentWeatherPrecipitation];
+
+
+export const CurrentWeatherPrecipitation = {
+  NONE: 'NONE',
+  RAIN_OR_SNOW: 'RAIN_OR_SNOW',
+  UNKNOWN: 'UNKNOWN',
+} as const;
+
+export interface CurrentWeather {
+  /** @minLength 1 */
+  atKst: string;
+  sky: CurrentWeatherSky;
+  precipitation: CurrentWeatherPrecipitation;
+  /** @nullable */
+  temperatureC: number | null;
+  /** @nullable */
+  windSpeedMps: number | null;
+  attribution: SourceAttribution;
+}
+
 export interface PlaceData {
   place: Place;
+  officialTourInfo: OfficialTourInfo | null;
+  externalPlaceInfo: ExternalPlaceInfo | null;
+  currentWeather: CurrentWeather | null;
 }
 
 export type PlaceSuccessResponse = ApiSuccessBase & {

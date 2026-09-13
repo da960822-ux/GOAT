@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { Image } from "expo-image";
 import React from "react";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GoatMark } from "@/src/components/editorial/Brand";
@@ -18,11 +19,11 @@ export default function NoResultsScreen() {
     <View style={[styles.content, { paddingTop: insets.top + 18, paddingBottom: insets.bottom + 22 }]}>
       <GoatMark />
       <View style={styles.center}>
-        <View style={styles.artFrame}>
+        <Animated.View entering={FadeIn.duration(360)} style={styles.artFrame}>
           <Image source={gangwonMap} style={styles.art} contentFit="contain" accessibilityLabel="강원도 산과 바다를 담은 여행 지도" />
-        </View>
+        </Animated.View>
         <Text style={styles.code}>다시 찾아볼게요</Text>
-        <Text style={styles.title}>조건에 딱 맞는 장소를{`\n`}찾지 못했어요</Text>
+        <Animated.Text entering={FadeInDown.delay(120).duration(340)} style={styles.title}>조건에 딱 맞는 장소를{`\n`}찾지 못했어요</Animated.Text>
         <Text style={styles.body}>조건을 조금 넓혀 다시 추천하거나,{`\n`}처음부터 새로운 장면을 찾아볼 수 있어요.</Text>
       </View>
       <View style={styles.actions}>

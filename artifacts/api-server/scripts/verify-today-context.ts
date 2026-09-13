@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import {
+  assembleTodayConditions,
   getShortTermForecast,
   normalizeShortTermForecast,
   latestKmaBase,
   summarizeTodayContext,
   toDiscoveryWeatherCondition,
+  toDiscoveryVisitConcentrationCondition,
   toKmaGrid,
 } from "../src/services/today-context";
 import { normalizeVisitConcentration } from "../src/lib/kto-visit-concentration";
@@ -33,6 +35,10 @@ const concentration = normalizeVisitConcentration(
 );
 assert.equal(concentration.comparison, "UNSUPPORTED");
 assert.equal(concentration.concentrationRate, null);
+assert.deepEqual(toDiscoveryVisitConcentrationCondition(concentration), {
+  status: "UNAVAILABLE",
+  reason: "NOT_COMPARABLE",
+});
 assert.deepEqual(
   summarizeTodayContext({
     requested: true,
@@ -75,6 +81,51 @@ assert.deepEqual(
   }),
   { status: "UNAVAILABLE", reason: "NO_DATA" },
 );
+
+const assembled = await assembleTodayConditions(
+  [
+    {
+      placeId: "GOAT-TEST",
+      placeName: "테스트 관광지",
+      city: "춘천시",
+      latitude: 37.8813,
+      longitude: 127.7298,
+    },
+  ],
+  {
+    deadlineMs: 100,
+    weather: async () => forecast,
+    visitConcentration: async () => concentration,
+  },
+);
+assert.deepEqual(assembled["GOAT-TEST"], {
+  weather: {
+    status: "COMPARABLE",
+    comparisonKey: "202609131000/202609131100",
+    preference: 1,
+  },
+  visitConcentration: { status: "UNAVAILABLE", reason: "NOT_COMPARABLE" },
+});
+
+const never = new Promise<never>(() => undefined);
+const timedOut = await assembleTodayConditions(
+  [
+    {
+      placeId: "GOAT-TIMEOUT",
+      placeName: "지연 관광지",
+      city: "춘천시",
+    },
+  ],
+  {
+    deadlineMs: 5,
+    weather: async () => never,
+    visitConcentration: async () => never,
+  },
+);
+assert.deepEqual(timedOut["GOAT-TIMEOUT"], {
+  weather: { status: "UNAVAILABLE", reason: "TIMEOUT" },
+  visitConcentration: { status: "UNAVAILABLE", reason: "TIMEOUT" },
+});
 
 const originalFetch = globalThis.fetch;
 const originalKmaKey = process.env.KMA_SERVICE_KEY;

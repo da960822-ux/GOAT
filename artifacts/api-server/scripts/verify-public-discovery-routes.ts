@@ -18,7 +18,11 @@ process.env.KTO_PHOTO_RIGHTS_CONFIRMED = "true";
 delete process.env.KMA_SERVICE_KEY;
 
 let providerMode: "fail" | "empty" = "fail";
-globalThis.fetch = (async () => {
+let visitConcentrationRequests = 0;
+globalThis.fetch = (async (input) => {
+  if (String(input).includes("TatsCnctrRateService")) {
+    visitConcentrationRequests += 1;
+  }
   if (providerMode === "fail") throw new Error("provider unavailable");
   return new Response(JSON.stringify({ response: { body: { items: { item: "" } } } }), {
     status: 200,
@@ -98,6 +102,7 @@ try {
   const today = CreatePublicRecommendationResponse.parse(todayResponse.body).data;
   assert.equal(today.todayStatus, "UNAVAILABLE");
   assert.deepEqual(today.appliedFactors, []);
+  assert(visitConcentrationRequests > 0, "TODAY must request visit concentration");
 
   const replaceableIndex = baseline.cards.findIndex(({ replacementCount }) => replacementCount > 0);
   assert.notEqual(replaceableIndex, -1);
@@ -121,6 +126,20 @@ try {
   const unchangedSlots = baseline.cards.filter((_, index) => index !== replaceableIndex).map(({ placeId }) => placeId);
   assert.deepEqual(replaced.cards.filter((_, index) => index !== replaceableIndex).map(({ placeId }) => placeId), unchangedSlots);
   assert.notEqual(replaced.cards[replaceableIndex]?.placeId, baseline.cards[replaceableIndex]?.placeId);
+
+  const restoredResponse = await request("POST", "/public/recommendations", {
+    selectionId,
+    mode: replaced.mode,
+    restoreDraft: {
+      placeIds: replaced.cards.map(({ placeId }) => placeId),
+      seenIds: replaced.cards.map(({ placeId }) => placeId),
+      revision: replaced.revision,
+    },
+  });
+  assert.equal(restoredResponse.status, 200);
+  const restored = CreatePublicRecommendationResponse.parse(restoredResponse.body).data;
+  assert.deepEqual(restored.cards.map(({ placeId }) => placeId), replaced.cards.map(({ placeId }) => placeId));
+  assert.equal(restored.revision, replaced.revision);
 
   console.log("public discovery HTTP flow verified");
 } finally {

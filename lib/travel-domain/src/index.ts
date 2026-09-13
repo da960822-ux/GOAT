@@ -91,6 +91,7 @@ export {
   normalizePlaceFeatures,
   rankDiscoveryCandidates,
   replaceDiscoveryCard,
+  restoreDiscoverySession,
 } from "./discoveryRecommendation";
 export type {
   AllowedExpansion,

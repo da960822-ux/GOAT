@@ -1,4 +1,5 @@
 import React from "react";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
@@ -7,6 +8,7 @@ import { BrandIcon, type BrandIconName } from "@/src/components/BrandIcon";
 import { Header } from "@/src/components/Header";
 import { getEditorialSceneCover } from "@/src/data/sceneCoverEditorial";
 import { fonts, palette, radius, spacing } from "@/src/theme/editorial";
+import { MotionPressable } from "@/src/components/MotionPressable";
 
 const guideImages = ["sea-coast", "forest-garden-rest", "architecture-exhibit-landmark"].map((id) => getEditorialSceneCover(id)!);
 
@@ -30,7 +32,7 @@ export default function GuideScreen() {
         </View>
         <Text style={styles.collageCaption}>생성형 장면 예시 · 사용자 제공 장소 사진 참고</Text>
 
-        <View style={styles.steps}>
+        <Animated.View entering={FadeInDown.delay(120).duration(340)} style={styles.steps}>
           {GUIDE_STEPS.map((step, index) => (
             <View key={step.title} style={[styles.step, index === GUIDE_STEPS.length - 1 && styles.lastStep]}>
               <View style={styles.stepMarker}><BrandIcon name={step.icon} size={20} color={palette.forest} /></View>
@@ -41,7 +43,7 @@ export default function GuideScreen() {
               </View>
             </View>
           ))}
-        </View>
+        </Animated.View>
 
         <View style={styles.note}>
           <BrandIcon name="info" size={20} color={palette.forestSoft} />
@@ -53,10 +55,10 @@ export default function GuideScreen() {
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}>
-        <Pressable accessibilityRole="button" accessibilityLabel="장면 고르러 가기" onPress={() => router.replace("/")} style={({ pressed }) => [styles.cta, pressed && styles.pressed]}>
+        <MotionPressable accessibilityRole="button" accessibilityLabel="장면 고르러 가기" onPress={() => router.replace("/")} style={styles.cta}>
           <Text style={styles.ctaText}>장면 고르러 가기</Text>
           <BrandIcon name="arrow-right" size={20} color={palette.white} />
-        </Pressable>
+        </MotionPressable>
       </View>
     </View>
   );
@@ -75,12 +77,12 @@ const styles = StyleSheet.create({
   intro: { paddingTop: spacing.md, paddingBottom: spacing.md, gap: spacing.sm },
   title: { fontFamily: fonts.serif, fontSize: 29, lineHeight: 40, letterSpacing: -0.8, color: palette.ink },
   introBody: { maxWidth: 334, fontFamily: fonts.body, fontSize: 15, lineHeight: 24, color: palette.muted },
-  collage: { height: 168, flexDirection: "row", gap: 4, overflow: "hidden", borderRadius: radius.md, backgroundColor: palette.sage },
+  collage: { height: 188, flexDirection: "row", gap: 4, overflow: "hidden", borderRadius: radius.lg, backgroundColor: palette.sage },
   collageImage: { flex: 1, height: "100%" },
   collageLarge: { flex: 1.55 },
   collageCaption: { marginTop: spacing.xs, fontFamily: fonts.body, fontSize: 11, lineHeight: 17, color: palette.muted },
   steps: { marginTop: spacing.sm },
-  step: { minHeight: 120, flexDirection: "row", alignItems: "flex-start", gap: spacing.md, paddingVertical: spacing.md, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: palette.line },
+  step: { minHeight: 124, flexDirection: "row", alignItems: "flex-start", gap: spacing.md, paddingVertical: 20, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: palette.line },
   lastStep: { borderBottomWidth: 0 },
   stepMarker: { width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", backgroundColor: palette.sage },
   stepCopy: { flex: 1 },
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
   noteTitle: { fontFamily: fonts.semibold, fontSize: 14, lineHeight: 20, color: palette.ink },
   noteBody: { fontFamily: fonts.body, fontSize: 13, lineHeight: 21, color: palette.muted },
   footer: { position: "absolute", left: 0, right: 0, bottom: 0, paddingHorizontal: spacing.lg, paddingTop: spacing.sm, backgroundColor: "rgba(246,242,233,.98)", borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: palette.line },
-  cta: { minHeight: 56, paddingHorizontal: spacing.lg, borderRadius: radius.sm, flexDirection: "row", alignItems: "center", justifyContent: "space-between", backgroundColor: palette.forest },
+  cta: { minHeight: 56, paddingHorizontal: spacing.lg, borderRadius: radius.md, flexDirection: "row", alignItems: "center", justifyContent: "space-between", backgroundColor: palette.forest },
   ctaText: { fontFamily: fonts.semibold, fontSize: 16, color: palette.white },
   pressed: { opacity: 0.88 },
 });

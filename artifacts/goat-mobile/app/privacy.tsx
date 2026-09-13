@@ -1,4 +1,5 @@
 import React from 'react';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Header } from '@/src/components/Header';
@@ -11,8 +12,8 @@ export default function PrivacyScreen() {
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="개인정보 처리방침" onBack={() => router.back()} />
-      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={[styles.notice, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
+      <Animated.ScrollView entering={FadeInDown.duration(320)} contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        <View accessibilityRole="text" style={[styles.notice, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
           <Text style={[styles.noticeText, { color: colors.mutedForeground }]}>
             시행일: 2025년 1월 1일{'\n'}최종 수정일: 2026년 9월 13일
           </Text>
@@ -25,7 +26,7 @@ export default function PrivacyScreen() {
           </View>
         ))}
         <View style={styles.spacer} />
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 }
@@ -72,10 +73,10 @@ const SECTIONS = [
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  notice: { margin: spacing.lg, padding: spacing.md, borderRadius: radius.md, borderWidth: 1 },
+  notice: { marginHorizontal: spacing.lg, marginTop: spacing.sm, marginBottom: spacing.md, padding: 18, borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth },
   noticeText: { fontSize: 13, fontFamily: fonts.body, lineHeight: 21 },
-  section: { paddingHorizontal: spacing.lg, paddingVertical: 20, borderBottomWidth: 1 },
-  sectionTitle: { fontSize: 17, fontFamily: fonts.serif, marginBottom: 10 },
-  body: { fontSize: 14, fontFamily: fonts.body, lineHeight: 23 },
+  section: { paddingHorizontal: spacing.lg, paddingVertical: 26, borderBottomWidth: StyleSheet.hairlineWidth },
+  sectionTitle: { fontSize: 20, lineHeight: 28, fontFamily: fonts.serif, marginBottom: 11 },
+  body: { fontSize: 15, fontFamily: fonts.body, lineHeight: 24 },
   spacer: { height: 32 },
 });

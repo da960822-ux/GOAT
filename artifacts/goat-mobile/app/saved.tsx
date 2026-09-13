@@ -2,6 +2,7 @@ import { Image } from "expo-image";
 import { useFocusEffect, useRouter } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getPhotoCachePolicy, getPlace, getPlacePhotos, type Place } from "@workspace/api-client-react";
 import { AppTabBar } from "@/src/components/AppTabBar";
@@ -10,6 +11,7 @@ import { Header } from "@/src/components/Header";
 import { localSceneStore } from "@/src/services/deviceSceneStore";
 import type { SavedScene } from "@/src/services/localSceneStore";
 import { fonts, palette, radius } from "@/src/theme/editorial";
+import { MotionPressable } from "@/src/components/MotionPressable";
 
 type SceneRow = SavedScene & { place: Place | null; photoUri: string | null; photoAttribution: string | null; photoCacheEnabled: boolean };
 
@@ -65,11 +67,11 @@ export default function SavedScreen() {
   return <View style={styles.screen}>
     <Header title="내 장면" />
     <Text style={styles.storageNotice}>로그인 없이 이 기기에만 저장돼요.</Text>
-    <Pressable accessibilityRole="button" accessibilityLabel="마지막 여행 코스 보기" onPress={() => router.push("/map")} style={styles.courseEntry}><BrandIcon name="course" size={19} color={palette.forest} /><Text style={styles.courseEntryText}>마지막 여행 코스 보기</Text><BrandIcon name="arrow-right" size={17} color={palette.forest} /></Pressable>
+    <MotionPressable accessibilityRole="button" accessibilityLabel="마지막 여행 코스 보기" onPress={() => router.push("/map")} style={styles.courseEntry}><BrandIcon name="course" size={19} color={palette.forest} /><Text style={styles.courseEntryText}>마지막 여행 코스 보기</Text><BrandIcon name="arrow-right" size={17} color={palette.forest} /></MotionPressable>
     {state === "loading" ? <State icon="bookmark" title="저장한 장면을 불러오는 중이에요"><ActivityIndicator color={palette.forest} /></State>
       : state === "error" ? <State icon="warning" title="내 장면을 불러오지 못했어요" body="저장된 항목은 그대로예요. 다시 시도해 주세요." action="다시 시도" onPress={load} />
       : items.length === 0 ? <State icon="bookmark" title="아직 담은 장면이 없어요" body="추천 카드에서 마음에 드는 곳을 담아보세요." action="장면 발견하기" onPress={() => router.replace("/")} />
-      : <FlatList
+      : <Animated.View entering={FadeInDown.duration(320)} style={styles.listWrap}><FlatList
           data={items}
           keyExtractor={(item) => item.placeId}
           contentInsetAdjustmentBehavior="automatic"
@@ -78,9 +80,9 @@ export default function SavedScreen() {
             const name = item.place?.place_name ?? "장소 정보를 확인할 수 없어요";
             const region = item.place?.city ?? "저장된 장면";
             const sourceLabel = item.photoAttribution ? ` 사진 출처 ${item.photoAttribution}.` : "";
-            return <View style={styles.row}><Pressable accessibilityRole="button" accessibilityLabel={`${name} 상세 보기.${sourceLabel}`} onPress={() => router.push({ pathname: "/detail/[id]", params: { id: item.placeId, selectionId: item.selectionId } })} style={({ pressed }) => [styles.rowMain, pressed && styles.pressed]}><View style={styles.thumbnail}>{item.photoUri ? <Image source={{ uri: item.photoUri }} style={StyleSheet.absoluteFillObject} contentFit="cover" cachePolicy={getPhotoCachePolicy({ cacheEnabled: item.photoCacheEnabled })} accessible={false} importantForAccessibility="no-hide-descendants" /> : <BrandIcon name="location" size={24} color={palette.forest} />}</View><View style={styles.copy}><Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.name}>{name}</Text><Text style={styles.region}>{region}</Text>{item.photoAttribution ? <Text numberOfLines={1} style={styles.photoSource}>사진 출처 · {item.photoAttribution}</Text> : null}{item.note ? <Text numberOfLines={2} style={styles.note}>{item.note}</Text> : null}<Text style={styles.date}>{formatDate(item.savedAt)}</Text></View></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`${name} 삭제`} onPress={() => remove(item)} style={styles.remove}><BrandIcon name="delete" size={19} color={palette.error} /></Pressable></View>;
+            return <View style={styles.row}><MotionPressable accessibilityRole="button" accessibilityLabel={`${name} 상세 보기.${sourceLabel}`} onPress={() => router.push({ pathname: "/detail/[id]", params: { id: item.placeId, selectionId: item.selectionId } })} style={styles.rowMain}><View style={styles.thumbnail}>{item.photoUri ? <Image source={{ uri: item.photoUri }} style={StyleSheet.absoluteFillObject} contentFit="cover" cachePolicy={getPhotoCachePolicy({ cacheEnabled: item.photoCacheEnabled })} accessible={false} importantForAccessibility="no-hide-descendants" /> : <BrandIcon name="location" size={24} color={palette.forest} />}</View><View style={styles.copy}><Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.name}>{name}</Text><Text style={styles.region}>{region}</Text>{item.photoAttribution ? <Text numberOfLines={1} style={styles.photoSource}>사진 출처 · {item.photoAttribution}</Text> : null}{item.note ? <Text numberOfLines={2} style={styles.note}>{item.note}</Text> : null}<Text style={styles.date}>{formatDate(item.savedAt)}</Text></View></MotionPressable><MotionPressable accessibilityRole="button" accessibilityLabel={`${name} 삭제`} onPress={() => remove(item)} style={styles.remove}><BrandIcon name="delete" size={19} color={palette.error} /></MotionPressable></View>;
           }}
-        />}
+        /></Animated.View>}
     <AppTabBar />
   </View>;
 }
@@ -95,15 +97,16 @@ function formatDate(value: string) {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: palette.ivory },
-  storageNotice: { paddingHorizontal: 20, paddingBottom: 16, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.muted },
-  courseEntry: { minHeight: 48, marginHorizontal: 20, marginBottom: 12, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", gap: 9, borderRadius: radius.md, backgroundColor: palette.sage },
+  storageNotice: { paddingHorizontal: 20, paddingBottom: 17, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.muted },
+  courseEntry: { minHeight: 54, marginHorizontal: 20, marginBottom: 16, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", gap: 9, borderRadius: radius.md, backgroundColor: palette.sage },
   courseEntryText: { flex: 1, fontFamily: fonts.semibold, fontSize: 14, color: palette.forest },
-  row: { minHeight: 104, padding: 12, flexDirection: "row", alignItems: "center", gap: 4, borderRadius: radius.md, backgroundColor: palette.paper, borderWidth: StyleSheet.hairlineWidth, borderColor: palette.line },
+  listWrap: { flex: 1 },
+  row: { minHeight: 112, padding: 14, flexDirection: "row", alignItems: "center", gap: 4, borderRadius: radius.md, backgroundColor: palette.paper, borderWidth: StyleSheet.hairlineWidth, borderColor: palette.line, shadowColor: palette.forestDeep, shadowOpacity: .05, shadowRadius: 12, shadowOffset: { width: 0, height: 4 }, elevation: 1 },
   rowMain: { minHeight: 80, flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
   pressed: { opacity: 0.75 },
-  thumbnail: { width: 76, height: 76, overflow: "hidden", alignItems: "center", justifyContent: "center", borderRadius: radius.sm, backgroundColor: palette.sage },
+  thumbnail: { width: 84, height: 84, overflow: "hidden", alignItems: "center", justifyContent: "center", borderRadius: 14, backgroundColor: palette.sage },
   copy: { flex: 1, gap: 3 },
-  name: { fontFamily: fonts.serif, fontSize: 17, lineHeight: 24, color: palette.ink },
+  name: { fontFamily: fonts.serif, fontSize: 18, lineHeight: 25, color: palette.ink },
   region: { fontFamily: fonts.medium, fontSize: 13, lineHeight: 19, color: palette.forestSoft },
   photoSource: { fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.muted },
   note: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18, color: palette.ink },

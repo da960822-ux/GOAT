@@ -12,5 +12,6 @@ export type PhotoAssetProvider = typeof PhotoAssetProvider[keyof typeof PhotoAss
 export const PhotoAssetProvider = {
   KTO_PHOTO: 'KTO_PHOTO',
   KTO_TOUR_INFO: 'KTO_TOUR_INFO',
+  GOOGLE_PLACES: 'GOOGLE_PLACES',
   OWNED: 'OWNED',
 } as const;

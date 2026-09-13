@@ -17,7 +17,7 @@ export function StepIndicator({ currentStep }: StepIndicatorProps) {
   const colors = useColors();
 
   return (
-    <View style={styles.root}>
+    <View style={styles.root} accessibilityRole="progressbar" accessibilityLabel={`${currentStep}단계, 총 3단계`} accessibilityValue={{ min: 1, max: 3, now: currentStep }}>
       {STEPS.map((step, i) => {
         const done = step.n < currentStep;
         const active = step.n === currentStep;
@@ -67,19 +67,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingVertical: 14,
   },
-  stepItem: { alignItems: 'center', gap: 4 },
+  stepItem: { alignItems: 'center', gap: 5 },
   dot: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    borderWidth: 2,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 1.5,
     alignItems: 'center',
     justifyContent: 'center',
   },
   dotNum: { fontSize: 11, fontWeight: '700', fontFamily: 'PretendardSemiBold' },
-  label: { fontSize: 11, fontFamily: 'PretendardRegular' },
+  label: { fontSize: 11, lineHeight: 16, fontFamily: 'PretendardRegular' },
   labelActive: { fontFamily: 'PretendardSemiBold', fontSize: 11 },
-  line: { flex: 1, height: 2, marginHorizontal: 4, marginBottom: 14, borderRadius: 2 },
+  line: { flex: 1, height: 1, marginHorizontal: 6, marginBottom: 16, borderRadius: 1 },
 });

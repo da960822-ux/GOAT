@@ -1,4 +1,5 @@
 import React from "react";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { Header } from "@/src/components/Header";
@@ -19,21 +20,21 @@ export default function TermsScreen() {
   const colors = useColors();
   return <View style={[styles.root, { backgroundColor: colors.background }]}>
     <Header title="이용약관" onBack={() => router.back()} />
-    <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-      <Text style={[styles.date, { color: colors.mutedForeground }]}>시행일: 2026년 9월 13일</Text>
+    <Animated.ScrollView entering={FadeInDown.duration(320)} contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+      <Text accessibilityRole="text" style={[styles.date, { color: colors.mutedForeground }]}>시행일: 2026년 9월 13일</Text>
       {sections.map(([title, body]) => <View key={title} style={[styles.section, { borderBottomColor: colors.border }]}>
         <Text style={[styles.title, { color: colors.foreground }]}>{title}</Text>
         <Text style={[styles.body, { color: colors.mutedForeground }]}>{body}</Text>
       </View>)}
-    </ScrollView>
+    </Animated.ScrollView>
   </View>;
 }
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
   scroll: { paddingBottom: 40 },
-  date: { paddingHorizontal: spacing.lg, paddingVertical: spacing.md, fontFamily: fonts.body, fontSize: 13 },
-  section: { paddingHorizontal: spacing.lg, paddingVertical: 20, borderBottomWidth: StyleSheet.hairlineWidth },
-  title: { marginBottom: 10, fontFamily: fonts.serif, fontSize: 17 },
-  body: { fontFamily: fonts.body, fontSize: 14, lineHeight: 23 },
+  date: { marginHorizontal: spacing.lg, marginTop: spacing.sm, marginBottom: spacing.xs, paddingVertical: spacing.md, fontFamily: fonts.body, fontSize: 13 },
+  section: { paddingHorizontal: spacing.lg, paddingVertical: 26, borderBottomWidth: StyleSheet.hairlineWidth },
+  title: { marginBottom: 11, fontFamily: fonts.serif, fontSize: 20, lineHeight: 28 },
+  body: { fontFamily: fonts.body, fontSize: 15, lineHeight: 24 },
 });

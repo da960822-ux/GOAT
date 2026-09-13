@@ -1,0 +1,83 @@
+{
+  "reviewedAt": "2026-09-13",
+  "overallDecision": "NO-GO",
+  "photoVisualDecision": "GO",
+  "checks": {
+    "productionApi": "PASS",
+    "placeDetails": "PASS_61_OF_61",
+    "photoVisuals": "PASS_61_OF_61",
+    "representativePhotos": {
+      "total": 51,
+      "kto": 30,
+      "google": 21
+    },
+    "intentionalFallbacks": 10,
+    "brokenImages": 0,
+    "layoutFailures": 0,
+    "secretLeaks": 0
+  },
+  "issues": [
+    {
+      "id": "DB-READY-001",
+      "priority": "P1",
+      "status": "BLOCKED",
+      "area": "Supabase",
+      "summary": "Vercel /api/readyz returns 503 because the existing DATABASE_URL is rejected as tenant/user not found.",
+      "impact": "Public guest discovery works, but database-backed account, bookmark, feedback, and persistence routes are not release-ready.",
+      "requiredAction": "Restore or unpause the intended Supabase project and replace DATABASE_URL with its current pooler connection string, then rerun readyz and persistence E2E."
+    },
+    {
+      "id": "DRAFT-RESTORE-001",
+      "priority": "P0",
+      "status": "OPEN",
+      "area": "Guest draft",
+      "summary": "A saved draft records the three place IDs, but re-entry requests a fresh recommendation instead of restoring an expired or replaced trio exactly.",
+      "impact": "Initial deterministic recommendations usually reopen consistently; a previously replaced or time-sensitive trio can change on re-entry.",
+      "requiredAction": "Add a stateless, validated restore contract for saved place IDs or explicitly invalidate non-reproducible drafts before public release."
+    },
+    {
+      "id": "KTO-QUOTA-001",
+      "priority": "P1",
+      "status": "EXTERNAL_BLOCKED",
+      "area": "KTO live provider",
+      "summary": "The current KTO proxy call returns HTTP 429.",
+      "impact": "This is treated as provider failure, never NO_ASSET. Thirty reviewed KTO photos and twenty-one Google photos remain available; ten locations show the designed fallback.",
+      "requiredAction": "Confirm or raise the KTO service quota before relying on live gallery refresh."
+    },
+    {
+      "id": "PHOTO-FALLBACK-001",
+      "priority": "P1",
+      "status": "CONTENT_PENDING",
+      "area": "Photo quality",
+      "summary": "Ten locations still have no photo meeting the GOAT visual threshold.",
+      "placeIds": [
+        "GOAT-006",
+        "GOAT-007",
+        "GOAT-011",
+        "GOAT-024",
+        "GOAT-031",
+        "GOAT-035",
+        "GOAT-036",
+        "GOAT-039",
+        "GOAT-041",
+        "GOAT-050"
+      ],
+      "impact": "The UI is functional and unbroken, but those cards use the explicit fallback instead of an overseas-mood representative photo.",
+      "requiredAction": "Obtain a licensed official or Google Places candidate that passes the existing threshold; do not lower the threshold automatically."
+    },
+    {
+      "id": "OAUTH-CALLBACK-001",
+      "priority": "P1",
+      "status": "EXTERNAL_CONFIRMATION_REQUIRED",
+      "area": "OAuth",
+      "summary": "Google and Kakao provider consoles were not available for callback allow-list verification.",
+      "impact": "Guest P0 is unaffected; optional login cannot be declared production-ready.",
+      "requiredAction": "Allow-list the production callback under https://goat-api-lac.vercel.app and execute provider login E2E."
+    }
+  ],
+  "notRunByInstruction": [
+    "APK build or installation",
+    "EAS deployment",
+    "App-store submission"
+  ]
+}

@@ -677,6 +677,7 @@ components:
       properties:
         label: { type: string, minLength: 1 }
         author: { type: string }
+        authorUri: { type: string, format: uri }
         license: { type: string }
         sourceUrl: { type: string, format: uri }
       required: [label]
@@ -686,7 +687,7 @@ components:
       properties:
         photoId: { type: string, minLength: 1 }
         placeId: { type: string, minLength: 1 }
-        provider: { type: string, enum: [KTO_PHOTO, KTO_TOUR_INFO, OWNED] }
+        provider: { type: string, enum: [KTO_PHOTO, KTO_TOUR_INFO, GOOGLE_PLACES, OWNED] }
         sourceRef: { type: string, minLength: 1 }
         url: { type: string, format: uri }
         title: { type: string }
@@ -868,6 +869,23 @@ components:
         selectionId: { type: string, minLength: 1 }
         mode: { $ref: "#/components/schemas/DiscoveryMode" }
         transportType: { $ref: "#/components/schemas/DiscoveryTransportType" }
+        restoreDraft:
+          type: object
+          properties:
+            placeIds:
+              type: array
+              minItems: 3
+              maxItems: 3
+              uniqueItems: true
+              items: { type: string, minLength: 1 }
+            seenIds:
+              type: array
+              maxItems: 61
+              uniqueItems: true
+              items: { type: string, minLength: 1 }
+            revision: { type: integer, minimum: 0 }
+          required: [placeIds, seenIds, revision]
+          additionalProperties: false
       required: [selectionId]
       additionalProperties: false
     ReplacePublicRecommendationRequest:
@@ -1828,12 +1846,102 @@ components:
             data:
               $ref: "#/components/schemas/RecommendCourseData"
           required: [data]
+    OfficialTourInfo:
+      type: object
+      properties:
+        contentId: { type: string, minLength: 1 }
+        canonicalName: { type: string, minLength: 1 }
+        address: { type: string }
+        latitude: { type: number }
+        longitude: { type: number }
+        overview: { type: string }
+        parking: { type: string }
+        usageTime: { type: string }
+        restDate: { type: string }
+        phone: { type: string }
+        homepage: { type: string }
+        attribution: { $ref: "#/components/schemas/SourceAttribution" }
+      required: [contentId, canonicalName, attribution]
+    ExternalPlaceInfo:
+      type: object
+      properties:
+        provider: { type: string, enum: [GOOGLE_PLACES, GOAT_EDITORIAL] }
+        confidence:
+          oneOf:
+            - type: string
+              enum: [HIGH, MEDIUM]
+            - type: "null"
+        canonicalName: { type: [string, "null"] }
+        address: { type: [string, "null"] }
+        latitude: { type: [number, "null"] }
+        longitude: { type: [number, "null"] }
+        businessStatus: { type: [string, "null"] }
+        phone: { type: [string, "null"] }
+        homepage:
+          oneOf:
+            - type: string
+              format: uri
+            - type: "null"
+        openingHours:
+          oneOf:
+            - type: array
+              items: { type: string }
+            - type: "null"
+        googleMapsUri:
+          oneOf:
+            - type: string
+              format: uri
+            - type: "null"
+        scopeNotice: { type: [string, "null"] }
+        representativePointNotice: { type: [string, "null"] }
+        coordinateSource: { type: string, enum: [GOOGLE_PLACES, KAKAO_MAP_SEARCH_REPRESENTATIVE] }
+        attribution: { $ref: "#/components/schemas/SourceAttribution" }
+      required:
+        [
+          provider,
+          confidence,
+          canonicalName,
+          address,
+          latitude,
+          longitude,
+          businessStatus,
+          phone,
+          homepage,
+          openingHours,
+          googleMapsUri,
+          scopeNotice,
+          representativePointNotice,
+          coordinateSource,
+          attribution,
+        ]
+    CurrentWeather:
+      type: object
+      properties:
+        atKst: { type: string, minLength: 1 }
+        sky: { type: string, enum: [CLEAR, CLOUDY, OVERCAST, UNKNOWN] }
+        precipitation: { type: string, enum: [NONE, RAIN_OR_SNOW, UNKNOWN] }
+        temperatureC: { type: [number, "null"] }
+        windSpeedMps: { type: [number, "null"] }
+        attribution: { $ref: "#/components/schemas/SourceAttribution" }
+      required: [atKst, sky, precipitation, temperatureC, windSpeedMps, attribution]
     PlaceData:
       type: object
       properties:
         place:
           $ref: "#/components/schemas/Place"
-      required: [place]
+        officialTourInfo:
+          oneOf:
+            - $ref: "#/components/schemas/OfficialTourInfo"
+            - type: "null"
+        externalPlaceInfo:
+          oneOf:
+            - $ref: "#/components/schemas/ExternalPlaceInfo"
+            - type: "null"
+        currentWeather:
+          oneOf:
+            - $ref: "#/components/schemas/CurrentWeather"
+            - type: "null"
+      required: [place, officialTourInfo, externalPlaceInfo, currentWeather]
     PlaceSuccessResponse:
       allOf:
         - $ref: "#/components/schemas/ApiSuccessBase"

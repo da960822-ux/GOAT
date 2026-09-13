@@ -2,6 +2,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import Animated, { FadeInDown, ReduceMotion, useReducedMotion } from "react-native-reanimated";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BrandIcon } from "@/src/components/BrandIcon";
@@ -25,6 +26,7 @@ export default function MoodSelectionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { setSelectedMood, setPendingAttempt } = useApp();
+  const reducedMotion = useReducedMotion();
   const [selected, setSelected] = useState<(typeof moods)[number]["id"] | null>(null);
   const mood = moods.find((item) => item.id === selected);
 
@@ -36,11 +38,11 @@ export default function MoodSelectionScreen() {
   };
 
   return <View style={[styles.screen, { paddingTop: insets.top }]}>
-    <View style={styles.header}>
+    <Animated.View entering={reducedMotion ? undefined : FadeInDown.duration(380).reduceMotion(ReduceMotion.System)} style={styles.header}>
       <Pressable accessibilityRole="button" accessibilityLabel="뒤로 가기" onPress={() => router.back()} style={styles.back}><BrandIcon name="chevron-back" size={22} color={palette.forest} /></Pressable>
       <GoatMark />
       <View style={styles.headerSpace} />
-    </View>
+    </Animated.View>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.content, { paddingBottom: 100 + insets.bottom }]}>
       <FlowProgress currentStep={1} />
       <Text style={styles.kicker}>7가지 여행 분위기</Text>

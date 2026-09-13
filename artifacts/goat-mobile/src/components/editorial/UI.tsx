@@ -1,4 +1,5 @@
 import { BrandIcon, type BrandIconName } from "@/src/components/BrandIcon";
+import { MotionPressable } from "@/src/components/MotionPressable";
 import { useRouter } from "expo-router";
 import React from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, type ViewStyle } from "react-native";
@@ -25,12 +26,12 @@ export function PrimaryButton({ label, onPress, icon, disabled, loading, variant
   const paper = variant === "paper";
   const color = outline ? palette.forest : paper ? palette.forest : palette.white;
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: Boolean(disabled || loading), busy: Boolean(loading) }} disabled={disabled || loading} onPress={onPress} style={({ pressed }) => [styles.button, outline && styles.outlineButton, paper && styles.paperButton, (disabled || loading) && styles.disabled, pressed && styles.pressed, style]}>
+    <MotionPressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ disabled: Boolean(disabled || loading), busy: Boolean(loading) }} disabled={disabled || loading} onPress={onPress} style={[styles.button, outline && styles.outlineButton, paper && styles.paperButton, (disabled || loading) && styles.disabled, style]}>
       {loading ? <ActivityIndicator color={color} /> : <>
         {icon && <BrandIcon name={icon} size={19} color={color} />}
         <Text style={[styles.buttonLabel, { color }]}>{label}</Text>
       </>}
-    </Pressable>
+    </MotionPressable>
   );
 }
 

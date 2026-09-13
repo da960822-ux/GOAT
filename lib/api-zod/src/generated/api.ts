@@ -87,7 +87,7 @@ export const GetPublicSelectionsResponse = zod.object({
   "photo": zod.object({
   "photoId": zod.string().min(1),
   "placeId": zod.string().min(1),
-  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'OWNED']),
+  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'GOOGLE_PLACES', 'OWNED']),
   "sourceRef": zod.string().min(1),
   "url": zod.string().url(),
   "title": zod.string().optional(),
@@ -96,6 +96,7 @@ export const GetPublicSelectionsResponse = zod.object({
   "attribution": zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 }),
@@ -111,6 +112,7 @@ export const GetPublicSelectionsResponse = zod.object({
   "sourceAttributions": zod.array(zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 })).min(1)
@@ -160,7 +162,7 @@ export const GetSceneCoverResponse = zod.object({
   "photo": zod.object({
   "photoId": zod.string().min(1),
   "placeId": zod.string().min(1),
-  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'OWNED']),
+  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'GOOGLE_PLACES', 'OWNED']),
   "sourceRef": zod.string().min(1),
   "url": zod.string().url(),
   "title": zod.string().optional(),
@@ -169,6 +171,7 @@ export const GetSceneCoverResponse = zod.object({
   "attribution": zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 }),
@@ -184,6 +187,7 @@ export const GetSceneCoverResponse = zod.object({
   "sourceAttributions": zod.array(zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 })).min(1)
@@ -233,7 +237,7 @@ export const GetPlacePhotosResponse = zod.object({
   "placeHero": zod.union([zod.object({
   "photoId": zod.string().min(1),
   "placeId": zod.string().min(1),
-  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'OWNED']),
+  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'GOOGLE_PLACES', 'OWNED']),
   "sourceRef": zod.string().min(1),
   "url": zod.string().url(),
   "title": zod.string().optional(),
@@ -242,6 +246,7 @@ export const GetPlacePhotosResponse = zod.object({
   "attribution": zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 }),
@@ -255,7 +260,7 @@ export const GetPlacePhotosResponse = zod.object({
   "evidenceImages": zod.array(zod.object({
   "photoId": zod.string().min(1),
   "placeId": zod.string().min(1),
-  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'OWNED']),
+  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'GOOGLE_PLACES', 'OWNED']),
   "sourceRef": zod.string().min(1),
   "url": zod.string().url(),
   "title": zod.string().optional(),
@@ -264,6 +269,7 @@ export const GetPlacePhotosResponse = zod.object({
   "attribution": zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 }),
@@ -278,6 +284,7 @@ export const GetPlacePhotosResponse = zod.object({
   "sourceAttributions": zod.array(zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 }))
@@ -290,11 +297,25 @@ export const GetPlacePhotosResponse = zod.object({
  */
 
 
+export const createPublicRecommendationBodyRestoreDraftPlaceIdsMin = 3;
+export const createPublicRecommendationBodyRestoreDraftPlaceIdsMax = 3;
+
+
+export const createPublicRecommendationBodyRestoreDraftSeenIdsMax = 61;
+
+export const createPublicRecommendationBodyRestoreDraftRevisionMin = 0;
+
+
 
 export const CreatePublicRecommendationBody = zod.object({
   "selectionId": zod.string().min(1),
   "mode": zod.enum(['SCENE', 'TODAY']).optional(),
-  "transportType": zod.enum(['CAR', 'PUBLIC_TRANSIT']).optional().describe('Omit this field when the user has not selected transport.')
+  "transportType": zod.enum(['CAR', 'PUBLIC_TRANSIT']).optional().describe('Omit this field when the user has not selected transport.'),
+  "restoreDraft": zod.object({
+  "placeIds": zod.array(zod.string().min(1)).min(createPublicRecommendationBodyRestoreDraftPlaceIdsMin).max(createPublicRecommendationBodyRestoreDraftPlaceIdsMax),
+  "seenIds": zod.array(zod.string().min(1)).max(createPublicRecommendationBodyRestoreDraftSeenIdsMax),
+  "revision": zod.number().min(createPublicRecommendationBodyRestoreDraftRevisionMin)
+}).optional()
 })
 
 
@@ -335,7 +356,7 @@ export const CreatePublicRecommendationResponse = zod.object({
   "placeHero": zod.union([zod.object({
   "photoId": zod.string().min(1),
   "placeId": zod.string().min(1),
-  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'OWNED']),
+  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'GOOGLE_PLACES', 'OWNED']),
   "sourceRef": zod.string().min(1),
   "url": zod.string().url(),
   "title": zod.string().optional(),
@@ -344,6 +365,7 @@ export const CreatePublicRecommendationResponse = zod.object({
   "attribution": zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 }),
@@ -363,6 +385,7 @@ export const CreatePublicRecommendationResponse = zod.object({
   "sourceAttributions": zod.array(zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 })),
@@ -450,7 +473,7 @@ export const ReplacePublicRecommendationCardResponse = zod.object({
   "placeHero": zod.union([zod.object({
   "photoId": zod.string().min(1),
   "placeId": zod.string().min(1),
-  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'OWNED']),
+  "provider": zod.enum(['KTO_PHOTO', 'KTO_TOUR_INFO', 'GOOGLE_PLACES', 'OWNED']),
   "sourceRef": zod.string().min(1),
   "url": zod.string().url(),
   "title": zod.string().optional(),
@@ -459,6 +482,7 @@ export const ReplacePublicRecommendationCardResponse = zod.object({
   "attribution": zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 }),
@@ -478,6 +502,7 @@ export const ReplacePublicRecommendationCardResponse = zod.object({
   "sourceAttributions": zod.array(zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
   "license": zod.string().optional(),
   "sourceUrl": zod.string().url().optional()
 })),
@@ -1970,6 +1995,14 @@ export const GetPlaceParams = zod.object({
   "id": zod.coerce.string().min(1)
 })
 
+
+
+
+
+
+
+
+
 export const GetPlaceResponse = zod.object({
   "success": zod.boolean(),
   "code": zod.string(),
@@ -2002,7 +2035,64 @@ export const GetPlaceResponse = zod.object({
   "crowdLevel": zod.string().optional(),
   "contactInfo": zod.string().optional(),
   "description": zod.string().optional()
+}),
+  "officialTourInfo": zod.union([zod.object({
+  "contentId": zod.string().min(1),
+  "canonicalName": zod.string().min(1),
+  "address": zod.string().optional(),
+  "latitude": zod.number().optional(),
+  "longitude": zod.number().optional(),
+  "overview": zod.string().optional(),
+  "parking": zod.string().optional(),
+  "usageTime": zod.string().optional(),
+  "restDate": zod.string().optional(),
+  "phone": zod.string().optional(),
+  "homepage": zod.string().optional(),
+  "attribution": zod.object({
+  "label": zod.string().min(1),
+  "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
+  "license": zod.string().optional(),
+  "sourceUrl": zod.string().url().optional()
 })
+}),zod.null()]),
+  "externalPlaceInfo": zod.union([zod.object({
+  "provider": zod.enum(['GOOGLE_PLACES', 'GOAT_EDITORIAL']),
+  "confidence": zod.union([zod.enum(['HIGH', 'MEDIUM']),zod.null()]),
+  "canonicalName": zod.string().nullable(),
+  "address": zod.string().nullable(),
+  "latitude": zod.number().nullable(),
+  "longitude": zod.number().nullable(),
+  "businessStatus": zod.string().nullable(),
+  "phone": zod.string().nullable(),
+  "homepage": zod.union([zod.string().url(),zod.null()]),
+  "openingHours": zod.union([zod.array(zod.string()),zod.null()]),
+  "googleMapsUri": zod.union([zod.string().url(),zod.null()]),
+  "scopeNotice": zod.string().nullable(),
+  "representativePointNotice": zod.string().nullable(),
+  "coordinateSource": zod.enum(['GOOGLE_PLACES', 'KAKAO_MAP_SEARCH_REPRESENTATIVE']),
+  "attribution": zod.object({
+  "label": zod.string().min(1),
+  "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
+  "license": zod.string().optional(),
+  "sourceUrl": zod.string().url().optional()
+})
+}),zod.null()]),
+  "currentWeather": zod.union([zod.object({
+  "atKst": zod.string().min(1),
+  "sky": zod.enum(['CLEAR', 'CLOUDY', 'OVERCAST', 'UNKNOWN']),
+  "precipitation": zod.enum(['NONE', 'RAIN_OR_SNOW', 'UNKNOWN']),
+  "temperatureC": zod.number().nullable(),
+  "windSpeedMps": zod.number().nullable(),
+  "attribution": zod.object({
+  "label": zod.string().min(1),
+  "author": zod.string().optional(),
+  "authorUri": zod.string().url().optional(),
+  "license": zod.string().optional(),
+  "sourceUrl": zod.string().url().optional()
+})
+}),zod.null()])
 })
 }))
 
