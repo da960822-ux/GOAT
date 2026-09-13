@@ -1,4 +1,5 @@
 import { Image } from "expo-image";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -7,17 +8,17 @@ import { BrandIcon } from "@/src/components/BrandIcon";
 import { GoatMark } from "@/src/components/editorial/Brand";
 import { FlowProgress } from "@/src/components/editorial/UI";
 import { useApp } from "@/src/context/AppContext";
-import { editorialImages } from "@/src/data/editorialContent";
+import { getEditorialSceneCover } from "@/src/data/sceneCoverEditorial";
 import { fonts, palette, radius } from "@/src/theme/editorial";
 
 const moods = [
-  { id: "sea-coast", name: "산토리니 감성", description: "흰 건물과 푸른 바다가 어울리는 청량한 장면", image: editorialImages.coast },
-  { id: "japan-alley", name: "일본 소도시 감성", description: "조용한 골목과 작은 상점이 이어지는 장면", image: editorialImages.village },
-  { id: "alps-ranch", name: "알프스 감성", description: "초록 고원과 산 능선이 펼쳐지는 탁 트인 장면", image: editorialImages.hills },
-  { id: "forest-garden-rest", name: "북유럽 숲 감성", description: "차분한 숲과 호수가 어우러지는 자연친화적 장면", image: editorialImages.forest },
-  { id: "retro-market-harbor", name: "항구 마을 감성", description: "빛바랜 간판과 바닷바람이 머무는 골목", image: editorialImages.harbor },
-  { id: "architecture-exhibit-landmark", name: "건축과 전시", description: "선명한 구조와 조용한 영감이 있는 장소", image: editorialImages.garden },
-  { id: "resort-cafe-exotic", name: "휴양지 카페", description: "야자수 그늘 아래 여유를 즐기는 풍경", image: editorialImages.beach },
+  { id: "sea-coast", name: "푸른 해안 리조트", description: "흰 건물과 동해가 맞닿은 청량한 장면", cover: getEditorialSceneCover("sea-coast")! },
+  { id: "japan-alley", name: "일본식 목조 스테이", description: "목재 외관과 작은 마당이 만드는 차분한 장면", cover: getEditorialSceneCover("japan-alley")! },
+  { id: "alps-ranch", name: "설악 산악 마을", description: "설악 능선과 숲 사이 붉은 지붕이 펼쳐지는 장면", cover: getEditorialSceneCover("alps-ranch")! },
+  { id: "forest-garden-rest", name: "숲과 미술관 정원", description: "숲과 물, 건축이 차분하게 이어지는 휴식 장면", cover: getEditorialSceneCover("forest-garden-rest")! },
+  { id: "retro-market-harbor", name: "등대 언덕 마을", description: "등대 아래 오래된 집들이 층층이 이어지는 겨울 동네", cover: getEditorialSceneCover("retro-market-harbor")! },
+  { id: "architecture-exhibit-landmark", name: "바다와 현대 건축", description: "동해와 낮은 건축선이 함께 펼쳐지는 장면", cover: getEditorialSceneCover("architecture-exhibit-landmark")! },
+  { id: "resort-cafe-exotic", name: "물가 휴양 카페", description: "물가와 라탄 쉼터에서 여유를 즐기는 장면", cover: getEditorialSceneCover("resort-cafe-exotic")! },
 ] as const;
 
 export default function MoodSelectionScreen() {
@@ -45,12 +46,13 @@ export default function MoodSelectionScreen() {
       <Text style={styles.kicker}>7가지 여행 분위기</Text>
       <Text style={styles.title}>어떤 감성으로{`\n`}떠나고 싶으세요?</Text>
       <Text style={styles.description}>마음에 드는 장면 하나를 고르면, 그 분위기와 닮은 강원 여행지를 찾아드릴게요.</Text>
+      <Text style={styles.sourceNote}>테마 이미지는 표시된 국내 장소 사진을 바탕으로 재구성했습니다.</Text>
       <View accessibilityRole="radiogroup" style={styles.cards}>{moods.map((item) => {
         const active = item.id === selected;
-        return <Pressable key={item.id} accessibilityRole="radio" accessibilityState={{ checked: active }} accessibilityLabel={`${item.name}. ${item.description}`} onPress={() => setSelected(item.id)} style={({ pressed }) => [styles.card, active && styles.cardActive, pressed && styles.pressed]}>
-          <Image source={item.image} style={StyleSheet.absoluteFillObject} contentFit="cover" accessibilityLabel={`${item.name} 풍경`} />
-          <View style={styles.scrim} />
-          <View style={styles.cardCopy}><Text style={styles.cardName}>{item.name}</Text><Text style={styles.cardDescription}>{item.description}</Text></View>
+        return <Pressable key={item.id} accessibilityRole="radio" accessibilityState={{ checked: active }} accessibilityLabel={`${item.name}. ${item.description}. 사진은 ${item.cover.picturedPlaceName}. ${item.cover.attribution}`} onPress={() => setSelected(item.id)} style={({ pressed }) => [styles.card, active && styles.cardActive, pressed && styles.pressed]}>
+          <Image source={item.cover.source} style={StyleSheet.absoluteFillObject} contentFit="cover" cachePolicy="memory-disk" accessible={false} importantForAccessibility="no-hide-descendants" />
+          <LinearGradient colors={["rgba(8,25,21,.06)", "rgba(8,25,21,.82)"]} locations={[.25, 1]} style={styles.scrim} pointerEvents="none" />
+          <View style={styles.cardCopy}><Text style={styles.cardName}>{item.name}</Text><Text style={styles.cardDescription}>{item.description}</Text><Text numberOfLines={1} style={styles.cardPlace}>영감 장소 · {item.cover.picturedPlaceName}</Text></View>
           <View style={[styles.select, active && styles.selectActive]}><BrandIcon name={active ? "check" : "arrow-right"} size={active ? 17 : 18} color={active ? palette.white : palette.forest} /></View>
         </Pressable>;
       })}</View>
@@ -62,8 +64,8 @@ export default function MoodSelectionScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: palette.ivory }, header: { height: 74, paddingHorizontal: 22, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }, headerSpace: { width: 44 }, back: { width: 44, height: 44, borderRadius: 22, backgroundColor: "rgba(255,252,246,.78)", borderWidth: StyleSheet.hairlineWidth, borderColor: palette.line, alignItems: "center", justifyContent: "center" },
-  content: { paddingHorizontal: 22, paddingTop: 20 }, kicker: { marginTop: 22, fontFamily: fonts.semibold, fontSize: 12, color: palette.forestSoft }, title: { marginTop: 10, fontFamily: fonts.serifRegular, fontSize: 32, lineHeight: 43, letterSpacing: -1.2, color: palette.ink }, description: { marginTop: 11, maxWidth: 320, fontFamily: fonts.body, fontSize: 14, lineHeight: 22, color: palette.muted },
-  cards: { marginTop: 28, gap: 13 }, card: { height: 154, borderRadius: radius.md, overflow: "hidden", borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end" }, cardActive: { borderColor: palette.forest }, scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(11,34,27,.42)" }, cardCopy: { padding: 17 }, cardName: { fontFamily: fonts.serif, fontSize: 23, letterSpacing: -0.7, color: palette.white }, cardDescription: { marginTop: 5, paddingRight: 44, fontFamily: fonts.body, fontSize: 12.5, lineHeight: 18, color: "rgba(255,255,255,.91)" }, select: { position: "absolute", top: 15, right: 15, width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", backgroundColor: palette.paper }, selectActive: { backgroundColor: palette.forest },
+  screen: { flex: 1, backgroundColor: palette.ivory }, header: { height: 74, paddingHorizontal: 22, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }, headerSpace: { width: 48 }, back: { width: 48, height: 48, borderRadius: 24, backgroundColor: "rgba(255,252,246,.78)", borderWidth: StyleSheet.hairlineWidth, borderColor: palette.line, alignItems: "center", justifyContent: "center" },
+  content: { paddingHorizontal: 22, paddingTop: 20 }, kicker: { marginTop: 22, fontFamily: fonts.semibold, fontSize: 12, color: palette.forestSoft }, title: { marginTop: 10, fontFamily: fonts.serifRegular, fontSize: 32, lineHeight: 43, letterSpacing: -1.2, color: palette.ink }, description: { marginTop: 11, maxWidth: 320, fontFamily: fonts.body, fontSize: 14, lineHeight: 22, color: palette.muted }, sourceNote: { marginTop: 7, fontFamily: fonts.body, fontSize: 12, lineHeight: 18, color: palette.forestSoft },
+  cards: { marginTop: 24, gap: 13 }, card: { minHeight: 172, borderRadius: radius.md, overflow: "hidden", borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end" }, cardActive: { borderColor: palette.forest }, scrim: { ...StyleSheet.absoluteFillObject }, cardCopy: { minHeight: 172, justifyContent: "flex-end", padding: 17 }, cardName: { paddingRight: 54, fontFamily: fonts.serif, fontSize: 23, lineHeight: 31, letterSpacing: -0.7, color: palette.white }, cardDescription: { marginTop: 4, paddingRight: 44, fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: palette.white }, cardPlace: { marginTop: 7, paddingRight: 42, fontFamily: fonts.body, fontSize: 10.5, lineHeight: 15, color: "rgba(255,255,255,.9)" }, select: { position: "absolute", top: 15, right: 15, width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center", backgroundColor: palette.paper }, selectActive: { backgroundColor: palette.forest },
   footer: { position: "absolute", left: 0, right: 0, bottom: 0, paddingHorizontal: 20, paddingTop: 12, backgroundColor: "rgba(246,242,233,.98)", borderTopWidth: StyleSheet.hairlineWidth, borderColor: palette.line }, cta: { minHeight: 56, paddingHorizontal: 20, borderRadius: 13, backgroundColor: palette.forest, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }, ctaText: { fontFamily: fonts.semibold, fontSize: 16, color: palette.white }, disabled: { backgroundColor: palette.sageDark }, pressed: { opacity: .86, transform: [{ scale: .99 }] },
 });

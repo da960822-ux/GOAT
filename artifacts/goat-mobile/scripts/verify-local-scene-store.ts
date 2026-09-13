@@ -33,16 +33,16 @@ async function main() {
   await store.saveScene({
     placeId: "place-a",
     selectionId: "scene-b",
-    note: "덮어쓰면 안 됨",
+    note: "메모 수정",
     selected: false,
   });
 
   assert.deepEqual(await store.getScenes(), [
     {
       placeId: "place-a",
-      selectionId: "scene-a",
-      note: "다시 보기",
-      selected: true,
+      selectionId: "scene-b",
+      note: "메모 수정",
+      selected: false,
       savedAt: "2026-09-12T10:00:00.000Z",
     },
   ]);
@@ -59,6 +59,8 @@ async function main() {
     policyVersion: "goat-discovery-r4",
     revision: 2,
   });
+
+  assert.equal((await store.loadDraft()).status, "RESTORED");
 
   assert.deepEqual(
     await store.restoreDraft({

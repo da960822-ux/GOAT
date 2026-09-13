@@ -41,8 +41,8 @@ export function SectionEyebrow({ children, light = false }: { children: React.Re
 const FLOW_STEPS = ["감성 선택", "여행 조건", "추천 완성"];
 
 export function FlowProgress({ currentStep }: { currentStep: 1 | 2 | 3 }) {
-  return <View accessibilityRole="progressbar" accessibilityValue={{ min: 1, max: 3, now: currentStep }} accessibilityLabel={`여행 추천 ${currentStep}단계`} style={styles.progress}>
-    {FLOW_STEPS.map((label, index) => {
+  return <View accessible accessibilityRole="progressbar" accessibilityValue={{ min: 1, max: 3, now: currentStep }} accessibilityLabel={`여행 추천 ${currentStep}단계`} style={styles.progress} importantForAccessibility="yes">
+    <View accessible={false} importantForAccessibility="no-hide-descendants" style={styles.progressContents}>{FLOW_STEPS.map((label, index) => {
       const step = index + 1;
       const complete = step < currentStep;
       const active = step === currentStep;
@@ -55,14 +55,14 @@ export function FlowProgress({ currentStep }: { currentStep: 1 | 2 | 3 }) {
         </View>
         {step < FLOW_STEPS.length && <View style={[styles.progressLine, complete && styles.progressLineActive]} />}
       </React.Fragment>;
-    })}
+    })}</View>
   </View>;
 }
 
 const styles = StyleSheet.create({
   header: { height: 60, paddingHorizontal: 20, flexDirection: "row", alignItems: "center", justifyContent: "space-between", backgroundColor: palette.ivory, zIndex: 5 },
   headerTransparent: { backgroundColor: "transparent" },
-  circle: { width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", backgroundColor: palette.paper, borderWidth: 1, borderColor: palette.line },
+  circle: { width: 48, height: 48, borderRadius: 24, alignItems: "center", justifyContent: "center", backgroundColor: palette.paper, borderWidth: 1, borderColor: palette.line },
   circleLight: { backgroundColor: "rgba(19,48,42,.45)", borderColor: "rgba(255,255,255,.28)" },
   headerTitle: { position: "absolute", left: 72, right: 72, textAlign: "center", fontFamily: fonts.semibold, fontSize: 16, color: palette.ink },
   right: { width: 44, alignItems: "flex-end" },
@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.82, transform: [{ scale: 0.99 }] },
   buttonLabel: { fontFamily: fonts.semibold, fontSize: 16, letterSpacing: -0.2 },
   eyebrow: { fontFamily: fonts.bold, fontSize: 11, letterSpacing: 1.6, color: palette.forestSoft, textTransform: "uppercase" },
-  progress: { flexDirection: "row", alignItems: "flex-start", paddingVertical: 4 },
+  progress: { paddingVertical: 4 },
+  progressContents: { flexDirection: "row", alignItems: "flex-start" },
   progressItem: { alignItems: "center", minWidth: 54 },
   progressDot: { width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: palette.line, backgroundColor: palette.paper },
   progressDotActive: { borderColor: palette.forest, backgroundColor: palette.forest },

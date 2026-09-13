@@ -34,6 +34,8 @@ export function MapButtonGroup({ place }: MapButtonGroupProps) {
             key={btn.label}
             style={[styles.btn, { backgroundColor: btn.color }]}
             onPress={() => handlePress(btn.handler)}
+            accessibilityRole="button"
+            accessibilityLabel={`${place.place_name} ${btn.label}으로 길찾기`}
             testID={`map-btn-${btn.label}`}
             activeOpacity={0.8}
           >
@@ -49,12 +51,13 @@ const styles = StyleSheet.create({
   container: { marginTop: 14 },
   label: {
     fontSize: 12,
-    fontFamily: 'Inter_500Medium',
+    fontFamily: 'PretendardRegular',
     marginBottom: 8,
   },
   buttons: { flexDirection: 'row', gap: 8 },
   btn: {
     flex: 1,
+    minHeight: 48,
     paddingVertical: 10,
     borderRadius: 10,
     alignItems: 'center',
@@ -63,6 +66,6 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 13,
     fontWeight: '700',
-    fontFamily: 'Inter_700Bold',
+    fontFamily: 'PretendardSemiBold',
   },
 });

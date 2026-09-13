@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12,
     fontWeight: '500',
-    fontFamily: 'Inter_500Medium',
+    fontFamily: 'PretendardRegular',
   },
 });

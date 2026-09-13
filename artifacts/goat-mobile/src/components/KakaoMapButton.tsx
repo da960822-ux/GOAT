@@ -21,6 +21,8 @@ export function KakaoMapButton({ place }: KakaoMapButtonProps) {
     <TouchableOpacity
       style={styles.btn}
       onPress={handlePress}
+      accessibilityRole="button"
+      accessibilityLabel={`${place.place_name} 카카오맵으로 길찾기`}
       activeOpacity={0.82}
       testID="kakaomap-btn"
     >
@@ -35,6 +37,7 @@ export function KakaoMapButton({ place }: KakaoMapButtonProps) {
 
 const styles = StyleSheet.create({
   btn: {
+    minHeight: 48,
     backgroundColor: '#F7E600',
     borderRadius: 14,
     paddingVertical: 14,
@@ -50,12 +53,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     fontWeight: '700',
-    fontFamily: 'Inter_700Bold',
+    fontFamily: 'PretendardSemiBold',
     color: '#3A1D00',
   },
   sub: {
     fontSize: 11,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'PretendardRegular',
     color: 'rgba(58,29,0,0.55)',
   },
 });

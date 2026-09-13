@@ -21,6 +21,9 @@ export function BottomCTA({ label, onPress, disabled = false, subtitle }: Bottom
       <TouchableOpacity
         onPress={onPress}
         disabled={disabled}
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled }}
         activeOpacity={0.85}
         style={[styles.btn, { backgroundColor: disabled ? colors.muted : colors.primary }]}
         testID="bottom-cta"
@@ -39,11 +42,12 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 13,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'PretendardRegular',
     textAlign: 'center',
     marginBottom: 10,
   },
   btn: {
+    minHeight: 48,
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: 'center',
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 16,
     fontWeight: '700',
-    fontFamily: 'Inter_700Bold',
+    fontFamily: 'PretendardSemiBold',
     letterSpacing: 0.2,
   },
 });

@@ -8,6 +8,7 @@ import {
   type Place,
   type PublicRecommendationCard,
   type PublicRecommendationData,
+  type PublicRecommendationRequest,
   type ReplaceReason,
 } from "@workspace/api-client-react";
 
@@ -21,11 +22,7 @@ export class StaleDiscoveryResponse extends Error {
   }
 }
 
-export async function requestPublicRecommendation(input: {
-  selectionId: string;
-  mode?: DiscoveryMode;
-  transportType?: DiscoveryTransportType;
-}) {
+export async function requestPublicRecommendation(input: PublicRecommendationRequest) {
   const request = recommendationRequests.begin();
   const response = await createPublicRecommendation(input);
   if (!recommendationRequests.isLatest(request)) throw new StaleDiscoveryResponse();

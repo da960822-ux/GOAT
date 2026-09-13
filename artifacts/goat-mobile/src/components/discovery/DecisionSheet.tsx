@@ -1,35 +1,557 @@
-import React, { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
-import { AccessibilityInfo, ActivityIndicator, findNodeHandle, InteractionManager, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type RefObject,
+} from "react";
+import {
+  AccessibilityInfo,
+  ActivityIndicator,
+  findNodeHandle,
+  InteractionManager,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BrandIcon } from "@/src/components/BrandIcon";
 import { fonts, palette, radius, spacing } from "@/src/theme/editorial";
 
-export type DecisionSheetProps = { visible: boolean; selectedPlace: { region: string; name: string }; criticalRestriction?: string | null; saveStatus?: "idle" | "loading" | "saved" | "error"; saveError?: string | null; children?: ReactNode; returnFocusRef?: RefObject<View | null>; onOpenMap: () => void; onSave: () => void; onShare: () => void; onClose: () => void };
+export type DecisionSheetProps = {
+  visible: boolean;
+  selectedPlace: { region: string; name: string };
+  criticalRestriction?: string | null;
+  saveStatus?: "idle" | "loading" | "saved" | "error";
+  courseStatus?: "idle" | "loading" | "error";
+  saveError?: string | null;
+  courseError?: string | null;
+  note?: string;
+  shareUrl?: string | null;
+  children?: ReactNode;
+  returnFocusRef?: RefObject<View | null>;
+  onNoteChange?: (note: string) => void;
+  onOpenMap: () => void;
+  onSave: () => void;
+  onShare: () => void;
+  onContinueCourse?: () => void;
+  onClose: () => void;
+};
 
-export function DecisionSheet({ visible, selectedPlace, criticalRestriction, saveStatus = "idle", saveError, children, returnFocusRef, onOpenMap, onSave, onShare, onClose }: DecisionSheetProps) {
+export function DecisionSheet({
+  visible,
+  selectedPlace,
+  criticalRestriction,
+  saveStatus = "idle",
+  courseStatus = "idle",
+  saveError,
+  courseError,
+  note = "",
+  shareUrl,
+  children,
+  returnFocusRef,
+  onNoteChange,
+  onOpenMap,
+  onSave,
+  onShare,
+  onContinueCourse,
+  onClose,
+}: DecisionSheetProps) {
   const closeRef = useRef<View>(null);
   const wasVisible = useRef(false);
   const closing = useRef(false);
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const [reduceMotion, setReduceMotion] = useState(false);
-  const statusText = saveStatus === "loading" ? "내 장면에 저장하는 중이에요" : saveStatus === "saved" ? "내 장면에 저장했어요" : saveStatus === "error" ? saveError || "저장하지 못했어요. 다시 시도해주세요." : null;
-  useEffect(() => { void AccessibilityInfo.isReduceMotionEnabled().then(setReduceMotion); const subscription = AccessibilityInfo.addEventListener("reduceMotionChanged", setReduceMotion); return () => subscription.remove(); }, []);
-  const focus = (target: View | null | undefined) => { if (Platform.OS === "web") { (target as unknown as { focus?: () => void } | null)?.focus?.(); return; } const handle = target ? findNodeHandle(target) : null; if (handle) AccessibilityInfo.setAccessibilityFocus(handle); };
-  const handleShow = () => { closing.current = false; wasVisible.current = true; focus(closeRef.current); };
-  const handleClose = () => { if (closing.current) return; closing.current = true; const shouldReturnFocus = wasVisible.current; wasVisible.current = false; onClose(); if (shouldReturnFocus) InteractionManager.runAfterInteractions(() => focus(returnFocusRef?.current)); };
+  const [copied, setCopied] = useState(false);
+  const statusText =
+    courseStatus === "loading"
+      ? "선택한 장소에서 이어지는 코스를 만드는 중이에요"
+      : courseStatus === "error"
+        ? courseError || "코스를 만들지 못했어요. 다시 시도해주세요."
+        : saveStatus === "loading"
+          ? "내 장면에 저장하는 중이에요"
+          : saveStatus === "saved"
+            ? "내 장면에 저장했어요"
+            : saveStatus === "error"
+              ? saveError || "저장하지 못했어요. 다시 시도해주세요."
+              : null;
+  useEffect(() => {
+    void AccessibilityInfo.isReduceMotionEnabled().then(setReduceMotion);
+    const subscription = AccessibilityInfo.addEventListener(
+      "reduceMotionChanged",
+      setReduceMotion,
+    );
+    return () => subscription.remove();
+  }, []);
+  useEffect(() => setCopied(false), [shareUrl]);
+  useEffect(() => {
+    if (Platform.OS === "ios" && visible && statusText)
+      AccessibilityInfo.announceForAccessibility(statusText);
+  }, [statusText, visible]);
+  const focus = (target: View | null | undefined) => {
+    if (Platform.OS === "web") {
+      (target as unknown as { focus?: () => void } | null)?.focus?.();
+      return;
+    }
+    const handle = target ? findNodeHandle(target) : null;
+    if (handle) AccessibilityInfo.setAccessibilityFocus(handle);
+  };
+  const handleShow = () => {
+    closing.current = false;
+    wasVisible.current = true;
+    focus(closeRef.current);
+  };
+  const handleClose = () => {
+    if (closing.current) return;
+    closing.current = true;
+    const shouldReturnFocus = wasVisible.current;
+    wasVisible.current = false;
+    onClose();
+    if (shouldReturnFocus)
+      InteractionManager.runAfterInteractions(() =>
+        focus(returnFocusRef?.current),
+      );
+  };
+  const copyShareUrl = async () => {
+    if (
+      !shareUrl ||
+      Platform.OS !== "web" ||
+      typeof navigator === "undefined" ||
+      !navigator.clipboard
+    )
+      return;
+    await navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+  };
 
-  return <Modal visible={visible} transparent animationType={reduceMotion ? "none" : "fade"} onRequestClose={handleClose} onShow={handleShow}><View style={styles.overlay}>
-    <Pressable accessible={false} importantForAccessibility="no-hide-descendants" onPress={handleClose} style={StyleSheet.absoluteFill} />
-    <View accessibilityViewIsModal style={[styles.sheet, { maxHeight: Math.min(height - Math.max(insets.top, spacing.sm), Math.round(height * 0.88)) }]}>
-      <View style={styles.handle} />
-      <View style={styles.header}><View style={styles.heading}><Text style={styles.eyebrow}>{selectedPlace.region}</Text><Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.name}>{selectedPlace.name}</Text></View><Pressable ref={closeRef} accessibilityRole="button" accessibilityLabel="결정 닫기" onPress={handleClose} style={({ pressed }) => [styles.close, pressed && styles.pressed]}><BrandIcon name="close" size={20} color={palette.forest} /></Pressable></View>
-      <ScrollView style={styles.contentScroll} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">{criticalRestriction ? <View style={styles.restriction}><BrandIcon name="warning" size={18} color={palette.error} /><Text style={styles.restrictionText}>{criticalRestriction}</Text></View> : null}{children}{statusText ? <Text accessibilityLiveRegion="polite" style={[styles.status, saveStatus === "error" && styles.error]}>{statusText}</Text> : null}</ScrollView>
-      <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}><Pressable accessibilityRole="button" accessibilityLabel={`${selectedPlace.name} 지도에서 보기`} onPress={onOpenMap} style={({ pressed }) => [styles.mapButton, pressed && styles.pressed]}><BrandIcon name="map" size={19} color={palette.white} /><Text style={styles.mapText}>지도에서 보기</Text></Pressable><View style={styles.secondaryActions}><Pressable accessibilityRole="button" accessibilityLabel={saveStatus === "saved" ? "내 장면에 저장됨" : "내 장면에 저장"} accessibilityState={{ busy: saveStatus === "loading", selected: saveStatus === "saved" }} disabled={saveStatus === "loading"} onPress={onSave} style={({ pressed }) => [styles.saveButton, saveStatus === "loading" && styles.disabled, pressed && styles.pressed]}>{saveStatus === "loading" ? <ActivityIndicator color={palette.forest} /> : <BrandIcon name={saveStatus === "saved" ? "check" : "bookmark"} size={18} color={palette.forest} />}<Text style={styles.saveText}>{saveStatus === "saved" ? "저장됨" : "내 장면에 저장"}</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel="공유하기" onPress={onShare} style={({ pressed }) => [styles.shareButton, pressed && styles.pressed]}><BrandIcon name="share" size={18} color={palette.forest} /><Text style={styles.shareText}>공유하기</Text></Pressable></View></View>
-    </View>
-  </View></Modal>;
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType={reduceMotion ? "none" : "fade"}
+      onRequestClose={handleClose}
+      onShow={handleShow}
+    >
+      <View style={styles.overlay}>
+        <Pressable
+          accessible={false}
+          importantForAccessibility="no-hide-descendants"
+          onPress={handleClose}
+          style={StyleSheet.absoluteFill}
+        />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.keyboardAvoiding}
+        >
+        <View
+          accessibilityViewIsModal
+          style={[
+            styles.sheet,
+            {
+              maxHeight: Math.min(
+                height - Math.max(insets.top, spacing.sm),
+                Math.round(height * 0.88),
+              ),
+            },
+          ]}
+        >
+          <View style={styles.handle} />
+          <View style={styles.header}>
+            <View style={styles.heading}>
+              <Text style={styles.eyebrow}>{selectedPlace.region}</Text>
+              <Text
+                lineBreakStrategyIOS="hangul-word"
+                textBreakStrategy="balanced"
+                android_hyphenationFrequency="none"
+                style={styles.name}
+              >
+                {selectedPlace.name}
+              </Text>
+            </View>
+            <Pressable
+              ref={closeRef}
+              accessibilityRole="button"
+              accessibilityLabel="결정 닫기"
+              onPress={handleClose}
+              style={({ pressed }) => [styles.close, pressed && styles.pressed]}
+            >
+              <BrandIcon name="close" size={20} color={palette.forest} />
+            </Pressable>
+          </View>
+          <ScrollView
+            style={styles.contentScroll}
+            contentContainerStyle={styles.content}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
+            {criticalRestriction ? (
+              <View style={styles.restriction}>
+                <BrandIcon name="warning" size={18} color={palette.error} />
+                <Text style={styles.restrictionText}>
+                  {criticalRestriction}
+                </Text>
+              </View>
+            ) : null}
+            {onNoteChange ? (
+              <View style={styles.noteField}>
+                <Text style={styles.noteLabel}>내 메모</Text>
+                <TextInput
+                  accessibilityLabel="내 장면 메모"
+                  value={note}
+                  onChangeText={onNoteChange}
+                  maxLength={500}
+                  multiline
+                  placeholder="이 장소를 기억할 메모를 남겨보세요"
+                  placeholderTextColor={palette.muted}
+                  style={styles.noteInput}
+                />
+              </View>
+            ) : null}
+            {shareUrl ? (
+              <View style={styles.shareFallback}>
+                <Text style={styles.shareFallbackLabel}>공유 링크</Text>
+                <Text selectable style={styles.shareFallbackUrl}>
+                  {shareUrl}
+                </Text>
+                {Platform.OS === "web" &&
+                typeof navigator !== "undefined" &&
+                navigator.clipboard ? (
+                  <Pressable
+                    accessibilityRole="button"
+                    onPress={() => void copyShareUrl()}
+                    style={styles.copyButton}
+                  >
+                    <Text style={styles.copyButtonText}>
+                      {copied ? "복사했어요" : "링크 복사"}
+                    </Text>
+                  </Pressable>
+                ) : (
+                  <Text style={styles.copyHint}>
+                    링크를 길게 눌러 복사하세요.
+                  </Text>
+                )}
+              </View>
+            ) : null}
+            {children}
+            {statusText ? (
+              <Text
+                accessibilityLiveRegion="polite"
+                style={[styles.status, (saveStatus === "error" || courseStatus === "error") && styles.error]}
+              >
+                {statusText}
+              </Text>
+            ) : null}
+          </ScrollView>
+          <View
+            style={[
+              styles.footer,
+              { paddingBottom: Math.max(insets.bottom, spacing.sm) },
+            ]}
+          >
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`${selectedPlace.name} 지도에서 보기`}
+              disabled={courseStatus === "loading"}
+              onPress={onOpenMap}
+              style={({ pressed }) => [
+                styles.mapButton,
+                courseStatus === "loading" && styles.disabled,
+                pressed && styles.pressed,
+              ]}
+            >
+              <BrandIcon name="map" size={19} color={palette.white} />
+              <Text style={styles.mapText}>지도에서 보기</Text>
+            </Pressable>
+            {onContinueCourse ? (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`${selectedPlace.name}에서 여행 이어가기`}
+                accessibilityState={{
+                  busy: courseStatus === "loading",
+                  disabled: courseStatus === "loading",
+                }}
+                disabled={courseStatus === "loading"}
+                onPress={onContinueCourse}
+                style={({ pressed }) => [
+                  styles.courseButton,
+                  courseStatus === "loading" && styles.disabled,
+                  pressed && styles.pressed,
+                ]}
+              >
+                {courseStatus === "loading" ? (
+                  <ActivityIndicator color={palette.forest} />
+                ) : (
+                  <BrandIcon name="course" size={18} color={palette.forest} />
+                )}
+                <Text style={styles.courseText}>
+                  {courseStatus === "error"
+                    ? "코스 다시 만들기"
+                    : "여행 이어가기"}
+                </Text>
+              </Pressable>
+            ) : null}
+            <View style={styles.secondaryActions}>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={
+                  saveStatus === "saved" ? "내 장면에 저장됨" : "내 장면에 저장"
+                }
+                accessibilityState={{
+                  busy: saveStatus === "loading",
+                  selected: saveStatus === "saved",
+                }}
+                disabled={
+                  saveStatus === "loading" || courseStatus === "loading"
+                }
+                onPress={onSave}
+                style={({ pressed }) => [
+                  styles.saveButton,
+                  (saveStatus === "loading" || courseStatus === "loading") &&
+                    styles.disabled,
+                  pressed && styles.pressed,
+                ]}
+              >
+                {saveStatus === "loading" ? (
+                  <ActivityIndicator color={palette.forest} />
+                ) : (
+                  <BrandIcon
+                    name={saveStatus === "saved" ? "check" : "bookmark"}
+                    size={18}
+                    color={palette.forest}
+                  />
+                )}
+                <Text style={styles.saveText}>
+                  {saveStatus === "saved" ? "저장됨" : "내 장면에 저장"}
+                </Text>
+              </Pressable>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="공유하기"
+                disabled={courseStatus === "loading"}
+                onPress={onShare}
+                style={({ pressed }) => [
+                  styles.shareButton,
+                  courseStatus === "loading" && styles.disabled,
+                  pressed && styles.pressed,
+                ]}
+              >
+                <BrandIcon name="share" size={18} color={palette.forest} />
+                <Text style={styles.shareText}>공유하기</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+        </KeyboardAvoidingView>
+      </View>
+    </Modal>
+  );
 }
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(15, 48, 42, 0.52)" }, sheet: { borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg, backgroundColor: palette.paper, paddingHorizontal: spacing.lg, paddingTop: spacing.sm }, handle: { flexShrink: 0, alignSelf: "center", width: 42, height: 4, borderRadius: radius.pill, backgroundColor: palette.line }, header: { flexShrink: 0, flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between", gap: spacing.md, paddingTop: spacing.sm }, heading: { flex: 1, gap: spacing.xxs }, eyebrow: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 1.2, color: palette.forestSoft }, name: { fontFamily: fonts.serif, fontSize: 25, lineHeight: 33, color: palette.ink }, close: { minWidth: 48, minHeight: 48, alignItems: "center", justifyContent: "center", borderRadius: radius.pill, backgroundColor: palette.ivory }, contentScroll: { flexShrink: 1, minHeight: 0 }, content: { gap: spacing.md, paddingVertical: spacing.md }, restriction: { flexDirection: "row", alignItems: "flex-start", gap: spacing.xs, borderWidth: 1, borderColor: palette.errorBorder, borderRadius: radius.sm, backgroundColor: palette.errorSurface, padding: spacing.sm }, restrictionText: { flex: 1, fontFamily: fonts.medium, fontSize: 14, lineHeight: 21, color: palette.error }, status: { fontFamily: fonts.medium, fontSize: 14, lineHeight: 21, color: palette.forest }, error: { color: palette.error }, footer: { flexShrink: 0, gap: spacing.sm, paddingTop: spacing.sm, borderTopWidth: StyleSheet.hairlineWidth, borderColor: palette.line }, mapButton: { minHeight: 52, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: spacing.xs, borderRadius: radius.pill, backgroundColor: palette.forest, paddingHorizontal: spacing.md }, mapText: { fontFamily: fonts.semibold, fontSize: 16, color: palette.white }, secondaryActions: { flexDirection: "row", gap: spacing.sm }, saveButton: { minHeight: 48, flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: spacing.xs, borderRadius: radius.pill, backgroundColor: palette.sage, paddingHorizontal: spacing.xs }, saveText: { fontFamily: fonts.semibold, fontSize: 14, color: palette.forest }, shareButton: { minHeight: 48, flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: spacing.xs, borderRadius: radius.pill, borderWidth: 1, borderColor: palette.forest, paddingHorizontal: spacing.xs }, shareText: { fontFamily: fonts.semibold, fontSize: 14, color: palette.forest }, disabled: { opacity: 0.65 }, pressed: { opacity: 0.82 },
+  overlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(15, 48, 42, 0.52)",
+  },
+  keyboardAvoiding: { flex: 1, justifyContent: "flex-end" },
+  sheet: {
+    borderTopLeftRadius: radius.lg,
+    borderTopRightRadius: radius.lg,
+    backgroundColor: palette.paper,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
+  },
+  handle: {
+    flexShrink: 0,
+    alignSelf: "center",
+    width: 42,
+    height: 4,
+    borderRadius: radius.pill,
+    backgroundColor: palette.line,
+  },
+  header: {
+    flexShrink: 0,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: spacing.md,
+    paddingTop: spacing.sm,
+  },
+  heading: { flex: 1, gap: spacing.xxs },
+  eyebrow: {
+    fontFamily: fonts.bold,
+    fontSize: 12,
+    letterSpacing: 1.2,
+    color: palette.forestSoft,
+  },
+  name: {
+    fontFamily: fonts.serif,
+    fontSize: 25,
+    lineHeight: 33,
+    color: palette.ink,
+  },
+  close: {
+    minWidth: 48,
+    minHeight: 48,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: radius.pill,
+    backgroundColor: palette.ivory,
+  },
+  contentScroll: { flexShrink: 1, minHeight: 0 },
+  content: { gap: spacing.md, paddingVertical: spacing.md },
+  restriction: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: spacing.xs,
+    borderWidth: 1,
+    borderColor: palette.errorBorder,
+    borderRadius: radius.sm,
+    backgroundColor: palette.errorSurface,
+    padding: spacing.sm,
+  },
+  restrictionText: {
+    flex: 1,
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    lineHeight: 21,
+    color: palette.error,
+  },
+  noteField: { gap: spacing.xs },
+  noteLabel: {
+    fontFamily: fonts.semibold,
+    fontSize: 13,
+    color: palette.forest,
+  },
+  noteInput: {
+    minHeight: 76,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.sm,
+    borderWidth: 1,
+    borderColor: palette.line,
+    borderRadius: radius.sm,
+    backgroundColor: palette.ivory,
+    fontFamily: fonts.body,
+    fontSize: 14,
+    lineHeight: 21,
+    color: palette.ink,
+    textAlignVertical: "top",
+  },
+  shareFallback: {
+    gap: spacing.xs,
+    padding: spacing.sm,
+    borderRadius: radius.sm,
+    backgroundColor: palette.ivory,
+  },
+  shareFallbackLabel: {
+    fontFamily: fonts.semibold,
+    fontSize: 12,
+    color: palette.forest,
+  },
+  shareFallbackUrl: {
+    fontFamily: fonts.body,
+    fontSize: 13,
+    lineHeight: 19,
+    color: palette.ink,
+  },
+  copyButton: {
+    minHeight: 44,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: radius.pill,
+    backgroundColor: palette.sage,
+  },
+  copyButtonText: {
+    fontFamily: fonts.semibold,
+    fontSize: 13,
+    color: palette.forest,
+  },
+  copyHint: {
+    fontFamily: fonts.body,
+    fontSize: 12,
+    lineHeight: 18,
+    color: palette.muted,
+  },
+  status: {
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    lineHeight: 21,
+    color: palette.forest,
+  },
+  error: { color: palette.error },
+  footer: {
+    flexShrink: 0,
+    gap: spacing.sm,
+    paddingTop: spacing.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderColor: palette.line,
+  },
+  mapButton: {
+    minHeight: 52,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.xs,
+    borderRadius: radius.pill,
+    backgroundColor: palette.forest,
+    paddingHorizontal: spacing.md,
+  },
+  mapText: { fontFamily: fonts.semibold, fontSize: 16, color: palette.white },
+  courseButton: {
+    minHeight: 48,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.xs,
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    borderColor: palette.forest,
+    backgroundColor: palette.paper,
+    paddingHorizontal: spacing.md,
+  },
+  courseText: {
+    fontFamily: fonts.semibold,
+    fontSize: 15,
+    color: palette.forest,
+  },
+  secondaryActions: { flexDirection: "row", gap: spacing.sm },
+  saveButton: {
+    minHeight: 48,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.xs,
+    borderRadius: radius.pill,
+    backgroundColor: palette.sage,
+    paddingHorizontal: spacing.xs,
+  },
+  saveText: { fontFamily: fonts.semibold, fontSize: 14, color: palette.forest },
+  shareButton: {
+    minHeight: 48,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: spacing.xs,
+    borderRadius: radius.pill,
+    borderWidth: 1,
+    borderColor: palette.forest,
+    paddingHorizontal: spacing.xs,
+  },
+  shareText: {
+    fontFamily: fonts.semibold,
+    fontSize: 14,
+    color: palette.forest,
+  },
+  disabled: { opacity: 0.65 },
+  pressed: { opacity: 0.82 },
 });

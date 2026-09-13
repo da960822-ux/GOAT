@@ -1,16 +1,20 @@
 import { useRouter } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image } from "expo-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { getPublicSelections, type PublicSelection } from "@workspace/api-client-react";
+import { getPhotoCachePolicy, getPublicSelections, type PublicSelection } from "@workspace/api-client-react";
 import { AppTabBar } from "@/src/components/AppTabBar";
 import { BrandIcon } from "@/src/components/BrandIcon";
 import { SceneCoverCard } from "@/src/components/discovery";
+import { getEditorialSceneCover } from "@/src/data/sceneCoverEditorial";
 import { GoatMark } from "@/src/components/editorial/Brand";
 import { useApp } from "@/src/context/AppContext";
 import { localSceneStore } from "@/src/services/deviceSceneStore";
 import { requestPublicRecommendation } from "@/src/services/publicDiscovery";
 import { fonts, palette, radius } from "@/src/theme/editorial";
+
+const gangwonLogo = require("@/assets/images/goat-logo-transparent.png");
 
 export default function DiscoveryScreen() {
   const router = useRouter();
@@ -20,6 +24,7 @@ export default function DiscoveryScreen() {
   const [state, setState] = useState<"loading" | "content" | "error">("loading");
   const [expanded, setExpanded] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [draftAvailable, setDraftAvailable] = useState(false);
   const visibleSelections = useMemo(() => expanded ? selections : selections.slice(0, 6), [expanded, selections]);
 
   const load = useCallback(async () => {
@@ -28,6 +33,18 @@ export default function DiscoveryScreen() {
       const response = await getPublicSelections();
       setSelections(response.data.selections);
       setState("content");
+      try {
+        const loaded = await localSceneStore.loadDraft();
+        if (loaded.status === "STALE" || (loaded.status === "RESTORED" && !response.data.selections.some(({ selectionId }) => selectionId === loaded.draft.selectionId))) {
+          await localSceneStore.clearDraft();
+          setDraftAvailable(false);
+          Alert.alert("이전 추천을 새로 시작할게요", "저장된 추천이 현재 장면 목록과 맞지 않아요.");
+        } else {
+          setDraftAvailable(loaded.status === "RESTORED");
+        }
+      } catch {
+        setDraftAvailable(false);
+      }
     } catch {
       setState("error");
     }
@@ -74,13 +91,14 @@ export default function DiscoveryScreen() {
           contentInsetAdjustmentBehavior="automatic"
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 116 + insets.bottom, gap: 16 }}
-          ListHeaderComponent={<View style={styles.intro}><Text style={styles.kicker}>가고 싶은 장면, 강원에서 찾아보세요.</Text><Text style={styles.title}>오늘 보고 싶은{`\n`}장면은 무엇인가요?</Text><Text style={styles.description}>하나만 고르면 실제 사진과 함께 어울리는 세 곳을 바로 보여드릴게요.</Text></View>}
+          ListHeaderComponent={<View style={styles.intro}><View style={styles.heroRow}><View style={styles.heroCopy}><Text style={styles.kicker}>가고 싶은 장면을 강원에서</Text><Text accessibilityRole="header" lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.title}>오늘 보고 싶은{`\n`}장면은 무엇인가요?</Text></View><Image source={gangwonLogo} contentFit="contain" style={styles.brandStamp} accessibilityLabel="강원도 모양 GOAT 로고" /></View><Text style={styles.description}>하나만 고르면 닮은 강원 장소 세 곳을 바로 보여드려요.</Text>{draftAvailable ? <Pressable accessibilityRole="button" onPress={() => router.push("/results")} style={styles.resume}><BrandIcon name="refresh" size={18} color={palette.forest} /><Text style={styles.resumeText}>이전 추천 이어보기</Text></Pressable> : null}</View>}
           renderItem={({ item, index }) => {
             const cover = item.sceneCover;
-            const photo = cover.kind === "PHOTO" ? cover.photo : null;
-            const picturedPlaceName = cover.kind === "PHOTO" ? cover.picturedPlaceName : "선택 결과가 아닌 분위기 예시";
-            const attribution = cover.kind === "PHOTO" ? cover.sourceAttributions.map((source) => [source.label, source.author].filter(Boolean).join(" ")).join(", ") : null;
-            return <View><SceneCoverCard number={index + 1} title={item.title} description={item.availability === "AVAILABLE" ? item.description : `${item.description} · 준비 중`} picturedPlaceName={picturedPlaceName} imageUri={photo?.url} attribution={attribution} selected={busyId === item.selectionId} disabled={item.availability !== "AVAILABLE" || busyId !== null} onPress={() => void choose(item)} />{busyId === item.selectionId ? <View style={styles.busy} accessibilityLiveRegion="polite"><ActivityIndicator size="small" color={palette.forest} /><Text style={styles.busyText}>어울리는 세 곳을 찾고 있어요</Text></View> : null}</View>;
+            const editorial = getEditorialSceneCover(item.selectionId);
+            const photo = !editorial && cover.kind === "PHOTO" ? cover.photo : null;
+            const picturedPlaceName = editorial?.picturedPlaceName ?? (cover.kind === "PHOTO" ? cover.picturedPlaceName : "선택 결과가 아닌 분위기 예시");
+            const attribution = editorial?.attribution ?? (cover.kind === "PHOTO" ? cover.photo.attribution.label : null);
+            return <View><SceneCoverCard number={index + 1} title={item.title} description={item.availability === "AVAILABLE" ? item.description : `${item.description} · 준비 중`} picturedPlaceName={picturedPlaceName} imageUri={photo?.url} imageSource={editorial?.source} imageCachePolicy={photo ? getPhotoCachePolicy(photo) : editorial ? "memory-disk" : "none"} attribution={attribution} selected={busyId === item.selectionId} disabled={item.availability !== "AVAILABLE" || busyId !== null} onPress={() => void choose(item)} />{busyId === item.selectionId ? <View style={styles.busy} accessibilityLiveRegion="polite"><ActivityIndicator size="small" color={palette.forest} /><Text style={styles.busyText}>어울리는 세 곳을 찾고 있어요</Text></View> : null}</View>;
           }}
           ListFooterComponent={selections.length > 6 ? <Pressable accessibilityRole="button" accessibilityState={{ expanded }} onPress={() => setExpanded((value) => !value)} style={styles.more}><Text style={styles.moreText}>{expanded ? "대표 장면만 보기" : `장면 ${selections.length - 6}개 더 보기`}</Text><BrandIcon name="arrow-right" size={18} color={palette.forest} /></Pressable> : null}
         />}
@@ -96,10 +114,15 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: palette.ivory },
   header: { minHeight: 76, paddingHorizontal: 20, paddingBottom: 8, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   headerButton: { width: 48, height: 48, alignItems: "center", justifyContent: "center", borderRadius: radius.pill, backgroundColor: palette.paper },
-  intro: { paddingTop: 16, paddingBottom: 12, gap: 10 },
-  kicker: { fontFamily: fonts.semibold, fontSize: 14, lineHeight: 21, color: palette.forestSoft },
-  title: { fontFamily: fonts.serif, fontSize: 31, lineHeight: 42, letterSpacing: -1.1, color: palette.ink },
-  description: { maxWidth: 340, fontFamily: fonts.body, fontSize: 15, lineHeight: 23, color: palette.muted },
+  intro: { paddingTop: 8, paddingBottom: 8, gap: 7 },
+  heroRow: { minHeight: 104, flexDirection: "row", alignItems: "center", gap: 8 },
+  heroCopy: { flex: 1, gap: 5 },
+  brandStamp: { width: 102, height: 102 },
+  kicker: { fontFamily: fonts.semibold, fontSize: 12, lineHeight: 18, color: palette.forestSoft },
+  title: { fontFamily: fonts.serif, fontSize: 28, lineHeight: 38, letterSpacing: -1, color: palette.ink },
+  description: { maxWidth: 340, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.muted },
+  resume: { minHeight: 48, marginTop: 6, paddingHorizontal: 16, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, borderRadius: radius.md, backgroundColor: palette.sage },
+  resumeText: { fontFamily: fonts.semibold, fontSize: 14, color: palette.forest },
   busy: { minHeight: 44, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8 },
   busyText: { fontFamily: fonts.medium, fontSize: 13, color: palette.forest },
   more: { minHeight: 52, marginTop: 4, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, borderRadius: radius.md, borderWidth: 1, borderColor: palette.line, backgroundColor: palette.paper },

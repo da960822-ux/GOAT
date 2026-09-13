@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  dotNum: { fontSize: 11, fontWeight: '700', fontFamily: 'Inter_700Bold' },
-  label: { fontSize: 11, fontFamily: 'Inter_400Regular' },
-  labelActive: { fontFamily: 'Inter_600SemiBold', fontSize: 11 },
+  dotNum: { fontSize: 11, fontWeight: '700', fontFamily: 'PretendardSemiBold' },
+  label: { fontSize: 11, fontFamily: 'PretendardRegular' },
+  labelActive: { fontFamily: 'PretendardSemiBold', fontSize: 11 },
   line: { flex: 1, height: 2, marginHorizontal: 4, marginBottom: 14, borderRadius: 2 },
 });

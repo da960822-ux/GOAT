@@ -1,6 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { Image } from "expo-image";
+import { Image, type ImageSource } from "expo-image";
+import { LinearGradient } from "expo-linear-gradient";
 import { BrandIcon } from "@/src/components/BrandIcon";
 import { fonts, palette, radius, spacing } from "@/src/theme/editorial";
 
@@ -10,36 +11,39 @@ export type SceneCoverCardProps = {
   description: string;
   picturedPlaceName: string;
   imageUri?: string | null;
+  imageSource?: ImageSource | number | null;
+  imageCachePolicy?: "none" | "memory-disk";
   attribution?: string | null;
   selected?: boolean;
   disabled?: boolean;
   onPress: () => void;
 };
 
-export function SceneCoverCard({ number, title, description, picturedPlaceName, imageUri, attribution, selected = false, disabled = false, onPress }: SceneCoverCardProps) {
-  const caption = `장면 예시 · ${picturedPlaceName}`;
+export function SceneCoverCard({ number, title, description, picturedPlaceName, imageUri, imageSource, imageCachePolicy = "none", attribution, selected = false, disabled = false, onPress }: SceneCoverCardProps) {
+  const caption = picturedPlaceName;
+  const source = imageSource ?? (imageUri ? { uri: imageUri } : null);
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${number}. ${title}. ${description}. ${caption}`}
+      accessibilityLabel={`${number}. ${title}. ${description}. ${caption}${attribution ? `. ${attribution}` : ""}`}
       accessibilityHint="이 장면을 선택합니다"
       accessibilityState={{ selected, disabled }}
       disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [styles.card, selected && styles.selected, disabled && styles.disabled, pressed && styles.pressed]}
     >
-      {imageUri ? <Image source={{ uri: imageUri }} contentFit="cover" style={styles.image} accessible={false} importantForAccessibility="no-hide-descendants" /> : <View style={styles.fallback} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      {source ? <Image source={source} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessible={false} importantForAccessibility="no-hide-descendants" /> : <View style={styles.fallback} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <BrandIcon name="image" size={32} color={palette.forestSoft} />
         <Text style={styles.fallbackLabel}>장면을 상상해 보세요</Text>
       </View>}
-      <View style={styles.scrim} pointerEvents="none" />
+      <LinearGradient colors={["rgba(8,25,21,.04)", "rgba(8,25,21,.34)", "rgba(8,25,21,.84)"]} locations={[0, .5, 1]} style={styles.scrim} pointerEvents="none" />
       <View style={styles.copy} accessible={false} importantForAccessibility="no-hide-descendants">
         <Text style={styles.number}>{String(number).padStart(2, "0")}</Text>
         <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.caption} accessible={false} importantForAccessibility="no-hide-descendants">
-        <Text style={styles.captionText}>{caption}</Text>
+        <View style={styles.captionRow}><Text numberOfLines={1} style={styles.captionText}>{caption}</Text><View style={styles.chooseCue}><Text style={styles.chooseText}>이 장면 고르기</Text><BrandIcon name="arrow-right" size={15} color={palette.white} /></View></View>
         {attribution ? <Text style={styles.attribution}>{attribution}</Text> : null}
       </View>
     </Pressable>
@@ -54,12 +58,15 @@ const styles = StyleSheet.create({
   image: { ...StyleSheet.absoluteFillObject },
   fallback: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", gap: spacing.xs, backgroundColor: palette.sage },
   fallbackLabel: { fontFamily: fonts.medium, fontSize: 14, color: palette.forestSoft },
-  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(15, 48, 42, 0.38)" },
+  scrim: { ...StyleSheet.absoluteFillObject },
   copy: { flex: 1, justifyContent: "flex-end", padding: spacing.lg, gap: spacing.xs },
   number: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 1.4, color: palette.sage },
   title: { fontFamily: fonts.serif, fontSize: 26, lineHeight: 34, color: palette.white },
   description: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: palette.white },
-  caption: { gap: spacing.xxs, paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, backgroundColor: "rgba(15, 48, 42, 0.78)" },
-  captionText: { fontFamily: fonts.medium, fontSize: 12, lineHeight: 18, color: palette.white },
+  caption: { gap: spacing.xxs, paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, backgroundColor: "rgba(15, 48, 42, 0.92)" },
+  captionRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: spacing.sm },
+  captionText: { flex: 1, fontFamily: fonts.medium, fontSize: 12, lineHeight: 18, color: palette.white },
+  chooseCue: { flexDirection: "row", alignItems: "center", gap: spacing.xxs },
+  chooseText: { fontFamily: fonts.semibold, fontSize: 11, color: palette.white },
   attribution: { fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.sage },
 });

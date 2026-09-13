@@ -68,6 +68,9 @@ export function BrandIcon({ name, size = 24, color = "#173F36", filled = false, 
     case "google": content = <Path d="M20 12.2c0-.7-.1-1.4-.2-2H12v3.7h4.5a3.9 3.9 0 0 1-1.7 2.5v2.5h2.8c1.6-1.5 2.4-3.8 2.4-6.7ZM12 20c2.3 0 4.2-.8 5.6-2l-2.8-2.2c-.8.5-1.7.8-2.8.8-2.2 0-4.1-1.5-4.8-3.5H4.4v2.3A8.5 8.5 0 0 0 12 20Zm-4.8-6.9A5 5 0 0 1 7 12c0-.4.1-.8.2-1.2V8.5H4.4A8.5 8.5 0 0 0 3.5 12c0 1.3.3 2.5.9 3.5l2.8-2.4ZM12 7.4c1.3 0 2.4.4 3.3 1.3l2.5-2.5A8.3 8.3 0 0 0 4.4 8.5l2.8 2.3c.7-2 2.6-3.4 4.8-3.4Z" fill={color}/>; break;
     case "kakao": content = <><Path d="M12 5c-4.7 0-8.5 2.8-8.5 6.3 0 2.2 1.5 4.1 3.8 5.2L6.5 20l4-2.5 1.5.1c4.7 0 8.5-2.8 8.5-6.3S16.7 5 12 5Z" fill={color}/></>; break;
     case "warning": content = <><Path d="m12 3 9 17H3Z" {...common}/><Line x1="12" y1="9" x2="12" y2="14" {...common}/><Circle cx="12" cy="17" r=".7" fill={color}/></>; break;
+    case "info": content = <><Circle cx="12" cy="12" r="9" {...common}/><Line x1="12" y1="10.5" x2="12" y2="17" {...common}/><Circle cx="12" cy="7.5" r=".8" fill={color}/></>; break;
+    case "zap": content = <Polyline points="13 2 4.5 13 11 13 10 22 19.5 10 13 10 13 2" {...common}/>; break;
+    case "briefcase": content = <><Rect x="3" y="7" width="18" height="13" rx="2" {...common}/><Path d="M9 7V4h6v3M3 12h18M10 12v2h4v-2" {...common}/></>; break;
     case "database": content = <><Path d="M4 6c0-2 16-2 16 0v12c0 2-16 2-16 0Zm0 0c0 2 16 2 16 0M4 12c0 2 16 2 16 0" {...common}/></>; break;
     case "image": content = <><Rect x="3" y="4" width="18" height="16" rx="2" {...common}/><Circle cx="9" cy="9" r="2" {...common}/><Path d="m4 18 5-5 3 3 3-4 5 6" {...common}/></>; break;
     case "mail": content = <><Rect x="3" y="5" width="18" height="14" rx="2" {...common}/><Path d="m4 7 8 6 8-6" {...common}/></>; break;

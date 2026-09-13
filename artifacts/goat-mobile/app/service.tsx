@@ -8,8 +8,9 @@ import { fonts, radius, spacing } from '@/src/theme/editorial';
 
 const LINKS = [
   { label: 'GOAT 소개', icon: 'info' as const, path: '/about' },
-  { label: '이용 안내', icon: 'book-open' as const, path: '/guide' },
+  { label: '이용 안내', icon: 'recommend' as const, path: '/guide' },
   { label: '데이터 출처', icon: 'database' as const, path: '/data-source' },
+  { label: '이용약관', icon: 'shield' as const, path: '/terms' },
   { label: '개인정보처리방침', icon: 'shield' as const, path: '/privacy' },
   { label: '문의하기', icon: 'mail' as const, path: '/contact' },
 ];
@@ -33,6 +34,8 @@ export default function ServiceScreen() {
             ]}
             onPress={() => router.push(item.path as any)}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.label} 열기`}
           >
             <View style={[styles.iconWrap, { backgroundColor: colors.secondary }]}>
               <Feather name={item.icon} size={16} color={colors.primary} />

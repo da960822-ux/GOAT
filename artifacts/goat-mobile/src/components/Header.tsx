@@ -26,7 +26,7 @@ export function Header({ title, onBack, right }: HeaderProps) {
             </Pressable>
           )}
         </View>
-        <Text style={[styles.title, { color: colors.foreground }]} numberOfLines={1}>{title ?? ''}</Text>
+        <Text accessibilityRole="header" style={[styles.title, { color: colors.foreground }]} numberOfLines={1}>{title ?? ''}</Text>
         <View style={styles.right}>{right ?? <View style={styles.spacer} />}</View>
       </View>
     </View>

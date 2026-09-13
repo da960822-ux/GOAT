@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 11,
     fontWeight: '600',
-    fontFamily: 'Inter_600SemiBold',
+    fontFamily: 'PretendardSemiBold',
     letterSpacing: 0.2,
   },
 });

@@ -40,9 +40,11 @@ export default function ContactScreen() {
             style={[styles.row, { borderBottomColor: colors.border }]}
             onPress={() => ch.url && openLink(ch.url)}
             activeOpacity={ch.url ? 0.7 : 1}
+            accessibilityRole={ch.url ? "link" : undefined}
+            accessibilityLabel={ch.url ? `${ch.label}. ${ch.value}` : undefined}
           >
-            <View style={[styles.rowIcon, { backgroundColor: ch.bg }]}>
-              <Feather name={ch.icon as any} size={18} color={ch.iconColor} />
+            <View style={styles.rowIcon}>
+              <Feather name={ch.icon as any} size={18} color={palette.forest} />
             </View>
             <View style={styles.rowText}>
               <Text style={[styles.rowLabel, { color: colors.foreground }]}>{ch.label}</Text>
@@ -71,32 +73,24 @@ const CHANNELS = [
     label: '이메일 문의',
     value: 'contact@goattravel.app',
     icon: 'mail',
-    bg: '#EDE9FE',
-    iconColor: '#7C3AED',
     url: 'mailto:contact@goattravel.app',
   },
   {
     label: '장소 정보 오류 신고',
     value: '잘못된 장소 정보, 폐업 정보 등 제보',
     icon: 'alert-circle',
-    bg: '#FEF3C7',
-    iconColor: '#D97706',
     url: 'mailto:contact@goattravel.app?subject=장소정보오류신고',
   },
   {
     label: '앱 개선 아이디어',
     value: '새로운 감성 카테고리, 기능 제안 등',
     icon: 'zap',
-    bg: '#D1FAE5',
-    iconColor: '#065F46',
     url: 'mailto:contact@goattravel.app?subject=앱개선아이디어',
   },
   {
     label: '협업·파트너십 문의',
     value: '관광청, 지자체, 미디어 협업',
     icon: 'briefcase',
-    bg: '#E0F2FE',
-    iconColor: '#0369A1',
     url: 'mailto:contact@goattravel.app?subject=협업문의',
   },
 ];
@@ -117,7 +111,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     gap: 14,
   },
-  rowIcon: { width: 44, height: 44, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center' },
+  rowIcon: { width: 48, height: 48, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center', backgroundColor: palette.sage },
   rowText: { flex: 1 },
   rowLabel: { fontSize: 15, fontFamily: fonts.semibold, marginBottom: 2 },
   rowValue: { fontSize: 12, fontFamily: fonts.body },

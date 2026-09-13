@@ -1,135 +1,68 @@
-import React from 'react';
-import { View, ScrollView, StyleSheet, Text } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Header } from '@/src/components/Header';
-import { useColors } from '@/hooks/useColors';
-import { GoatLogo } from '@/src/components/GoatLogo';
-import { fonts, palette, radius, spacing } from '@/src/theme/editorial';
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import React from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Header } from "@/src/components/Header";
+import { fonts, palette, spacing } from "@/src/theme/editorial";
+
+const logo = require("@/assets/images/goat-logo-transparent.png");
 
 export default function AboutScreen() {
   const router = useRouter();
-  const colors = useColors();
-
   return (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
+    <View style={styles.root}>
       <Header title="GOAT 소개" onBack={() => router.back()} />
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={[styles.hero, { backgroundColor: colors.primary }]}>
-          <GoatLogo variant="stacked" size="lg" theme="dark" />
-          <View style={[styles.brandSentenceBox, { borderTopColor: 'rgba(255,255,255,0.15)' }]}>
-            <Text style={styles.brandSentence}>해외의 감성을, 강원도에서.</Text>
-            <Text style={styles.brandDesc}>
-              GOAT는 강원도 안에서 해외여행 같은 장면을 빠르게 고를 수 있게 돕는 감성 관광 큐레이션 서비스입니다.
-            </Text>
-          </View>
+        <View style={styles.hero}>
+          <Image source={logo} contentFit="contain" style={styles.logo} accessibilityLabel="강원도 모양 GOAT 로고" />
+          <Text accessibilityRole="header" style={styles.brandSentence}>해외의 감성을, 강원도에서.</Text>
+          <Text style={styles.brandDesc}>보고 싶은 장면 하나를 고르면 닮은 강원 장소 세 곳을 비교해 드리는 여행 큐레이션 서비스입니다.</Text>
         </View>
 
-        <Section title="GOAT는?" colors={colors}>
-          <Paragraph colors={colors}>
-            GOAT는 Gangwon Of All Time의 약자로, 사용자가 고른 감성에 맞춰 강원도의 이색 장소를 3개 카드로 압축해 제안합니다.
-          </Paragraph>
-          <Paragraph colors={colors}>
-            현재 추천은 7개 큰 무드와 21개 세부 레퍼런스 카드를 기반으로 동작하며, 58개 강원 장소 데이터에서 후보를 고릅니다.
-          </Paragraph>
+        <Section title="GOAT는?">
+          <Paragraph>Gangwon Of All Time의 약자로, 사용자가 고른 감성과 확인 가능한 여행 조건을 바탕으로 강원 장소 세 곳을 제안합니다.</Paragraph>
+          <Paragraph>추천 결과는 사진에서 보이는 차이, 접근·이동, 중요 제한을 같은 순서로 비교할 수 있습니다.</Paragraph>
         </Section>
 
-        <Section title="어떻게 작동하나요?" colors={colors}>
-          {[
-            { step: '1', text: '7개 큰 무드 중 하나를 고르고, 필요하면 21개 세부 레퍼런스 카드로 장면을 더 좁힙니다.' },
-            { step: '2', text: '여행 목적과 이동수단을 입력해 조건 점수를 반영합니다.' },
-            { step: '3', text: '장면 최적, 같은 분위기 대안, 조건 맞춤 3개 카드를 추천받습니다.' },
-            { step: '4', text: '카드를 눌러 상세 정보와 카카오맵 링크를 확인합니다.' },
-          ].map((item) => (
-            <View key={item.step} style={styles.stepRow}>
-              <View style={[styles.stepNum, { backgroundColor: colors.primary }]}>
-                <Text style={styles.stepNumText}>{item.step}</Text>
-              </View>
-              <Text style={[styles.stepText, { color: colors.foreground }]}>{item.text}</Text>
+        <Section title="이용 흐름">
+          {["보고 싶은 장면 하나를 고릅니다.", "장면과 어울리는 강원 장소 세 곳을 확인합니다.", "같은 기준으로 비교하고 한 곳을 선택합니다.", "지도에서 확인하거나 내 장면에 저장합니다."].map((text, index) => (
+            <View key={text} style={styles.stepRow}>
+              <Text style={styles.stepNum}>{index + 1}</Text>
+              <Text style={styles.stepText}>{text}</Text>
             </View>
           ))}
         </Section>
 
-        <Section title="추천 카드 유형" colors={colors}>
-          {[
-            { role: '장면 최적', desc: '선택한 감성과 가장 정직하게 맞는 장소입니다.' },
-            { role: '같은 분위기 대안', desc: '같은 무드 안에서 비교할 수 있는 두 번째 선택지입니다.' },
-            { role: '조건 맞춤', desc: '여행 목적, 이동수단, 현재 계절 조건을 더 우선해 고른 장소입니다.' },
-          ].map((item) => (
-            <View key={item.role} style={[styles.roleRow, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
-              <Text style={[styles.roleLabel, { color: colors.primary }]}>{item.role}</Text>
-              <Text style={[styles.roleDesc, { color: colors.mutedForeground }]}>{item.desc}</Text>
-            </View>
-          ))}
+        <Section title="추천 카드">
+          <Paragraph><Text style={styles.label}>장면 최적</Text> · 고른 장면과 가장 정직하게 맞는 장소</Paragraph>
+          <Paragraph><Text style={styles.label}>같은 분위기 대안</Text> · 같은 무드 안에서 비교할 두 번째 장소</Paragraph>
+          <Paragraph><Text style={styles.label}>조건 맞춤</Text> · 이동 방식과 요청한 오늘 조건을 더 반영한 장소</Paragraph>
         </Section>
-
-        <Section title="브랜드 컬러" colors={colors}>
-          <View style={styles.swatchRow}>
-            {[
-              { color: '#3A2374', label: 'Deep Violet' },
-              { color: '#C6E33D', label: 'Lime' },
-              { color: '#2E5D3D', label: 'Deep Green' },
-            ].map((s) => (
-              <View key={s.color} style={styles.swatchItem}>
-                <View style={[styles.swatch, { backgroundColor: s.color }]} />
-                <Text style={[styles.swatchHex, { color: colors.mutedForeground }]}>{s.color}</Text>
-                <Text style={[styles.swatchLabel, { color: colors.mutedForeground }]}>{s.label}</Text>
-              </View>
-            ))}
-          </View>
-        </Section>
-
-        <View style={styles.spacer} />
       </ScrollView>
     </View>
   );
 }
 
-function Section({ title, colors, children }: { title: string; colors: any; children: React.ReactNode }) {
-  return (
-    <View style={[styles.section, { borderBottomColor: colors.border }]}>
-      <Text style={[styles.sectionTitle, { color: colors.foreground }]}>{title}</Text>
-      {children}
-    </View>
-  );
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return <View style={styles.section}><Text accessibilityRole="header" style={styles.sectionTitle}>{title}</Text>{children}</View>;
 }
 
-function Paragraph({ colors, children }: { colors: any; children: React.ReactNode }) {
-  return <Text style={[styles.para, { color: colors.mutedForeground }]}>{children}</Text>;
+function Paragraph({ children }: { children: React.ReactNode }) {
+  return <Text style={styles.paragraph}>{children}</Text>;
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
+  root: { flex: 1, backgroundColor: palette.ivory },
   scroll: { paddingBottom: 40 },
-  hero: { alignItems: 'center', paddingVertical: spacing.xl, paddingHorizontal: spacing.lg, marginBottom: 4, gap: spacing.lg, backgroundColor: palette.forestDeep },
-  brandSentenceBox: { width: '100%', paddingTop: 20, borderTopWidth: 1, alignItems: 'center', gap: 8 },
-  brandSentence: {
-    fontSize: 18,
-    fontFamily: fonts.serif,
-    letterSpacing: 0.5,
-    textAlign: 'center',
-    color: '#FFFFFF',
-  },
-  brandDesc: {
-    fontSize: 13,
-    fontFamily: fonts.body,
-    lineHeight: 20,
-    textAlign: 'center',
-    color: 'rgba(255,255,255,0.6)',
-  },
-  section: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, borderBottomWidth: 1 },
-  sectionTitle: { fontSize: 18, fontFamily: fonts.serif, marginBottom: 14 },
-  para: { fontSize: 14, fontFamily: fonts.body, lineHeight: 23, marginBottom: 10 },
-  stepRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 12, marginBottom: 12 },
-  stepNum: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
-  stepNumText: { color: '#FFFFFF', fontSize: 13, fontFamily: fonts.bold },
-  stepText: { flex: 1, fontSize: 14, fontFamily: fonts.body, lineHeight: 22 },
-  roleRow: { borderRadius: radius.md, borderWidth: 1, padding: spacing.md, marginBottom: 8 },
-  roleLabel: { fontSize: 14, fontFamily: fonts.semibold, marginBottom: 5 },
-  roleDesc: { fontSize: 13, fontFamily: fonts.body, lineHeight: 20 },
-  swatchRow: { flexDirection: 'row', gap: 16 },
-  swatchItem: { alignItems: 'center', gap: 6 },
-  swatch: { width: 48, height: 48, borderRadius: radius.sm },
-  swatchHex: { fontSize: 11, fontFamily: fonts.medium },
-  swatchLabel: { fontSize: 11, fontFamily: fonts.body },
-  spacer: { height: 32 },
+  hero: { alignItems: "center", paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.xl, backgroundColor: palette.sage },
+  logo: { width: 184, height: 184 },
+  brandSentence: { marginTop: spacing.sm, fontFamily: fonts.serif, fontSize: 22, lineHeight: 31, color: palette.forest, textAlign: "center" },
+  brandDesc: { maxWidth: 330, marginTop: spacing.sm, fontFamily: fonts.body, fontSize: 14, lineHeight: 22, color: palette.muted, textAlign: "center" },
+  section: { paddingHorizontal: spacing.lg, paddingVertical: spacing.lg, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: palette.line },
+  sectionTitle: { marginBottom: spacing.md, fontFamily: fonts.serif, fontSize: 19, lineHeight: 27, color: palette.ink },
+  paragraph: { marginBottom: spacing.sm, fontFamily: fonts.body, fontSize: 14, lineHeight: 23, color: palette.muted },
+  label: { fontFamily: fonts.semibold, color: palette.forest },
+  stepRow: { minHeight: 48, flexDirection: "row", alignItems: "flex-start", gap: spacing.md },
+  stepNum: { width: 28, fontFamily: fonts.serif, fontSize: 18, lineHeight: 25, color: palette.forest },
+  stepText: { flex: 1, fontFamily: fonts.body, fontSize: 14, lineHeight: 23, color: palette.ink },
 });

@@ -32,7 +32,7 @@ function RootLayoutNav() {
 
   useEffect(() => {
     if (loading) return;
-    const protectedRoute = ["/recommendations", "/map", "/profile"].some((path) => pathname.startsWith(path));
+    const protectedRoute = ["/recommendations", "/profile"].some((path) => pathname.startsWith(path));
     if (!session && protectedRoute) router.replace({ pathname: "/login", params: { next: pathname } } as never);
   }, [loading, pathname, router, session]);
 

@@ -63,10 +63,23 @@ export class LocalSceneStore {
   async saveScene(input: SaveSceneInput): Promise<SavedScene> {
     const scenes = await this.getScenes();
     const existing = scenes.find((scene) => scene.placeId === input.placeId);
-    if (existing) return existing;
+    if (existing) {
+      const updated = savedSceneSchema.parse({
+        ...existing,
+        ...input,
+        note: input.note?.trim() || undefined,
+        selected: input.selected ?? existing.selected,
+      });
+      await this.storage.setItem(
+        SCENES_KEY,
+        JSON.stringify(scenes.map((scene) => scene.placeId === input.placeId ? updated : scene)),
+      );
+      return updated;
+    }
 
     const scene = savedSceneSchema.parse({
       ...input,
+      note: input.note?.trim() || undefined,
       selected: input.selected ?? false,
       savedAt: this.now(),
     });
@@ -95,6 +108,24 @@ export class LocalSceneStore {
     selectionIds: readonly string[];
     placeIds: readonly string[];
   }): Promise<DraftRestoreResult> {
+    const loaded = await this.loadDraft();
+    if (loaded.status !== "RESTORED") return loaded;
+
+    const draft = loaded.draft;
+    const validSelections = new Set(current.selectionIds);
+    const validPlaces = new Set(current.placeIds);
+    if (
+      draft.catalogVersion !== current.catalogVersion ||
+      draft.policyVersion !== current.policyVersion ||
+      !validSelections.has(draft.selectionId) ||
+      draft.placeIds.some((placeId) => !validPlaces.has(placeId))
+    ) {
+      return { status: "STALE" };
+    }
+    return loaded;
+  }
+
+  async loadDraft(): Promise<DraftRestoreResult> {
     const raw = await this.storage.getItem(DRAFT_KEY);
     if (!raw) return { status: "EMPTY" };
 
@@ -107,18 +138,7 @@ export class LocalSceneStore {
     const result = recommendationDraftSchema.safeParse(parsed);
     if (!result.success) return { status: "STALE" };
 
-    const draft = result.data;
-    const validSelections = new Set(current.selectionIds);
-    const validPlaces = new Set(current.placeIds);
-    if (
-      draft.catalogVersion !== current.catalogVersion ||
-      draft.policyVersion !== current.policyVersion ||
-      !validSelections.has(draft.selectionId) ||
-      draft.placeIds.some((placeId) => !validPlaces.has(placeId))
-    ) {
-      return { status: "STALE" };
-    }
-    return { status: "RESTORED", draft };
+    return { status: "RESTORED", draft: result.data };
   }
 
   async clearDraft(): Promise<void> {

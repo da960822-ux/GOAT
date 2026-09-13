@@ -14,6 +14,7 @@ export type DecisionCardProps = {
   summary: string;
   features: readonly string[];
   imageUri?: string | null;
+  imageCachePolicy?: "none" | "memory-disk";
   criticalRestriction?: string | null;
   attribution?: string | null;
   replacementState?: ReplacementState;
@@ -24,16 +25,17 @@ export type DecisionCardProps = {
   onChoose: (trigger?: View | null) => void;
 };
 
-export function DecisionCard({ index, total, region, name, summary, features, imageUri, criticalRestriction, attribution, replacementState = "available", replacementHint, replacementDisabled = false, onDetails, onReplace, onChoose }: DecisionCardProps) {
+export function DecisionCard({ index, total, region, name, summary, features, imageUri, imageCachePolicy = "none", criticalRestriction, attribution, replacementState = "available", replacementHint, replacementDisabled = false, onDetails, onReplace, onChoose }: DecisionCardProps) {
   const chooseRef = useRef<View>(null);
   const [imageFailed, setImageFailed] = useState(false);
   useEffect(() => setImageFailed(false), [imageUri]);
   const replacementUnavailable = replacementState === "unavailable";
   return <View style={styles.card}>
     <View style={styles.hero}>
-      {imageUri && !imageFailed ? <Image source={{ uri: imageUri }} contentFit="cover" style={styles.image} accessibilityLabel={`${name} 실제 풍경`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessibilityElementsHidden><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
+      {imageUri && !imageFailed ? <Image source={{ uri: imageUri }} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessibilityLabel={`${name} 실제 풍경`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessibilityElementsHidden><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
       <View style={styles.heroScrim} pointerEvents="none" />
       <Text style={styles.counter}>{index} / {total}</Text>
+      {attribution ? <Text style={styles.heroAttribution}>사진 출처 · {attribution}</Text> : null}
       <View style={styles.heroCopy}><Text style={styles.region}>{region}</Text><Text style={styles.name}>{name}</Text></View>
     </View>
     <View style={styles.content}>
@@ -46,7 +48,6 @@ export function DecisionCard({ index, total, region, name, summary, features, im
         {replacementUnavailable ? <Text accessibilityLiveRegion="polite" style={styles.unavailable}>교체할 수 있는 곳이 없어요</Text> : <Pressable accessibilityRole="button" accessibilityLabel="다른 곳 보기" accessibilityState={{ busy: replacementState === "loading", disabled: replacementDisabled }} disabled={replacementState === "loading" || replacementDisabled || !onReplace} onPress={onReplace} style={({ pressed }) => [styles.replaceButton, (replacementState === "loading" || replacementDisabled || !onReplace) && styles.disabled, pressed && styles.pressed]}>{replacementState === "loading" ? <ActivityIndicator color={palette.forest} /> : <><BrandIcon name="refresh" size={17} color={palette.forest} /><Text style={styles.replaceText}>다른 곳 보기</Text></>}</Pressable>}
       </View>
       {replacementHint ? <Text style={styles.replacementHint}>{replacementHint}</Text> : null}
-      {attribution ? <Text style={styles.attribution}>{attribution}</Text> : null}
     </View>
   </View>;
 }
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
   fallback: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", backgroundColor: palette.sage },
   heroScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(15, 48, 42, 0.32)" },
   counter: { position: "absolute", top: spacing.md, right: spacing.md, fontFamily: fonts.bold, fontSize: 12, color: palette.white, backgroundColor: "rgba(15, 48, 42, 0.72)", paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: radius.pill, fontVariant: ["tabular-nums"] },
+  heroAttribution: { position: "absolute", top: spacing.md, left: spacing.md, right: 82, fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.white },
   heroCopy: { padding: spacing.lg, gap: spacing.xxs },
   region: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 1.2, color: palette.sage },
   name: { fontFamily: fonts.serif, fontSize: 28, lineHeight: 36, color: palette.white },
@@ -68,7 +70,6 @@ const styles = StyleSheet.create({
   featureText: { flex: 1, fontFamily: fonts.medium, fontSize: 14, lineHeight: 21, color: palette.forest },
   restriction: { flexDirection: "row", alignItems: "flex-start", gap: spacing.xs, borderWidth: 1, borderColor: palette.errorBorder, borderRadius: radius.sm, backgroundColor: palette.errorSurface, padding: spacing.sm },
   restrictionText: { flex: 1, fontFamily: fonts.medium, fontSize: 14, lineHeight: 21, color: palette.error },
-  attribution: { fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.muted },
   replacementHint: { fontFamily: fonts.body, fontSize: 12, lineHeight: 18, color: palette.muted },
   actions: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
   detailButton: { minHeight: 48, flexGrow: 1, flexDirection: "row", justifyContent: "center", alignItems: "center", gap: spacing.xs, borderWidth: 1, borderColor: palette.forest, borderRadius: radius.pill, paddingHorizontal: spacing.md },

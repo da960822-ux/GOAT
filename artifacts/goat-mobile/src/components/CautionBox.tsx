@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#92400E',
     lineHeight: 19,
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'PretendardRegular',
   },
 });

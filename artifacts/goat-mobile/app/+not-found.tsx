@@ -9,16 +9,16 @@ export default function NotFoundScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: "Oops!" }} />
+      <Stack.Screen options={{ title: "페이지를 찾을 수 없어요" }} />
       <View style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={[styles.eyebrow, { backgroundColor: colors.secondary }]}><Text style={[styles.eyebrowText, { color: colors.primary }]}>GOAT</Text></View>
         <Text style={[styles.title, { color: colors.foreground }]}>
-          This screen doesn&apos;t exist.
+          요청한 화면을 찾을 수 없어요.
         </Text>
 
         <Link href="/" style={[styles.link, { backgroundColor: colors.primary }]} accessibilityRole="link">
           <Text style={[styles.linkText, { color: palette.paper }]}>
-            Go to home screen!
+            홈으로 돌아가기
           </Text>
         </Link>
       </View>
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   link: {
     marginTop: spacing.md,
-    minHeight: 44,
+    minHeight: 48,
     paddingHorizontal: spacing.lg,
     justifyContent: 'center',
     borderRadius: radius.pill,

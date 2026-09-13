@@ -101,13 +101,6 @@ async function fetchDetailCommon(contentId: string): Promise<{
   const json = await ktoFetch(DETAIL_COMMON_URL, {
     ...getAuthParams(),
     contentId,
-    defaultYN: "Y",
-    firstImageYN: "N",
-    areacodeYN: "N",
-    catcodeYN: "N",
-    addrinfoYN: "Y",
-    mapinfoYN: "Y",
-    overviewYN: "Y",
   });
   const items = extractItems(json);
   const item = items[0];

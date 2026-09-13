@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.38)',
     paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4,
   },
-  photoSourceText: { fontSize: 10, fontFamily: 'Inter_400Regular', color: '#FFFFFF' },
+  photoSourceText: { fontSize: 12, fontFamily: 'PretendardRegular', color: '#FFFFFF' },
   thumbFallback: { height: 6, borderBottomWidth: 1 },
 
   body: { padding: 18 },
@@ -208,37 +208,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7, paddingVertical: 3,
     borderRadius: 6, borderWidth: 1,
   },
-  chipText: { fontSize: 11, fontFamily: 'Inter_600SemiBold' },
+  chipText: { fontSize: 11, fontFamily: 'PretendardSemiBold' },
   regionBadge: {
     flexDirection: 'row', alignItems: 'center', gap: 4,
     paddingHorizontal: 8, paddingVertical: 3,
     borderRadius: 7, borderWidth: 1,
   },
   regionDot: { width: 5, height: 5, borderRadius: 3 },
-  regionLabel: { fontSize: 11, fontFamily: 'Inter_500Medium' },
+  regionLabel: { fontSize: 11, fontFamily: 'PretendardRegular' },
 
   reason: {
-    fontSize: 14, fontFamily: 'Inter_400Regular',
+    fontSize: 14, fontFamily: 'PretendardRegular',
     lineHeight: 22, marginBottom: 12, color: '#3D3D3D',
   },
 
   nameRow: { marginBottom: 10 },
-  placeName: { fontSize: 19, fontWeight: '700', fontFamily: 'Inter_700Bold', marginBottom: 2 },
-  meta: { fontSize: 12, fontFamily: 'Inter_400Regular' },
+  placeName: { fontSize: 19, fontWeight: '700', fontFamily: 'PretendardSemiBold', marginBottom: 2 },
+  meta: { fontSize: 12, fontFamily: 'PretendardRegular' },
 
   tags: { flexDirection: 'row', flexWrap: 'wrap', gap: 5, marginBottom: 10 },
   tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, borderWidth: 1 },
-  tagText: { fontSize: 11, fontFamily: 'Inter_400Regular' },
+  tagText: { fontSize: 11, fontFamily: 'PretendardRegular' },
 
   infoRow: { flexDirection: 'row', gap: 12, marginBottom: 10 },
   infoPill: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  infoPillText: { fontSize: 12, fontFamily: 'Inter_400Regular' },
+  infoPillText: { fontSize: 12, fontFamily: 'PretendardRegular' },
 
   cautionRow: {
     flexDirection: 'row', alignItems: 'flex-start', gap: 6,
     borderWidth: 1, borderRadius: 9, padding: 8, marginBottom: 10,
   },
-  cautionText: { flex: 1, fontSize: 11, fontFamily: 'Inter_400Regular', lineHeight: 17, color: '#92400E' },
+  cautionText: { flex: 1, fontSize: 11, fontFamily: 'PretendardRegular', lineHeight: 17, color: '#92400E' },
 
   divider: { height: 1, marginBottom: 12 },
 
@@ -247,11 +247,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5,
     backgroundColor: '#F7E600', paddingVertical: 11, paddingHorizontal: 16, borderRadius: 10,
   },
-  kakaoBtnText: { fontSize: 13, fontWeight: '700', fontFamily: 'Inter_700Bold', color: '#3A1D00' },
+  kakaoBtnText: { fontSize: 13, fontWeight: '700', fontFamily: 'PretendardSemiBold', color: '#3A1D00' },
   detailLink: {
     flex: 1, flexDirection: 'row', alignItems: 'center',
     justifyContent: 'flex-end', gap: 4,
     paddingVertical: 11, paddingHorizontal: 4,
   },
-  detailLinkText: { fontSize: 13, fontFamily: 'Inter_600SemiBold' },
+  detailLinkText: { fontSize: 13, fontFamily: 'PretendardSemiBold' },
 });

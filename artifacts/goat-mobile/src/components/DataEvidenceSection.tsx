@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 6,
   },
-  chipLabel: { fontSize: 10, fontFamily: 'Inter_500Medium' },
+  chipLabel: { fontSize: 10, fontFamily: 'PretendardRegular' },
   section: {
     borderWidth: 1,
     borderRadius: 14,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 13,
     fontWeight: '600',
-    fontFamily: 'Inter_600SemiBold',
+    fontFamily: 'PretendardSemiBold',
     marginBottom: 10,
   },
   row: {
@@ -162,6 +162,6 @@ const styles = StyleSheet.create({
   },
   rowIcon: { marginTop: 1, marginRight: 8 },
   rowContent: { flex: 1 },
-  rowLabel: { fontSize: 12, fontWeight: '600', fontFamily: 'Inter_600SemiBold', marginBottom: 2 },
-  rowValue: { fontSize: 12, fontFamily: 'Inter_400Regular', lineHeight: 17 },
+  rowLabel: { fontSize: 12, fontWeight: '600', fontFamily: 'PretendardSemiBold', marginBottom: 2 },
+  rowValue: { fontSize: 12, fontFamily: 'PretendardRegular', lineHeight: 17 },
 });
