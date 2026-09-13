@@ -303,18 +303,12 @@ export default function DetailScreen() {
           <View style={styles.heroCopy}>
             <Text style={styles.region}>{place.city}</Text>
             <Text style={styles.name}>{place.place_name}</Text>
+            <Text style={styles.summary}>
+              {card?.differenceNote ?? place.recommendation_use}
+            </Text>
           </View>
         </Animated.View>
         {heroAsset ? <PhotoCredit attribution={heroAsset.attribution} /> : null}
-        <View style={styles.lead}>
-          <Text style={styles.leadLabel}>GOAT가 고른 이유</Text>
-          <Text style={styles.leadSummary}>{card?.differenceNote ?? place.recommendation_use}</Text>
-        </View>
-        <View style={styles.quickFacts}>
-          <View style={styles.quickFact}><Text style={styles.quickFactLabel}>추천 시간</Text><Text style={styles.quickFactValue}>{place.best_time || "확인 필요"}</Text></View>
-          <View style={styles.quickFactDivider} />
-          <View style={styles.quickFact}><Text style={styles.quickFactLabel}>이동 참고</Text><Text numberOfLines={2} style={styles.quickFactValue}>{place.accessibility || "확인 필요"}</Text></View>
-        </View>
         <View style={styles.body}>
           {restriction ? (
             <View style={styles.restriction}>
@@ -1119,14 +1113,6 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     color: palette.white,
   },
-  lead: { marginHorizontal: 20, marginTop: 18, padding: 18, gap: 7, borderRadius: radius.lg, backgroundColor: palette.paper, borderWidth: 1, borderColor: palette.line },
-  leadLabel: { fontFamily: fonts.semibold, fontSize: 12, letterSpacing: 0.6, color: palette.forestSoft },
-  leadSummary: { fontFamily: fonts.body, fontSize: 17, lineHeight: 26, color: palette.ink },
-  quickFacts: { marginHorizontal: 20, marginTop: 12, paddingVertical: 15, paddingHorizontal: 16, flexDirection: "row", alignItems: "stretch", gap: 14, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: palette.line },
-  quickFact: { flex: 1, gap: 4 },
-  quickFactLabel: { fontFamily: fonts.semibold, fontSize: 11, color: palette.forestSoft },
-  quickFactValue: { fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: palette.ink },
-  quickFactDivider: { width: StyleSheet.hairlineWidth, backgroundColor: palette.line },
   body: { padding: 20, gap: 8 },
   restriction: {
     flexDirection: "row",
