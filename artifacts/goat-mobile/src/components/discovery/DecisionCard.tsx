@@ -33,7 +33,7 @@ export function DecisionCard({ index, total, region, name, summary, features, im
   useEffect(() => setImageFailed(false), [imageUri]);
   const replacementUnavailable = replacementState === "unavailable";
   return <View style={[styles.card, featured && styles.featuredCard]}>
-    <View style={[styles.hero, featured && styles.featuredHero]}>
+    <View style={[styles.hero, featured && styles.featuredHero, index === 2 && styles.secondaryHero, index === 3 && styles.tertiaryHero]}>
       {imageUri && !imageFailed ? <Image source={{ uri: imageUri }} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessibilityLabel={`${name} 실제 풍경`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessible={false} importantForAccessibility="no-hide-descendants"><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
       <View style={styles.heroScrim} pointerEvents="none" />
       <Text style={styles.counter}>{index} / {total}</Text>
@@ -42,6 +42,10 @@ export function DecisionCard({ index, total, region, name, summary, features, im
       <View style={styles.heroCopy}><Text style={styles.region}>{region}</Text><Text style={[styles.name, featured && styles.featuredName]}>{name}</Text></View>
     </View>
     <View style={styles.content}>
+      <View style={styles.reasonHeader}>
+        <Text style={styles.reasonEyebrow}>장면에서 이어진 이유</Text>
+        <View style={styles.reasonRule} />
+      </View>
       <Text style={styles.summary}>{summary}</Text>
       <View style={styles.features}>{features.slice(0, 2).map((feature) => <View key={feature} style={styles.feature}><BrandIcon name="check" size={15} color={palette.forest} /><Text style={styles.featureText}>{feature}</Text></View>)}</View>
       {criticalRestriction ? <View style={styles.restriction}><BrandIcon name="warning" size={18} color={palette.error} /><Text style={styles.restrictionText}>{criticalRestriction}</Text></View> : null}
@@ -60,6 +64,8 @@ const styles = StyleSheet.create({
   featuredCard: { borderRadius: 24 },
   hero: { minHeight: 286, justifyContent: "flex-end", backgroundColor: palette.sage },
   featuredHero: { minHeight: 350 },
+  secondaryHero: { minHeight: 248 },
+  tertiaryHero: { minHeight: 310 },
   image: { ...StyleSheet.absoluteFillObject },
   fallback: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", backgroundColor: palette.sage },
   heroScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(15, 48, 42, 0.40)" },
@@ -71,6 +77,9 @@ const styles = StyleSheet.create({
   name: { fontFamily: fonts.serif, fontSize: 31, lineHeight: 40, letterSpacing: -0.6, color: palette.white },
   featuredName: { fontSize: 35, lineHeight: 45 },
   content: { gap: spacing.lg, padding: spacing.xl },
+  reasonHeader: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
+  reasonEyebrow: { fontFamily: fonts.semibold, fontSize: 11, letterSpacing: 0.8, color: palette.forestSoft },
+  reasonRule: { flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: palette.line },
   summary: { fontFamily: fonts.body, fontSize: 17, lineHeight: 26, color: palette.ink },
   features: { gap: spacing.xs },
   feature: { flexDirection: "row", alignItems: "flex-start", gap: spacing.xs },
