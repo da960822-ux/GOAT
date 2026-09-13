@@ -14,6 +14,10 @@ export {
   getRecommendedPlaceIds,
 } from "./goatRecommendationEngine";
 export {
+  FIRST_RELEASE_PHOTO_HOLDOUT_IDS,
+  isFirstReleaseCandidate,
+} from "./candidatePolicy";
+export {
   ACCESSIBILITY_RECOMMENDATION_POINTS,
   evaluateCarAccessibility,
   evaluatePublicTransportAccessibility,

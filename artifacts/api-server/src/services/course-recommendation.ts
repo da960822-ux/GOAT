@@ -1,5 +1,6 @@
 import {
   goatPlacesDataset,
+  isFirstReleaseCandidate,
   type GoatPlace,
   type GoatPlaceDataset,
   CourseStop,
@@ -53,6 +54,7 @@ function localFallbackCandidates(dataset: GoatPlaceDataset, selectedPlace: GoatP
   const selectedCoords = getPlaceCoordinates(selectedPlace);
   return dataset.places
     .filter((place) => place.place_id !== selectedPlace.place_id)
+    .filter((place) => isFirstReleaseCandidate(place.place_id))
     .filter((place) => place.city === selectedPlace.city || place.region_group === selectedPlace.region_group)
     .map((place) => {
       const coords = getPlaceCoordinates(place);
@@ -243,7 +245,8 @@ async function resolveNearbyCandidates(params: {
   tourApiDiagnostics?: VisitKoreaNearbyDiagnostics;
 }> {
   const requested = params.request.nearbyCandidates?.filter(
-    (candidate) => candidate.id !== params.selectedPlace.place_id,
+    (candidate) => candidate.id !== params.selectedPlace.place_id
+      && isFirstReleaseCandidate(candidate.id),
   );
   if (requested?.length) {
     return {
@@ -270,7 +273,8 @@ async function resolveNearbyCandidates(params: {
       maxResults: 20,
       onDiagnostics: (diagnostics) => { tourApiDiagnostics = diagnostics; },
     })).filter((candidate) =>
-      candidate.id !== params.selectedPlace.place_id
+      isFirstReleaseCandidate(candidate.id)
+      && candidate.id !== params.selectedPlace.place_id
       && normalizedTitle(candidate.title) !== selectedTitle,
     );
     if (nearby.length) return { candidates: nearby, tourApiDiagnostics };

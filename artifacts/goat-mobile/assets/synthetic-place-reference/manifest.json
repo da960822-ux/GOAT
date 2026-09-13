@@ -1,0 +1,26 @@
+{
+  "status": "SYNTHETIC_REFERENCE_ONLY",
+  "warning": "These images are generated visual references, not official or user photographs. Do not use them as evidence of the exact place or as a substitute for provider-attributed photos.",
+  "items": [
+    {
+      "placeId": "GOAT-007",
+      "file": "GOAT-007.png",
+      "referenceSources": ["https://lifeisromance.co.kr/Jogakbam"]
+    },
+    {
+      "placeId": "GOAT-031",
+      "file": "GOAT-031.png",
+      "referenceSources": ["https://www.welfarehello.com/community/hometownNews/d8c29678-5088-4320-9c31-1ad33851fd3e"]
+    },
+    {
+      "placeId": "GOAT-035",
+      "file": "GOAT-035.png",
+      "referenceSources": ["https://mind-ddase.com/219", "https://v.daum.net/v/YJEamTEoW3"]
+    },
+    {
+      "placeId": "GOAT-041",
+      "file": "GOAT-041.png",
+      "referenceSources": ["https://www.travie.com/news/articleView.html?idxno=21488"]
+    }
+  ]
+}

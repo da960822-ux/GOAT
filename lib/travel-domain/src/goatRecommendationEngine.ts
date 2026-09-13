@@ -20,6 +20,7 @@ import {
   TransportType,
 } from "./goatRecommendationTypes";
 import { getAccessibilityRecommendationScore } from "./accessibilityScoringPolicy";
+import { isFirstReleaseCandidate } from "./candidatePolicy";
 
 export const RECOMMENDATION_POLICY_VERSION = "goat-score-v2" as const;
 
@@ -809,7 +810,10 @@ export function recommendGoatPlaces(
       const reason = getOperatingDateExclusionReason(place, rawRequest.currentDate);
       return reason ? [{ placeId: place.place_id, placeName: place.place_name, reason }] : [];
     });
-    const eligiblePlaces = placesDataset.places.filter((place) => isEligibleForOperatingDate(place, rawRequest.currentDate));
+    const eligiblePlaces = placesDataset.places.filter((place) =>
+      isFirstReleaseCandidate(place.place_id)
+      && isEligibleForOperatingDate(place, rawRequest.currentDate),
+    );
     const candidatePool = expandCandidatePool(eligiblePlaces, request);
     if (candidatePool.length === 0) {
       return {
