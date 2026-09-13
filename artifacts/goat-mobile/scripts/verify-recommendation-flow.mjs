@@ -72,7 +72,7 @@ assert(
   "today condition control is missing",
 );
 assert(
-  results.includes("현재 후보가 그대로 적합해요"),
+  results.includes("오늘 조건을 반영해도 추천 장소가 그대로예요"),
   "NO_CHANGE copy is missing",
 );
 assert(
