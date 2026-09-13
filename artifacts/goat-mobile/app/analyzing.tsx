@@ -80,7 +80,7 @@ export default function AnalyzingScreen() {
         <View style={styles.photo}><Image source={analyzingImage} style={StyleSheet.absoluteFillObject} contentFit="cover" accessibilityLabel="선택한 감성과 어울리는 강원 풍경" /></View>
       </View>
       <Text style={styles.eyebrow}>{isReferenceFlow ? "선택한 장면을 살피는 중" : "여행의 결을 찾는 중"}</Text>
-      <Text style={styles.title}>{isReferenceFlow ? "선택한 장면과 닮은{\n}강원을 찾고 있어요" : "선택한 감성과 닮은{\n}강원을 찾고 있어요"}</Text>
+      <Text style={styles.title}>{isReferenceFlow ? "선택한 장면과 닮은\n강원을 찾고 있어요" : "선택한 감성과 닮은\n강원을 찾고 있어요"}</Text>
       <Text style={styles.subtitle}>잠시만 기다려 주세요. 여행의 결을 세심하게 맞추고 있어요.</Text>
       <View accessibilityLiveRegion="polite" style={styles.steps}>
         {steps.map((label, index) => <View key={label} style={[styles.step, index <= step && styles.stepActive]}><View style={[styles.stepIcon, index <= step && styles.stepIconActive]}>{index < step ? <BrandIcon name="check" size={13} color={palette.ivory} /> : <Text style={[styles.stepNum, index <= step && styles.stepNumActive]}>{index + 1}</Text>}</View><Text style={[styles.stepLabel, index <= step && styles.stepLabelActive]}>{label}</Text></View>)}

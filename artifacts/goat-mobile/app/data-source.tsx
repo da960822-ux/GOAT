@@ -18,6 +18,7 @@ export default function DataSourceScreen() {
           <Text style={[styles.introText, { color: colors.mutedForeground }]}>
             GOAT는 자체 정리한 강원 장소 데이터와 한국관광공사·Google Maps·기상청 데이터를 구분해 사용합니다.
             추천은 장면 특징 관계를 우선하며, 사용자가 요청한 이동 방법과 오늘 조건만 가능한 범위에서 보정합니다.
+            테마와 랜딩의 생성형 이미지는 사용자가 제공한 실제 장소 참고 사진을 시각적 기준으로 재구성하며, 관광사진이나 추천 근거로 사용하지 않습니다.
           </Text>
         </View>
 

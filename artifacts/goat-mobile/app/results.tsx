@@ -1187,11 +1187,11 @@ const styles = StyleSheet.create({
     backgroundColor: palette.sage,
   },
   comparePhotoSource: {
-    maxWidth: 76,
+    maxWidth: 84,
     marginTop: 3,
     fontFamily: fonts.body,
-    fontSize: 9,
-    lineHeight: 12,
+    fontSize: 10.5,
+    lineHeight: 14,
     color: palette.muted,
   },
   compareImageFallback: {

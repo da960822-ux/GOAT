@@ -10,7 +10,7 @@ export type EditorialSceneCover = Readonly<{
 const generated = (source: number, picturedPlaceName: string): EditorialSceneCover => ({
   source,
   picturedPlaceName,
-  attribution: "생성형 이미지 · 실제 한국 장소 사진 기반",
+  attribution: "생성형 이미지 · 사용자 제공 장소 사진 참고",
 });
 
 const referenceCovers = Object.fromEntries(referenceCards.map((card) => [card.id, {

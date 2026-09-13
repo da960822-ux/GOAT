@@ -23,12 +23,12 @@ export default function GuideScreen() {
           <Text style={styles.introBody}>분위기를 고르면 닮은 세 곳을 보여드려요. 차이를 비교한 뒤 지도에서 확인하거나 내 기기에 저장하세요.</Text>
         </View>
 
-        <View accessibilityLabel="실제 한국 장소 사진을 바탕으로 만든 생성형 장면 예시 3개" style={styles.collage}>
+        <View accessibilityLabel="사용자가 제공한 실제 장소 사진을 참고해 만든 생성형 장면 예시 3개" style={styles.collage}>
           {guideImages.map((item, index) => (
             <Image key={item.picturedPlaceName} source={item.source} contentFit="cover" style={[styles.collageImage, index === 0 && styles.collageLarge]} accessible={false} importantForAccessibility="no-hide-descendants" />
           ))}
         </View>
-        <Text style={styles.collageCaption}>생성형 장면 예시 · 실제 한국 장소 사진 기반</Text>
+        <Text style={styles.collageCaption}>생성형 장면 예시 · 사용자 제공 장소 사진 참고</Text>
 
         <View style={styles.steps}>
           {GUIDE_STEPS.map((step, index) => (

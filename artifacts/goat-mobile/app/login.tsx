@@ -45,7 +45,7 @@ export default function LoginScreen() {
       <View style={styles.actions}>
         <LoginButton label="카카오로 로그인" color={palette.forest} textColor={palette.white} icon="chatbubble" busy={busy === "kakao"} disabled={Boolean(busy)} onPress={() => login("kakao")} />
         <LoginButton label="Google로 로그인" color="rgba(255,252,246,.94)" textColor={palette.ink} icon="logo-google" busy={busy === "google"} disabled={Boolean(busy)} onPress={() => login("google")} />
-        <Text style={styles.photoCredit}>생성형 배경 · 실제 고성 에이프레임과 거진 해안 사진 기반</Text>
+        <Text style={styles.photoCredit}>생성형 배경 · 사용자 제공 고성 에이프레임·거진 해안 사진 참고</Text>
         <Text style={styles.terms}>로그인은 선택 사항이며, 계속하면 아래 문서에 동의하게 됩니다.</Text>
         <View style={styles.policyLinks}>
           <Pressable accessibilityRole="link" onPress={() => router.push("/terms" as never)} hitSlop={8}><Text style={styles.policyLink}>이용약관</Text></Pressable>

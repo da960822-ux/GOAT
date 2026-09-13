@@ -1,4 +1,5 @@
 import { BrandIcon as Feather } from "@/src/components/BrandIcon";
+import { Image } from "expo-image";
 import { reloadAppAsync } from "expo";
 import React, { useState } from "react";
 import {
@@ -13,6 +14,9 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useColors } from "@/hooks/useColors";
+import { fonts, palette, radius } from "@/src/theme/editorial";
+
+const goatSymbol = require("@/assets/images/goat-symbol-cutout.png");
 
 export type ErrorFallbackProps = {
   error: Error;
@@ -53,7 +57,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
       {__DEV__ ? (
         <Pressable
           onPress={() => setIsModalVisible(true)}
-          accessibilityLabel="View error details"
+          accessibilityLabel="오류 상세 보기"
           accessibilityRole="button"
           style={({ pressed }) => [
             styles.topButton,
@@ -69,15 +73,18 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
       ) : null}
 
       <View style={styles.content}>
+        <Image source={goatSymbol} contentFit="contain" style={styles.logo} accessibilityLabel="강원도 모양 GOAT 로고" />
         <Text style={[styles.title, { color: colors.foreground }]}>
-          Something went wrong
+          화면을 불러오지 못했어요
         </Text>
 
         <Text style={[styles.message, { color: colors.mutedForeground }]}>
-          Please reload the app to continue.
+          앱을 다시 시작하면 현재 화면을 복구할 수 있어요.
         </Text>
 
         <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="앱 다시 시작"
           onPress={handleRestart}
           style={({ pressed }) => [
             styles.button,
@@ -94,7 +101,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
               { color: colors.primaryForeground },
             ]}
           >
-            Try Again
+            다시 시작
           </Text>
         </Pressable>
       </View>
@@ -120,11 +127,11 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
                 ]}
               >
                 <Text style={[styles.modalTitle, { color: colors.foreground }]}>
-                  Error Details
+                  오류 상세
                 </Text>
                 <Pressable
                   onPress={() => setIsModalVisible(false)}
-                  accessibilityLabel="Close error details"
+                  accessibilityLabel="오류 상세 닫기"
                   accessibilityRole="button"
                   style={({ pressed }) => [
                     styles.closeButton,
@@ -185,25 +192,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 16,
     width: "100%",
-    maxWidth: 600,
+    maxWidth: 360,
   },
+  logo: { width: 96, height: 88, marginBottom: 4 },
   title: {
     fontSize: 28,
-    fontWeight: "700",
+    fontFamily: fonts.serif,
     textAlign: "center",
     lineHeight: 40,
   },
   message: {
     fontSize: 16,
+    fontFamily: fonts.body,
     textAlign: "center",
     lineHeight: 24,
   },
   topButton: {
     position: "absolute",
     right: 16,
-    width: 44,
-    height: 44,
-    borderRadius: 8,
+    width: 48,
+    height: 48,
+    borderRadius: radius.sm,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -211,7 +220,7 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingVertical: 16,
-    borderRadius: 8,
+    borderRadius: radius.sm,
     paddingHorizontal: 24,
     minWidth: 200,
     shadowColor: "#000",
@@ -224,7 +233,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   buttonText: {
-    fontWeight: "600",
+    fontFamily: fonts.semibold,
     textAlign: "center",
     fontSize: 16,
   },
@@ -250,11 +259,11 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: "600",
+    fontFamily: fonts.serif,
   },
   closeButton: {
-    width: 44,
-    height: 44,
+    width: 48,
+    height: 48,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -274,5 +283,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     width: "100%",
+    color: palette.ink,
   },
 });

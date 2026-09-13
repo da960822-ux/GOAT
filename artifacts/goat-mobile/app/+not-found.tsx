@@ -2,6 +2,7 @@ import { Link, Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 import { useColors } from "@/hooks/useColors";
+import { GoatMark } from "@/src/components/editorial/Brand";
 import { fonts, palette, radius, spacing } from '@/src/theme/editorial';
 
 export default function NotFoundScreen() {
@@ -11,7 +12,7 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ title: "페이지를 찾을 수 없어요" }} />
       <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <View style={[styles.eyebrow, { backgroundColor: colors.secondary }]}><Text style={[styles.eyebrowText, { color: colors.primary }]}>GOAT</Text></View>
+        <View style={[styles.mark, { backgroundColor: colors.secondary }]}><GoatMark /></View>
         <Text style={[styles.title, { color: colors.foreground }]}>
           요청한 화면을 찾을 수 없어요.
         </Text>
@@ -49,6 +50,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: fonts.semibold,
   },
-  eyebrow: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: radius.pill, marginBottom: spacing.md },
-  eyebrowText: { fontSize: 12, fontFamily: fonts.bold, letterSpacing: 1.2 },
+  mark: { paddingHorizontal: spacing.md, paddingVertical: spacing.sm, borderRadius: radius.md, marginBottom: spacing.lg },
 });

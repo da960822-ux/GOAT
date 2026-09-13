@@ -77,7 +77,8 @@ export default function SavedScreen() {
           renderItem={({ item }) => {
             const name = item.place?.place_name ?? "장소 정보를 확인할 수 없어요";
             const region = item.place?.city ?? "저장된 장면";
-            return <View style={styles.row}><Pressable accessibilityRole="button" accessibilityLabel={`${name} 상세 보기`} onPress={() => router.push({ pathname: "/detail/[id]", params: { id: item.placeId, selectionId: item.selectionId } })} style={({ pressed }) => [styles.rowMain, pressed && styles.pressed]}><View style={styles.thumbnail}>{item.photoUri ? <><Image source={{ uri: item.photoUri }} style={StyleSheet.absoluteFillObject} contentFit="cover" cachePolicy={getPhotoCachePolicy({ cacheEnabled: item.photoCacheEnabled })} accessible={false} importantForAccessibility="no-hide-descendants" />{item.photoAttribution ? <Text style={styles.thumbnailAttribution}>{item.photoAttribution}</Text> : null}</> : <BrandIcon name="location" size={24} color={palette.forest} />}</View><View style={styles.copy}><Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.name}>{name}</Text><Text style={styles.region}>{region}</Text>{item.note ? <Text numberOfLines={2} style={styles.note}>{item.note}</Text> : null}<Text style={styles.date}>{formatDate(item.savedAt)}</Text></View></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`${name} 삭제`} onPress={() => remove(item)} style={styles.remove}><BrandIcon name="delete" size={19} color={palette.error} /></Pressable></View>;
+            const sourceLabel = item.photoAttribution ? ` 사진 출처 ${item.photoAttribution}.` : "";
+            return <View style={styles.row}><Pressable accessibilityRole="button" accessibilityLabel={`${name} 상세 보기.${sourceLabel}`} onPress={() => router.push({ pathname: "/detail/[id]", params: { id: item.placeId, selectionId: item.selectionId } })} style={({ pressed }) => [styles.rowMain, pressed && styles.pressed]}><View style={styles.thumbnail}>{item.photoUri ? <Image source={{ uri: item.photoUri }} style={StyleSheet.absoluteFillObject} contentFit="cover" cachePolicy={getPhotoCachePolicy({ cacheEnabled: item.photoCacheEnabled })} accessible={false} importantForAccessibility="no-hide-descendants" /> : <BrandIcon name="location" size={24} color={palette.forest} />}</View><View style={styles.copy}><Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.name}>{name}</Text><Text style={styles.region}>{region}</Text>{item.photoAttribution ? <Text numberOfLines={1} style={styles.photoSource}>사진 출처 · {item.photoAttribution}</Text> : null}{item.note ? <Text numberOfLines={2} style={styles.note}>{item.note}</Text> : null}<Text style={styles.date}>{formatDate(item.savedAt)}</Text></View></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`${name} 삭제`} onPress={() => remove(item)} style={styles.remove}><BrandIcon name="delete" size={19} color={palette.error} /></Pressable></View>;
           }}
         />}
     <AppTabBar />
@@ -101,10 +102,10 @@ const styles = StyleSheet.create({
   rowMain: { minHeight: 80, flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
   pressed: { opacity: 0.75 },
   thumbnail: { width: 76, height: 76, overflow: "hidden", alignItems: "center", justifyContent: "center", borderRadius: radius.sm, backgroundColor: palette.sage },
-  thumbnailAttribution: { position: "absolute", left: 0, right: 0, bottom: 0, paddingHorizontal: 4, paddingVertical: 2, fontFamily: fonts.body, fontSize: 8, lineHeight: 11, color: palette.white, backgroundColor: "rgba(15,48,42,.72)" },
   copy: { flex: 1, gap: 3 },
   name: { fontFamily: fonts.serif, fontSize: 17, lineHeight: 24, color: palette.ink },
   region: { fontFamily: fonts.medium, fontSize: 13, lineHeight: 19, color: palette.forestSoft },
+  photoSource: { fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.muted },
   note: { fontFamily: fonts.body, fontSize: 13, lineHeight: 18, color: palette.ink },
   date: { fontFamily: fonts.body, fontSize: 12, lineHeight: 17, color: palette.muted },
   remove: { width: 48, height: 48, alignItems: "center", justifyContent: "center" },

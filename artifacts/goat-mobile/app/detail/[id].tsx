@@ -843,7 +843,7 @@ function Gallery({
   const wasVisible = useRef(false);
   const [current, setCurrent] = useState(0);
   const [imageRatios, setImageRatios] = useState<Record<string, number>>({});
-  const frameWidth = Math.min(width - 40, 420);
+  const frameWidth = Math.min(width - 24, 440);
   const galleryHeaderHeight = Math.max(insets.top, 12) + 70;
   const galleryControlsHeight = images.length > 1 ? 60 : 0;
   const pagerHeight = Math.max(
@@ -1320,7 +1320,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 12,
     paddingBottom: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 12,
   },
   galleryFrame: {
     overflow: "hidden",
