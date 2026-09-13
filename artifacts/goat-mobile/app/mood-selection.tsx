@@ -47,7 +47,7 @@ export default function MoodSelectionScreen() {
       <FlowProgress currentStep={1} />
       <Text style={styles.kicker}>7가지 여행 분위기</Text>
       <Text style={styles.title}>어떤 감성으로{`\n`}떠나고 싶으세요?</Text>
-      <Text style={styles.description}>마음에 드는 장면 하나를 고르면, 그 분위기와 닮은 강원 여행지를 찾아드릴게요.</Text>
+      <Text style={styles.description}>마음에 드는 장면을 하나 고르면, 그 분위기와 닮은 강원 여행지를 찾아볼게요.</Text>
       <Text style={styles.sourceNote}>테마 이미지는 표시된 국내 장소 사진을 바탕으로 재구성했습니다.</Text>
       <View accessibilityRole="radiogroup" style={styles.cards}>{moods.map((item) => {
         const active = item.id === selected;
@@ -60,7 +60,7 @@ export default function MoodSelectionScreen() {
       })}</View>
     </ScrollView>
     <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, 12) }]}>
-      <Pressable accessibilityRole="button" accessibilityState={{ disabled: !mood }} disabled={!mood} onPress={next} style={({ pressed }) => [styles.cta, !mood && styles.disabled, pressed && styles.pressed]}><BrandIcon name="mood" color={palette.white} /><Text style={styles.ctaText}>{mood ? "이 감성으로 계속하기" : "감성을 선택해주세요"}</Text><BrandIcon name="arrow-right" color={palette.white} /></Pressable>
+      <Pressable accessibilityRole="button" accessibilityState={{ disabled: !mood }} disabled={!mood} onPress={next} style={({ pressed }) => [styles.cta, !mood && styles.disabled, pressed && styles.pressed]}><BrandIcon name="mood" color={palette.white} /><Text style={styles.ctaText}>{mood ? "이 분위기로 계속하기" : "분위기를 선택해 주세요"}</Text><BrandIcon name="arrow-right" color={palette.white} /></Pressable>
     </View>
   </View>;
 }

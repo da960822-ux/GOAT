@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { Header } from "@/src/components/Header";
 import { useColors } from "@/hooks/useColors";
 import { fonts, spacing } from "@/src/theme/editorial";
+import { BrandIcon } from "@/src/components/BrandIcon";
+import { MotionPressable } from "@/src/components/MotionPressable";
 
 const sections = [
   ["서비스", "GOAT는 사용자가 고른 분위기와 조건을 바탕으로 강원 여행 장소와 코스를 제안합니다. 추천과 장소 정보는 여행 계획을 돕기 위한 참고 정보입니다."],
@@ -22,11 +24,19 @@ export default function TermsScreen() {
     <Header title="이용약관" onBack={() => router.back()} />
     <Animated.ScrollView entering={FadeInDown.duration(320)} contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
       <Text accessibilityRole="text" style={[styles.date, { color: colors.mutedForeground }]}>시행일: 2026년 9월 13일</Text>
-      {sections.map(([title, body]) => <View key={title} style={[styles.section, { borderBottomColor: colors.border }]}>
-        <Text style={[styles.title, { color: colors.foreground }]}>{title}</Text>
-        <Text style={[styles.body, { color: colors.mutedForeground }]}>{body}</Text>
-      </View>)}
+      {sections.map(([title, body]) => <Disclosure key={title} title={title} body={body} colors={colors} />)}
     </Animated.ScrollView>
+  </View>;
+}
+
+function Disclosure({ title, body, colors }: { title: string; body: string; colors: any }) {
+  const [expanded, setExpanded] = useState(true);
+  return <View style={[styles.section, { borderBottomColor: colors.border }]}>
+    <MotionPressable accessibilityRole="button" accessibilityLabel={`${title} 펼치기`} accessibilityState={{ expanded }} onPress={() => setExpanded((value) => !value)} style={styles.sectionHeader}>
+      <Text style={[styles.title, { color: colors.foreground }]}>{title}</Text>
+      <BrandIcon name="arrow-right" size={15} color={colors.mutedForeground} style={{ transform: [{ rotate: expanded ? '-90deg' : '90deg' }] }} />
+    </MotionPressable>
+    {expanded ? <Animated.View entering={FadeInDown.duration(180)}><Text style={[styles.body, { color: colors.mutedForeground }]}>{body}</Text></Animated.View> : null}
   </View>;
 }
 
@@ -35,6 +45,7 @@ const styles = StyleSheet.create({
   scroll: { paddingBottom: 40 },
   date: { marginHorizontal: spacing.lg, marginTop: spacing.sm, marginBottom: spacing.xs, paddingVertical: spacing.md, fontFamily: fonts.body, fontSize: 13 },
   section: { paddingHorizontal: spacing.lg, paddingVertical: 26, borderBottomWidth: StyleSheet.hairlineWidth },
-  title: { marginBottom: 11, fontFamily: fonts.serif, fontSize: 20, lineHeight: 28 },
+  sectionHeader: { minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+  title: { flex: 1, fontFamily: fonts.serif, fontSize: 20, lineHeight: 28 },
   body: { fontFamily: fonts.body, fontSize: 15, lineHeight: 24 },
 });

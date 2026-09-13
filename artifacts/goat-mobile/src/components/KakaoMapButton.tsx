@@ -13,7 +13,7 @@ export function KakaoMapButton({ place }: KakaoMapButtonProps) {
     try {
       await openKakaoMap(place);
     } catch {
-      Alert.alert('열기 실패', '카카오맵을 열 수 없습니다.\n앱이 설치되어 있지 않으면 웹으로 연결됩니다.');
+      Alert.alert('열기 실패', '카카오맵을 열 수 없어요. 앱이 없어도 웹에서 확인할 수 있어요.');
     }
   }
 
@@ -30,7 +30,7 @@ export function KakaoMapButton({ place }: KakaoMapButtonProps) {
         <Feather name="navigation" size={15} color="#3A1D00" />
         <Text style={styles.label}>카카오맵으로 길찾기</Text>
       </View>
-      <Text style={styles.sub}>앱 없으면 웹으로 자동 연결</Text>
+      <Text style={styles.sub}>앱이 없어도 웹에서 열려요</Text>
     </TouchableOpacity>
   );
 }

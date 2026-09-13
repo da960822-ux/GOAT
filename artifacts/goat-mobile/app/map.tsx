@@ -73,15 +73,16 @@ export default function MapScreen() {
   };
   if (status === "loading")
     return (
-      <State title="마지막 코스를 불러오는 중이에요">
+      <State onBack={() => router.back()} title="마지막 코스를 불러오는 중이에요">
         <ActivityIndicator color={palette.forest} />
       </State>
     );
   if (status === "error")
     return (
       <State
+        onBack={() => router.back()}
         title="코스를 불러오지 못했어요"
-        body="저장된 코스는 그대로예요."
+        body="저장한 코스는 그대로 남아 있어요."
         action="다시 시도"
         onPress={() => {
           setStatus("loading");
@@ -92,8 +93,9 @@ export default function MapScreen() {
   if (status === "empty" || !course)
     return (
       <State
+        onBack={() => router.back()}
         title="아직 만든 코스가 없어요"
-        body="추천 장소를 고른 뒤 여행 이어가기로 코스를 만들어보세요."
+        body="추천 장소를 고른 뒤 ‘여행 이어가기’를 눌러 보세요."
         action="장면 발견하기"
         onPress={() => router.replace("/")}
       />
@@ -112,7 +114,7 @@ export default function MapScreen() {
           <View style={styles.mapGlyph}>
             <BrandIcon name="map" size={33} color={palette.forest} />
           </View>
-          <Text style={styles.eyebrow}>선택한 장소에서 이어지는 코스</Text>
+          <Text style={styles.eyebrow}>선택한 장소를 잇는 코스</Text>
           <View
             accessibilityRole="text"
             accessibilityLabel={
@@ -143,7 +145,7 @@ export default function MapScreen() {
         <CourseMap course={course} />
         <View style={styles.mapCaption}>
           <View style={styles.mapCaptionHead}><BrandIcon name="map" size={15} color={palette.forest} /><Text style={styles.mapCaptionTitle}>방문 순서 지도</Text></View>
-          <Text style={styles.mapCaptionBody}>번호는 추천한 방문 순서예요. 선은 실제 길찾기 경로가 아니라 장소 사이의 순서를 보여줍니다.</Text>
+          <Text style={styles.mapCaptionBody}>번호는 방문 순서예요. 선은 실제 길찾기 경로가 아니라 장소를 연결한 표시예요.</Text>
         </View>
         {(() => { const selected = course.stops.find((stop) => stop.id === selectedStopId) ?? course.stops[0]; return selected ? <View style={styles.selectedPanel}><Text style={styles.selectedEyebrow}>지금 확인하는 장소</Text><Text style={styles.selectedTitle}>{selected.title}</Text><Text style={styles.selectedBody}>{selected.reason}</Text><MotionPressable accessibilityRole="button" accessibilityLabel={`${selected.title} 카카오맵에서 보기`} onPress={() => void openMap(`https://map.kakao.com/link/search/${encodeURIComponent(selected.title)}`)} style={styles.selectedAction}><Text style={styles.selectedActionText}>카카오맵에서 열기</Text><BrandIcon name="external" size={15} color={palette.white} /></MotionPressable></View> : null; })()}
         <View style={styles.route}>
@@ -318,16 +320,18 @@ function CourseMap({ course }: { course: NonNullable<ReturnType<typeof useApp>["
     return <View style={styles.inlineMap}>
     {mapError && fallbackUrl ? React.createElement("iframe", { src: fallbackUrl, title: "GOAT 코스 지도", style: { width: "100%", height: 220, border: 0, background: "#E5E7EB" } }) : React.createElement("div", { id: containerId, style: { width: "100%", height: 220, background: "#E5E7EB" } })}
     {!mapReady && !mapError ? <View style={styles.webMapLoading}><ActivityIndicator color={palette.forest} /><Text style={styles.mapLoadingText}>코스 지도를 불러오는 중이에요</Text></View> : null}
-    {mapError ? <View style={styles.webMapError}><BrandIcon name="warning" size={15} color={palette.error} /><Text style={styles.mapError}>{mapError}{fallbackUrl ? " 대체 지도를 표시합니다." : " 카카오맵에서 장소를 확인해 주세요."}</Text></View> : null}
+    {mapError ? <View style={styles.webMapError}><BrandIcon name="warning" size={15} color={palette.error} /><Text style={styles.mapError}>{mapError}{fallbackUrl ? " 대체 지도를 보여드려요." : " 카카오맵에서 장소를 확인해 주세요."}</Text></View> : null}
   </View>;
 }
 function State({
+  onBack,
   title,
   body,
   action,
   onPress,
   children,
 }: {
+  onBack?: () => void;
   title: string;
   body?: string;
   action?: string;
@@ -335,20 +339,24 @@ function State({
   children?: React.ReactNode;
 }) {
   return (
-    <View style={styles.state} accessibilityLiveRegion="polite">
-      <BrandIcon name="course" size={34} color={palette.forest} />
-      <Text style={styles.stateTitle}>{title}</Text>
-      {body ? <Text style={styles.stateBody}>{body}</Text> : null}
-      {children}
-      {action && onPress ? (
-        <Pressable
-          accessibilityRole="button"
-          onPress={onPress}
-          style={styles.retry}
-        >
-          <Text style={styles.retryText}>{action}</Text>
-        </Pressable>
-      ) : null}
+    <View style={styles.screen}>
+      <Header title="여행 지도" onBack={onBack} />
+      <View style={styles.state} accessibilityLiveRegion="polite">
+        <BrandIcon name="course" size={44} color={palette.forest} />
+        <Text style={styles.stateTitle}>{title}</Text>
+        {body ? <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.stateBody}>{body}</Text> : null}
+        {children}
+        {action && onPress ? (
+          <Pressable
+            accessibilityRole="button"
+            onPress={onPress}
+            style={styles.retry}
+          >
+            <Text style={styles.retryText}>{action}</Text>
+          </Pressable>
+        ) : null}
+      </View>
+      <AppTabBar />
     </View>
   );
 }
@@ -549,6 +557,8 @@ const styles = StyleSheet.create({
     color: palette.ink,
   },
   stateBody: {
+    width: "100%",
+    maxWidth: 320,
     fontFamily: fonts.body,
     fontSize: 15,
     lineHeight: 23,

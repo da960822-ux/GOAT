@@ -31,8 +31,8 @@ export default function ContactScreen() {
             <Feather name="mail" size={28} color="#FFFFFF" />
           </View>
           <Text accessibilityRole="header" style={[styles.heroTitle, { color: colors.foreground }]}>무엇이든 물어보세요</Text>
-          <Text style={[styles.heroSub, { color: colors.mutedForeground }]}>
-            장소 정보 오류 · 앱 개선 아이디어{'\n'}협업 문의 모두 환영합니다
+          <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={[styles.heroSub, { color: colors.mutedForeground }]}>
+            장소 정보 오류, 앱 개선 아이디어, 협업 문의를 모두 환영합니다.
           </Text>
         </View>
 
@@ -60,8 +60,7 @@ export default function ContactScreen() {
         <View style={[styles.notice, { backgroundColor: colors.secondary, borderColor: colors.border }]}>
           <Feather name="clock" size={14} color={colors.mutedForeground} />
           <Text style={[styles.noticeText, { color: colors.mutedForeground }]}>
-            문의 답변은 평일 기준 2~3일 내 드립니다.{'\n'}
-            장소 정보 오류 신고는 우선 처리됩니다.
+            문의 답변은 평일 기준 2~3일 안에 드려요. 장소 정보 오류 신고는 우선 처리합니다.
           </Text>
         </View>
 

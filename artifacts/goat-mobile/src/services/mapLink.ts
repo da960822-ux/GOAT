@@ -63,7 +63,7 @@ export async function openKakaoMap(
       await Linking.openURL(webUrl);
     } catch {
       const { Alert } = await import('react-native');
-      Alert.alert('카카오맵을 열 수 없어요. 잠시 후 다시 시도해주세요.');
+      Alert.alert('카카오맵을 열 수 없어요. 잠시 후 다시 시도해 주세요.');
     }
   }
 }

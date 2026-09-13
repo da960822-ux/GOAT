@@ -24,11 +24,11 @@ export default function NoResultsScreen() {
         </Animated.View>
         <Text style={styles.code}>다시 찾아볼게요</Text>
         <Animated.Text entering={FadeInDown.delay(120).duration(340)} style={styles.title}>조건에 딱 맞는 장소를{`\n`}찾지 못했어요</Animated.Text>
-        <Text style={styles.body}>조건을 조금 넓혀 다시 추천하거나,{`\n`}처음부터 새로운 장면을 찾아볼 수 있어요.</Text>
+        <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.body}>조건을 조금 넓혀 다시 추천하거나, 처음부터 새로운 장면을 찾아볼 수 있어요.</Text>
       </View>
       <View style={styles.actions}>
         <PrimaryButton label="여행 조건 다시 고르기" onPress={() => router.replace("/travel-preference")} />
-        <PrimaryButton label="감성부터 다시 찾기" variant="outline" onPress={() => router.replace("/mood-selection")} />
+        <PrimaryButton label="분위기부터 다시 고르기" variant="outline" onPress={() => router.replace("/mood-selection")} />
       </View>
     </View>
   </View>;

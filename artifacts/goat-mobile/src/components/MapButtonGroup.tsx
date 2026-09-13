@@ -21,7 +21,7 @@ export function MapButtonGroup({ place }: MapButtonGroupProps) {
     try {
       await handler(place);
     } catch {
-      Alert.alert('열기 실패', '지도 앱을 열 수 없습니다. 앱이 설치되어 있는지 확인해주세요.');
+      Alert.alert('열기 실패', '지도 앱을 열 수 없어요. 앱이 설치되어 있는지 확인해 주세요.');
     }
   }
 

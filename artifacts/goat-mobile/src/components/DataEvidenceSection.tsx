@@ -31,8 +31,8 @@ function buildEvidence(place: Place): EvidenceItem[] {
 
   if (place.photo_point) {
     items.push({
-      label: '사진 포인트 적합',
-      value: '포인트 확인됨',
+      label: '사진 속 포인트와 잘 맞아요',
+      value: '포인트 확인',
       type: 'ok',
     });
   }

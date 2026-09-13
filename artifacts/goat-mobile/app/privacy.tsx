@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
 import { fonts, radius, spacing } from '@/src/theme/editorial';
+import { BrandIcon } from '@/src/components/BrandIcon';
+import { MotionPressable } from '@/src/components/MotionPressable';
 
 export default function PrivacyScreen() {
   const router = useRouter();
@@ -19,16 +21,22 @@ export default function PrivacyScreen() {
           </Text>
         </View>
 
-        {SECTIONS.map((sec) => (
-          <View key={sec.title} style={[styles.section, { borderBottomColor: colors.border }]}>
-            <Text style={[styles.sectionTitle, { color: colors.foreground }]}>{sec.title}</Text>
-            <Text style={[styles.body, { color: colors.mutedForeground }]}>{sec.body}</Text>
-          </View>
-        ))}
+        {SECTIONS.map((sec) => <Disclosure key={sec.title} title={sec.title} body={sec.body} colors={colors} />)}
         <View style={styles.spacer} />
       </Animated.ScrollView>
     </View>
   );
+}
+
+function Disclosure({ title, body, colors }: { title: string; body: string; colors: any }) {
+  const [expanded, setExpanded] = useState(true);
+  return <View style={[styles.section, { borderBottomColor: colors.border }]}>
+    <MotionPressable accessibilityRole="button" accessibilityLabel={`${title} 펼치기`} accessibilityState={{ expanded }} onPress={() => setExpanded((value) => !value)} style={styles.sectionHeader}>
+      <Text style={[styles.sectionTitle, { color: colors.foreground }]}>{title}</Text>
+      <BrandIcon name="arrow-right" size={15} color={colors.mutedForeground} style={{ transform: [{ rotate: expanded ? '-90deg' : '90deg' }] }} />
+    </MotionPressable>
+    {expanded ? <Animated.View entering={FadeInDown.duration(180)}><Text style={[styles.body, { color: colors.mutedForeground }]}>{body}</Text></Animated.View> : null}
+  </View>;
 }
 
 const SECTIONS = [
@@ -76,7 +84,8 @@ const styles = StyleSheet.create({
   notice: { marginHorizontal: spacing.lg, marginTop: spacing.sm, marginBottom: spacing.md, padding: 18, borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth },
   noticeText: { fontSize: 13, fontFamily: fonts.body, lineHeight: 21 },
   section: { paddingHorizontal: spacing.lg, paddingVertical: 26, borderBottomWidth: StyleSheet.hairlineWidth },
-  sectionTitle: { fontSize: 20, lineHeight: 28, fontFamily: fonts.serif, marginBottom: 11 },
+  sectionHeader: { minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+  sectionTitle: { flex: 1, fontSize: 20, lineHeight: 28, fontFamily: fonts.serif },
   body: { fontSize: 15, fontFamily: fonts.body, lineHeight: 24 },
   spacer: { height: 32 },
 });

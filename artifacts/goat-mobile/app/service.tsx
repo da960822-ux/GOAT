@@ -25,7 +25,7 @@ export default function ServiceScreen() {
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Header title="서비스 안내" onBack={() => router.back()} />
 
-      <Animated.View entering={FadeInDown.duration(320)} style={styles.intro}><Text accessibilityRole="header" style={[styles.introTitle, { color: colors.foreground }]}>GOAT를 더 알아보기</Text><Text style={[styles.introBody, { color: colors.mutedForeground }]}>여행을 고르는 데 필요한 안내와 출처를 한곳에서 확인하세요.</Text></Animated.View><Animated.View entering={FadeInDown.delay(100).duration(320)} style={styles.list}>
+      <Animated.View entering={FadeInDown.duration(320)} style={styles.intro}><Text accessibilityRole="header" style={[styles.introTitle, { color: colors.foreground }]}>GOAT 알아보기</Text><Text style={[styles.introBody, { color: colors.mutedForeground }]}>여행에 필요한 안내와 데이터 출처를 한곳에서 확인하세요.</Text></Animated.View><Animated.View entering={FadeInDown.delay(100).duration(320)} style={styles.list}>
         {LINKS.map((item, i) => (
           <MotionPressable
             key={item.path}

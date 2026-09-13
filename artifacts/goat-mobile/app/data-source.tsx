@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -6,6 +6,7 @@ import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { Header } from '@/src/components/Header';
 import { useColors } from '@/hooks/useColors';
 import { fonts, radius, spacing } from '@/src/theme/editorial';
+import { MotionPressable } from '@/src/components/MotionPressable';
 
 export default function DataSourceScreen() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function DataSourceScreen() {
           <Text style={[styles.introText, { color: colors.mutedForeground }]}>
             GOAT는 자체 정리한 강원 장소 데이터와 한국관광공사·Google Maps·기상청 데이터를 구분해 사용합니다.
             추천은 장면 특징 관계를 우선하며, 사용자가 요청한 이동 방법과 오늘 조건만 가능한 범위에서 보정합니다.
-            테마와 랜딩의 생성형 이미지는 사용자가 제공한 실제 장소 참고 사진을 시각적 기준으로 재구성하며, 관광사진이나 추천 근거로 사용하지 않습니다.
+            테마와 첫 화면의 생성형 이미지는 사용자가 제공한 실제 장소 참고 사진을 바탕으로 다시 구성했습니다. 관광사진이나 추천 근거로는 사용하지 않습니다.
           </Text>
         </View>
 
@@ -34,7 +35,7 @@ export default function DataSourceScreen() {
             '현재 공개된 큰 무드와 세부 장면',
             '감성 태그, 장면 태그, 목적 태그, 접근성, 계절 정보',
           ]}
-          note="공개 가능한 장면만 표시하며 장면 하나를 고르면 바로 세 곳을 추천합니다."
+          note="현재 고를 수 있는 장면만 보여드려요. 장면을 하나 고르면 바로 세 곳을 추천해요."
         />
 
         <ApiBlock
@@ -137,24 +138,34 @@ function ApiBlock({
   usage: string[];
   note: string;
 }) {
+  const [expanded, setExpanded] = useState(true);
   return (
     <View style={[styles.block, { borderBottomColor: colors.border }]}>
-      <View style={styles.blockHeader}>
+      <MotionPressable
+        accessibilityRole="button"
+        accessibilityLabel={`${number}. ${title} 펼치기`}
+        accessibilityState={{ expanded }}
+        onPress={() => setExpanded((value) => !value)}
+        style={styles.blockHeader}
+      >
         <Feather name={icon as any} size={15} color={colors.primary} />
-        <Text style={[styles.blockTitle, { color: colors.foreground }]}>
+        <Text style={[styles.blockTitle, { color: colors.foreground, flex: 1 }]}>
           {number}. {title}
         </Text>
-      </View>
-      <View style={styles.sourceLine}>
-        <Text style={[styles.sourceText, { color: colors.mutedForeground }]}>{source}</Text>
-      </View>
-      {usage.map((item, i) => (
-        <View key={i} style={styles.itemRow}>
-          <View style={[styles.dot, { backgroundColor: colors.primary }]} />
-          <Text style={[styles.itemText, { color: colors.foreground }]}>{item}</Text>
+        <Feather name="arrow-right" size={15} color={colors.mutedForeground} style={{ transform: [{ rotate: expanded ? '-90deg' : '90deg' }] }} />
+      </MotionPressable>
+      {expanded ? <Animated.View entering={FadeInDown.duration(180)}>
+        <View style={styles.sourceLine}>
+          <Text style={[styles.sourceText, { color: colors.mutedForeground }]}>{source}</Text>
         </View>
-      ))}
-      <Text style={[styles.noteText, { color: colors.mutedForeground }]}>{note}</Text>
+        {usage.map((item, i) => (
+          <View key={i} style={styles.itemRow}>
+            <View style={[styles.dot, { backgroundColor: colors.primary }]} />
+            <Text style={[styles.itemText, { color: colors.foreground }]}>{item}</Text>
+          </View>
+        ))}
+        <Text style={[styles.noteText, { color: colors.mutedForeground }]}>{note}</Text>
+      </Animated.View> : null}
     </View>
   );
 }
@@ -165,7 +176,7 @@ const styles = StyleSheet.create({
   intro: { marginHorizontal: spacing.lg, marginTop: spacing.sm, marginBottom: spacing.md, padding: 18, borderRadius: radius.lg, borderWidth: StyleSheet.hairlineWidth },
   introText: { fontSize: 15, fontFamily: fonts.body, lineHeight: 24 },
   block: { paddingHorizontal: spacing.lg, paddingVertical: 26, borderBottomWidth: StyleSheet.hairlineWidth },
-  blockHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
+  blockHeader: { minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 },
   blockTitle: { fontSize: 20, lineHeight: 28, fontFamily: fonts.serif },
   sourceLine: { marginBottom: 12 },
   sourceText: { fontSize: 12, lineHeight: 18, fontFamily: fonts.medium },

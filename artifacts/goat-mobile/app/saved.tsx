@@ -69,7 +69,7 @@ export default function SavedScreen() {
     <Text style={styles.storageNotice}>로그인 없이 이 기기에만 저장돼요.</Text>
     <MotionPressable accessibilityRole="button" accessibilityLabel="마지막 여행 코스 보기" onPress={() => router.push("/map")} style={styles.courseEntry}><BrandIcon name="course" size={19} color={palette.forest} /><Text style={styles.courseEntryText}>마지막 여행 코스 보기</Text><BrandIcon name="arrow-right" size={17} color={palette.forest} /></MotionPressable>
     {state === "loading" ? <State icon="bookmark" title="저장한 장면을 불러오는 중이에요"><ActivityIndicator color={palette.forest} /></State>
-      : state === "error" ? <State icon="warning" title="내 장면을 불러오지 못했어요" body="저장된 항목은 그대로예요. 다시 시도해 주세요." action="다시 시도" onPress={load} />
+      : state === "error" ? <State icon="warning" title="내 장면을 불러오지 못했어요" body="저장한 장소는 그대로 남아 있어요. 다시 시도해 주세요." action="다시 시도" onPress={load} />
       : items.length === 0 ? <State icon="bookmark" title="아직 담은 장면이 없어요" body="추천 카드에서 마음에 드는 곳을 담아보세요." action="장면 발견하기" onPress={() => router.replace("/")} />
       : <Animated.View entering={FadeInDown.duration(320)} style={styles.listWrap}><FlatList
           data={items}

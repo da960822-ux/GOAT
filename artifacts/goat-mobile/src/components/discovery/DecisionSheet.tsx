@@ -73,15 +73,15 @@ export function DecisionSheet({
   const [copied, setCopied] = useState(false);
   const statusText =
     courseStatus === "loading"
-      ? "AI가 선택한 장소에서 이어지는 코스를 만들고 있어요"
+      ? "선택한 장소를 잇는 코스를 만들고 있어요"
       : courseStatus === "error"
-        ? courseError || "코스를 만들지 못했어요. 다시 시도해주세요."
+        ? courseError || "코스를 만들지 못했어요. 다시 시도해 주세요."
         : saveStatus === "loading"
           ? "내 장면에 저장하는 중이에요"
           : saveStatus === "saved"
             ? "내 장면에 저장했어요"
             : saveStatus === "error"
-              ? saveError || "저장하지 못했어요. 다시 시도해주세요."
+              ? saveError || "저장하지 못했어요. 다시 시도해 주세요."
               : null;
   useEffect(() => {
     void AccessibilityInfo.isReduceMotionEnabled().then(setReduceMotion);

@@ -17,12 +17,12 @@ export default function AboutScreen() {
         <Animated.View entering={FadeIn.duration(360)} style={styles.hero}>
           <Image source={logo} contentFit="contain" style={styles.logo} accessibilityLabel="강원도 모양 GOAT 로고" />
           <Text accessibilityRole="header" style={styles.brandSentence}>해외의 감성을, 강원도에서.</Text>
-          <Text style={styles.brandDesc}>보고 싶은 장면 하나를 고르면 닮은 강원 장소 세 곳을 비교해 드리는 여행 큐레이션 서비스입니다.</Text>
+          <Text style={styles.brandDesc}>보고 싶은 장면을 하나 고르면, 닮은 강원 장소 세 곳을 비교해 볼 수 있어요.</Text>
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(120).duration(340)}><Section title="GOAT는?">
-          <Paragraph>Gangwon Of All Time의 약자로, 사용자가 고른 감성과 확인 가능한 여행 조건을 바탕으로 강원 장소 세 곳을 제안합니다.</Paragraph>
-          <Paragraph>추천 결과는 사진에서 보이는 차이, 접근·이동, 중요 제한을 같은 순서로 비교할 수 있습니다.</Paragraph>
+          <Paragraph>Gangwon Of All Time의 약자예요. 고른 분위기와 여행 조건을 바탕으로 강원 장소 세 곳을 추천해요.</Paragraph>
+          <Paragraph>추천 결과에서는 사진, 이동 방법, 꼭 알아둘 제한 사항을 같은 기준으로 비교할 수 있어요.</Paragraph>
         </Section></Animated.View>
 
         <Section title="이용 흐름">
@@ -36,8 +36,8 @@ export default function AboutScreen() {
 
         <Section title="추천 카드">
           <Paragraph><Text style={styles.label}>장면 최적</Text> · 고른 장면과 가장 정직하게 맞는 장소</Paragraph>
-          <Paragraph><Text style={styles.label}>같은 분위기 대안</Text> · 같은 무드 안에서 비교할 두 번째 장소</Paragraph>
-          <Paragraph><Text style={styles.label}>조건 맞춤</Text> · 이동 방식과 요청한 오늘 조건을 더 반영한 장소</Paragraph>
+          <Paragraph><Text style={styles.label}>같은 분위기 대안</Text> · 비슷한 분위기에서 비교해 볼 두 번째 장소</Paragraph>
+          <Paragraph><Text style={styles.label}>조건 맞춤</Text> · 이동 방식과 오늘의 조건을 더 반영한 장소</Paragraph>
         </Section>
       </ScrollView>
     </View>

@@ -1,6 +1,15 @@
 import React from "react";
 import type { StyleProp, ViewStyle } from "react-native";
 import Svg, { Circle, Line, Path, Polyline, Rect } from "react-native-svg";
+import Animated, {
+  cancelAnimation,
+  useAnimatedStyle,
+  useReducedMotion,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 
 export type BrandIconName =
   | "menu" | "notification" | "location" | "mood" | "home" | "recommend"
@@ -9,7 +18,7 @@ export type BrandIconName =
   | "delete" | "logout" | "check" | "arrow-right" | "refresh" | "close"
   | "google" | "kakao" | "heart" | "people" | "car" | "bus" | "walk"
   | "leaf" | "camera" | "food" | "sun" | "info" | "database" | "image"
-  | "mail" | "external" | "shield"
+  | "mail" | "external" | "shield" | "zap" | "briefcase"
   | "notifications-outline" | "location-outline" | "sparkles-outline" | "map-outline" | "map-pin" | "bookmark-outline" | "person-outline" | "chevron-back" | "arrow-left" | "share-outline" | "time-outline" | "clock" | "car-outline" | "navigation" | "people-outline" | "users" | "heart-outline" | "bus-outline" | "walk-outline" | "leaf-outline" | "camera-outline" | "bicycle-outline" | "restaurant-outline" | "sunny-outline" | "partly-sunny-outline" | "cloudy-night-outline" | "checkmark" | "chevron-right" | "arrow-forward" | "alert-circle" | "alert-triangle" | "cloud-offline-outline" | "hourglass-outline" | "x" | "logo-google" | "chatbubble" | "mail-outline" | "image-outline" | "shield-checkmark-outline" | "external-link" | "calendar";
 
 const aliases: Partial<Record<BrandIconName, BrandIconName>> = {
@@ -30,17 +39,37 @@ const aliases: Partial<Record<BrandIconName, BrandIconName>> = {
   "external-link": "external", calendar: "time",
 };
 
-export function BrandIcon({ name, size = 24, color = "#173F36", filled = false, strokeWidth = 1.8, style }:
-  { name: BrandIconName | string; size?: number; color?: string; filled?: boolean; strokeWidth?: number; style?: StyleProp<ViewStyle> }) {
+export function BrandIcon({ name, size = 24, color = "#173F36", filled = false, strokeWidth = 1.8, style, motion }:
+  { name: BrandIconName | string; size?: number; color?: string; filled?: boolean; strokeWidth?: number; style?: StyleProp<ViewStyle>; motion?: "pulse" | "spin" }) {
+  const reducedMotion = useReducedMotion();
+  const motionValue = useSharedValue(0);
+  React.useEffect(() => {
+    cancelAnimation(motionValue);
+    if (!motion || reducedMotion) {
+      motionValue.value = 0;
+      return;
+    }
+    if (motion === "spin") {
+      motionValue.value = withRepeat(withTiming(360, { duration: 1400 }), -1, false);
+    } else {
+      motionValue.value = withRepeat(withSequence(withTiming(1, { duration: 650 }), withTiming(0, { duration: 650 })), -1, false);
+    }
+    return () => cancelAnimation(motionValue);
+  }, [motion, reducedMotion, motionValue]);
+  const motionStyle = useAnimatedStyle(() => motion === "spin"
+    ? { transform: [{ rotate: `${motionValue.value}deg` }] }
+    : motion === "pulse"
+      ? { transform: [{ scale: 1 + motionValue.value * 0.08 }], opacity: 0.72 + motionValue.value * 0.28 }
+      : {});
   const icon = aliases[name as BrandIconName] ?? name;
   const common = { stroke: color, strokeWidth, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, fill: "none" };
   let content: React.ReactNode;
   switch (icon) {
     case "menu": content = <><Line x1="4" y1="7" x2="20" y2="7" {...common}/><Line x1="4" y1="12" x2="16" y2="12" {...common}/><Line x1="4" y1="17" x2="20" y2="17" {...common}/></>; break;
     case "notification": content = <><Path d="M6.5 17h11l-1.5-2.2V10a4 4 0 0 0-8 0v4.8L6.5 17Z" {...common}/><Path d="M10 19a2.2 2.2 0 0 0 4 0" {...common}/></>; break;
-    case "location": content = <><Path d="M12 21s6-5.7 6-11a6 6 0 1 0-12 0c0 5.3 6 11 6 11Z" {...common}/><Circle cx="12" cy="10" r="2.1" {...common}/></>; break;
-    case "home": content = <><Path d="m4 10 8-6 8 6v10h-5v-6H9v6H4Z" {...common} fill={filled ? color : "none"}/></>; break;
-    case "recommend": case "mood": content = <><Path d="m12 3 1.4 5.1L18 10l-4.6 1.8L12 17l-1.4-5.2L6 10l4.6-1.9Z" {...common} fill={filled ? color : "none"}/><Path d="m19 15 .7 2.3L22 18l-2.3.7L19 21l-.7-2.3L16 18l2.3-.7Z" {...common}/></>; break;
+    case "location": content = <><Path d="M12 21s7-6.2 7-11.6a7 7 0 1 0-14 0C5 14.8 12 21 12 21Z" {...common} fill={filled ? color : "none"}/><Circle cx="12" cy="9.5" r="2.35" {...common} fill={filled ? "transparent" : "none"}/></>; break;
+    case "home": content = <><Path d="m3.5 10.5 8.5-7 8.5 7v9.2a1.3 1.3 0 0 1-1.3 1.3H4.8a1.3 1.3 0 0 1-1.3-1.3Z" {...common} fill={filled ? color : "none"}/><Path d="M9.2 20.5v-6h5.6v6" {...common}/></>; break;
+    case "recommend": case "mood": content = <><Path d="m12 2.8 1.75 5.45L19.2 10l-5.45 1.75L12 17.2l-1.75-5.45L4.8 10l5.45-1.75Z" {...common} fill={filled ? color : "none"}/><Path d="m19.3 15 .72 2.2 2.18.8-2.18.72-.72 2.28-.76-2.28-2.14-.72 2.14-.8Z" {...common} fill={filled ? color : "none"}/></>; break;
     case "map": content = <><Path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3Z" {...common} fill={filled ? color : "none"}/><Line x1="9" y1="3" x2="9" y2="18" {...common}/><Line x1="15" y1="6" x2="15" y2="21" {...common}/></>; break;
     case "bookmark": content = <Path d="M7 4.5h10v16l-5-3.2L7 20.5Z" {...common} fill={filled ? color : "none"}/>; break;
     case "user": content = <><Circle cx="12" cy="8" r="3.5" {...common}/><Path d="M5 20c.8-4 3.1-6 7-6s6.2 2 7 6" {...common} fill={filled ? color : "none"}/></>; break;
@@ -58,7 +87,7 @@ export function BrandIcon({ name, size = 24, color = "#173F36", filled = false, 
     case "camera": content = <><Path d="M4 8h4l1.5-2h5L16 8h4v11H4Z" {...common}/><Circle cx="12" cy="13.5" r="3.3" {...common}/></>; break;
     case "food": content = <><Path d="M7 3v8m-3-8v5c0 2 1 3 3 3s3-1 3-3V3m-3 8v10m10-18v18m0-18c-3 3-3 8 0 10" {...common}/></>; break;
     case "sun": content = <><Circle cx="12" cy="12" r="4" {...common}/><Path d="M12 2v3m0 14v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M19 5l-2 2M7 17l-2 2" {...common}/></>; break;
-    case "course": content = <><Circle cx="6" cy="18" r="2" {...common}/><Circle cx="18" cy="6" r="2" {...common}/><Path d="M7.5 16.5c1.5-5 7-3 9-8.5" {...common}/></>; break;
+    case "course": content = <><Path d="M6 18c1.1-3.8 2.9-5.9 5.3-5.9 2.7 0 2.5-4.2 6.7-6.1" {...common} strokeWidth={Math.max(strokeWidth, 2.1)}/><Circle cx="6" cy="18" r="2.9" {...common} fill={filled ? color : "none"}/><Circle cx="18" cy="6" r="2.9" {...common} fill={filled ? color : "none"}/><Circle cx="6" cy="18" r=".9" fill={filled ? "#FFFFFF" : color}/><Circle cx="18" cy="6" r=".9" fill={filled ? "#FFFFFF" : color}/></>; break;
     case "like": case "dislike": content = <Path d={icon === "like" ? "M8 20H4V9h4m0 11h9l3-8c.5-1.8-.5-3-2-3h-4l1-4c.2-1.2-.6-2-1.5-2L8 9Z" : "M8 4H4v11h4m0-11h9l3 8c.5 1.8-.5 3-2 3h-4l1 4c.2 1.2-.6 2-1.5 2L8 15Z"} {...common}/>; break;
     case "delete": content = <><Path d="M5 7h14M9 7V4h6v3m-8 0 1 14h8l1-14M10 11v6m4-6v6" {...common}/></>; break;
     case "logout": content = <><Path d="M10 4H5v16h5m4-4 4-4-4-4m4 4H9" {...common}/></>; break;
@@ -78,5 +107,5 @@ export function BrandIcon({ name, size = 24, color = "#173F36", filled = false, 
     case "external": content = <><Path d="M13 5H5v14h14v-8" {...common}/><Path d="M14 4h6v6m0-6-9 9" {...common}/></>; break;
     default: content = null;
   }
-  return <Svg width={size} height={size} viewBox="0 0 24 24" style={style} aria-hidden={true} focusable={false}>{content}</Svg>;
+  return <Animated.View style={[{ width: size, height: size }, style, motionStyle]}><Svg width={size} height={size} viewBox="0 0 24 24" aria-hidden={true} focusable={false}>{content}</Svg></Animated.View>;
 }

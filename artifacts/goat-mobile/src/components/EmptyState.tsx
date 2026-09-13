@@ -16,7 +16,7 @@ export function EmptyState({ title, description, actionLabel, onAction }: EmptyS
     <View style={styles.container} accessibilityLiveRegion="polite">
       <View style={[styles.rule, { backgroundColor: colors.accent }]} />
       <View style={[styles.icon, { backgroundColor: colors.secondary }]}>
-        <Feather name="map-pin" size={28} color={colors.primary} />
+        <Feather name="map-pin" size={30} color={colors.primary} motion="pulse" />
       </View>
       <Text style={[styles.title, { color: colors.foreground }]}>{title}</Text>
       {description && <Text style={[styles.desc, { color: colors.mutedForeground }]}>{description}</Text>}

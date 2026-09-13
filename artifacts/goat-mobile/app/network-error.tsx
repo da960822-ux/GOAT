@@ -22,7 +22,7 @@ export default function NetworkErrorScreen() {
         </Animated.View>
         <Text style={styles.code}>연결을 확인해볼게요</Text>
         <Animated.Text entering={FadeInDown.delay(120).duration(340)} style={styles.title}>잠시 연결이{`\n`}불안정해요</Animated.Text>
-        <Text style={styles.body}>입력한 조건은 그대로 보관되어 있어요.{`\n`}네트워크 상태를 확인한 뒤 다시 시도해주세요.</Text>
+        <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.body}>입력한 조건은 그대로 보관되어 있어요. 네트워크 상태를 확인한 뒤 다시 시도해 주세요.</Text>
       </View>
       <View style={styles.actions}>
         <PrimaryButton label="다시 시도하기" icon="refresh" onPress={() => router.replace("/analyzing" as never)} />

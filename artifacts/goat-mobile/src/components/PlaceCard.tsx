@@ -46,7 +46,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
     try {
       await openKakaoMap(place);
     } catch {
-      Alert.alert('카카오맵을 열 수 없어요. 잠시 후 다시 시도해주세요.');
+      Alert.alert('카카오맵을 열 수 없어요. 잠시 후 다시 시도해 주세요.');
     }
   }
 
@@ -148,7 +148,7 @@ export function PlaceCard({ card, onPress }: PlaceCardProps) {
             <Text style={styles.kakaoBtnText}>카카오맵</Text>
           </TouchableOpacity>
           <TouchableOpacity accessibilityRole="button" accessibilityLabel={`${place.place_name} 상세 보기`} style={styles.detailLink} onPress={onPress} activeOpacity={0.7}>
-            <Text style={[styles.detailLinkText, { color: colors.primary }]}>장소 열어보기</Text>
+            <Text style={[styles.detailLinkText, { color: colors.primary }]}>장소 자세히 보기</Text>
             <Feather name="arrow-right" size={13} color={colors.primary} />
           </TouchableOpacity>
         </View>

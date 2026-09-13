@@ -43,7 +43,7 @@ export function discardConditionUndo<Conditions, Result>(state: ConditionState<C
 }
 
 export function diffPlaceIds(before: readonly string[], after: readonly string[]): PlaceIdDiff {
-  if (before.length === after.length && before.every((placeId, index) => placeId === after[index])) return { kind: "NO_CHANGE", message: "기존 세 곳이 그대로 적합해요" };
+  if (before.length === after.length && before.every((placeId, index) => placeId === after[index])) return { kind: "NO_CHANGE", message: "기존 추천 세 곳과 같아요" };
   if (before.length === after.length && before.every((placeId) => after.includes(placeId))) return { kind: "ORDER_CHANGED", message: "세 곳의 순서가 달라졌어요" };
   return { kind: "PLACE_CHANGED", message: "추천 장소가 바뀌었어요" };
 }

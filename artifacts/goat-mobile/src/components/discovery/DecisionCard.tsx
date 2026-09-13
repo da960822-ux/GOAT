@@ -10,6 +10,7 @@ export type DecisionCardProps = {
   index: number;
   total: number;
   featured?: boolean;
+  editorialLabel?: string;
   region: string;
   name: string;
   summary: string;
@@ -26,7 +27,7 @@ export type DecisionCardProps = {
   onChoose: (trigger?: View | null) => void;
 };
 
-export function DecisionCard({ index, total, region, name, summary, features, imageUri, imageCachePolicy = "none", criticalRestriction, attribution, featured = false, replacementState = "available", replacementHint, replacementDisabled = false, onDetails, onReplace, onChoose }: DecisionCardProps) {
+export function DecisionCard({ index, total, region, name, summary, features, imageUri, imageCachePolicy = "none", criticalRestriction, attribution, featured = false, editorialLabel, replacementState = "available", replacementHint, replacementDisabled = false, onDetails, onReplace, onChoose }: DecisionCardProps) {
   const chooseRef = useRef<View>(null);
   const [imageFailed, setImageFailed] = useState(false);
   useEffect(() => setImageFailed(false), [imageUri]);
@@ -36,6 +37,7 @@ export function DecisionCard({ index, total, region, name, summary, features, im
       {imageUri && !imageFailed ? <Image source={{ uri: imageUri }} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessibilityLabel={`${name} 실제 풍경`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessible={false} importantForAccessibility="no-hide-descendants"><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
       <View style={styles.heroScrim} pointerEvents="none" />
       <Text style={styles.counter}>{index} / {total}</Text>
+      {editorialLabel ? <Text style={styles.editorialLabel}>{editorialLabel}</Text> : null}
       {attribution ? <Text style={styles.heroAttribution}>사진 출처 · {attribution}</Text> : null}
       <View style={styles.heroCopy}><Text style={styles.region}>{region}</Text><Text style={[styles.name, featured && styles.featuredName]}>{name}</Text></View>
     </View>
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
   fallback: { ...StyleSheet.absoluteFillObject, alignItems: "center", justifyContent: "center", backgroundColor: palette.sage },
   heroScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(15, 48, 42, 0.40)" },
   counter: { position: "absolute", top: spacing.md, right: spacing.md, fontFamily: fonts.bold, fontSize: 12, color: palette.white, backgroundColor: "rgba(15, 48, 42, 0.72)", paddingHorizontal: spacing.sm, paddingVertical: spacing.xs, borderRadius: radius.pill, fontVariant: ["tabular-nums"] },
+  editorialLabel: { position: "absolute", top: spacing.md, left: spacing.md, fontFamily: fonts.semibold, fontSize: 11, color: palette.forestDeep, backgroundColor: palette.sage, paddingHorizontal: 10, paddingVertical: 6, borderRadius: radius.pill },
   heroAttribution: { position: "absolute", top: spacing.md, left: spacing.md, right: 82, fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.white },
   heroCopy: { padding: spacing.xl, paddingTop: spacing.lg, gap: spacing.xxs },
   region: { fontFamily: fonts.bold, fontSize: 12, letterSpacing: 1.2, color: palette.sage },

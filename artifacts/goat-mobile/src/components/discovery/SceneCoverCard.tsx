@@ -44,7 +44,7 @@ export function SceneCoverCard({ number, title, description, picturedPlaceName, 
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.caption} accessible={false} importantForAccessibility="no-hide-descendants">
-        <View style={styles.captionRow}><Text numberOfLines={1} style={styles.captionText}>{caption}</Text><View style={styles.chooseCue}><Text style={styles.chooseText}>이 장면 고르기</Text><BrandIcon name="arrow-right" size={15} color={palette.white} /></View></View>
+        <View style={styles.captionRow}><Text numberOfLines={1} style={styles.captionText}>{caption}</Text><View style={styles.chooseCue}><Text style={styles.chooseText}>이 장면 선택하기</Text><BrandIcon name="arrow-right" size={15} color={palette.white} /></View></View>
         {attribution ? <Text style={styles.attribution}>{attribution}</Text> : null}
       </View>
     </Pressable>

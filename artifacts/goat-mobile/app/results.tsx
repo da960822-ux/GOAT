@@ -215,7 +215,7 @@ export default function ResultsScreen() {
     if (publicRecommendation.todayStatus === "APPLIED")
       return "오늘 조건을 반영했어요";
     if (publicRecommendation.todayStatus === "NO_CHANGE")
-      return "현재 후보가 그대로 적합해요";
+      return "현재 추천 장소와 같아요";
     return "오늘 조건은 반영하지 못했어요";
   }, [publicRecommendation]);
 
@@ -486,7 +486,7 @@ export default function ResultsScreen() {
             {`\n`}어울리는 세 곳
           </Text>
           <Text style={styles.description}>
-            사진·이동·제한을 비교한 뒤 한 곳을 고르세요.
+            사진·이동·제한을 비교해 보고 마음에 드는 곳을 골라 보세요.
           </Text>
         </Animated.View>
         <Animated.View entering={reducedMotion ? undefined : FadeInDown.delay(100).duration(460).reduceMotion(ReduceMotion.System)}>
@@ -509,6 +509,7 @@ export default function ResultsScreen() {
                 index={cardIndex + 1}
                 total={cards.length}
                 featured={cardIndex === 0}
+                editorialLabel={cardIndex === 0 ? "대표 장면" : cardIndex === 1 ? "분위기 확장" : "뜻밖의 발견"}
                 region={card.place?.city ?? "강원"}
                 name={card.place?.place_name ?? "추천 장소"}
                 summary={summaryFor(card)}
@@ -950,7 +951,7 @@ function attributionFor(card: DisplayCard) {
 }
 function todayStatusCopy(data: PublicRecommendationData) {
   if (data.todayStatus === "APPLIED") return "오늘 조건을 반영했어요";
-  if (data.todayStatus === "NO_CHANGE") return "현재 후보가 그대로 적합해요";
+  if (data.todayStatus === "NO_CHANGE") return "현재 추천 장소와 같아요";
   if (data.todayStatus === "UNAVAILABLE")
     return "오늘 조건은 반영하지 못했어요";
   return "오늘 조건 반영하기";

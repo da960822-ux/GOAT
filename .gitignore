@@ -75,3 +75,4 @@ start-goat-service.bat
 GOAT.env
 .vercel
 .env*.local
+.env*
