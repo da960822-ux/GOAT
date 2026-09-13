@@ -1,6 +1,7 @@
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import Animated, { FadeIn, ReduceMotion, useReducedMotion } from "react-native-reanimated";
 import {
   AccessibilityInfo,
   ActivityIndicator,
@@ -48,6 +49,7 @@ export default function DetailScreen() {
   }>();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const reducedMotion = useReducedMotion();
   const { publicRecommendation, setCourse } = useApp();
   const contextualSelectionId =
     routeSelectionId || publicRecommendation?.selectionId || "";
@@ -138,6 +140,14 @@ export default function DetailScreen() {
   }, [place?.note]);
   const heroAsset = photos?.placeHero ?? card?.placeHero ?? null;
   const hero = heroAsset?.url;
+  const usablePhotoCount = photos?.evidenceImages.length ?? 0;
+  const photoStatus = !photos
+    ? "loading"
+    : photos.galleryStatus === "ERROR"
+      ? "error"
+      : usablePhotoCount > 0
+        ? "available"
+        : "empty";
   useEffect(() => setHeroFailed(false), [hero]);
 
   const openMap = () => {
@@ -263,7 +273,7 @@ export default function DetailScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 110 + insets.bottom }}
       >
-        <View style={styles.hero}>
+        <Animated.View entering={reducedMotion ? undefined : FadeIn.duration(500).reduceMotion(ReduceMotion.System)} style={styles.hero}>
           {hero && !heroFailed ? (
             <Image
               source={{ uri: hero }}
@@ -297,7 +307,7 @@ export default function DetailScreen() {
               {card?.differenceNote ?? place.recommendation_use}
             </Text>
           </View>
-        </View>
+        </Animated.View>
         {heroAsset ? <PhotoCredit attribution={heroAsset.attribution} /> : null}
         <View style={styles.body}>
           {restriction ? (
@@ -333,14 +343,26 @@ export default function DetailScreen() {
               ref={galleryTriggerRef}
               accessibilityRole="button"
               accessibilityLabel={`${place.place_name} 실제 사진 더 보기`}
-              onPress={() => setGalleryVisible(true)}
-              style={styles.galleryAction}
+              accessibilityState={{ disabled: photoStatus !== "available" }}
+              disabled={photoStatus !== "available"}
+              onPress={() => {
+                if (photoStatus === "available") setGalleryVisible(true);
+              }}
+              style={[styles.galleryAction, photoStatus !== "available" && styles.galleryActionDisabled]}
             >
-              <Text style={styles.galleryActionText}>실제 사진 더 보기</Text>
+              <Text style={styles.galleryActionText}>
+                {photoStatus === "available"
+                  ? "실제 사진 더 보기"
+                  : photoStatus === "loading"
+                    ? "사진 확인 중"
+                    : photoStatus === "error"
+                      ? "사진을 불러오지 못했어요"
+                      : "대표 사진을 확보하지 못했어요"}
+              </Text>
               <Text style={styles.galleryStatus}>{galleryCopy(photos)}</Text>
-              <BrandIcon name="arrow-right" color={palette.forest} />
+              {photoStatus === "available" ? <BrandIcon name="arrow-right" color={palette.forest} /> : null}
             </Pressable>
-            {!photos ? (
+            {photoStatus === "error" ? (
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel="사진 다시 불러오기"
@@ -1048,7 +1070,7 @@ const styles = StyleSheet.create({
   },
   secondaryActionText: { fontFamily: fonts.semibold, color: palette.forest },
   hero: {
-    minHeight: 380,
+    minHeight: 420,
     justifyContent: "flex-end",
     backgroundColor: palette.sage,
   },
@@ -1146,6 +1168,10 @@ const styles = StyleSheet.create({
     backgroundColor: palette.paper,
     borderWidth: 1,
     borderColor: palette.line,
+  },
+  galleryActionDisabled: {
+    backgroundColor: palette.ivory,
+    opacity: 0.78,
   },
   galleryActionText: {
     flex: 1,
