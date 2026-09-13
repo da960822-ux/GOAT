@@ -52,6 +52,11 @@ const entities: Record<string, KtoEntity> = {
   "GOAT-061": { contentId: "4097702", contentTypeId: "12", canonicalName: "델피노" },
 };
 
+/** Stable catalog mapping used by the database seed; network calls are not made here. */
+export function getKtoEntity(placeId: string): KtoEntity | undefined {
+  return entities[placeId];
+}
+
 type KtoItem = Record<string, unknown>;
 export type OfficialTourInfo = {
   contentId: string;

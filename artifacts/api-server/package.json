@@ -8,6 +8,7 @@
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "seed:place-catalog": "tsx ./scripts/seed-place-catalog.ts",
     "verify": "pnpm exec tsx ./scripts/verify-recommendation-contract.ts && node ./scripts/verify-api.mjs && node ./scripts/verify-recommendation-audit.mjs && node ./scripts/verify-persistence-contract.mjs",
     "verify:live": "node ./scripts/verify-live-recommendation-persistence.mjs"
   },
