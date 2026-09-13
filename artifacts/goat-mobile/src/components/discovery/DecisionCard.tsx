@@ -32,7 +32,7 @@ export function DecisionCard({ index, total, region, name, summary, features, im
   const replacementUnavailable = replacementState === "unavailable";
   return <View style={styles.card}>
     <View style={styles.hero}>
-      {imageUri && !imageFailed ? <Image source={{ uri: imageUri }} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessibilityLabel={`${name} 실제 풍경`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessibilityElementsHidden><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
+      {imageUri && !imageFailed ? <Image source={{ uri: imageUri }} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessibilityLabel={`${name} 실제 풍경`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessible={false} importantForAccessibility="no-hide-descendants"><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
       <View style={styles.heroScrim} pointerEvents="none" />
       <Text style={styles.counter}>{index} / {total}</Text>
       {attribution ? <Text style={styles.heroAttribution}>사진 출처 · {attribution}</Text> : null}

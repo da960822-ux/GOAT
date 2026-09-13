@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet, Platform } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { BrandIcon as Feather } from '@/src/components/BrandIcon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColors } from '@/hooks/useColors';
@@ -14,7 +14,7 @@ interface HeaderProps {
 export function Header({ title, onBack, right }: HeaderProps) {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const topPadding = Platform.OS === 'web' ? 67 : insets.top;
+  const topPadding = Math.max(insets.top, 12);
 
   return (
     <View style={[styles.container, { paddingTop: topPadding + 8, backgroundColor: colors.background, borderBottomColor: colors.border }]}>

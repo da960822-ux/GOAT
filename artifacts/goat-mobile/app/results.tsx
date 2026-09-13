@@ -841,7 +841,8 @@ function CompareSheet({
                     ) : (
                       <View
                         style={styles.compareImageFallback}
-                        accessibilityElementsHidden
+                        accessible={false}
+                        importantForAccessibility="no-hide-descendants"
                       >
                         <BrandIcon
                           name="image"
@@ -885,7 +886,7 @@ function CompareSheet({
                   />
                   <CompareAxis
                     label="중요 제한"
-                    value={restrictionFor(card) || "확인된 중요 제한이 없어요."}
+                    value={restrictionFor(card) || "중요 제한 정보가 제공되지 않았어요."}
                     critical={Boolean(restrictionFor(card))}
                   />
                 </View>
@@ -930,7 +931,7 @@ function summaryFor(card: DisplayCard) {
     card.differenceNote ??
     (card.matchedFeatures.length
       ? `고른 장면과 닮은 점: ${card.matchedFeatures.slice(0, 2).join(", ")}`
-      : "고른 장면과 비교해 볼 수 있는 장소예요.")
+      : "추천 근거 설명이 제공되지 않았어요.")
   );
 }
 function restrictionFor(card: DisplayCard) {

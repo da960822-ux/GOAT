@@ -5,7 +5,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Header } from "@/src/components/Header";
 import { fonts, palette, spacing } from "@/src/theme/editorial";
 
-const logo = require("@/assets/images/goat-logo-transparent.png");
+const logo = require("@/assets/images/goat-logo-cutout.png");
 
 export default function AboutScreen() {
   const router = useRouter();

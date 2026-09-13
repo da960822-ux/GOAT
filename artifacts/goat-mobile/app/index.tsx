@@ -1,7 +1,6 @@
 import { useRouter } from "expo-router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { Image } from "expo-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { getPhotoCachePolicy, getPublicSelections, type PublicSelection } from "@workspace/api-client-react";
 import { AppTabBar } from "@/src/components/AppTabBar";
@@ -13,8 +12,6 @@ import { useApp } from "@/src/context/AppContext";
 import { localSceneStore } from "@/src/services/deviceSceneStore";
 import { requestPublicRecommendation } from "@/src/services/publicDiscovery";
 import { fonts, palette, radius } from "@/src/theme/editorial";
-
-const gangwonLogo = require("@/assets/images/goat-logo-transparent.png");
 
 export default function DiscoveryScreen() {
   const router = useRouter();
@@ -91,7 +88,7 @@ export default function DiscoveryScreen() {
           contentInsetAdjustmentBehavior="automatic"
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 116 + insets.bottom, gap: 16 }}
-          ListHeaderComponent={<View style={styles.intro}><View style={styles.heroRow}><View style={styles.heroCopy}><Text style={styles.kicker}>가고 싶은 장면을 강원에서</Text><Text accessibilityRole="header" lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.title}>오늘 보고 싶은{`\n`}장면은 무엇인가요?</Text></View><Image source={gangwonLogo} contentFit="contain" style={styles.brandStamp} accessibilityLabel="강원도 모양 GOAT 로고" /></View><Text style={styles.description}>하나만 고르면 닮은 강원 장소 세 곳을 바로 보여드려요.</Text>{draftAvailable ? <Pressable accessibilityRole="button" onPress={() => router.push("/results")} style={styles.resume}><BrandIcon name="refresh" size={18} color={palette.forest} /><Text style={styles.resumeText}>이전 추천 이어보기</Text></Pressable> : null}</View>}
+          ListHeaderComponent={<View style={styles.intro}><View style={styles.heroCopy}><Text style={styles.kicker}>가고 싶은 장면을 강원에서</Text><Text accessibilityRole="header" lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.title}>오늘 보고 싶은{`\n`}장면은 무엇인가요?</Text></View><Text style={styles.description}>하나만 고르면 닮은 강원 장소 세 곳을 바로 보여드려요.</Text>{draftAvailable ? <Pressable accessibilityRole="button" onPress={() => router.push("/results")} style={styles.resume}><BrandIcon name="refresh" size={18} color={palette.forest} /><Text style={styles.resumeText}>이전 추천 이어보기</Text></Pressable> : null}</View>}
           renderItem={({ item, index }) => {
             const cover = item.sceneCover;
             const editorial = getEditorialSceneCover(item.selectionId);
@@ -115,9 +112,7 @@ const styles = StyleSheet.create({
   header: { minHeight: 76, paddingHorizontal: 20, paddingBottom: 8, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   headerButton: { width: 48, height: 48, alignItems: "center", justifyContent: "center", borderRadius: radius.pill, backgroundColor: palette.paper },
   intro: { paddingTop: 8, paddingBottom: 8, gap: 7 },
-  heroRow: { minHeight: 104, flexDirection: "row", alignItems: "center", gap: 8 },
   heroCopy: { flex: 1, gap: 5 },
-  brandStamp: { width: 102, height: 102 },
   kicker: { fontFamily: fonts.semibold, fontSize: 12, lineHeight: 18, color: palette.forestSoft },
   title: { fontFamily: fonts.serif, fontSize: 28, lineHeight: 38, letterSpacing: -1, color: palette.ink },
   description: { maxWidth: 340, fontFamily: fonts.body, fontSize: 14, lineHeight: 21, color: palette.muted },

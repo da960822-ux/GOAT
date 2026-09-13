@@ -32,7 +32,7 @@ export function SceneCoverCard({ number, title, description, picturedPlaceName, 
       onPress={onPress}
       style={({ pressed }) => [styles.card, selected && styles.selected, disabled && styles.disabled, pressed && styles.pressed]}
     >
-      {source ? <Image source={source} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessible={false} importantForAccessibility="no-hide-descendants" /> : <View style={styles.fallback} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      {source ? <Image source={source} contentFit="cover" cachePolicy={imageCachePolicy} style={styles.image} accessible={false} importantForAccessibility="no-hide-descendants" /> : <View style={styles.fallback} accessible={false} importantForAccessibility="no-hide-descendants">
         <BrandIcon name="image" size={32} color={palette.forestSoft} />
         <Text style={styles.fallbackLabel}>장면을 상상해 보세요</Text>
       </View>}
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   description: { fontFamily: fonts.body, fontSize: 15, lineHeight: 22, color: palette.white },
   caption: { gap: spacing.xxs, paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, backgroundColor: "rgba(15, 48, 42, 0.92)" },
   captionRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: spacing.sm },
-  captionText: { flex: 1, fontFamily: fonts.medium, fontSize: 12, lineHeight: 18, color: palette.white },
+  captionText: { flex: 1, fontFamily: fonts.semibold, fontSize: 13, lineHeight: 19, color: palette.white },
   chooseCue: { flexDirection: "row", alignItems: "center", gap: spacing.xxs },
   chooseText: { fontFamily: fonts.semibold, fontSize: 11, color: palette.white },
   attribution: { fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.sage },

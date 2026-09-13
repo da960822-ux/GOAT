@@ -896,6 +896,8 @@ function Gallery({
       onShow={handleShow}
     >
       <View accessibilityViewIsModal style={styles.gallery}>
+        {images[current] ? <Image source={{ uri: images[current].url }} style={StyleSheet.absoluteFillObject} contentFit="cover" blurRadius={28} accessible={false} importantForAccessibility="no-hide-descendants" /> : null}
+        <View pointerEvents="none" style={styles.galleryVeil} />
         <View
           style={[styles.galleryHead, { paddingTop: Math.max(insets.top, 12) }]}
         >
@@ -1283,6 +1285,7 @@ const styles = StyleSheet.create({
     color: palette.white,
   },
   gallery: { flex: 1, backgroundColor: palette.forestDeep },
+  galleryVeil: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(7,29,25,.52)" },
   galleryHead: {
     minHeight: 82,
     paddingHorizontal: 18,
@@ -1315,7 +1318,8 @@ const styles = StyleSheet.create({
   galleryPage: {
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 24,
+    paddingTop: 12,
+    paddingBottom: 8,
     paddingHorizontal: 20,
   },
   galleryFrame: {

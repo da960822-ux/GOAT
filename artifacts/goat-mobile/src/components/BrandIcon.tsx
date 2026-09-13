@@ -78,5 +78,5 @@ export function BrandIcon({ name, size = 24, color = "#173F36", filled = false, 
     case "external": content = <><Path d="M13 5H5v14h14v-8" {...common}/><Path d="M14 4h6v6m0-6-9 9" {...common}/></>; break;
     default: content = null;
   }
-  return <Svg width={size} height={size} viewBox="0 0 24 24" style={style} accessibilityElementsHidden>{content}</Svg>;
+  return <Svg width={size} height={size} viewBox="0 0 24 24" style={style} aria-hidden={true} focusable={false}>{content}</Svg>;
 }
