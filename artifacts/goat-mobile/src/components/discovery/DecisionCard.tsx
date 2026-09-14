@@ -35,13 +35,14 @@ export function DecisionCard({ index, total, region, name, summary, features, im
   const replacementUnavailable = replacementState === "unavailable";
   const localPhoto = !imageUri ? getLocalPlacePhoto(name) : null;
   const imageSource = imageUri ? { uri: imageUri } : localPhoto?.imageSource;
+  const displayedAttribution = attribution ?? localPhoto?.attributionLabel;
   return <View style={[styles.card, featured && styles.featuredCard]}>
     <View style={[styles.hero, featured && styles.featuredHero]}>
-      {imageSource && !imageFailed ? <Image source={imageSource} contentFit="cover" cachePolicy={imageUri ? imageCachePolicy : "none"} style={styles.image} accessibilityLabel={`${name} ${imageUri || localPhoto ? "실제 풍경" : "장면 참고 이미지"}`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessible={false} importantForAccessibility="no-hide-descendants"><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
+      {imageSource && !imageFailed ? <Image source={imageSource} contentFit="cover" cachePolicy={imageUri ? imageCachePolicy : "none"} style={styles.image} accessibilityLabel={`${name} ${localPhoto?.isGenerated ? "AI 생성 장면 예시" : imageUri || localPhoto ? "실제 풍경" : "장면 참고 이미지"}`} onError={() => setImageFailed(true)} /> : <View style={styles.fallback} accessible={false} importantForAccessibility="no-hide-descendants"><BrandIcon name="location" size={38} color={palette.forestSoft} /></View>}
       <View style={styles.heroScrim} pointerEvents="none" />
       <Text style={styles.counter}>{index} / {total}</Text>
       {editorialLabel ? <Text style={styles.editorialLabel}>{editorialLabel}</Text> : null}
-      {attribution ? <Text style={[styles.heroAttribution, editorialLabel && styles.heroAttributionWithLabel]}>사진 출처 · {attribution}</Text> : null}
+      {displayedAttribution ? <Text style={[styles.heroAttribution, editorialLabel && styles.heroAttributionWithLabel]}>사진 출처 · {displayedAttribution}</Text> : null}
       <View style={styles.heroCopy}><Text style={styles.region}>{region}</Text><Text style={[styles.name, featured && styles.featuredName]}>{name}</Text></View>
     </View>
     <View style={styles.content}>

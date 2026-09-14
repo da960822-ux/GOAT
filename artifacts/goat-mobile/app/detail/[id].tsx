@@ -148,7 +148,10 @@ export default function DetailScreen() {
     if (card?.matchedFeatures.length) return card.matchedFeatures;
     return place?.mood_tags.filter(Boolean).slice(0, 5) ?? [];
   }, [card?.matchedFeatures, place?.mood_tags]);
-  const heroAsset = photos?.placeHero ?? card?.placeHero ?? null;
+  const displayPhotos = id === "GOAT-007" && photos
+    ? { ...photos, placeHero: null, evidenceImages: [], galleryStatus: "EMPTY" as const }
+    : photos;
+  const heroAsset = displayPhotos?.placeHero ?? (id === "GOAT-007" ? null : card?.placeHero) ?? null;
   // KTO may legitimately return an empty gallery. Use the curated local
   // asset for that place as the detail hero so a missing external response
   // does not blank a known place (e.g. LEGO LAND).
@@ -162,10 +165,10 @@ export default function DetailScreen() {
   const heroSource: { uri: string } | number | undefined = heroAsset && hero
     ? { uri: hero }
     : (localPhoto?.imageSource as number | undefined) ?? (editorialFallback as number | undefined);
-  const usablePhotoCount = photos?.evidenceImages.length ?? 0;
-  const photoStatus = !photos
+  const usablePhotoCount = displayPhotos?.evidenceImages.length ?? 0;
+  const photoStatus = !displayPhotos
     ? "loading"
-    : photos.galleryStatus === "ERROR"
+    : displayPhotos.galleryStatus === "ERROR"
       ? "error"
       : usablePhotoCount > 0
         ? "available"
@@ -302,7 +305,7 @@ export default function DetailScreen() {
               style={StyleSheet.absoluteFillObject}
               contentFit={heroAsset?.contentFit ?? "cover"}
               cachePolicy={heroAsset ? getPhotoCachePolicy(heroAsset) : "none"}
-              accessibilityLabel={`${place.place_name} ${heroAsset || localPhoto ? "실제 풍경" : "장면 참고 이미지"}`}
+              accessibilityLabel={`${place.place_name} ${localPhoto?.isGenerated ? "AI 생성 장면 예시" : heroAsset || localPhoto ? "실제 풍경" : "장면 참고 이미지"}`}
               onError={() => setHeroFailed(true)}
             />
           ) : (
@@ -330,7 +333,7 @@ export default function DetailScreen() {
             </Text>
           </View>
         </Animated.View>
-        {heroAsset ? <PhotoCredit attribution={heroAsset.attribution} /> : localPhoto ? <Text style={styles.localPhotoCredit}>앱 보유 장소 이미지 · 실제 장소 참고</Text> : <Text style={styles.localPhotoCredit}>GOAT 편집 참고 이미지 · 실제 장소 사진 아님</Text>}
+        {heroAsset ? <PhotoCredit attribution={heroAsset.attribution} /> : localPhoto ? <Text style={styles.localPhotoCredit}>{localPhoto.attributionLabel}</Text> : <Text style={styles.localPhotoCredit}>GOAT 편집 참고 이미지 · 실제 장소 사진 아님</Text>}
         <View style={styles.body}>
           {restriction ? (
             <View style={styles.restriction}>
@@ -386,7 +389,7 @@ export default function DetailScreen() {
                       ? "사진을 불러오지 못했어요"
                       : "대표 사진을 확보하지 못했어요"}
               </Text>
-              <Text style={styles.galleryStatus}>{galleryCopy(photos)}</Text>
+              <Text style={styles.galleryStatus}>{galleryCopy(displayPhotos)}</Text>
               {photoStatus === "available" ? <BrandIcon name="arrow-right" color={palette.forest} /> : null}
             </Pressable>
             {photoStatus === "error" ? (
@@ -646,7 +649,7 @@ export default function DetailScreen() {
       <Gallery
         visible={galleryVisible}
         name={place.place_name}
-        photos={photos}
+        photos={displayPhotos}
         returnFocusRef={galleryTriggerRef}
         onClose={() => setGalleryVisible(false)}
       />

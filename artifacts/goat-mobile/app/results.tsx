@@ -518,9 +518,9 @@ export default function ResultsScreen() {
                 name={card.place?.place_name ?? "추천 장소"}
                 summary={summaryFor(card)}
                 features={card.matchedFeatures}
-                imageUri={card.placeHero?.url}
+                imageUri={placeHeroFor(card)?.url}
                 imageCachePolicy={
-                  card.placeHero ? getPhotoCachePolicy(card.placeHero) : "none"
+                  placeHeroFor(card) ? getPhotoCachePolicy(placeHeroFor(card)!) : "none"
                 }
                 criticalRestriction={restrictionFor(card)}
                 attribution={attributionFor(card)}
@@ -828,17 +828,18 @@ function CompareSheet({
           >
             {cards.map((card, index) => {
               const name = card.place?.place_name ?? "추천 장소";
-              const photoSource = card.placeHero?.attribution.label;
+              const placeHero = placeHeroFor(card);
+              const photoSource = placeHero?.attribution.label;
               return (
                 <View key={card.placeId} style={styles.compareRow}>
                   <View style={styles.compareCardHead}>
-                    {card.placeHero?.url ? (
+                    {placeHero?.url ? (
                       <View>
                         <Image
-                          source={{ uri: card.placeHero.url }}
+                          source={{ uri: placeHero.url }}
                           style={styles.compareImage}
                           contentFit="cover"
-                          cachePolicy={getPhotoCachePolicy(card.placeHero)}
+                          cachePolicy={getPhotoCachePolicy(placeHero)}
                           accessible={false}
                           importantForAccessibility="no-hide-descendants"
                         />
@@ -951,7 +952,10 @@ function restrictionFor(card: DisplayCard) {
     : null;
 }
 function attributionFor(card: DisplayCard) {
-  return card.placeHero?.attribution.label ?? null;
+  return placeHeroFor(card)?.attribution.label ?? null;
+}
+function placeHeroFor(card: DisplayCard) {
+  return card.placeId === "GOAT-007" ? null : card.placeHero;
 }
 function todayStatusCopy(data: PublicRecommendationData) {
   if (data.todayStatus === "APPLIED") return "오늘 조건을 반영했어요";

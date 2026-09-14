@@ -7,6 +7,8 @@
 export interface KTOPhotoResult {
   imageUrl: string | null;
   imageSource?: unknown;
+  attributionLabel?: string;
+  isGenerated?: boolean;
   title?: string;
   location?: string;
   keywords?: string[];

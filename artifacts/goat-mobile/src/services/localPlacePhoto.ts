@@ -11,6 +11,7 @@ const LOCAL_PLACE_IMAGE_MODULES: Record<string, LocalImageModule> = {
   '레고랜드 코리아 리조트': require('@/assets/images/place-reference/legoland-korea-resort.webp'),
   교토정원: require('@/assets/images/place-reference/chuncheon-kyoto-garden.jpg'),
   '스테이 조각밤': require('@/assets/images/place-reference/stay-jogakbam.jpg'),
+  '교동 소품샵 거리': require('@/assets/images/place-reference/gyodong-gift-shop-ai.jpg'),
   이와림: require('@/assets/images/place-reference/iwalim.jpg'),
   '뮤지엄 SAN': require('@/assets/images/place-reference/museum-san.jpg'),
   '발왕산 천년주목숲길·애니포레': require('@/assets/images/place-reference/balwangsan-anyfore.jpg'),
@@ -31,6 +32,8 @@ const LOCAL_PLACE_IMAGE_MODULES: Record<string, LocalImageModule> = {
   '죽도해변·인구해변·양리단길': require('@/assets/images/place-reference/jukdo-beach.jpg'),
   초곡용굴촛대바위길: require('@/assets/images/place-reference/chogok-sea-cave.webp'),
 };
+
+const GENERATED_PLACE_IMAGE_NAMES = new Set(['교동 소품샵 거리']);
 
 function getLocalImageUri(source: LocalImageModule): string | null {
   if (typeof source === 'object') {
@@ -54,6 +57,10 @@ export function getLocalPlacePhoto(placeName: string): KTOPhotoResult | null {
   return {
     imageUrl,
     imageSource: source,
+    attributionLabel: GENERATED_PLACE_IMAGE_NAMES.has(placeName)
+      ? 'AI 생성 장면 예시 · GOAT 제작'
+      : '앱 보유 장소 이미지 · 실제 장소 참고',
+    isGenerated: GENERATED_PLACE_IMAGE_NAMES.has(placeName),
     title: placeName,
     source: 'LOCAL_PLACE_IMAGE',
   };
