@@ -11,7 +11,6 @@ const rows: CuratedRow[] = [
   // places that previously relied on a rate-limited live lookup.
   ["GOAT-004", "4067681", "https://tong.visitkorea.or.kr/cms/resource/81/4067681_image2_1.jpg", null, ["초원", "목장", "능선"]],
   ["GOAT-005", "2727068", "https://tong.visitkorea.or.kr/cms/resource/68/2727068_image2_1.jpg", null, ["리조트", "호수", "캠핑"]],
-  ["GOAT-007", "4103151", "https://tong.visitkorea.or.kr/cms/resource/51/4103151_image2_1.jpg", null, ["남이섬", "숲길", "강"]],
   ["GOAT-009", "3584408", "https://tong.visitkorea.or.kr/cms/resource/08/3584408_image2_1.jpg", null, ["현대미술관", "조각정원", "야경"]],
   ["GOAT-010", "2778323", "https://tong.visitkorea.or.kr/cms2/website/23/2778323.jpg", "강원지사 모먼트스튜디오", ["협곡", "출렁다리", "고도감"]],
   ["GOAT-011", "3407993", "https://tong.visitkorea.or.kr/cms/resource/93/3407993_image2_1.png", null, ["알파카", "목장", "숲길"]],
