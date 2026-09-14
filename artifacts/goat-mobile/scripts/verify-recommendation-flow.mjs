@@ -11,6 +11,7 @@ const saved = read("app/saved.tsx");
 const map = read("app/map.tsx");
 const courseStore = read("src/services/courseStore.ts");
 const decisionSheet = read("src/components/discovery/DecisionSheet.tsx");
+const conditionSheet = read("src/components/discovery/ConditionSheet.tsx");
 const preferences = read("app/travel-preference.tsx");
 const appConfig = read("app.json");
 const packageJson = read("package.json");
@@ -70,6 +71,17 @@ assert(
 assert(
   results.includes("오늘 조건 반영하기"),
   "today condition control is missing",
+);
+assert(
+  conditionSheet.includes("조건 적용하기") &&
+    conditionSheet.includes('value: "CAR"') &&
+    conditionSheet.includes('value: "PUBLIC_TRANSIT"'),
+  "condition sheet transport/apply controls are missing",
+);
+assert(
+  results.includes("applyConditions") &&
+    results.includes("transportType: draft.transport"),
+  "condition apply request is not wired",
 );
 assert(
   results.includes("오늘 조건을 반영해도 추천 장소가 그대로예요"),

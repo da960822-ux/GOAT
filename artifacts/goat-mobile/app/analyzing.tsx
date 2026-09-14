@@ -4,12 +4,14 @@ import { useApp } from "@/src/context/AppContext";
 import { editorialImages } from "@/src/data/editorialContent";
 import { referenceCardImages } from "@/src/data/referenceCards";
 import { buildRecommendationAttempt, classifyRecommendationError, createRecommendationWithRetry } from "@/src/services/recommendationApi";
+import { requestPublicRecommendation } from "@/src/services/publicDiscovery";
+import { getPublicSelections } from "@workspace/api-client-react";
 import { fonts, palette } from "@/src/theme/editorial";
 import type { RecommendationSelection } from "@workspace/travel-domain/catalog";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, { Easing, ReduceMotion, useAnimatedStyle, useReducedMotion, useSharedValue, withRepeat, withTiming } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -19,7 +21,7 @@ export default function AnalyzingScreen() {
   const [step, setStep] = useState(0);
   const spin = useSharedValue(0);
   const reducedMotion = useReducedMotion();
-  const { recommendationMethod, selectedMood, selectedReferenceCardId, travelPreferences, origin, pendingAttempt, setPendingAttempt, setRecommendationSession } = useApp();
+  const { recommendationMethod, selectedMood, selectedReferenceCardId, travelPreferences, origin, pendingAttempt, setPendingAttempt, setRecommendationSession, setPublicSelection, setPublicRecommendation } = useApp();
   const activeMethod = pendingAttempt?.initialSelection.method ?? recommendationMethod;
   const isReferenceFlow = activeMethod === "reference";
   const steps = isReferenceFlow
@@ -37,7 +39,7 @@ export default function AnalyzingScreen() {
     if (!selection && recommendationMethod === "mood" && selectedMood) selection = { method: "mood", moodId: selectedMood.id };
     if (!selection && recommendationMethod === "reference" && selectedReferenceCardId) selection = { method: "reference", referenceCardId: selectedReferenceCardId };
     if (!selection) {
-      router.replace((activeMethod === "reference" ? "/reference-selection" : "/mood-selection") as never);
+      router.replace("/" as never);
       return () => { active = false; spin.set(0); };
     }
 
@@ -48,7 +50,25 @@ export default function AnalyzingScreen() {
       try {
         await new Promise((resolve) => setTimeout(resolve, 450));
         if (active) setStep(1);
-        const session = await createRecommendationWithRetry(attempt);
+        let session;
+        try {
+          session = await createRecommendationWithRetry(attempt);
+        } catch (error) {
+          // Guest users use the public discovery contract; private history remains optional.
+          if (!classifiedStatus(error, 401)) throw error;
+          const selectionId = attempt.initialSelection.method === "mood"
+            ? attempt.initialSelection.moodId
+            : attempt.initialSelection.referenceCardId;
+          const [publicResponse, selectionsResponse] = await Promise.all([
+            requestPublicRecommendation({ selectionId, mode: "SCENE" }),
+            getPublicSelections(),
+          ]);
+          setPublicRecommendation(publicResponse);
+          setPublicSelection(selectionsResponse.data.selections.find((item) => item.selectionId === selectionId) ?? null);
+          setPendingAttempt(null);
+          if (active) router.replace("/results");
+          return;
+        }
         if (!active) return;
         setStep(2);
         setRecommendationSession(session);
@@ -84,8 +104,20 @@ export default function AnalyzingScreen() {
       <View accessibilityLiveRegion="polite" style={styles.steps}>
         {steps.map((label, index) => <View key={label} style={[styles.step, index <= step && styles.stepActive]}><View style={[styles.stepIcon, index <= step && styles.stepIconActive]}>{index < step ? <BrandIcon name="check" size={13} color={palette.ivory} /> : <Text style={[styles.stepNum, index <= step && styles.stepNumActive]}>{index + 1}</Text>}</View><Text style={[styles.stepLabel, index <= step && styles.stepLabelActive]}>{label}</Text></View>)}
       </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="추천 분석 취소하고 처음으로 돌아가기"
+        onPress={() => router.replace("/" as never)}
+        style={({ pressed }) => [styles.cancel, pressed && styles.cancelPressed]}
+      >
+        <Text style={styles.cancelText}>분석 취소하고 다시 고르기</Text>
+      </Pressable>
     </View>
   );
+}
+
+function classifiedStatus(error: unknown, status: number) {
+  return typeof error === "object" && error !== null && "status" in error && (error as { status?: unknown }).status === status;
 }
 
 const styles = StyleSheet.create({
@@ -107,4 +139,7 @@ const styles = StyleSheet.create({
   stepNumActive: { color: palette.ivory },
   stepLabel: { fontFamily: fonts.medium, fontSize: 13, color: "#8A938C" },
   stepLabelActive: { color: palette.ink },
+  cancel: { minHeight: 46, marginTop: 12, alignItems: "center", justifyContent: "center", borderRadius: 14, borderWidth: 1, borderColor: "rgba(31,74,59,.22)" },
+  cancelPressed: { opacity: 0.7 },
+  cancelText: { fontFamily: fonts.semibold, fontSize: 13, color: palette.forest },
 });

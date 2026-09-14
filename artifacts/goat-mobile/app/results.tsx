@@ -83,6 +83,7 @@ export default function ResultsScreen() {
   const [conditionVisible, setConditionVisible] = useState(false);
   const [conditionLoading, setConditionLoading] = useState(false);
   const [conditionError, setConditionError] = useState<string | null>(null);
+  const [restoredTransport, setRestoredTransport] = useState<DiscoveryConditions["transport"]>(undefined);
   const [diagnosticsVisible, setDiagnosticsVisible] = useState(false);
   const [replacingId, setReplacingId] = useState<string | null>(null);
   const [compareVisible, setCompareVisible] = useState(false);
@@ -175,6 +176,7 @@ export default function ResultsScreen() {
             ...next.cards.map(({ placeId }) => placeId),
           ]),
         ]);
+        setRestoredTransport(loaded.draft.transportType);
         setStatusMessage("이전 추천을 현재 정보로 다시 불러왔어요");
         setPublicSelection(selection);
         setPublicRecommendation(next);
@@ -197,14 +199,14 @@ export default function ResultsScreen() {
       setConditionState(
         createConditionState(
           {
-            transport: undefined,
+            transport: restoredTransport,
             today: publicRecommendation.mode === "TODAY",
           },
           publicRecommendation,
         ),
       );
     }
-  }, [conditionState, publicRecommendation]);
+  }, [conditionState, publicRecommendation, restoredTransport]);
 
   const todayCopy = useMemo(() => {
     if (
@@ -252,6 +254,7 @@ export default function ResultsScreen() {
     message: string,
     persist = true,
     discardUndo = false,
+    transportType: DiscoveryConditions["transport"] = conditionState?.committed.conditions.transport,
   ) => {
     setPublicRecommendation(next);
     setCards(next.cards.map((card) => ({ ...card, place: null })));
@@ -275,6 +278,7 @@ export default function ResultsScreen() {
             ...new Set([...seenIds, ...next.cards.map((card) => card.placeId)]),
           ],
           mode: next.mode,
+          transportType,
           catalogVersion: next.catalogVersion,
           policyVersion: next.policyVersion,
           revision: next.revision,
@@ -303,7 +307,7 @@ export default function ResultsScreen() {
       setConditionState((current) =>
         current ? applyConditionResult(current, next) : current,
       );
-      applyRecommendation(next, change.message);
+      applyRecommendation(next, change.message, true, false, draft.transport);
       setConditionVisible(false);
     } catch (error) {
       if (
@@ -333,7 +337,7 @@ export default function ResultsScreen() {
     requestGeneration.current += 1;
     const snapshot = conditionState.undo;
     setConditionState(restoreUndo(conditionState));
-    applyRecommendation(snapshot.result, "이전 세 곳으로 되돌렸어요");
+    applyRecommendation(snapshot.result, "이전 세 곳으로 되돌렸어요", true, false, snapshot.conditions.transport);
   };
 
   const replace = async (card: DisplayCard, slot: number) => {
@@ -349,7 +353,7 @@ export default function ResultsScreen() {
         conditions.transport,
       );
       if (generation !== requestGeneration.current) return;
-      applyRecommendation(next, "한 곳을 새 후보로 바꿨어요", true, true);
+      applyRecommendation(next, "한 곳을 새 후보로 바꿨어요", true, true, conditions.transport);
     } catch (error) {
       if (
         generation === requestGeneration.current &&
@@ -482,7 +486,7 @@ export default function ResultsScreen() {
             android_hyphenationFrequency="none"
             style={styles.title}
           >
-            {publicSelection?.title ?? "고른 장면"}
+            {publicSelection?.title ?? "고른 장면"}에
             {`\n`}어울리는 세 곳
           </Text>
           <Text style={styles.description}>
@@ -804,7 +808,7 @@ function CompareSheet({
             <View style={styles.compareHeading}>
               <Text style={styles.compareTitle}>세 곳 비교</Text>
               <Text style={styles.compareDescription}>
-                같은 기준으로 확인하세요.
+                세 곳을 한눈에 비교해 보세요.
               </Text>
             </View>
             <Pressable

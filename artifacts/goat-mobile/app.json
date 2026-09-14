@@ -30,13 +30,24 @@
         "backgroundColor": "#F6F2E9"
       }
     },
-    "web": { "favicon": "./assets/images/goat-logo-full.png", "bundler": "metro" },
+    "web": {
+      "favicon": "./assets/images/goat-logo-full.png",
+      "bundler": "metro"
+    },
     "plugins": [
       "expo-router",
       "expo-font",
       "expo-web-browser"
     ],
-    "experiments": { "typedRoutes": true, "reactCompiler": true },
-    "extra": { "eas": { "projectId": "" } }
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8d688875-efa6-49c6-9d01-c0ae66cf8cd3"
+      }
+    },
+    "owner": "jungyeonseok"
   }
 }

@@ -9,11 +9,12 @@ router.get("/healthz", (_req, res) => {
   res.json(data);
 });
 
-router.get("/readyz", async (_req, res) => {
+router.get("/readyz", async (req, res) => {
   try {
     await pool.query("select 1");
     res.json({ status: "ok" });
-  } catch {
+  } catch (error) {
+    req.log?.error({ err: error }, "database readiness check failed");
     res.status(503).json({ status: "unavailable" });
   }
 });

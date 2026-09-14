@@ -15,6 +15,10 @@ const sessionTokenHash = crypto
   .digest("hex");
 const idempotencyKey = crypto.randomUUID();
 const testSubject = `live-test-${crypto.randomUUID()}`;
+const stableCards = (cards) => cards.map((card) => ({
+  ...card,
+  crowd: { ...card.crowd, dataStatus: undefined },
+}));
 
 process.env.DATABASE_URL = databaseUrl;
 const requireFromDbPackage = createRequire(
@@ -130,9 +134,10 @@ try {
     currentMonth: 7,
     transportType: "대중교통",
     origin: {
-      type: "current",
+      type: "region",
       latitude: 37.5665,
       longitude: 126.978,
+      regionName: "서울",
     },
   };
   const created = await jsonRequest(
@@ -199,7 +204,26 @@ try {
     true,
   );
   assert.equal(detail.response.status, 200);
-  assert.deepEqual(detail.body.data.cards, created.body.data.cards);
+  assert.deepEqual(stableCards(detail.body.data.cards), stableCards(created.body.data.cards));
+
+  const courseCreated = await jsonRequest("/recommend-course", "POST", {
+    recommendationId,
+    selectedPlaceId: firstPlaceId,
+    primaryTheme: "알프스·고원·목장 무드",
+    transportType: "대중교통",
+  });
+  assert.equal(courseCreated.response.status, 200, JSON.stringify(courseCreated.body));
+  assert.equal(courseCreated.body.data.status, "DONE");
+  assert.ok(courseCreated.body.data.stops.length >= 1);
+
+  const detailWithCourse = await request(
+    `/recommendations/${recommendationId}`,
+    {},
+    true,
+  );
+  assert.equal(detailWithCourse.response.status, 200);
+  assert.equal(detailWithCourse.body.data.course.selectedPlace.place_id, firstPlaceId);
+  assert.ok(detailWithCourse.body.data.course.stops.length >= 1);
 
   const savedRows = await pool.query(
     `select
@@ -284,7 +308,7 @@ try {
   assert.equal(bookmarkRemoved.body.data.bookmarked, false);
 
   console.log(
-    "Live persistence verification passed: auth, recommendation, idempotency, audit scores, recent/detail, bookmarks, feedback.",
+    "Live persistence verification passed: auth, recommendation, idempotency, audit scores, recent/detail, course save/load, bookmarks, feedback.",
   );
 } catch (error) {
   if (serverOutput) console.error(serverOutput);

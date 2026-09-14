@@ -31,6 +31,7 @@ const recommendationDraftSchema = z
       .max(61)
       .refine((ids) => new Set(ids).size === ids.length),
     mode: z.enum(["SCENE", "TODAY"]),
+    transportType: z.enum(["CAR", "PUBLIC_TRANSIT"]).optional(),
     catalogVersion: z.string().min(1),
     policyVersion: z.literal("goat-discovery-r4"),
     revision: z.number().int().nonnegative(),

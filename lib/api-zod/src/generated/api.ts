@@ -1053,7 +1053,6 @@ export const RecommendCourseBody = zod.object({
   "transportType": zod.enum(['자차', '대중교통', '도보중심']).optional(),
   "radiusMeters": zod.number().min(recommendCourseBodyRadiusMetersMin).max(recommendCourseBodyRadiusMetersMax).optional(),
   "maxCandidatesForLlm": zod.number().min(1).max(recommendCourseBodyMaxCandidatesForLlmMax).optional(),
-  "forceRuleBasedFallback": zod.boolean().optional(),
   "llmModel": zod.string().min(1).max(recommendCourseBodyLlmModelMax).optional(),
   "debug": zod.boolean().optional()
 })
@@ -1096,6 +1095,22 @@ export const RecommendCourseResponse = zod.object({
   "llmPromptUsed": zod.boolean().optional(),
   "failReason": zod.string().nullish(),
   "warnings": zod.array(zod.string())
+  ,"ktoEvidence": zod.object({
+    "provider": zod.literal('VISITKOREA_CONTENT_LAB'),
+    "endpoint": zod.literal('locationBasedList2'),
+    "callId": zod.string().optional(),
+    "liveCallAttempted": zod.boolean(),
+    "requestCount": zod.number(),
+    "successfulRequestCount": zod.number(),
+    "failedRequestCount": zod.number(),
+    "rawCandidateCount": zod.number(),
+    "filteredCandidateCount": zod.number(),
+    "candidateIds": zod.array(zod.string()),
+    "finalKtoStopIds": zod.array(zod.string()),
+    "fallbackUsed": zod.boolean(),
+    "fallbackReason": zod.string().optional(),
+    "generatedAt": zod.string()
+  }).optional()
 })
 }))
 
@@ -2048,6 +2063,8 @@ export const GetPlaceResponse = zod.object({
   "restDate": zod.string().optional(),
   "phone": zod.string().optional(),
   "homepage": zod.string().optional(),
+  "dataStatus": zod.enum(['LIVE', 'LIVE_PARTIAL', 'STALE_FALLBACK']),
+  "fetchedAt": zod.string(),
   "attribution": zod.object({
   "label": zod.string().min(1),
   "author": zod.string().optional(),

@@ -28,6 +28,7 @@ import { createGoatCourseRecommendation } from "../services/course-recommendatio
 import { fetchOfficialTourInfo } from "../services/kto-official-tour-info";
 import { fetchExternalPlaceInfo } from "../services/place-external-info";
 import { getPlaceCurrentWeather } from "../services/place-current-weather";
+import { logger } from "../lib/logger";
 
 const router: IRouter = Router();
 
@@ -207,7 +208,6 @@ const courseRequestSchema = z
     transportType: z.enum(["자차", "대중교통", "도보중심"]).optional(),
     radiusMeters: z.number().int().min(100).max(20000).optional(),
     maxCandidatesForLlm: z.number().int().min(1).max(20).optional(),
-    forceRuleBasedFallback: z.boolean().optional(),
     llmModel: z.string().min(1).max(120).optional(),
     debug: z.boolean().optional(),
   })
@@ -576,6 +576,7 @@ router.post("/recommend-course", recommendRateLimit, async (req, res, next) => {
         })),
         staticMap: result.staticMap,
         warnings: result.warnings,
+        ktoEvidence: result.ktoEvidence,
       } as Record<string, unknown>;
       await saveRecommendedCourse({
         recommendationId: parsed.data.recommendationId,
@@ -607,6 +608,7 @@ router.post("/recommend-course", recommendRateLimit, async (req, res, next) => {
 });
 
 router.get("/places/:id", async (req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
   const place = getPlaceById(req.params.id);
   if (!place) {
     next(new ApiError(404, "PLACE_NOT_FOUND", "장소를 찾을 수 없습니다."));
@@ -615,7 +617,10 @@ router.get("/places/:id", async (req, res, next) => {
 
   try {
     const [officialTourInfo, externalPlaceInfo] = await Promise.all([
-      fetchOfficialTourInfo(req.params.id).catch(() => null),
+      fetchOfficialTourInfo(req.params.id).catch((error) => {
+        logger.warn({ serviceFeature: "place_detail", placeId: req.params.id, error: error instanceof Error ? error.message : "KTO_UNKNOWN" }, "kto detail fallback");
+        return null;
+      }),
       fetchExternalPlaceInfo(req.params.id, place).catch(() => null),
     ]);
     const latitude = officialTourInfo?.latitude ?? externalPlaceInfo?.latitude ?? Number(place.lat);

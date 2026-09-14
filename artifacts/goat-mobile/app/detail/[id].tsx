@@ -39,6 +39,8 @@ import { API_BASE_URL } from "@/src/config/api";
 import { useApp } from "@/src/context/AppContext";
 import { localSceneStore } from "@/src/services/deviceSceneStore";
 import { createCourse } from "@/src/services/courseStore";
+import { getLocalPlacePhoto } from "@/src/services/localPlacePhoto";
+import { editorialImages } from "@/src/data/editorialContent";
 import { openKakaoMap } from "@/src/services/mapLink";
 import { fonts, palette, radius } from "@/src/theme/editorial";
 
@@ -80,6 +82,10 @@ export default function DetailScreen() {
   >("idle");
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [saveNote, setSaveNote] = useState("");
+  // Official KTO details are the main answer to “what is this place?”;
+  // expose them on first render instead of hiding the useful content.
+  // Keep supporting/official data available without pushing the decision-critical
+  // content below the fold. Users can expand it when they need verification.
   const [generalInfoExpanded, setGeneralInfoExpanded] = useState(false);
   const galleryTriggerRef = useRef<View>(null);
   const decisionTriggerRef = useRef<View>(null);
@@ -138,8 +144,24 @@ export default function DetailScreen() {
       ? note
       : null;
   }, [place?.note]);
+  const displayFeatures = useMemo(() => {
+    if (card?.matchedFeatures.length) return card.matchedFeatures;
+    return place?.mood_tags.filter(Boolean).slice(0, 5) ?? [];
+  }, [card?.matchedFeatures, place?.mood_tags]);
   const heroAsset = photos?.placeHero ?? card?.placeHero ?? null;
-  const hero = heroAsset?.url;
+  // KTO may legitimately return an empty gallery. Use the curated local
+  // asset for that place as the detail hero so a missing external response
+  // does not blank a known place (e.g. LEGO LAND).
+  const localPhoto = place ? getLocalPlacePhoto(place.place_name) : null;
+  const editorialFallback = place
+    ? [editorialImages.forest, editorialImages.coast, editorialImages.hills, editorialImages.garden][
+      Number.parseInt(id.replace(/\D/g, ""), 10) % 4
+    ]
+    : null;
+  const hero = heroAsset?.url ?? localPhoto?.imageUrl ?? (editorialFallback ? "editorial" : null);
+  const heroSource: { uri: string } | number | undefined = heroAsset && hero
+    ? { uri: hero }
+    : (localPhoto?.imageSource as number | undefined) ?? (editorialFallback as number | undefined);
   const usablePhotoCount = photos?.evidenceImages.length ?? 0;
   const photoStatus = !photos
     ? "loading"
@@ -276,11 +298,11 @@ export default function DetailScreen() {
         <Animated.View entering={reducedMotion ? undefined : FadeIn.duration(500).reduceMotion(ReduceMotion.System)} style={styles.hero}>
           {hero && !heroFailed ? (
             <Image
-              source={{ uri: hero }}
+              source={heroSource}
               style={StyleSheet.absoluteFillObject}
               contentFit={heroAsset?.contentFit ?? "cover"}
               cachePolicy={heroAsset ? getPhotoCachePolicy(heroAsset) : "none"}
-              accessibilityLabel={`${place.place_name} 실제 풍경`}
+              accessibilityLabel={`${place.place_name} ${heroAsset || localPhoto ? "실제 풍경" : "장면 참고 이미지"}`}
               onError={() => setHeroFailed(true)}
             />
           ) : (
@@ -308,7 +330,7 @@ export default function DetailScreen() {
             </Text>
           </View>
         </Animated.View>
-        {heroAsset ? <PhotoCredit attribution={heroAsset.attribution} /> : null}
+        {heroAsset ? <PhotoCredit attribution={heroAsset.attribution} /> : localPhoto ? <Text style={styles.localPhotoCredit}>앱 보유 장소 이미지 · 실제 장소 참고</Text> : <Text style={styles.localPhotoCredit}>GOAT 편집 참고 이미지 · 실제 장소 사진 아님</Text>}
         <View style={styles.body}>
           {restriction ? (
             <View style={styles.restriction}>
@@ -317,15 +339,15 @@ export default function DetailScreen() {
             </View>
           ) : null}
           <Section title="장면과 닮은 점">
-            {card?.matchedFeatures.length ? (
-              card.matchedFeatures.map((feature) => (
+            {displayFeatures.length ? (
+              displayFeatures.map((feature) => (
                 <View key={feature} style={styles.feature}>
                   <BrandIcon name="check" size={16} color={palette.forest} />
                   <Text style={styles.featureText}>{feature}</Text>
                 </View>
               ))
             ) : (
-              <Text style={styles.bodyText}>확인된 특징 정보가 없어요.</Text>
+              <Text style={styles.bodyText}>{place.recommendation_use}</Text>
             )}
           </Section>
           {card?.differenceNote ? (
@@ -337,6 +359,11 @@ export default function DetailScreen() {
             <Text style={styles.bodyText}>
               {place.photo_point || "확인된 사진 포인트가 없어요."}
             </Text>
+          </Section>
+          <Section title="장소 한눈에 보기">
+            <Info label="장소 유형" value={place.place_type || "확인 필요"} />
+            <Info label="지역" value={`${place.city} · ${place.region_group}`} />
+            <Info label="소개" value={place.description || `${place.place_name}의 주요 이용 정보를 확인해 보세요.`} />
           </Section>
           <Section title="실제 사진">
             <Pressable
@@ -373,12 +400,19 @@ export default function DetailScreen() {
               </Pressable>
             ) : null}
           </Section>
-          <Section title="GOAT 추천 정보">
+          <Section title="방문 결정에 필요한 정보">
+            <Info label="추천 이유" value={place.recommendation_use || "확인 필요"} />
+            <Info label="권장 체류" value={place.travelTime || "확인 필요"} />
             <Info label="추천 시간" value={place.best_time || "확인 필요"} />
+            <Info label="추천 계절" value={place.best_season || "확인 필요"} />
             <Info
               label="이동 참고"
               value={place.accessibility || "확인 필요"}
             />
+            {place.parking ? <Info label="주차 참고" value={place.parking} /> : null}
+          </Section>
+          <Section title="방문 정보">
+            <Info label="운영 안내" value={place.note || "특이사항 없음"} />
           </Section>
           {officialTourInfo ? (
             <ExpandableInfo
@@ -1085,6 +1119,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: palette.forestSoft,
   },
+  localPhotoCredit: { marginHorizontal: 22, marginTop: 8, fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.muted },
   scrim: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(9,31,25,.36)",

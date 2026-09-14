@@ -14,6 +14,7 @@ import {
   fetchVisitKoreaContentLabNearbyCandidates,
   type VisitKoreaNearbyDiagnostics,
 } from "./tour-api-client";
+import { logger } from "../lib/logger";
 
 function toNumber(value: unknown): number | undefined {
   if (typeof value === "number" && Number.isFinite(value)) return value;
@@ -216,12 +217,12 @@ function buildRuleBasedCourse(params: {
     status: "DONE",
     resultType: "COURSE",
     mode: "RULE_BASED_FALLBACK",
-    message: "LLM 또는 외부 API를 사용할 수 없어 규칙 기반 하루 코스를 생성했습니다.",
+    message: "선택한 장소와 가까운 후보를 바탕으로 하루 코스를 준비했습니다.",
     selectedPlace: pickSelectedPlaceSummary(params.selectedPlace),
     conditions: pickConditions(params.request),
     nearbyCandidateCount: params.candidates.length,
     courseTitle: `${params.selectedPlace.place_name} 중심 하루 코스`,
-    summary: "선택 장소를 기준으로 가까운 관광·카페·먹거리 후보를 순서대로 묶은 백업 코스입니다.",
+    summary: "선택 장소를 기준으로 가까운 관광·카페·먹거리 후보를 이동하기 좋은 순서로 묶었습니다.",
     stops,
     staticMap: buildKakaoStaticMapResult(stops, params.selectedPlace.place_name),
     llmPromptUsed: false,
@@ -244,16 +245,11 @@ async function resolveNearbyCandidates(params: {
   tourApiError?: string;
   tourApiDiagnostics?: VisitKoreaNearbyDiagnostics;
 }> {
-  const requested = params.request.nearbyCandidates?.filter(
-    (candidate) => candidate.id !== params.selectedPlace.place_id
-      && isFirstReleaseCandidate(candidate.id),
-  );
-  if (requested?.length) {
-    return {
-      candidates: requested.map((candidate) => ({ ...candidate, source: candidate.source ?? "FRONTEND_PROVIDED" })),
-    };
-  }
-  if (params.request.forceRuleBasedFallback) {
+  // Client-provided candidates are deliberately ignored: a public course
+  // request must attempt the KTO locationBasedList2 call first. Forced local
+  // mode is reserved for explicitly enabled non-production diagnostics.
+  const allowForcedFallback = process.env.GOAT_ALLOW_FORCE_FALLBACK === "true";
+  if (params.request.forceRuleBasedFallback && allowForcedFallback) {
     return { candidates: localFallbackCandidates(params.dataset, params.selectedPlace) };
   }
   const coords = getPlaceCoordinates(params.selectedPlace);
@@ -340,6 +336,44 @@ function buildLlmCourse(params: {
   };
 }
 
+function logFinalCourse(result: GoatDayCourseResult) {
+  logger.info({
+    serviceFeature: "ai_day_course",
+    mode: result.mode,
+    finalStopIds: result.stops.map((stop) => stop.id),
+    finalStopSources: result.stops.map((stop) => stop.source),
+    ktoStopCount: result.stops.filter((stop) => stop.source === "VISITKOREA_CONTENT_LAB").length,
+  }, "ai day course final stops");
+}
+
+function addKtoEvidence(
+  result: GoatDayCourseResult,
+  resolved: Awaited<ReturnType<typeof resolveNearbyCandidates>>,
+  candidates: TourApiNearbyCandidate[],
+): GoatDayCourseResult {
+  const diagnostics = resolved.tourApiDiagnostics;
+  const finalKtoStopIds = result.stops
+    .filter((stop) => stop.source === "VISITKOREA_CONTENT_LAB")
+    .map((stop) => stop.id);
+  result.ktoEvidence = {
+    provider: "VISITKOREA_CONTENT_LAB",
+    endpoint: "locationBasedList2",
+    callId: diagnostics?.callId,
+    liveCallAttempted: Boolean(diagnostics),
+    requestCount: diagnostics?.requestCount ?? 0,
+    successfulRequestCount: diagnostics?.successfulRequestCount ?? 0,
+    failedRequestCount: diagnostics?.failedRequestCount ?? 0,
+    rawCandidateCount: diagnostics?.rawCandidateCount ?? 0,
+    filteredCandidateCount: diagnostics?.filteredCandidateCount ?? candidates.length,
+    candidateIds: candidates.map((candidate) => candidate.id),
+    finalKtoStopIds,
+    fallbackUsed: Boolean(resolved.tourApiError || resolved.warning || candidates.some((candidate) => candidate.source === "LOCAL_DB")),
+    fallbackReason: resolved.warning,
+    generatedAt: new Date().toISOString(),
+  };
+  return result;
+}
+
 export async function createGoatDayCourse(
   request: GoatDayCourseRequest,
   placesDataset: GoatPlaceDataset,
@@ -373,7 +407,17 @@ export async function createGoatDayCourse(
   const resolved = await resolveNearbyCandidates({ selectedPlace, dataset: placesDataset, request });
   const candidates = resolved.candidates.slice(0, Math.min(Math.max(request.maxCandidatesForLlm ?? 12, 1), 20));
   const warnings = resolved.warning ? [resolved.warning] : [];
-  if (!request.forceRuleBasedFallback && candidates.length > 0) {
+  logger.info({
+    serviceFeature: "ai_day_course",
+    selectedPlaceId: selectedPlace.place_id,
+    tourApiDiagnostics: resolved.tourApiDiagnostics,
+    tourApiError: resolved.tourApiError,
+    candidateCount: candidates.length,
+    candidateSources: candidates.map((candidate) => candidate.source),
+    candidateIds: candidates.map((candidate) => candidate.id),
+    fallbackUsed: Boolean(resolved.tourApiError || resolved.warning || candidates.some((candidate) => candidate.source === "LOCAL_DB")),
+  }, "ai day course nearby candidates");
+  if ((!request.forceRuleBasedFallback || process.env.GOAT_ALLOW_FORCE_FALLBACK !== "true") && candidates.length > 0) {
     try {
       const planner = await callOpenRouterCoursePlanner({
         selectedPlace,
@@ -381,16 +425,18 @@ export async function createGoatDayCourse(
         candidates,
         model: request.llmModel,
       });
-      return buildLlmCourse({ selectedPlace, candidates, request, planner, warnings });
+      const result = addKtoEvidence(buildLlmCourse({ selectedPlace, candidates, request, planner, warnings }), resolved, candidates);
+      logFinalCourse(result);
+      return result;
     } catch (error) {
       const reason = error instanceof Error ? error.message : "OPENROUTER_REQUEST_FAILED";
       const fallback = buildRuleBasedCourse({
         selectedPlace,
         candidates,
         request,
-        warning: `Gemini 코스 생성에 실패해 규칙 기반 코스로 전환했습니다 (${reason}).`,
+        warning: "실시간 AI 연결이 원활하지 않아 검증된 장소 정보로 코스를 구성했습니다.",
       });
-      return {
+      const result = addKtoEvidence({
         ...fallback,
         warnings: [...warnings, ...fallback.warnings],
         debug: request.debug ? {
@@ -401,7 +447,9 @@ export async function createGoatDayCourse(
           tourApiDiagnostics: resolved.tourApiDiagnostics,
           candidatesPassedToLlm: candidates,
         } : undefined,
-      };
+      }, resolved, candidates);
+      logFinalCourse(result);
+      return result;
     }
   }
   const fallback = buildRuleBasedCourse({
@@ -412,7 +460,7 @@ export async function createGoatDayCourse(
       ? "LLM을 호출하지 않아 검증된 후보를 규칙 기반으로 구성했습니다."
       : "같은 권역의 추가 장소가 없어 선택 장소를 보존한 단독 코스입니다.",
   });
-  return request.debug ? {
+  const result = request.debug ? {
     ...fallback,
     warnings: [...warnings, ...fallback.warnings],
     debug: {
@@ -421,6 +469,9 @@ export async function createGoatDayCourse(
       candidatesPassedToLlm: candidates,
     },
   } : fallback;
+  addKtoEvidence(result, resolved, candidates);
+  logFinalCourse(result);
+  return result;
 }
 
 export async function createGoatCourseRecommendation(

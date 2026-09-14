@@ -20,8 +20,9 @@ export type { KTOPhotoResult };
 
 const BASE_URL =
   'https://apis.data.go.kr/B551011/PhotoGalleryService1/gallerySearchList1';
+const MAX_STALE_FALLBACK_MS = 48 * 60 * 60 * 1000;
 
-const photoCache = new Map<string, KTOPhotoResult | null>();
+const photoCache = new Map<string, { value: KTOPhotoResult; storedAt: number }>();
 
 interface GalleryItem {
   galWebImageUrl?: string;
@@ -76,6 +77,7 @@ async function fetchByKeyword(keyword: string, city: string): Promise<KTOPhotoRe
       location,
       keywords,
       source: 'KTO_PHOTO_API',
+      dataStatus: 'LIVE',
     };
   }
 
@@ -87,21 +89,21 @@ export async function getPlacePhoto(
   city: string
 ): Promise<KTOPhotoResult> {
   const cacheKey = `${city}::${placeName}`;
-  if (photoCache.has(cacheKey)) {
-    return photoCache.get(cacheKey) ?? { imageUrl: null, source: 'fallback' };
-  }
+  const staleEntry = photoCache.get(cacheKey);
+  const stale = staleEntry && Date.now() - staleEntry.storedAt <= MAX_STALE_FALLBACK_MS
+    ? staleEntry.value
+    : undefined;
 
   for (const searchTerm of getKtoSearchTerms(placeName)) {
     const result = await fetchByKeyword(searchTerm, city);
     if (result?.imageUrl) {
-      photoCache.set(cacheKey, result);
+      photoCache.set(cacheKey, { value: result, storedAt: Date.now() });
       return result;
     }
   }
 
-  const fallback: KTOPhotoResult = { imageUrl: null, source: 'fallback' };
-  photoCache.set(cacheKey, fallback);
-  return fallback;
+  const fallback: KTOPhotoResult = { imageUrl: null, source: 'fallback', dataStatus: 'LOCAL' };
+  return stale ? { ...stale, dataStatus: 'STALE_FALLBACK' } : fallback;
 }
 
 export function clearPhotoCache(): void {

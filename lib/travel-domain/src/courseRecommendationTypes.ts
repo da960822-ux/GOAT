@@ -50,11 +50,11 @@ export interface CoursePlanningUserConditions {
 export interface GoatDayCourseRequest extends CoursePlanningUserConditions {
   /** 사용자가 1차 추천 카드 3개 중 최종 선택한 GOAT place_id */
   selectedPlaceId: string;
-  /** 테스트/프론트/백엔드에서 이미 확보한 주변 후보를 넘길 때 사용한다. */
+  /** 레거시 내부 타입 호환용. 공개 HTTP 요청에서는 무시된다. */
   nearbyCandidates?: TourApiNearbyCandidate[];
   /** 후보가 너무 많을 때 LLM에 넘길 최대 개수. 기본 12개 */
   maxCandidatesForLlm?: number;
-  /** true면 외부 API/LLM을 호출하지 않고 fallback 규칙으로만 코스를 만든다. */
+  /** 비프로덕션 진단에서만 GOAT_ALLOW_FORCE_FALLBACK=true일 때 허용된다. */
   forceRuleBasedFallback?: boolean;
   /** 한국관광공사 위치기반 관광정보 조회 반경. 기본 3000m */
   radiusMeters?: number;
@@ -120,6 +120,23 @@ export interface GoatDayCourseResult {
   llmPromptUsed?: boolean;
   failReason?: string | null;
   warnings: string[];
+  /** 감사 증적: 이 응답을 만든 KTO 실시간 호출과 최종 반영 결과. */
+  ktoEvidence?: {
+    provider: "VISITKOREA_CONTENT_LAB";
+    endpoint: "locationBasedList2";
+    callId?: string;
+    liveCallAttempted: boolean;
+    requestCount: number;
+    successfulRequestCount: number;
+    failedRequestCount: number;
+    rawCandidateCount: number;
+    filteredCandidateCount: number;
+    candidateIds: string[];
+    finalKtoStopIds: string[];
+    fallbackUsed: boolean;
+    fallbackReason?: string;
+    generatedAt: string;
+  };
   debug?: {
     llmModel?: string;
     llmRequestedModel?: string;
@@ -130,6 +147,7 @@ export interface GoatDayCourseResult {
     llmError?: string;
     tourApiError?: string;
     tourApiDiagnostics?: {
+      callId?: string;
       httpStatuses: number[];
       latencyMs: number;
       requestCount: number;

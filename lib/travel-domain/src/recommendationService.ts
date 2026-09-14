@@ -10,6 +10,7 @@ import type {
   RecommendResult,
   RecommendationCard as GoatRecommendationCard,
 } from "./goatRecommendationTypes";
+import { getPlaceMinimumDetail } from "./placeMinimumDetail";
 import type {
   MoodCategory,
   Place,
@@ -126,6 +127,15 @@ function normalizeVisitTime(value?: string | null): string | undefined {
 }
 
 function toPlace(place: GoatPlace): Place {
+  const detail = getPlaceMinimumDetail(place);
+  const transportSummary = [
+    place.accessibility?.public_transport ? `대중교통 ${place.accessibility.public_transport}` : "",
+    place.accessibility?.car ? `자차 ${place.accessibility.car}` : "",
+    place.accessibility?.walk ? `도보 ${place.accessibility.walk}` : "",
+  ].filter(Boolean).join(" / ");
+  // Keep the detail contract useful even when KTO is unavailable. This is
+  // catalog-grounded copy only; it must not be mistaken for live operating data.
+  const catalogDescription = detail.description;
   return {
     place_id: place.place_id,
     city: place.city,
@@ -137,21 +147,21 @@ function toPlace(place: GoatPlace): Place {
     photo_point: place.photo_point ?? "",
     best_time: String(place.best_time ?? ""),
     best_season: (place.season_tags ?? []).join(", "),
-    accessibility: [
-      place.accessibility?.public_transport ? `대중교통 ${place.accessibility.public_transport}` : "",
-      place.accessibility?.car ? `자차 ${place.accessibility.car}` : "",
-      place.accessibility?.walk ? `도보 ${place.accessibility.walk}` : "",
-    ].filter(Boolean).join(" / "),
+    accessibility: transportSummary,
     data_status: "confirmed",
     recommendation_use: place.recommendation_use ?? "",
-    note: String(place.note ?? ""),
+    note: `${detail.visitCheck} · 출처: ${detail.sourceLabel} · 확인일 ${detail.checkedAt}`,
     ...(place.address ? { address: place.address } : {}),
     ...(typeof place.lat === "number" ? { lat: place.lat } : {}),
     ...(typeof place.lng === "number" ? { lng: place.lng } : {}),
     ...(typeof place.latitude === "number" ? { lat: place.latitude } : {}),
     ...(typeof place.longitude === "number" ? { lng: place.longitude } : {}),
     ...(place.imageUrl ? { imageUrl: place.imageUrl } : {}),
-    description: place.recommendation_use ?? undefined,
+    description: typeof place.description === "string" && place.description.trim()
+      ? place.description
+      : catalogDescription,
+    parking: detail.parkingNote,
+    travelTime: `권장 체류 ${detail.stayMinutes}분`,
   };
 }
 

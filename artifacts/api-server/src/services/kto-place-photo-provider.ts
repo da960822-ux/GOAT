@@ -1,10 +1,11 @@
 import type { ProviderPhoto } from "./place-photo-service";
+import { logger } from "../lib/logger";
 
 const KTO_BASE = "https://apis.data.go.kr/B551011";
 const PHOTO_GALLERY_PATH = "PhotoGalleryService1/gallerySearchList1";
 const KOR_SEARCH_PATH = "KorService2/searchKeyword2";
 const KOR_DETAIL_IMAGE_PATH = "KorService2/detailImage2";
-const CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+const MAX_STALE_FALLBACK_MS = 48 * 60 * 60 * 1000;
 const providerRightsConfirmed = process.env.KTO_PHOTO_RIGHTS_CONFIRMED === "true";
 
 type KtoItem = Record<string, unknown>;
@@ -24,7 +25,7 @@ const imageUrl = (rawUrl: string) => {
   }
 };
 
-const cache = new Map<string, { photos: ProviderPhoto[]; expiresAt: number }>();
+const cache = new Map<string, { photos: ProviderPhoto[]; storedAt: number }>();
 const inFlight = new Map<string, Promise<ProviderPhoto[]>>();
 
 const itemList = (payload: unknown): KtoItem[] => {
@@ -111,14 +112,21 @@ export async function fetchKtoPlacePhotos(
 ): Promise<ProviderPhoto[]> {
   const cacheKey = `${normalize(city)}:${normalize(placeName)}`;
   const cached = cache.get(cacheKey);
-  if (cached && cached.expiresAt > Date.now()) return cached.photos;
   const pending = inFlight.get(cacheKey);
   if (pending) return pending;
 
   const request = fetchUncachedKtoPlacePhotos(placeName, city)
     .then((photos) => {
-      cache.set(cacheKey, { photos, expiresAt: Date.now() + CACHE_TTL_MS });
+      cache.set(cacheKey, { photos, storedAt: Date.now() });
+      logger.info({ serviceFeature: "place_photos", placeId: cacheKey, status: photos.length ? "LIVE_SUCCESS" : "LIVE_EMPTY", cache: "MISS", photoCount: photos.length }, "kto photos used");
       return photos;
+    })
+    .catch((error) => {
+      if (cached && Date.now() - cached.storedAt <= MAX_STALE_FALLBACK_MS) {
+        logger.warn({ serviceFeature: "place_photos", placeId: cacheKey, status: "STALE_FALLBACK", error: error instanceof Error ? error.message : "KTO_UNKNOWN" }, "kto photos fallback");
+        return cached.photos;
+      }
+      throw error;
     })
     .finally(() => inFlight.delete(cacheKey));
   inFlight.set(cacheKey, request);

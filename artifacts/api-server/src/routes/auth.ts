@@ -25,8 +25,21 @@ function getClientIp(req: Request) {
 
 async function startAuth(req: Request, res: Response, provider: AuthProvider) {
   const redirectTo = sanitizeInternalRedirect(req.query.redirect_to);
-  const loginUrl = await createOauthStart(provider, redirectTo);
-  res.redirect(loginUrl);
+  try {
+    const loginUrl = await createOauthStart(provider, redirectTo);
+    res.redirect(loginUrl);
+  } catch (error) {
+    // OAuth needs both a reachable database (for one-time state) and provider
+    // credentials. Surface an explicit, retryable response instead of a
+    // generic 500 page when either dependency is unavailable.
+    req.log?.error({ err: error, provider }, "OAuth start unavailable");
+    res.status(503).json({
+      success: false,
+      code: "AUTH_UNAVAILABLE",
+      message: "로그인 서비스를 지금 사용할 수 없어요. 잠시 후 다시 시도해 주세요.",
+      data: null,
+    });
+  }
 }
 
 async function handleCallback(req: Request, res: Response, provider: AuthProvider) {

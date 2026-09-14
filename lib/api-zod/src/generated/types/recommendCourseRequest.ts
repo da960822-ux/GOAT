@@ -32,7 +32,6 @@ export interface RecommendCourseRequest {
      * @maximum 20
      */
   maxCandidatesForLlm?: number;
-  forceRuleBasedFallback?: boolean;
   /**
      * @minLength 1
      * @maxLength 120

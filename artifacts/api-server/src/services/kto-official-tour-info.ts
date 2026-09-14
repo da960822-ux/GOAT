@@ -1,5 +1,7 @@
+import { logger } from "../lib/logger";
+
 const KTO_BASE = "https://apis.data.go.kr/B551011/KorService2";
-const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const MAX_STALE_FALLBACK_MS = 7 * 24 * 60 * 60 * 1000;
 
 type KtoEntity = { contentId: string; contentTypeId: string; canonicalName: string };
 
@@ -70,10 +72,12 @@ export type OfficialTourInfo = {
   restDate?: string;
   phone?: string;
   homepage?: string;
+  dataStatus: "LIVE" | "LIVE_PARTIAL" | "STALE_FALLBACK";
+  fetchedAt: string;
   attribution: { label: string; sourceUrl: string };
 };
 
-const cache = new Map<string, { value: OfficialTourInfo | null; expiresAt: number }>();
+const cache = new Map<string, { value: OfficialTourInfo | null; storedAt: number }>();
 const stripHtml = (value: unknown) => typeof value === "string"
   ? value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim()
   : "";
@@ -101,16 +105,26 @@ export async function fetchOfficialTourInfo(placeId: string): Promise<OfficialTo
   const entity = entities[placeId];
   if (!entity) return null;
   const cached = cache.get(placeId);
-  if (cached && cached.expiresAt > Date.now()) return cached.value;
   const [commonResult, introResult] = await Promise.allSettled([
     request("detailCommon2", { contentId: entity.contentId }),
     request("detailIntro2", { contentId: entity.contentId, contentTypeId: entity.contentTypeId }),
   ]);
-  if (commonResult.status === "rejected" && introResult.status === "rejected") throw commonResult.reason;
+  if (commonResult.status === "rejected" && introResult.status === "rejected") {
+    if (cached?.value && Date.now() - cached.storedAt <= MAX_STALE_FALLBACK_MS) {
+      logger.warn({ serviceFeature: "place_detail", placeId, endpoint: "detailCommon2+detailIntro2", status: "STALE_FALLBACK", cache: "STALE_FALLBACK", contentId: entity.contentId }, "kto detail request failed; stale cache used");
+      return { ...cached.value, dataStatus: "STALE_FALLBACK" };
+    }
+    throw commonResult.reason;
+  }
   const common = commonResult.status === "fulfilled" ? commonResult.value[0] : undefined;
   const intro = introResult.status === "fulfilled" ? introResult.value[0] : undefined;
   if (!common && !intro) {
-    cache.set(placeId, { value: null, expiresAt: Date.now() + CACHE_TTL_MS });
+    if (cached && Date.now() - cached.storedAt <= MAX_STALE_FALLBACK_MS) {
+      logger.warn({ serviceFeature: "place_detail", placeId, endpoint: "detailCommon2+detailIntro2", status: "STALE_FALLBACK", contentId: entity.contentId }, "kto detail fallback");
+      return cached.value ? { ...cached.value, dataStatus: "STALE_FALLBACK" } : null;
+    }
+    cache.set(placeId, { value: null, storedAt: Date.now() });
+    logger.warn({ serviceFeature: "place_detail", placeId, endpoint: "detailCommon2+detailIntro2", status: "EMPTY", cache: "MISS" }, "kto detail empty");
     return null;
   }
   const value: OfficialTourInfo = {
@@ -125,8 +139,11 @@ export async function fetchOfficialTourInfo(placeId: string): Promise<OfficialTo
     restDate: text(intro ?? {}, "restdate", "restdateculture", "restdateleports", "restdatefestival"),
     phone: text(common ?? {}, "tel", "telname"),
     homepage: text(common ?? {}, "homepage"),
+    dataStatus: commonResult.status === "fulfilled" && introResult.status === "fulfilled" ? "LIVE" : "LIVE_PARTIAL",
+    fetchedAt: new Date().toISOString(),
     attribution: { label: "ⓒ한국관광공사", sourceUrl: "https://www.data.go.kr/data/15101578/openapi.do" },
   };
-  cache.set(placeId, { value, expiresAt: Date.now() + CACHE_TTL_MS });
+  cache.set(placeId, { value, storedAt: Date.now() });
+  logger.info({ serviceFeature: "place_detail", placeId, endpoint: "detailCommon2+detailIntro2", status: value.dataStatus === "LIVE" ? "LIVE_SUCCESS" : "LIVE_PARTIAL", cache: "MISS", contentId: entity.contentId }, "kto detail used");
   return value;
 }

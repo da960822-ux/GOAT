@@ -6,15 +6,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GoatMark } from "@/src/components/editorial/Brand";
 import { PrimaryButton } from "@/src/components/editorial/UI";
-import { useApp } from "@/src/context/AppContext";
 import { fonts, palette } from "@/src/theme/editorial";
 const gangwonMap = require("@/assets/images/editorial/gangwon-map-collage.png");
 
 export default function NoResultsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  useApp();
-
   return <View style={styles.screen}>
     <View style={[styles.content, { paddingTop: insets.top + 18, paddingBottom: insets.bottom + 22 }]}>
       <GoatMark />
@@ -27,8 +24,8 @@ export default function NoResultsScreen() {
         <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.body}>조건을 조금 넓혀 다시 추천하거나, 처음부터 새로운 장면을 찾아볼 수 있어요.</Text>
       </View>
       <View style={styles.actions}>
-        <PrimaryButton label="여행 조건 다시 고르기" onPress={() => router.replace("/travel-preference")} />
-        <PrimaryButton label="분위기부터 다시 고르기" variant="outline" onPress={() => router.replace("/mood-selection")} />
+        <PrimaryButton label="장면과 조건 다시 고르기" onPress={() => router.replace("/")} />
+        <PrimaryButton label="장면부터 다시 고르기" variant="outline" onPress={() => router.replace("/")} />
       </View>
     </View>
   </View>;

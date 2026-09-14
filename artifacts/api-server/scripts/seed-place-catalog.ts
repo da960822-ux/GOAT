@@ -1,6 +1,6 @@
 import { db, placePhotosTable, placesTable, pool } from "@workspace/db";
 import { sql } from "drizzle-orm";
-import { goatPlacesDataset } from "@workspace/travel-domain";
+import { getPlaceMinimumDetail, goatPlacesDataset } from "@workspace/travel-domain";
 import { getKtoEntity } from "../src/services/kto-official-tour-info";
 import { getGooglePlacePhotoSelections } from "../src/services/google-place-photo-selections";
 import { getCuratedPlacePhotos } from "../src/services/curated-place-photos";
@@ -17,6 +17,7 @@ const google = new Map(getGooglePlacePhotoSelections());
 
 async function main() {
   const placeRows = places.map((place) => {
+    const detail = getPlaceMinimumDetail(place);
     const kto = getKtoEntity(place.place_id);
     const externalIds = {
       ...(kto ? { ktoContentId: kto.contentId, ktoContentTypeId: kto.contentTypeId, ktoCanonicalName: kto.canonicalName } : {}),
@@ -37,16 +38,18 @@ async function main() {
       bestTime: place.best_time ?? null,
       accessibility: place.accessibility ?? {},
       recommendationUse: place.recommendation_use ?? null,
-      note: place.note ?? "",
-      description: place.description ?? null,
+      note: detail.visitCheck,
+      // Keep the DB detail record useful even when live KTO enrichment is unavailable.
+      // This sentence is derived only from the reviewed catalog fields.
+      description: detail.description,
       address: place.address ?? null,
       latitude: place.latitude ?? null,
       longitude: place.longitude ?? null,
       coordinateSource: place.coordinateSource ?? null,
       verificationStatus: place.verification_status ?? null,
       verificationItems: place.verification_items ?? null,
-      sourceUrls: place.sourceUrls ?? [],
-      sourceCheckedAt: place.source_checked_at ? new Date(place.source_checked_at) : null,
+      sourceUrls: place.sourceUrls?.length ? place.sourceUrls : [detail.sourceUrl],
+      sourceCheckedAt: place.source_checked_at ? new Date(place.source_checked_at) : new Date(detail.checkedAt),
       operatingCondition: place.operatingCondition ?? null,
       externalIds,
       isRecommendationCandidate: true,
@@ -62,6 +65,13 @@ async function main() {
       address: sql`excluded.address`,
       latitude: sql`excluded.latitude`,
       longitude: sql`excluded.longitude`,
+      note: sql`excluded.note`,
+      description: sql`excluded.description`,
+      accessibility: sql`excluded.accessibility`,
+      bestTime: sql`excluded.best_time`,
+      seasonTags: sql`excluded.season_tags`,
+      sourceUrls: sql`excluded.source_urls`,
+      sourceCheckedAt: sql`excluded.source_checked_at`,
       externalIds: sql`excluded.external_ids`,
       isRecommendationCandidate: sql`excluded.is_recommendation_candidate`,
       isCourseCandidate: sql`excluded.is_course_candidate`,

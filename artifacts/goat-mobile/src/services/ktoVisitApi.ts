@@ -15,6 +15,7 @@ const VISIT_URL =
   'https://apis.data.go.kr/B551011/TatsCnctrRateService/tatsCnctrRatedList';
 
 const GANGWON_AREA_CODE = '51';
+const MAX_STALE_FALLBACK_MS = 24 * 60 * 60 * 1000;
 
 // Source: 한국관광공사_OpenAPI_관광지_시군구_코드정보_v1.0.xlsx
 const GANGWON_SIGUNGU_CODES: Record<string, string> = {
@@ -54,7 +55,7 @@ const VISIT_NOTES: Record<string, string> = {
 
 export const VISIT_NOTE = VISIT_NOTES;
 
-const cache = new Map<string, KTOVisitConcentration>();
+const cache = new Map<string, { value: KTOVisitConcentration; storedAt: number }>();
 
 function levelFromValue(raw: unknown): 'low' | 'medium' | 'high' | 'unknown' {
   if (!raw && raw !== 0) return 'unknown';
@@ -75,20 +76,21 @@ export async function getVisitConcentration(
   city: string
 ): Promise<KTOVisitConcentration> {
   const cacheKey = `${city}::${placeName}`;
-  if (cache.has(cacheKey)) {
-    return cache.get(cacheKey)!;
-  }
+  const staleEntry = cache.get(cacheKey);
+  const stale = staleEntry && Date.now() - staleEntry.storedAt <= MAX_STALE_FALLBACK_MS
+    ? staleEntry.value
+    : undefined;
 
   const fallback: KTOVisitConcentration = {
     concentrationLevel: 'unknown',
     source: 'fallback',
+    dataStatus: 'LOCAL',
   };
 
   try {
     const signguCd = GANGWON_SIGUNGU_CODES[city];
     if (!placeName || !signguCd) {
-      cache.set(cacheKey, fallback);
-      return fallback;
+      return stale ? { ...stale, dataStatus: 'STALE_FALLBACK' } : fallback;
     }
 
     const params: Record<string, string | number> = {
@@ -103,8 +105,7 @@ export async function getVisitConcentration(
     const json = await ktoFetch(VISIT_URL, params);
     const items = extractItems(json);
     if (!items.length) {
-      cache.set(cacheKey, fallback);
-      return fallback;
+      return stale ?? fallback;
     }
 
     const item = items[0];
@@ -119,13 +120,13 @@ export async function getVisitConcentration(
       concentrationRate: Number.isFinite(concentrationRate) ? concentrationRate : undefined,
       baseDate: item.baseYmd ?? undefined,
       source: 'KTO_VISIT_CONCENTRATION',
+      dataStatus: 'LIVE',
     };
 
-    cache.set(cacheKey, result);
+    cache.set(cacheKey, { value: result, storedAt: Date.now() });
     return result;
   } catch {
-    cache.set(cacheKey, fallback);
-    return fallback;
+      return stale ? { ...stale, dataStatus: 'STALE_FALLBACK' } : fallback;
   }
 }
 

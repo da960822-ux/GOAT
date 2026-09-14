@@ -1,9 +1,10 @@
+import { logger } from "./logger";
+
 const VISIT_CONCENTRATION_URL =
   "https://apis.data.go.kr/B551011/TatsCnctrRateService/tatsCnctrRatedList";
 const GANGWON_AREA_CODE = "51";
-const CACHE_TTL_MS = 60 * 60 * 1000;
-const FALLBACK_CACHE_TTL_MS = 5 * 60 * 1000;
 const CACHE_MAX_ENTRIES = 500;
+const MAX_STALE_FALLBACK_MS = 24 * 60 * 60 * 1000;
 
 const GANGWON_SIGUNGU_CODES: Record<string, string> = {
   춘천시: "51110",
@@ -32,6 +33,7 @@ export type VisitConcentration = {
   concentrationRate: number | null;
   baseDate: string | null;
   source: "KTO_VISIT_CONCENTRATION" | "fallback";
+  dataStatus?: "LIVE" | "STALE_FALLBACK" | "LOCAL";
 };
 
 export type NormalizedVisitConcentration = VisitConcentration & {
@@ -39,7 +41,7 @@ export type NormalizedVisitConcentration = VisitConcentration & {
   reason?: "CONCENTRATION_COMPARABILITY_UNSUPPORTED" | "CONCENTRATION_PLACE_OR_DATE_UNCONFIRMED";
 };
 
-type CacheEntry = { data: VisitConcentration; expiresAt: number };
+type CacheEntry = { data: VisitConcentration; storedAt: number };
 
 const cache = new Map<string, CacheEntry>();
 const inFlight = new Map<string, Promise<VisitConcentration>>();
@@ -49,7 +51,8 @@ const fallback = (): NormalizedVisitConcentration => ({
   label: null,
   concentrationRate: null,
   baseDate: null,
-  source: "fallback",
+    source: "fallback",
+    dataStatus: "LOCAL",
   comparison: "UNSUPPORTED",
   reason: "CONCENTRATION_PLACE_OR_DATE_UNCONFIRMED",
 });
@@ -172,6 +175,7 @@ async function fetchVisitConcentration(
       concentrationRate: normalized.concentrationRate,
       baseDate: normalized.baseDate,
       source: normalized.source,
+      dataStatus: normalized.source === "KTO_VISIT_CONCENTRATION" ? "LIVE" : "LOCAL",
     };
   } catch {
     return fallback();
@@ -183,23 +187,22 @@ export async function getVisitConcentration(
   city: string,
 ): Promise<VisitConcentration> {
   const key = `${normalizeCity(city)}::${placeName.trim()}`;
-  const now = Date.now();
   const cached = cache.get(key);
-  if (cached && cached.expiresAt > now) return cached.data;
 
   const pending = inFlight.get(key);
   if (pending) return pending;
 
   const request = fetchVisitConcentration(placeName, city)
     .then((data) => {
+      if (data.source === "fallback" && cached && Date.now() - cached.storedAt <= MAX_STALE_FALLBACK_MS) {
+        logger.warn({ serviceFeature: "visit_concentration", placeName, city, status: "STALE_FALLBACK" }, "kto visit concentration fallback");
+        return { ...cached.data, dataStatus: "STALE_FALLBACK" as const };
+      }
       cache.set(key, {
         data,
-        expiresAt:
-          Date.now() +
-          (data.source === "KTO_VISIT_CONCENTRATION"
-            ? CACHE_TTL_MS
-            : FALLBACK_CACHE_TTL_MS),
+        storedAt: Date.now(),
       });
+      logger.info({ serviceFeature: "visit_concentration", placeName, city, status: data.source === "KTO_VISIT_CONCENTRATION" ? "LIVE_SUCCESS" : "LOCAL_FALLBACK" }, "kto visit concentration used");
       trimCache();
       return data;
     })

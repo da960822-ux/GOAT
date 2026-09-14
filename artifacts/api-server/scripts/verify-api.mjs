@@ -110,9 +110,10 @@ try {
       purpose: "사진 위주",
     },
     origin: {
-      type: "current",
-      latitude: 37.5665,
-      longitude: 126.978,
+      // GPS-origin requests are intentionally rejected by the API policy.
+      // Use an explicit region to exercise conditioned scoring instead.
+      type: "region",
+      regionName: "서울특별시",
     },
   });
   assert.equal(conditioned.response.status, 200);

@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
   pressed: { opacity: 0.72 },
   iconWell: { width: 38, height: 30, alignItems: "center", justifyContent: "center", borderRadius: 15 },
   iconWellActive: { backgroundColor: palette.forest },
-  label: { fontFamily: fonts.medium, fontSize: 10, lineHeight: 14, color: palette.muted, letterSpacing: -0.2 },
+  label: { fontFamily: fonts.medium, fontSize: 11, lineHeight: 15, color: palette.muted, letterSpacing: -0.15 },
   active: { fontFamily: fonts.semibold, color: palette.forest },
 });

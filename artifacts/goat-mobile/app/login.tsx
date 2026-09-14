@@ -5,7 +5,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const coastImage = require("@/assets/images/generated-scenes/landing-goseong-coast-portrait.png");
@@ -18,12 +18,15 @@ export default function LoginScreen() {
   const { next = "/" } = useLocalSearchParams<{ next?: string }>();
   const { signIn } = useAuth();
   const [busy, setBusy] = useState<AuthProviderName | null>(null);
+  const [loginError, setLoginError] = useState("");
+  const guestNext = next.startsWith("/recommendations") || next.startsWith("/profile") ? "/" : next;
 
   const login = async (provider: AuthProviderName) => {
     if (busy) return;
     setBusy(provider);
+    setLoginError("");
     try { await signIn(provider, next); }
-    catch { Alert.alert("로그인을 완료하지 못했어요", "잠시 후 다시 시도해 주세요."); }
+    catch { setLoginError("로그인을 완료하지 못했어요. 네트워크를 확인한 뒤 다시 시도해 주세요."); }
     finally { setBusy(null); }
   };
 
@@ -43,9 +46,18 @@ export default function LoginScreen() {
         <Text accessibilityRole="header" lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={styles.messageTitle}>GOAT와 함께{`\n`}강원의 특별한 순간을 만나보세요.</Text>
       </View>
       <View style={styles.actions}>
+        {loginError ? <View accessibilityLiveRegion="polite" style={styles.errorBox}><Text style={styles.errorText}>{loginError}</Text></View> : null}
         <LoginButton label="카카오로 로그인" color={palette.forest} textColor={palette.white} icon="chatbubble" busy={busy === "kakao"} disabled={Boolean(busy)} onPress={() => login("kakao")} />
         <LoginButton label="Google로 로그인" color="rgba(255,252,246,.94)" textColor={palette.ink} icon="logo-google" busy={busy === "google"} disabled={Boolean(busy)} onPress={() => login("google")} />
-        <Text style={styles.photoCredit}>생성형 배경 · 사용자 제공 고성 에이프레임·거진 해안 사진 참고</Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="로그인 없이 계속"
+          onPress={() => router.replace(guestNext as never)}
+          style={styles.guestButton}
+        >
+          <Text style={styles.guestButtonText}>로그인 없이 계속</Text>
+        </Pressable>
+        <Text style={styles.photoCredit}>장면 참고 이미지</Text>
         <Text style={styles.terms}>로그인은 선택 사항이며, 계속하면 아래 문서에 동의하게 됩니다.</Text>
         <View style={styles.policyLinks}>
           <Pressable accessibilityRole="link" onPress={() => router.push("/terms" as never)} hitSlop={8}><Text style={styles.policyLink}>이용약관</Text></Pressable>
@@ -77,8 +89,12 @@ const styles = StyleSheet.create({
   actions: { width: 286, alignSelf: "center", gap: 11 },
   loginButton: { minHeight: 58, borderRadius: radius.sm, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, borderWidth: StyleSheet.hairlineWidth, borderColor: "rgba(23,63,54,.16)" },
   loginLabel: { fontFamily: fonts.semibold, fontSize: 16 },
+  guestButton: { minHeight: 48, alignItems: "center", justifyContent: "center", borderRadius: radius.sm, borderWidth: 1, borderColor: "rgba(255,252,246,.7)", backgroundColor: "rgba(255,252,246,.16)" },
+  guestButtonText: { fontFamily: fonts.semibold, fontSize: 14, color: palette.white },
   photoCredit: { alignSelf: "center", marginTop: 2, textAlign: "center", fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: "rgba(255,252,246,.82)" },
   terms: { paddingHorizontal: 2, textAlign: "center", fontFamily: fonts.body, fontSize: 12, lineHeight: 19, color: palette.white },
+  errorBox: { padding: 12, borderRadius: radius.sm, backgroundColor: "rgba(255,244,238,.94)", borderWidth: 1, borderColor: "#E4B4AA" },
+  errorText: { textAlign: "center", fontFamily: fonts.body, fontSize: 13, lineHeight: 19, color: "#8D392C" },
   policyLinks: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8 },
   policyLink: { minHeight: 32, fontFamily: fonts.semibold, fontSize: 12, lineHeight: 32, color: palette.white, textDecorationLine: "underline" },
   policyDivider: { fontFamily: fonts.body, fontSize: 12, color: palette.white },

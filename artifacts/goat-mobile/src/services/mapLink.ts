@@ -10,13 +10,12 @@
  * Naver/Tmap functions are retained here for future use
  * but are NOT exposed in any UI component.
  *
- * TODO: Replace placeholder bundle IDs with real values before production build.
+ * Native identifiers match app.json (com.goattravel.app).
  */
-import { Place } from '../types/place';
-import { Linking, Platform } from 'react-native';
+import { Place } from "../types/place";
+import { Linking, Platform } from "react-native";
 
-const ANDROID_PACKAGE_NAME = 'com.goattravel.app';
-const IOS_BUNDLE_IDENTIFIER = 'com.goattravel.app';
+const ANDROID_PACKAGE_NAME = "com.goattravel.app";
 const NAVER_APP_NAME = ANDROID_PACKAGE_NAME;
 
 function buildSearchQuery(place: Place): string {
@@ -25,14 +24,20 @@ function buildSearchQuery(place: Place): string {
 
 // ─── KakaoMap ──────────────────────────────────────────────────────────────
 
-export function createKakaoMapLink(place: Place, coords?: { lat: number; lng: number }): string {
+export function createKakaoMapLink(
+  place: Place,
+  coords?: { lat: number; lng: number },
+): string {
   if (coords) {
     return `kakaomap://look?p=${coords.lat},${coords.lng}`;
   }
   return `kakaomap://search?q=${buildSearchQuery(place)}`;
 }
 
-export function createKakaoMapWebLink(place: Place, coords?: { lat: number; lng: number }): string {
+export function createKakaoMapWebLink(
+  place: Place,
+  coords?: { lat: number; lng: number },
+): string {
   if (coords) {
     return `https://map.kakao.com/link/map/${encodeURIComponent(place.place_name)},${coords.lat},${coords.lng}`;
   }
@@ -41,7 +46,7 @@ export function createKakaoMapWebLink(place: Place, coords?: { lat: number; lng:
 
 export async function openKakaoMap(
   place: Place,
-  coords?: { lat: number; lng: number }
+  coords?: { lat: number; lng: number },
 ): Promise<void> {
   const appUrl = createKakaoMapLink(place, coords);
   const webUrl = createKakaoMapWebLink(place, coords);
@@ -49,7 +54,7 @@ export async function openKakaoMap(
   // Browsers cannot reliably detect or launch a native custom scheme. Opening
   // kakaomap:// on desktop web can leave an empty about:blank tab, so web must
   // go directly to KakaoMap's public map/search URL.
-  if (Platform.OS === 'web') {
+  if (Platform.OS === "web") {
     await Linking.openURL(webUrl);
     return;
   }
@@ -62,8 +67,8 @@ export async function openKakaoMap(
     try {
       await Linking.openURL(webUrl);
     } catch {
-      const { Alert } = await import('react-native');
-      Alert.alert('카카오맵을 열 수 없어요. 잠시 후 다시 시도해 주세요.');
+      const { Alert } = await import("react-native");
+      Alert.alert("카카오맵을 열 수 없어요. 잠시 후 다시 시도해 주세요.");
     }
   }
 }
@@ -101,5 +106,3 @@ export async function openTmap(place: Place): Promise<void> {
   const canOpen = await Linking.canOpenURL(appUrl);
   await Linking.openURL(canOpen ? appUrl : webUrl);
 }
-
-void IOS_BUNDLE_IDENTIFIER;

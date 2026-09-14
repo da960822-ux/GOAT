@@ -49,8 +49,8 @@ export default function ContactScreen() {
               <Feather name={ch.icon as any} size={18} color={palette.forest} />
             </View>
             <View style={styles.rowText}>
-              <Text style={[styles.rowLabel, { color: colors.foreground }]}>{ch.label}</Text>
-              <Text style={[styles.rowValue, { color: colors.mutedForeground }]}>{ch.value}</Text>
+              <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={[styles.rowLabel, { color: colors.foreground }]}>{ch.label}</Text>
+              <Text lineBreakStrategyIOS="hangul-word" textBreakStrategy="balanced" android_hyphenationFrequency="none" style={[styles.rowValue, { color: colors.mutedForeground }]}>{ch.value}</Text>
             </View>
             {ch.url && <Feather name="external-link" size={14} color={colors.mutedForeground} />}
           </MotionPressable>
@@ -73,27 +73,27 @@ export default function ContactScreen() {
 const CHANNELS = [
   {
     label: '이메일 문의',
-    value: 'contact@goattravel.app',
+    value: 'da960822@gmail.com',
     icon: 'mail',
-    url: 'mailto:contact@goattravel.app',
+    url: 'mailto:da960822@gmail.com',
   },
   {
     label: '장소 정보 오류 신고',
     value: '잘못된 장소 정보, 폐업 정보 등 제보',
     icon: 'alert-circle',
-    url: 'mailto:contact@goattravel.app?subject=장소정보오류신고',
+    url: 'mailto:da960822@gmail.com?subject=장소정보오류신고',
   },
   {
     label: '앱 개선 아이디어',
     value: '새로운 감성 카테고리, 기능 제안 등',
     icon: 'zap',
-    url: 'mailto:contact@goattravel.app?subject=앱개선아이디어',
+    url: 'mailto:da960822@gmail.com?subject=앱개선아이디어',
   },
   {
     label: '협업·파트너십 문의',
     value: '관광청, 지자체, 미디어 협업',
     icon: 'briefcase',
-    url: 'mailto:contact@goattravel.app?subject=협업문의',
+    url: 'mailto:da960822@gmail.com?subject=협업문의',
   },
 ];
 
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   rowIcon: { width: 48, height: 48, borderRadius: radius.sm, alignItems: 'center', justifyContent: 'center', backgroundColor: palette.sage },
   rowText: { flex: 1 },
   rowLabel: { fontSize: 16, lineHeight: 22, fontFamily: fonts.semibold, marginBottom: 3 },
-  rowValue: { fontSize: 13, lineHeight: 19, fontFamily: fonts.body },
+  rowValue: { maxWidth: "100%", fontSize: 13, lineHeight: 19, fontFamily: fonts.body },
   notice: { flexDirection: 'row', alignItems: 'flex-start', gap: 10, margin: spacing.lg, padding: spacing.md, borderRadius: radius.md, borderWidth: 1 },
   noticeText: { flex: 1, fontSize: 13, fontFamily: fonts.body, lineHeight: 21 },
   spacer: { height: 32 },

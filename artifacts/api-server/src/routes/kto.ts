@@ -12,6 +12,8 @@
  */
 
 import { Router, Request, Response } from "express";
+import { logger } from "../lib/logger";
+import { randomUUID } from "node:crypto";
 
 const router = Router();
 
@@ -21,6 +23,7 @@ const DEFAULT_CACHE_MAX_ENTRIES = 500;
 const DEFAULT_CACHE_TTL_SECONDS = 21_600;
 const DEFAULT_STATIC_CACHE_TTL_SECONDS = 86_400;
 const DEFAULT_VISIT_CACHE_TTL_SECONDS = 3_600;
+const DEFAULT_MAX_STALE_SECONDS = 7 * 24 * 60 * 60;
 
 const ALLOWED_KTO_PATHS = new Set([
   "PhotoGalleryService1/gallerySearchList1",
@@ -38,6 +41,7 @@ type QueryValue = string | string[];
 type KtoCacheEntry = {
   data: unknown;
   expiresAt: number;
+  storedAt: number;
 };
 
 const ktoCache = new Map<string, KtoCacheEntry>();
@@ -62,6 +66,10 @@ const CACHE_STATIC_TTL_SECONDS = readPositiveInt(
 const CACHE_VISIT_TTL_SECONDS = readPositiveInt(
   process.env.KTO_CACHE_VISIT_TTL_SECONDS,
   DEFAULT_VISIT_CACHE_TTL_SECONDS,
+);
+const CACHE_MAX_STALE_SECONDS = readPositiveInt(
+  process.env.KTO_CACHE_MAX_STALE_SECONDS,
+  DEFAULT_MAX_STALE_SECONDS,
 );
 
 const normalizeQueryValue = (value: unknown): string[] => {
@@ -186,9 +194,14 @@ async function fetchKtoWithRetry(url: string) {
 }
 
 router.get("/kto", async (req: Request, res: Response) => {
+  const startedAt = Date.now();
+  const requestId = req.header("x-request-id") ?? randomUUID();
+  let cacheKey: string | undefined;
+  let ktoPath: string | undefined;
+  res.setHeader("Cache-Control", "no-store");
   try {
     const rawQuery = req.query as Record<string, QueryValue | undefined>;
-    const ktoPath = normalizeKtoPath(getFirstQueryValue(rawQuery.path) ?? "");
+    ktoPath = normalizeKtoPath(getFirstQueryValue(rawQuery.path) ?? "");
 
     if (!ktoPath) {
       res.setHeader("X-KTO-Cache", "MISS");
@@ -213,24 +226,11 @@ router.get("/kto", async (req: Request, res: Response) => {
       return;
     }
 
-    const cacheKey = buildCacheKey(ktoPath, rawQuery);
+    cacheKey = buildCacheKey(ktoPath, rawQuery);
     const ttlSeconds = getCacheTtlSeconds(ktoPath);
+    // Cache is stale fallback only: always try KTO first.
     const cached = ktoCache.get(cacheKey);
     const now = Date.now();
-
-    if (cached) {
-      if (cached.expiresAt > now) {
-        res.setHeader("X-KTO-Cache", "HIT");
-        res.setHeader(
-          "X-KTO-Cache-TTL-Seconds",
-          Math.ceil((cached.expiresAt - now) / 1000).toString(),
-        );
-        res.json(cached.data);
-        return;
-      }
-
-      ktoCache.delete(cacheKey);
-    }
 
     res.setHeader("X-KTO-Cache", "MISS");
     res.setHeader("X-KTO-Cache-TTL-Seconds", ttlSeconds.toString());
@@ -243,6 +243,16 @@ router.get("/kto", async (req: Request, res: Response) => {
     const response = await fetchKtoWithRetry(url);
 
     if (!response.ok) {
+      if (cached && now - cached.storedAt <= CACHE_MAX_STALE_SECONDS * 1000) {
+        res.setHeader("X-KTO-Cache", "STALE_FALLBACK");
+        res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
+        res.setHeader("X-KTO-Live-Attempted", "true");
+        res.setHeader("X-KTO-Request-Id", requestId);
+        logger.warn({ requestId, endpoint: ktoPath, statusCode: response.status, cache: "STALE_FALLBACK", durationMs: Date.now() - startedAt }, "kto request failed; stale cache used");
+        res.json(cached.data);
+        return;
+      }
+      logger.warn({ requestId, endpoint: ktoPath, statusCode: response.status, cache: "MISS", durationMs: Date.now() - startedAt }, "kto request failed");
       res
         .status(response.status)
         .json({ error: `KTO returned ${response.status}` });
@@ -251,16 +261,43 @@ router.get("/kto", async (req: Request, res: Response) => {
 
     const data = await response.json();
 
+    logger.info({
+      requestId,
+      endpoint: ktoPath,
+      statusCode: response.status,
+      resultCode: getKtoResultCode(data),
+      cache: "MISS",
+      durationMs: Date.now() - startedAt,
+      responseItemCount: Array.isArray((data as any)?.response?.body?.items?.item)
+        ? (data as any).response.body.items.item.length
+        : ((data as any)?.response?.body?.items?.item ? 1 : 0),
+    }, "kto request");
+
     if (shouldCache(data)) {
       ktoCache.set(cacheKey, {
         data,
         expiresAt: now + ttlSeconds * 1000,
+        storedAt: now,
       });
       trimCache();
     }
 
     res.json(data);
-  } catch {
+  } catch (error) {
+    const cached = typeof cacheKey !== "undefined" ? ktoCache.get(cacheKey) : undefined;
+    const now = Date.now();
+    if (cached && now - cached.storedAt <= CACHE_MAX_STALE_SECONDS * 1000) {
+      res.setHeader("X-KTO-Cache", "STALE_FALLBACK");
+      res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
+      res.setHeader("X-KTO-Live-Attempted", "true");
+      res.setHeader("X-KTO-Request-Id", requestId);
+      logger.warn({ requestId, endpoint: typeof ktoPath === "string" ? ktoPath : undefined, cache: "STALE_FALLBACK", durationMs: Date.now() - startedAt, error: error instanceof Error ? error.message : "KTO_UNKNOWN" }, "kto request failed; stale cache used");
+      res.json(cached.data);
+      return;
+    }
+
+    res.setHeader("X-KTO-Request-Id", requestId);
+    res.setHeader("X-KTO-Live-Attempted", "true");
     res.setHeader("X-KTO-Cache", "MISS");
     res.setHeader("X-KTO-Cache-TTL-Seconds", "0");
     res.status(500).json({ error: "proxy fetch failed" });

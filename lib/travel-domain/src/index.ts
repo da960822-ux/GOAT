@@ -45,6 +45,8 @@ export type {
   TravelPurpose,
   VisitTime,
 } from "./types";
+export { getPlaceMinimumDetail } from "./placeMinimumDetail";
+export type { PlaceMinimumDetail } from "./placeMinimumDetail";
 export type {
   GoatPlaceDataset,
   GoatPlace,

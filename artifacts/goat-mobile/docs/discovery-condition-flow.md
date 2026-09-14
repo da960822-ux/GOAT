@@ -8,5 +8,5 @@
 ## API 연결 상태
 
 - 모바일은 D 계약의 `/selections`, `/public/recommendations`, `/public/recommendations/replace`, `/scene-cover`, `/place-photos` 생성 클라이언트를 사용한다.
-- 현재 API 서버 라우트에는 위 공개 발견 엔드포인트 구현이 등록되어 있지 않다. C에서는 대체 데이터나 추천 규칙을 만들지 않으며, 요청 실패 시 기존 결과 유지 또는 명시적 재시도 UI만 제공한다.
+- API 서버에는 위 공개 발견 엔드포인트(`/api/selections`, `/api/public/recommendations`, `/api/public/recommendations/replace`, `/api/scene-cover`, `/api/place-photos`)가 등록되어 있다. 요청 실패 시 대체 데이터나 추천 규칙을 만들지 않으며, 기존 결과 유지 또는 명시적 재시도 UI만 제공한다.
 - `getPlace(placeId)`는 카드 표시용 장소명·지역·주소·방문 제한 보강에만 사용하며, 세 장을 병렬 조회하고 실패가 Decision Deck을 막지 않는다.

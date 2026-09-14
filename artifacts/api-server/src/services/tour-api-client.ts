@@ -20,6 +20,7 @@ declare const URL: {
 type VisitKoreaContentType = "12" | "14" | "15" | "28" | "32" | "38" | "39";
 
 export interface VisitKoreaNearbyDiagnostics {
+  callId: string;
   httpStatuses: number[];
   latencyMs: number;
   requestCount: number;
@@ -110,6 +111,7 @@ export async function fetchVisitKoreaContentLabNearbyCandidates(params: {
     MAX_RESULTS_PER_REQUEST,
   );
   const startedAt = Date.now();
+  const callId = `kto-nearby-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const httpStatuses: number[] = [];
 
   const requests = contentTypeIds.map(async (contentTypeId) => {
@@ -171,6 +173,7 @@ export async function fetchVisitKoreaContentLabNearbyCandidates(params: {
     (result): result is PromiseFulfilledResult<TourApiNearbyCandidate[]> => result.status === "fulfilled",
   );
   const baseDiagnostics = {
+    callId,
     httpStatuses: [...httpStatuses].sort((a, b) => a - b),
     latencyMs: Date.now() - startedAt,
     requestCount: requests.length,

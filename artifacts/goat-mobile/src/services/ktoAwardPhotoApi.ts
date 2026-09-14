@@ -13,8 +13,9 @@ import { KTOAwardPhoto } from './ktoTypes';
 
 const AWARD_URL =
   'https://apis.data.go.kr/B551011/PhotoContestService1/getPhotoContestList1';
+const MAX_STALE_FALLBACK_MS = 7 * 24 * 60 * 60 * 1000;
 
-const cache = new Map<string, KTOAwardPhoto | null>();
+const cache = new Map<string, { value: KTOAwardPhoto; storedAt: number }>();
 
 async function fetchByKeyword(keyword: string): Promise<KTOAwardPhoto | null> {
   const json = await ktoFetch(AWARD_URL, {
@@ -63,9 +64,10 @@ export async function getAwardPhoto(
   primaryMood: string,
   moodTags: string[]
 ): Promise<KTOAwardPhoto> {
-  if (cache.has(placeName)) {
-    return cache.get(placeName) ?? { imageUrl: null, source: 'fallback' };
-  }
+  const staleEntry = cache.get(placeName);
+  const stale = staleEntry && Date.now() - staleEntry.storedAt <= MAX_STALE_FALLBACK_MS
+    ? staleEntry.value
+    : undefined;
 
   let result = await fetchByKeyword(placeName);
   if (!result?.imageUrl) result = await fetchByKeyword(primaryMood);
@@ -74,10 +76,12 @@ export async function getAwardPhoto(
   }
 
   const final: KTOAwardPhoto = result?.imageUrl
-    ? result
-    : { imageUrl: null, source: 'fallback' };
+    ? { ...result, dataStatus: 'LIVE' }
+    : stale
+      ? { ...stale, dataStatus: 'STALE_FALLBACK' }
+      : { imageUrl: null, source: 'fallback', dataStatus: 'LOCAL' };
 
-  cache.set(placeName, final);
+  cache.set(placeName, { value: final, storedAt: Date.now() });
   return final;
 }
 

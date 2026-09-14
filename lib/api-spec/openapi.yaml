@@ -1124,8 +1124,6 @@ components:
           type: integer
           minimum: 1
           maximum: 20
-        forceRuleBasedFallback:
-          type: boolean
         llmModel:
           type: string
           minLength: 1
@@ -1543,6 +1541,28 @@ components:
           type: array
           items:
             type: string
+        ktoEvidence:
+          type: object
+          properties:
+            provider: { type: string, enum: [VISITKOREA_CONTENT_LAB] }
+            endpoint: { type: string, enum: [locationBasedList2] }
+            callId: { type: string }
+            liveCallAttempted: { type: boolean }
+            requestCount: { type: integer }
+            successfulRequestCount: { type: integer }
+            failedRequestCount: { type: integer }
+            rawCandidateCount: { type: integer }
+            filteredCandidateCount: { type: integer }
+            candidateIds:
+              type: array
+              items: { type: string }
+            finalKtoStopIds:
+              type: array
+              items: { type: string }
+            fallbackUsed: { type: boolean }
+            fallbackReason: { type: string }
+            generatedAt: { type: string, format: date-time }
+          required: [provider, endpoint, liveCallAttempted, requestCount, successfulRequestCount, failedRequestCount, rawCandidateCount, filteredCandidateCount, candidateIds, finalKtoStopIds, fallbackUsed, generatedAt]
         policyVersion: { type: string, enum: [goat-score-v2] }
         originStatus: { type: string, enum: [APPLIED, SKIPPED, UNAVAILABLE] }
         originNotice: { type: string }
@@ -1860,8 +1880,10 @@ components:
         restDate: { type: string }
         phone: { type: string }
         homepage: { type: string }
+        dataStatus: { type: string, enum: [LIVE, LIVE_PARTIAL, STALE_FALLBACK] }
+        fetchedAt: { type: string, format: date-time }
         attribution: { $ref: "#/components/schemas/SourceAttribution" }
-      required: [contentId, canonicalName, attribution]
+      required: [contentId, canonicalName, dataStatus, fetchedAt, attribution]
     ExternalPlaceInfo:
       type: object
       properties:

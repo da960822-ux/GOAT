@@ -26,8 +26,9 @@ const KOR_BASE = "https://apis.data.go.kr/B551011/KorService2";
 const SEARCH_URL = `${KOR_BASE}/searchKeyword2`;
 const DETAIL_COMMON_URL = `${KOR_BASE}/detailCommon2`;
 const DETAIL_INTRO_URL = `${KOR_BASE}/detailIntro2`;
+const MAX_STALE_FALLBACK_MS = 7 * 24 * 60 * 60 * 1000;
 
-const cache = new Map<string, KTOTourInfo | null>();
+const cache = new Map<string, { value: KTOTourInfo; storedAt: number }>();
 
 interface SearchResult {
   contentId: string;
@@ -160,9 +161,10 @@ async function fetchDetailIntro(
  */
 export async function getTourInfo(placeName: string, city: string): Promise<KTOTourInfo> {
   const cacheKey = `${placeName}::${city}`;
-  if (cache.has(cacheKey)) {
-    return cache.get(cacheKey) ?? { source: "local" };
-  }
+  const staleEntry = cache.get(cacheKey);
+  const stale = staleEntry && Date.now() - staleEntry.storedAt <= MAX_STALE_FALLBACK_MS
+    ? staleEntry.value
+    : undefined;
 
   try {
     let found: SearchResult | null = null;
@@ -171,8 +173,7 @@ export async function getTourInfo(placeName: string, city: string): Promise<KTOT
       if (found?.contentId) break;
     }
     if (!found?.contentId) {
-      cache.set(cacheKey, null);
-      return { source: "local" };
+      return stale ? { ...stale, dataStatus: "STALE_FALLBACK" } : { source: "local", dataStatus: "LOCAL" };
     }
 
     // 2. Parallel detail fetches
@@ -201,13 +202,13 @@ export async function getTourInfo(placeName: string, city: string): Promise<KTOT
       phone: common.tel,
       homepage: common.homepage,
       source: "KTO_TOUR_INFO",
+      dataStatus: "LIVE",
     };
 
-    cache.set(cacheKey, result);
+    cache.set(cacheKey, { value: result, storedAt: Date.now() });
     return result;
   } catch {
-    cache.set(cacheKey, null);
-    return { source: "local" };
+    return stale ? { ...stale, dataStatus: "STALE_FALLBACK" } : { source: "local", dataStatus: "LOCAL" };
   }
 }
 

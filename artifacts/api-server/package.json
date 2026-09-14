@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.28.0",
   "scripts": {
     "dev": "export NODE_ENV=development && pnpm run build && pnpm run start",
     "build": "node ./build.mjs",
@@ -10,7 +11,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "seed:place-catalog": "tsx ./scripts/seed-place-catalog.ts",
     "verify": "pnpm exec tsx ./scripts/verify-recommendation-contract.ts && node ./scripts/verify-api.mjs && node ./scripts/verify-recommendation-audit.mjs && node ./scripts/verify-persistence-contract.mjs",
-    "verify:live": "node ./scripts/verify-live-recommendation-persistence.mjs"
+    "verify:live": "node ./scripts/verify-live-recommendation-persistence.mjs",
+    "verify:live-kto": "node ./scripts/verify-kto-live.mjs",
+    "verify:live-kto-local": "powershell -ExecutionPolicy Bypass -File ./scripts/verify-kto-live-local.ps1"
   },
   "dependencies": {
     "@workspace/api-zod": "workspace:*",

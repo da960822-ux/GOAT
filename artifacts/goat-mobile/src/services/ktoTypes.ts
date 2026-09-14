@@ -11,6 +11,7 @@ export interface KTOPhotoResult {
   location?: string;
   keywords?: string[];
   source: 'KTO_PHOTO_API' | 'KTO_AWARD_PHOTO_API' | 'LOCAL_PLACE_IMAGE' | 'fallback';
+  dataStatus?: 'LIVE' | 'STALE_FALLBACK' | 'LOCAL';
 }
 
 /** 2. 국문 관광정보 서비스_GW — official tourism info */
@@ -30,6 +31,7 @@ export interface KTOTourInfo {
   phone?: string;
   homepage?: string;
   source: 'KTO_TOUR_INFO' | 'local';
+  dataStatus?: 'LIVE' | 'STALE_FALLBACK' | 'LOCAL';
 }
 
 /** 3. 관광지 집중률 방문자 추이 예측 — visitor concentration prediction */
@@ -41,6 +43,7 @@ export interface KTOVisitConcentration {
   predictedVisitors?: number;
   baseDate?: string;
   source: 'KTO_VISIT_CONCENTRATION' | 'fallback';
+  dataStatus?: 'LIVE' | 'STALE_FALLBACK' | 'LOCAL';
 }
 
 /** 4. 기초지자체 중심 관광지 정보 — local government tourism data */
@@ -50,6 +53,7 @@ export interface KTOLocalGovInfo {
   relatedTourSpots?: string[];
   regionKeywords?: string[];
   source: 'KTO_LOCAL_GOV_TOUR_INFO' | 'fallback';
+  dataStatus?: 'LIVE' | 'STALE_FALLBACK' | 'LOCAL';
 }
 
 /** 5. 관광공모전(사진) 수상작 정보 — award-winning contest photos */
@@ -60,4 +64,5 @@ export interface KTOAwardPhoto {
   location?: string;
   keywords?: string[];
   source: 'KTO_AWARD_PHOTO_API' | 'fallback';
+  dataStatus?: 'LIVE' | 'STALE_FALLBACK' | 'LOCAL';
 }

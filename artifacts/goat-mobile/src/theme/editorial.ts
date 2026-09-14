@@ -20,8 +20,8 @@ export const palette = {
 };
 
 export const fonts = {
-  serif: "NotoSerifKR_600SemiBold",
-  serifRegular: "NotoSerifKR_400Regular",
+  serif: "PretendardSemiBold",
+  serifRegular: "PretendardRegular",
   body: "PretendardRegular",
   medium: "PretendardRegular",
   semibold: "PretendardSemiBold",

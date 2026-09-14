@@ -13,6 +13,7 @@ import type {
   GoatPlaceDataset,
   GoatReferenceCardDataset,
 } from "../../lib/travel-domain/src/goatRecommendationTypes";
+import { getPlaceMinimumDetail } from "../../lib/travel-domain/src/placeMinimumDetail";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const activeAdditionIds = [55, 56, 57, 58].map((value) => `GOAT-${String(value).padStart(3, "0")}`);
@@ -105,6 +106,13 @@ for (const id of activeAdditionIds) assert.ok(activeIdSet.has(id), `즉시 활�
 for (const id of activatedFormerPendingIds) assert.ok(activeIdSet.has(id), `신규 활성 장소 누락: ${id}`);
 
 for (const place of managed) assertPlaceSchema(place, tagSets);
+for (const place of canonical.places) {
+  const detail = getPlaceMinimumDetail(place);
+  for (const field of ["description", "stayMinutes", "parkingNote", "visitCheck", "sourceUrl", "checkedAt", "photoRights"] as const) {
+    const value = detail[field];
+    assert.ok(value !== undefined && String(value).trim() !== "", `${place.place_id}: 최소 상세 필드 ${field} 누락`);
+  }
+}
 for (const id of activatedFormerPendingIds) {
   assert.equal(canonical.places.find((place) => place.place_id === id)?.verification_status, "active_verified", `${id}: 활성 상태 누락`);
 }

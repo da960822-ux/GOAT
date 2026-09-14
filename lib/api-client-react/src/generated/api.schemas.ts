@@ -756,7 +756,6 @@ export interface RecommendCourseRequest {
      * @maximum 20
      */
   maxCandidatesForLlm?: number;
-  forceRuleBasedFallback?: boolean;
   /**
      * @minLength 1
      * @maxLength 120
@@ -1559,6 +1558,22 @@ export interface RecommendCourseData {
   /** @nullable */
   failReason?: string | null;
   warnings: string[];
+  ktoEvidence?: {
+    provider: 'VISITKOREA_CONTENT_LAB';
+    endpoint: 'locationBasedList2';
+    callId?: string;
+    liveCallAttempted: boolean;
+    requestCount: number;
+    successfulRequestCount: number;
+    failedRequestCount: number;
+    rawCandidateCount: number;
+    filteredCandidateCount: number;
+    candidateIds: string[];
+    finalKtoStopIds: string[];
+    fallbackUsed: boolean;
+    fallbackReason?: string;
+    generatedAt: string;
+  };
 }
 
 export type RecommendCourseSuccessResponse = ApiSuccessBase & {
@@ -1579,6 +1594,8 @@ export interface OfficialTourInfo {
   restDate?: string;
   phone?: string;
   homepage?: string;
+  dataStatus: 'LIVE' | 'LIVE_PARTIAL' | 'STALE_FALLBACK';
+  fetchedAt: string;
   attribution: SourceAttribution;
 }
 

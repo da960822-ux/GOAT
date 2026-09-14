@@ -43,10 +43,7 @@ export async function createCourse(
     primaryTheme,
     userMoodTags: place.mood_tags.slice(0, 10),
     userSceneTags: sceneTags.slice(0, 10),
-    // Let the API use the configured Gemini/OpenRouter course composer.
-    // The server still owns validation and can return a safe fallback when
-    // the model is unavailable.
-    forceRuleBasedFallback: false,
+    // The server always attempts the live KTO candidate lookup first.
   });
   if (!isCourse(data) || data.stops[0]?.id !== place.place_id)
     throw new Error("INVALID_COURSE_RESULT");

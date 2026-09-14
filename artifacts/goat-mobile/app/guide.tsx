@@ -25,12 +25,11 @@ export default function GuideScreen() {
           <Text style={styles.introBody}>분위기를 고르면 닮은 세 곳을 보여드려요. 차이를 비교한 뒤 지도에서 확인하거나 내 기기에 저장하세요.</Text>
         </View>
 
-        <View accessibilityLabel="사용자가 제공한 실제 장소 사진을 참고해 만든 생성형 장면 예시 3개" style={styles.collage}>
+        <View accessibilityLabel="장면 예시 3개" style={styles.collage}>
           {guideImages.map((item, index) => (
             <Image key={item.picturedPlaceName} source={item.source} contentFit="cover" style={[styles.collageImage, index === 0 && styles.collageLarge]} accessible={false} importantForAccessibility="no-hide-descendants" />
           ))}
         </View>
-        <Text style={styles.collageCaption}>생성형 장면 예시 · 사용자 제공 장소 사진 참고</Text>
 
         <Animated.View entering={FadeInDown.delay(120).duration(340)} style={styles.steps}>
           {GUIDE_STEPS.map((step, index) => (
@@ -45,13 +44,6 @@ export default function GuideScreen() {
           ))}
         </Animated.View>
 
-        <View style={styles.note}>
-          <BrandIcon name="info" size={20} color={palette.forestSoft} />
-          <View style={styles.noteCopy}>
-            <Text accessibilityRole="header" style={styles.noteTitle}>방문 전 확인</Text>
-            <Text style={styles.noteBody}>사진과 이동 정보는 확인된 데이터만 표시합니다. 운영 여부와 출입 통제, 실제 경로는 공식 채널이나 지도 앱에서 다시 확인해 주세요.</Text>
-          </View>
-        </View>
       </ScrollView>
 
       <View style={[styles.footer, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}>
@@ -80,7 +72,6 @@ const styles = StyleSheet.create({
   collage: { height: 188, flexDirection: "row", gap: 4, overflow: "hidden", borderRadius: radius.lg, backgroundColor: palette.sage },
   collageImage: { flex: 1, height: "100%" },
   collageLarge: { flex: 1.55 },
-  collageCaption: { marginTop: spacing.xs, fontFamily: fonts.body, fontSize: 11, lineHeight: 17, color: palette.muted },
   steps: { marginTop: spacing.sm },
   step: { minHeight: 124, flexDirection: "row", alignItems: "flex-start", gap: spacing.md, paddingVertical: 20, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: palette.line },
   lastStep: { borderBottomWidth: 0 },
@@ -89,10 +80,6 @@ const styles = StyleSheet.create({
   stepEyebrow: { fontFamily: fonts.semibold, fontSize: 11, lineHeight: 16, letterSpacing: 1.2, color: palette.forestSoft },
   stepTitle: { marginTop: 1, fontFamily: fonts.serif, fontSize: 19, lineHeight: 28, letterSpacing: -0.35, color: palette.ink },
   stepBody: { marginTop: spacing.xxs, fontFamily: fonts.body, fontSize: 14, lineHeight: 22, color: palette.muted },
-  note: { marginTop: spacing.sm, flexDirection: "row", alignItems: "flex-start", gap: spacing.sm, padding: spacing.md, borderRadius: radius.sm, backgroundColor: "#E9EDE5" },
-  noteCopy: { flex: 1, gap: spacing.xxs },
-  noteTitle: { fontFamily: fonts.semibold, fontSize: 14, lineHeight: 20, color: palette.ink },
-  noteBody: { fontFamily: fonts.body, fontSize: 13, lineHeight: 21, color: palette.muted },
   footer: { position: "absolute", left: 0, right: 0, bottom: 0, paddingHorizontal: spacing.lg, paddingTop: spacing.sm, backgroundColor: "rgba(246,242,233,.98)", borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: palette.line },
   cta: { minHeight: 56, paddingHorizontal: spacing.lg, borderRadius: radius.md, flexDirection: "row", alignItems: "center", justifyContent: "space-between", backgroundColor: palette.forest },
   ctaText: { fontFamily: fonts.semibold, fontSize: 16, color: palette.white },

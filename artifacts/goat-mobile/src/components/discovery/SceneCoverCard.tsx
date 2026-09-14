@@ -44,7 +44,7 @@ export function SceneCoverCard({ number, title, description, picturedPlaceName, 
         <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.caption} accessible={false} importantForAccessibility="no-hide-descendants">
-        <View style={styles.captionRow}><Text numberOfLines={1} style={styles.captionText}>{caption}</Text><View style={styles.chooseCue}><Text style={styles.chooseText}>이 장면 선택하기</Text><BrandIcon name="arrow-right" size={15} color={palette.white} /></View></View>
+        <View style={styles.captionRow}><Text numberOfLines={1} style={styles.captionText}>{caption}</Text><View style={styles.chooseCue}><Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.9} style={styles.chooseText}>이 장면 선택하기</Text><BrandIcon name="arrow-right" size={15} color={palette.white} /></View></View>
         {attribution ? <Text style={styles.attribution}>{attribution}</Text> : null}
       </View>
     </Pressable>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   caption: { gap: spacing.xxs, paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, backgroundColor: "rgba(15, 48, 42, 0.92)" },
   captionRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: spacing.sm },
   captionText: { flex: 1, fontFamily: fonts.semibold, fontSize: 13, lineHeight: 19, color: palette.white },
-  chooseCue: { flexDirection: "row", alignItems: "center", gap: spacing.xxs },
+  chooseCue: { flexShrink: 0, flexDirection: "row", alignItems: "center", gap: spacing.xxs },
   chooseText: { fontFamily: fonts.semibold, fontSize: 11, color: palette.white },
   attribution: { fontFamily: fonts.body, fontSize: 11, lineHeight: 16, color: palette.sage },
 });

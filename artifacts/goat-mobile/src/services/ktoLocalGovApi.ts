@@ -13,8 +13,9 @@ import { KTOLocalGovInfo } from './ktoTypes';
 
 const LOCAL_GOV_URL =
   'https://apis.data.go.kr/B551011/LocalGovTourInfoService1/getLocalGovTourInfo1';
+const MAX_STALE_FALLBACK_MS = 7 * 24 * 60 * 60 * 1000;
 
-const cache = new Map<string, KTOLocalGovInfo | null>();
+const cache = new Map<string, { value: KTOLocalGovInfo; storedAt: number }>();
 
 /**
  * Fetch city/county-level tourism context.
@@ -22,9 +23,10 @@ const cache = new Map<string, KTOLocalGovInfo | null>();
  */
 export async function getLocalGovInfo(city: string, regionGroup: string): Promise<KTOLocalGovInfo> {
   const cacheKey = `${city}::${regionGroup}`;
-  if (cache.has(cacheKey)) {
-    return cache.get(cacheKey) ?? { source: 'fallback' };
-  }
+  const staleEntry = cache.get(cacheKey);
+  const stale = staleEntry && Date.now() - staleEntry.storedAt <= MAX_STALE_FALLBACK_MS
+    ? staleEntry.value
+    : undefined;
 
   try {
     const json = await ktoFetch(LOCAL_GOV_URL, {
@@ -35,8 +37,7 @@ export async function getLocalGovInfo(city: string, regionGroup: string): Promis
     });
     const items = extractItems(json);
     if (!items.length) {
-      cache.set(cacheKey, null);
-      return { source: 'fallback' };
+      return stale ? { ...stale, dataStatus: 'STALE_FALLBACK' } : { source: 'fallback', dataStatus: 'LOCAL' };
     }
 
     const spots = items
@@ -57,13 +58,13 @@ export async function getLocalGovInfo(city: string, regionGroup: string): Promis
       relatedTourSpots: spots.length ? spots : undefined,
       regionKeywords: keywords.length ? keywords : undefined,
       source: 'KTO_LOCAL_GOV_TOUR_INFO',
+      dataStatus: 'LIVE',
     };
 
-    cache.set(cacheKey, result);
+    cache.set(cacheKey, { value: result, storedAt: Date.now() });
     return result;
   } catch {
-    cache.set(cacheKey, null);
-    return { source: 'fallback' };
+    return stale ? { ...stale, dataStatus: 'STALE_FALLBACK' } : { source: 'fallback', dataStatus: 'LOCAL' };
   }
 }
 
