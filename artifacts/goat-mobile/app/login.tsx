@@ -57,7 +57,7 @@ export default function LoginScreen() {
         >
           <Text style={styles.guestButtonText}>로그인 없이 계속</Text>
         </Pressable>
-        <Text style={styles.photoCredit}>장면 참고 이미지</Text>
+        <Text style={styles.photoCredit}>AI 생성 장면 예시 · GOAT 제작</Text>
         <Text style={styles.terms}>로그인은 선택 사항이며, 계속하면 아래 문서에 동의하게 됩니다.</Text>
         <View style={styles.policyLinks}>
           <Pressable accessibilityRole="link" onPress={() => router.push("/terms" as never)} hitSlop={8}><Text style={styles.policyLink}>이용약관</Text></Pressable>
